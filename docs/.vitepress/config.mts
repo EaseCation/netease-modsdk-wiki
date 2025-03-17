@@ -7,6 +7,7 @@ export default defineConfig({
   title: "我的世界中国版 ModSDK",
   description: "我的世界中国版 ModSDK Wiki 镜像",
   ignoreDeadLinks: true,
+  cleanUrls: false,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -26,7 +27,7 @@ export default defineConfig({
       provider: 'algolia',
       options: {
         appId: 'F8HD84CUON',
-        apiKey: '438c1cd353441aca3aa50578d9395715',
+        apiKey: 'ccaf9255472c593d8a8b0724a940bb29',
         indexName: 'netease-modsdk'
       }
     }
