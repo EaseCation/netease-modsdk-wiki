@@ -5,7 +5,7 @@ import generateSidebar from '../../scripts/sidebar.js';
 export default defineConfig({
   lang: 'zh-CN',
   title: "我的世界中国版 ModSDK",
-  description: "我的世界中国版 ModSDK Wiki",
+  description: "我的世界中国版 ModSDK Wiki 镜像",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
