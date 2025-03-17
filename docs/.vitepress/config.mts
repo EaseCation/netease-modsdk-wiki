@@ -7,7 +7,6 @@ export default defineConfig({
   title: "我的世界中国版 ModSDK",
   description: "我的世界中国版 ModSDK Wiki 镜像",
   ignoreDeadLinks: true,
-  cleanUrls: false,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -28,7 +27,11 @@ export default defineConfig({
       options: {
         appId: 'F8HD84CUON',
         apiKey: 'ccaf9255472c593d8a8b0724a940bb29',
-        indexName: 'netease-modsdk'
+        indexName: 'netease-modsdk',
+        searchParameters: {
+          // 筛选掉 rootType 为 mconline 的项目
+          facetFilters: ['rootType:-mconline']
+        }
       }
     }
   }

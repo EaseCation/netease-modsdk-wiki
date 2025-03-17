@@ -35,7 +35,7 @@ async function getAllMarkdownFiles(dir, base = '') {
         } else if (entry.name.endsWith('.md')) {
             // 忽略以 _ 开头的特殊文件
             if (entry.name.startsWith('_') || entry.name.includes('索引')) {
-                console.log(entry.name);
+                // console.log(entry.name);
                 continue;
             }
             // 构建路由路径
@@ -219,6 +219,17 @@ function getDirectoryPriority(path) {
 }
 
 /**
+ * 获取目录的优先级
+ * mcdocs - 最高优先级
+ * mcguide - 中等优先级
+ * mconline - 最低优先级
+ */
+function getDirectoryRootType(path) {
+    const firstDir = path.split('/').filter(Boolean)[0];
+    return firstDir;
+}
+
+/**
  * 生成符合VitePress的Algolia索引记录
  */
 async function generateAlgoliaRecords() {
@@ -230,10 +241,17 @@ async function generateAlgoliaRecords() {
         try {
             const rawContent = await readFile(page.filePath, 'utf8');
             const { data: frontmatter, content } = matter(rawContent);
-            const pageTitle = frontmatter.title || page.path.split('/').pop() || page.path;
+            const pageTitle = page.path
+                .replaceAll("/mcdocs", "API文档")
+                .replaceAll("/mcguide", "开发指南")
+                .replaceAll("/mconline", "教学课程")
+                .split('/')
+                .map(s => s.split("-").pop())
+                .join("/");
 
             // 确定这个页面的优先级
             const priority = getDirectoryPriority(page.path);
+            const rootType = getDirectoryRootType(page.path);
 
             // 按标题分割内容
             const sections = splitByHeadings(content);
@@ -266,7 +284,8 @@ async function generateAlgoliaRecords() {
                     content: cleanedContent,
                     _tags: ['zh-CN'],
                     lang: "zh-CN",
-                    priority: priority // 添加优先级字段
+                    priority: priority, // 添加优先级字段
+                    rootType: rootType
                 };
 
                 // 如果记录太大，则需要分割
@@ -274,7 +293,7 @@ async function generateAlgoliaRecords() {
                 if (recordSize <= MAX_RECORD_SIZE) {
                     records.push(record);
                 } else {
-                    console.log(`部分内容过大，需要进一步分割: ${objectID}`);
+                    // console.log(`部分内容过大，需要进一步分割: ${objectID}`);
 
                     // 按段落分割大内容
                     const paragraphs = cleanedContent.split(/\n\s*\n/);
@@ -404,16 +423,17 @@ async function settingAlgolia() {
         const response = await client.setSettings({
             indexName: INDEX_NAME,
             indexSettings: {
-                attributesForFaceting: ['lang', 'type'],
+                attributesForFaceting: ['lang', 'type', 'rootType'],
                 attributesToHighlight: ['hierarchy.lvl0', 'hierarchy.lvl1', 'hierarchy.lvl2', 'content'],
-                attributesToSnippet: ['content:20'],
-                attributesToRetrieve: ['hierarchy', 'content', 'type', 'url', 'lang', 'priority'],
+                attributesToSnippet: ['content:50'],
+                attributesToRetrieve: ['hierarchy', 'content', 'type', 'url', 'lang', 'priority', 'rootType'],
                 searchableAttributes: [
                     'hierarchy.lvl0',
                     'hierarchy.lvl1',
                     'hierarchy.lvl2',
                     'content'
                 ],
+                // 已经在网页上设置了，这边设置会重复
                 customRanking: [
                     'desc(priority)', // 首先按优先级降序排列（值越高排越前）
                     'asc(content.length)' // 其次按内容长度升序（简短内容优先）
