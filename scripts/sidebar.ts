@@ -9,12 +9,20 @@ interface SidebarItem {
     items?: SidebarItem[];
     order?: number; // 添加排序字段
     collapsed?: boolean; // 添加折叠状态控制
+    activeMatch?: string; // 添加活动匹配模式
 }
 
 // 配置参数
 const DOCS_DIR = 'docs';          // 文档根目录
 const IGNORE_PATHS = ['README.md']; // 忽略的文件名
 const DEFAULT_COLLAPSED = true;   // 默认折叠状态
+
+// 一级目录名称映射表
+const CATEGORY_MAP: Record<string, string> = {
+    'mcdocs': 'API文档',
+    'mcguide': '开发指南',
+    'mconline': '教学课程'
+};
 
 /**
  * 从名称中提取排序数字
@@ -37,10 +45,15 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
         if (IGNORE_PATHS.some(ignore => relativePath.toLowerCase().includes(ignore.toLowerCase()))) continue;
 
         const segments = relativePath.split(path.sep);
-        let currentLevel: SidebarItem[] = sidebar[segments[0]] || [];
+        const categoryKey = segments[0];
+        
+        // 使用映射表获取显示名称
+        const categoryName = CATEGORY_MAP[categoryKey] || categoryKey;
+        
+        let currentLevel: SidebarItem[] = sidebar[categoryKey] || [];
 
-        if (!sidebar[segments[0]]) {
-            sidebar[segments[0]] = currentLevel;
+        if (!sidebar[categoryKey]) {
+            sidebar[categoryKey] = currentLevel;
         }
 
         // 递归构建层级结构
@@ -48,23 +61,50 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
             const segment = segments[i].replace('.md', '');
             const isLast = i === segments.length - 1;
 
-            // 处理目录索引（如 /guide/index.md → link: /guide/）
-            const link = i === 0 ? `/${segment}/` : `/${segments.slice(0, i + 1).join('/').replace('.md', '')}/`;
+            // 修改链接生成逻辑
+            let link;
+            if (isLast) {
+                // 为文件生成链接
+                const linkSegments = segments.slice(0, i + 1);
+                
+                // 如果是 index.md，使用父目录
+                if (segment === 'index') {
+                    linkSegments.pop();
+                }
+                
+                // 确保链接以斜杠开头但不以斜杠结尾
+                link = `/${linkSegments.join('/')}`;
+                if (link.length > 1 && link.endsWith('/')) {
+                    link = link.slice(0, -1);
+                }
+            } else if (i === 0) {
+                link = `/${segment}`;
+            }
+
             const order = extractOrderNumber(segment); // 提取排序号
 
             if (isLast) {
                 // 添加最终文件项
                 const title = await getTitleFromFile(path.join(DOCS_DIR, ...segments.slice(0, i + 1)));
-                currentLevel.push({ text: title, link, order });
+                // 添加 activeMatch 以支持更精确的高亮匹配
+                const activeMatch = `^${link}(?:/|$)`;
+                currentLevel.push({ text: title, link, order, activeMatch });
             } else {
                 // 查找或创建目录分组
-                let group = currentLevel.find(item => item.text === segment);
+                let displayText = i === 0 ? categoryName : segment;
+                let group = currentLevel.find(item => 
+                    (i === 0 && item.text === categoryName) || 
+                    (i !== 0 && item.text === segment)
+                );
+                
                 if (!group) {
                     group = {
-                        text: segment,
+                        text: displayText,
                         items: [],
                         order,
-                        collapsed: i < 2 ? false : DEFAULT_COLLAPSED
+                        collapsed: i < 2 ? false : DEFAULT_COLLAPSED,
+                        // 为目录添加活动匹配模式
+                        activeMatch: i === 0 ? `^/${segment}(?:/|$)` : undefined
                     };
                     currentLevel.push(group);
                 }
