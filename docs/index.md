@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "我的世界中国版 ModSDK"
   text: ""
-  tagline: "我的世界中国版 ModSDK Wiki"
+  tagline: "我的世界中国版 ModSDK 镜像"
   actions:
     - theme: brand
       text: 开始
