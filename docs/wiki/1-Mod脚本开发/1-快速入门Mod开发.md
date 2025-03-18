@@ -1,7 +1,7 @@
 # 🚀 快速入门我的世界 Mod 开发
 
 ::: warning :warning: 接下来需要 Python2 基础知识
-如果你不熟悉 Python 的这些概念（变量、函数、类等），可以先学习 [Python 官方教程](https://docs.python.org/zh-cn/3/tutorial/index.html)
+如果你不熟悉 Python 的这些概念（变量、函数、类等），或是还没有安装 Python2 环境，可以先学习 [Python 官方教程](https://docs.python.org/zh-cn/2/tutorial/index.html)
 :::
 
 ## 1. 创建你的 Addons
