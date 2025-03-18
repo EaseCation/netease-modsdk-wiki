@@ -19,6 +19,7 @@ const DEFAULT_COLLAPSED = true;   // 默认折叠状态
 
 // 一级目录名称映射表
 const CATEGORY_MAP: Record<string, string> = {
+    "wiki": "Wiki",
     'mcdocs': 'API文档',
     'mcguide': '开发指南',
     'mconline': '教学课程'
@@ -115,7 +116,20 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
         sortSidebarItems(sidebar[key]);
     }
 
-    return sidebar;
+    // 移除第一级，将每一个第一级中的items平铺到一级
+    const sidebarFlat: Record<string, SidebarItem[]> = {};
+    for (const key in sidebar) {
+        sidebarFlat[key] = [];
+        sidebar[key].forEach(item => {
+            if (item.items) {
+                sidebarFlat[key].push(...item.items);
+            } else {
+                sidebarFlat[key].push(item);
+            }
+        });
+    }
+
+    return sidebarFlat;
 }
 
 /**
