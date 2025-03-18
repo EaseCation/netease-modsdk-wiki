@@ -206,7 +206,7 @@ time: 分钟
 
 ### netease:block\_animate\_random\_tick
 
-频率更高的方块tick，用于实现类似樱花树叶的方块特效。给自定义方块配置该组件后，开发者可以在**客户端**监听<a href="../../../../mcdocs/1-ModAPI-beta/事件/方块.html#blockanimaterandomtickevent" rel="noopenner"> BlockAnimateRandomTickEvent </a>事件给方块附加逻辑。
+频率更高的方块tick，用于实现类似樱花树叶的方块特效。给自定义方块配置该组件后，开发者可以在**客户端**监听<a href="../../../../mcdocs/1-ModAPI/事件/方块.html#blockanimaterandomtickevent" rel="noopenner"> BlockAnimateRandomTickEvent </a>事件给方块附加逻辑。
 
 | 键           | 类型  | 默认值 | 解释   |
 | ------------ | ----- | ------ | ------ |
