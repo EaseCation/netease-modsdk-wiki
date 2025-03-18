@@ -93,6 +93,9 @@ class BiomeType(object):
 	lush_caves = 187						# 繁茂洞穴
 	dripstone_caves = 188					# 溶洞
 	stony_peaks = 189						# 裸岩山峰
+	deep_dark = 190						    # 深暗之域
+	mangrove_swamp = 191					# 红树林沼泽
+	cherry_grove = 192						# 樱花树林
 
 ``` 
 

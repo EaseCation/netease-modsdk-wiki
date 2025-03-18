@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 入门
 time: 分钟
 ---
@@ -79,7 +79,7 @@ time: 分钟
 演示了可变模型与可变碰撞箱
 
 - customblocks:customblocks_test_heavy
-  
+
 
 演示了自定义重力方块
 

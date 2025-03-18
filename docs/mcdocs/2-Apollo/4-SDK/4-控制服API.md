@@ -15,7 +15,7 @@ sidebarDepth: 1
 - 描述
 
     获取服务器公共配置，包括所有服务器和db的配置，具体参见备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -95,8 +95,8 @@ sidebarDepth: 1
     ],
     }
     ```
-    
-    
+
+
 - 示例
 
 ```python
@@ -111,7 +111,7 @@ bDebugLevel = conf['log_debug_level'] #获取日志等级配置
 - 描述
 
     获取指定ID服务器的类型
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -134,7 +134,7 @@ gameType = netMasterApi.GetGameTypeByServerId(6000)
 - 描述
 
     获取指定类型的服务器id列表
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -157,7 +157,7 @@ idList = netMasterApi.GetServerIdsByGameType("gameA")
 - 描述
 
     根据服务器id获取服务器加载mod列表
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -181,7 +181,7 @@ mods = netMasterApi.GetServerLoadedModsById(4000)
 - 描述
 
     根据服务器类型获取服务器加载mod列表。若同种类型服务器配置了不同的mod，则返回其中一个对应mod列表。
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -205,7 +205,7 @@ mods = netMasterApi.GetServerLoadedModsByType("survivalGame")
 - 描述
 
     服务器是否是service服
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -219,8 +219,8 @@ mods = netMasterApi.GetServerLoadedModsByType("survivalGame")
 - 备注
 
     本api取代【masterConf.isService】，【masterConf.isService】废弃。
-    
-    
+
+
 - 示例
 
 ```python
@@ -236,7 +236,7 @@ bService = netMasterApi.IsService(10)
 - 描述
 
     封禁某个玩家
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -253,12 +253,12 @@ bService = netMasterApi.IsService(10)
 - 备注
 
     效果说明如下：
-    
+
     若banTime>0，则被封禁玩家登陆会提示：您的账号已经被封禁，剩余封禁时间：x天y小时z分，封禁原因：【reason】。如有疑问，请前往客服专区反馈
-    
+
     若banTime=-1，则被封禁玩家登陆会提示：您的账号已经被永久封禁，封禁原因：【reason】。如有疑问，请前往客服专区反馈
-    
-    
+
+
 - 示例
 
 ```python
@@ -274,7 +274,7 @@ netMasterApi.BanUser(123457, 86400, '作弊被封禁一天', False)
 - 描述
 
     获取玩家的封禁信息
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -287,16 +287,16 @@ netMasterApi.BanUser(123457, 86400, '作弊被封禁一天', False)
 - 备注
 
     callback中的第二个dict参数内容解释如下：
-    
+
     | 关键字     | 数据类型              | 说明     |
     | ----------| --------------------- | ---------|
     | banTime | int | 封禁持续时间，单位是秒，-1表示永久封禁|
     | banTimestamp | int | 开始封禁的时间戳，若不是永久封禁，则截止时间为：banTimestamp + banTime |
     | reason | str | 封禁原因 |
-    
-    
-    
-    
+
+
+
+
 - 示例
 
 ```python
@@ -313,7 +313,7 @@ netMasterApi.GetBanUserInfo(123456, cb)
 - 描述
 
     获取所有在线玩家的uid列表
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -322,10 +322,10 @@ netMasterApi.GetBanUserInfo(123456, cb)
 - 备注
 
     在线玩家的uid列表是缓存再内存中的，档Master意外dump重启之后，只能获取到重启后再登录的玩家的uid
-    
+
     此接口返回的uid列表可能会很大，不建议在正式环境使用
-    
-    
+
+
 - 示例
 
 ```python
@@ -338,7 +338,7 @@ uidList = netMasterApi.GetOnlineUidList()
 - 描述
 
     获取在线玩家客户端协议版本号。多协议版本引擎中（比如同时支持1.14客户端和1.15客户端），需要把客户端分配到相同协议版本的lobby/game中
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -361,7 +361,7 @@ protocolVersion = netMasterApi.GetProtocolVersionByUID(123456)
 - 描述
 
     获取在线玩家所在的服务器的ID，返回的信息为当前控制服内存缓存中的信息，玩家很可能很快就离线或者转服
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -375,8 +375,8 @@ protocolVersion = netMasterApi.GetProtocolVersionByUID(123456)
 - 备注
 
     玩家与当前所在服务器ID的映射关系是缓存在内存中的，当Master意外dump重启之后，只能获取到重启后再登录的玩家当前所在的服务器ID
-    
-    
+
+
 - 示例
 
 ```python
@@ -389,7 +389,7 @@ serverId = netMasterApi.GetServerIdByUid(123456)
 - 描述
 
     获取玩家的禁言信息
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -402,16 +402,16 @@ serverId = netMasterApi.GetServerIdByUid(123456)
 - 备注
 
     callback中的第二个dict参数内容解释如下：
-    
+
     | 关键字     | 数据类型              | 说明     |
     | ----------| --------------------- | ---------|
     | banTime | int | 禁言持续时间，单位是秒，-1表示永久禁言|
     | banTimestamp | int | 开始禁言的时间戳，若不是永久禁言，则截止时间为：banTimestamp + banTime |
     | reason | str | 禁言原因 |
-    
-    
-    
-    
+
+
+
+
 - 示例
 
 ```python
@@ -428,7 +428,7 @@ netMasterApi.GetUserSilentInfo(123456, cb)
 - 描述
 
     设置玩家登陆选服策略，要求服务器启动后加载mod时候设置
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -442,10 +442,10 @@ netMasterApi.GetUserSilentInfo(123456, cb)
 - 备注
 
     示例中提供了两种设置登陆策略方法，示例1是方便开发者理解接口，最好不要应用于生产环境，示例2是生产环境使用方法
-    
+
     调用此API修改选服策略之后，配置的单服最高人数限制会失效，选服策略需要考虑单服的承载力与玩家人数平衡问题，但配置的全服最高人数限制不会失效
-    
-    
+
+
 - 示例
 
 ```python
@@ -470,7 +470,7 @@ class testMaster(MasterSystem):
                         callback(targetId) #必须执行，执行登陆后续操作
                 netMasterApi.SetLoginStratege(loginStratege)
                 self.ListenForEvent('lobbyNameaspace', 'lobbySystem', 'NewLoginServerEvent', self, self.OnNewLoginServer)
-        
+
         def OnNewLoginServer(self, args):
                 # 将有效目标服务器记录下来
                 serverId = args['serverId]
@@ -494,7 +494,7 @@ class lobbyServer(ServerSystem):
 - 描述
 
     禁言某个玩家
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -520,7 +520,7 @@ netMasterApi.SilentByUID(123456, 86400, '说了敏感内容，被禁言一天')
 - 描述
 
     解除某个玩家的封禁
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -544,7 +544,7 @@ netMasterApi.UnBanUser(123456)
 - 描述
 
     解除某个玩家的禁言
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -573,7 +573,7 @@ netMasterApi.UnSilentByUID(123456)
 - 描述
 
     注册一个新的HTTP接口
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -584,6 +584,15 @@ netMasterApi.UnSilentByUID(123456)
 - 返回值
 
     无
+- 备注
+
+    若您在机器上架设了自建服务来访问master的http服务（插件通过api调用不需要），那么需要遵循以下规范：
+    1. 登录机器，到master目录下打开netgame_common.json，复制apollo_secret的值（该secret不同网络服不一样，不同阶段也不一样，生成之后不会改变）
+    2. 在http请求头中添加Request-Timestamp字段，值为当前的秒时间戳
+    3. 在http请求头中添加Request-Sign字段，值为md5(请求方法+url+请求参数+上述时间戳+apollo_secret的值)
+    例如md5(POST/netease/hunter-debug{}1665561365bJetTlJRa60H2Pt3qL6duTIGu0MypJuh) = 84b9ffadbf797cc9d2772fdbc86f411b
+
+
 - 示例
 
 ```python
@@ -611,7 +620,7 @@ class HttpHandler(object):
 - 描述
 
     给service发送http请求
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -640,7 +649,7 @@ masterHttp.SendHttpRequestToService(8000, url, json.dumps(params))
 - 描述
 
     发送HTTP的Response，支持异步返回，返回时候指定请求传入的clientId
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -682,7 +691,7 @@ class HttpHandler(object):
 - 描述
 
     获取所有重置中服务器的id列表
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -700,7 +709,7 @@ servers = serverManager.GetAllResetingServers()
 - 描述
 
     获取所有服务器的状态。只有状态2表示服务器正常服务，其他状态表示服务器不能服务。
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -709,8 +718,8 @@ servers = serverManager.GetAllResetingServers()
 - 备注
 
     服务器状态中，2表示正常服务，其他表示不能正常服务。
-    
-    
+
+
 - 示例
 
 ```python
@@ -723,7 +732,7 @@ statusDict = serverManager.GetAllServerStatus()
 - 描述
 
     获取所有服务器的在线人数
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -741,7 +750,7 @@ onlineDict = serverManager.GetAllServersOnlineNum()
 - 描述
 
     获取所有已经连接的lobby/game的服务器id列表
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -759,7 +768,7 @@ idList = serverManager.GetConnectedLobbyAndGameIds()
 - 描述
 
     获取服务器状态。只有状态2表示服务器正常服务，其他状态表示服务器不能服务
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -782,7 +791,7 @@ status = serverManager.GetOneServerStatus(6000)
 - 描述
 
     获取服务器(lobby/game/proxy)的在线人数
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -805,7 +814,7 @@ num = serverManager.GetOnlineNumByServerId(4000)
 - 描述
 
     获取某类型服务器的在线人数
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -828,7 +837,7 @@ num = serverManager.GetOnlineNumByServerType("lobby")
 - 描述
 
     获取服务器的协议版本号。多协议版本引擎中（比如同时支持1.14客户端和1.15客户端），需要把客户端分配到相同协议版本的lobby/game中
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -851,7 +860,7 @@ version = serverManager.GetServerProtocolVersion(4000)
 - 描述
 
     获取总得在线人数
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -869,7 +878,7 @@ num = serverManager.GetTotalOnlineNum()
 - 描述
 
     master是否与lobby/game/proxy建立连接
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -892,7 +901,7 @@ bConnect = serverManager.IsConnectedServer(4000)
 - 描述
 
     服务器是否有效。一种用途：master将玩家分配到服务器之前，会检查服务器是否有效，避免把玩家分配到一个即将关闭的服务器中
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -915,7 +924,7 @@ bValid = serverManager.IsValidServer(4000)
 - 描述
 
     重置某个lobby/game。它会将服务器地图恢复到启动时状态并重启服务器。开始重置会触发ResetGamesBeginEvent事件，重置结束会触发ResetGamesEndEvent事件
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -926,13 +935,13 @@ bValid = serverManager.IsValidServer(4000)
     无
 - 备注
 
-    
+
     注意，对于生存服，若使用了存档A，则重置后仍使用存档A，且重置过程中不会保存地图。
-    
-    
+
+
     若需要重置游戏服GameA，使用方法：重置前确保玩家退出对应GameA，重置过程不允许玩家进入GameA，GameA重置完毕后GameA可以发消息告知master或service，告知GameA就绪，然后玩家可以进入GameA了
-    
-    
+
+
 - 示例
 
 ```python
@@ -945,7 +954,7 @@ serverManager.ResetServer(4000)
 - 描述
 
     滚动关服
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -966,7 +975,7 @@ serverManager.RollingCloseServers([6000])
 - 描述
 
     滚动更新服务器，要求网络服使用了这个ip，要求至少存在一个服务器类型为serverType、引擎版本为appVersion的服务器在运行，只能滚动更新代理服/大厅服/游戏服
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -990,7 +999,7 @@ serverManager.RollingUpdateServers('lobby', '2.0.0.release20220120', '10.0.0.1',
 - 描述
 
     关闭某个服务器。若MCStudio配置网络游戏时设置了“崩溃自动拉起”，则关闭服务器后会被自动拉起，实现重启功能
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |

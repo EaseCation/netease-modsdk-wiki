@@ -14,7 +14,7 @@ interface SidebarItem {
 
 // 配置参数
 const DOCS_DIR = 'docs';          // 文档根目录
-const IGNORE_PATHS = ['README.md']; // 忽略的文件名
+const IGNORE_PATHS = ['README.md', 'readme.md', 'index.md']; // 忽略的文件名
 const DEFAULT_COLLAPSED = true;   // 默认折叠状态
 
 // 一级目录名称映射表
@@ -40,16 +40,17 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
     const sidebar: Record<string, SidebarItem[]> = {};
     const files = await fg([`${DOCS_DIR}/**/*.md`]);
 
+    // 处理所有非 index.md 文件
     for (const filePath of files) {
         const relativePath = path.relative(DOCS_DIR, filePath);
         if (IGNORE_PATHS.some(ignore => relativePath.toLowerCase().includes(ignore.toLowerCase()))) continue;
 
         const segments = relativePath.split(path.sep);
         const categoryKey = segments[0];
-        
+
         // 使用映射表获取显示名称
         const categoryName = CATEGORY_MAP[categoryKey] || categoryKey;
-        
+
         let currentLevel: SidebarItem[] = sidebar[categoryKey] || [];
 
         if (!sidebar[categoryKey]) {
@@ -65,18 +66,7 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
             let link;
             if (isLast) {
                 // 为文件生成链接
-                const linkSegments = segments.slice(0, i + 1);
-                
-                // 如果是 index.md，使用父目录
-                if (segment === 'index') {
-                    linkSegments.pop();
-                }
-                
-                // 确保链接以斜杠开头但不以斜杠结尾
-                link = `/${linkSegments.join('/')}`;
-                if (link.length > 1 && link.endsWith('/')) {
-                    link = link.slice(0, -1);
-                }
+                link = `/${segments.slice(0, i + 1).join('/')}`.replace(/\.md$/, '');
             } else if (i === 0) {
                 link = `/${segment}`;
             }
@@ -85,26 +75,33 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
 
             if (isLast) {
                 // 添加最终文件项
-                const title = await getTitleFromFile(path.join(DOCS_DIR, ...segments.slice(0, i + 1)));
+                const title = await getTitleFromFile(filePath);
                 // 添加 activeMatch 以支持更精确的高亮匹配
                 const activeMatch = `^${link}(?:/|$)`;
                 currentLevel.push({ text: title, link, order, activeMatch });
             } else {
                 // 查找或创建目录分组
                 let displayText = i === 0 ? categoryName : segment;
-                let group = currentLevel.find(item => 
-                    (i === 0 && item.text === categoryName) || 
-                    (i !== 0 && item.text === segment)
+
+                // 移除数字前缀
+                displayText = displayText.replace(/^\d+-\s*/, '');
+
+                let group = currentLevel.find(item =>
+                    (i === 0 && item.text === categoryName) ||
+                    (i !== 0 && item.text === displayText)
                 );
-                
+
                 if (!group) {
+                    const groupLink = i === 0 ? `/${segment}` : undefined;
+
                     group = {
                         text: displayText,
                         items: [],
-                        order,
+                        order: order,
                         collapsed: i < 2 ? false : DEFAULT_COLLAPSED,
                         // 为目录添加活动匹配模式
-                        activeMatch: i === 0 ? `^/${segment}(?:/|$)` : undefined
+                        activeMatch: `^/${segment}(?:/|$)`,
+                        link: groupLink
                     };
                     currentLevel.push(group);
                 }
@@ -144,15 +141,24 @@ function sortSidebarItems(items: SidebarItem[]): void {
  * 从文件 Frontmatter 或文件名提取标题
  */
 async function getTitleFromFile(filePath: string): Promise<string> {
-    const content = await fs.readFile(filePath, 'utf-8');
-    const frontmatterMatch = content.match(/^---\s*[\s\S]*?title:\s*(.*?)\n\s*[\s\S]*?---/);
+    try {
+        const content = await fs.readFile(filePath, 'utf-8');
+        // 寻找 title 在 frontmatter 中的位置
+        const frontmatterMatch = content.match(/^---\s*[\s\S]*?title:\s*(.*?)[\r\n][\s\S]*?---/);
 
-    // 处理标题，去掉数字前缀
-    let title = frontmatterMatch
-        ? frontmatterMatch[1]
-        : path.basename(filePath, '.md').replace(/-/g, ' ').replace(/^\d+-\s*/, '');
+        if (frontmatterMatch && frontmatterMatch[1]) {
+            // 清理标题（移除引号等）
+            return frontmatterMatch[1].trim().replace(/['"]/g, '');
+        }
 
-    return title;
+        // 如果没有 frontmatter title，从文件名获取
+        const basename = path.basename(filePath, '.md');
+        // 普通文件，移除数字前缀和连字符
+        return basename.replace(/^\d+-\s*/, '').replace(/-/g, ' ');
+    } catch (error) {
+        console.error(`读取文件失败: ${filePath}`, error);
+        return path.basename(filePath, '.md');
+    }
 }
 
 export default generateSidebar;

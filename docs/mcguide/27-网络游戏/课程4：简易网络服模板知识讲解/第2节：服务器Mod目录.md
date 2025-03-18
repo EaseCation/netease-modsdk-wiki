@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 入门
 time: 10分钟
 ---
@@ -100,7 +100,7 @@ developer_mods支持多个mod，每个mod对应一个目录，下面是neteaseAn
 ```
 
 
-​	
+​
 - 并非所有resource_packs都会被客户端下载
 
 - 需要将`manifest.json`配置header中uuid配置到worlds/level/`world_resource_packs.json`中才会被客户端下载
@@ -116,7 +116,7 @@ developer_mods支持多个mod，每个mod对应一个目录，下面是neteaseAn
 ```
 
 
-​	
+​
 
 ## behavior_packs
 - 存放客户端MOD

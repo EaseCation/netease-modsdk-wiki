@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 入门
 time: 分钟
 selection: true
@@ -233,7 +233,7 @@ shootButton的锚点，位移XY，尺寸XY的参考属性如下。按照这种�
 
 ![image-20220422212033911](./images/image-20220422212033911.png)
 
-在舞台上点击“PE版UI界面”，可以在他的属性面板中看到，这个界面预设绑定了我们刚刚创建的这个界面文件。关于界面预设的用法详见：[界面预设](../20-玩法开发/11-组装简单玩法/10-预设/5-界面预设.md)。
+在舞台上点击“PE版UI界面”，可以在他的属性面板中看到，这个界面预设绑定了我们刚刚创建的这个界面文件。关于界面预设的用法详见：[界面预设](../20-玩法开发/14-预设玩法编程/0-理解预设系统/10-预设/5-界面预设.md)。
 
 ![image-20220422213141601](./images/image-20220422213141601.png)
 
@@ -250,7 +250,7 @@ shootButton的锚点，位移XY，尺寸XY的参考属性如下。按照这种�
 ```python
 	def InitClient(self):
 		import mod.client.extraClientApi as clientApi
-		self.ListenForEngineEvent(UiInitFinishedEvent, self, self.OnUIInitFinished)
+		self.ListenForEngineEvent("UiInitFinished", self, self.OnUIInitFinished)
 ```
 
 ```python
@@ -264,7 +264,7 @@ shootButton的锚点，位移XY，尺寸XY的参考属性如下。按照这种�
 			uiNodePreset.SetUiActive(True)
 ```
 
-我们利用[UI API文档](40-UIAPI文档.html)中对各个控件的接口和游戏原生支持的格式化，可以在python代码中动态的改变界面的表现，具体可以参考[样式代码](https://minecraft-zh.gamepedia.com/index.php?title=%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81&variant=zh)
+我们利用[UI API文档](40-UIAPI文档.html)中对各个控件的接口和游戏原生支持的格式化，可以在python代码中动态的改变界面的表现，具体可以参考[样式代码](https://zh.minecraft.wiki/w/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)
 
 当然，更多API功能还需要你的发现和尝试。
 

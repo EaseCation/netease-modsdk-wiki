@@ -10,15 +10,17 @@ class in mod.common.minecraftEnum
 
 ```python
 class UseAnimation(object):
-	Undefined = 'none'			# 未定义
-	Eat = 'eat'					# 吃食物
-	Drink = 'drink'				# 喝药水
-	Block = 'block'				# 放置方块
-	Bow = 'bow'					# 拉弓
-	Camera = 'camera'			# 照相
-	Spear = 'spear'				# 三叉戟
-	Crossbow = 'crossbow'		# 拉弩
-	Spyglass = 'spyglass'		# 望远镜
+	Undefined = 0  		# 未定义
+	Eat = 1				# 吃食物
+	Drink = 2			# 喝药水
+	Block = 3			# 放置方块
+	Bow = 4				# 拉弓
+	Camera = 5			# 照相
+	Spear = 6			# 三叉戟
+	Crossbow = 9		# 拉弩
+	Spyglass = 10		# 望远镜
+	GoatHorn = 11		# 山羊号角
+	Brush = 12			# 刷
 
 ``` 
 

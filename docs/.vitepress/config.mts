@@ -20,9 +20,9 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: 'API文档', link: '/mcdocs/0-概述/0-概述' },
-      { text: '开发指南', link: '/mcguide/readme' },
-      { text: '教学课程', link: '/mconline/readme' },
+      { text: 'API文档', link: '/mcdocs' },
+      { text: '开发指南', link: '/mcguide' },
+      { text: '教学课程', link: '/mconline' },
     ],
 
     sidebar: await generateSidebar(),

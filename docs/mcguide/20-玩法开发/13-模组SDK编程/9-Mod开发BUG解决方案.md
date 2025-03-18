@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 入门
 time: 分钟
 ---
@@ -70,11 +70,11 @@ time: 分钟
 
   ### 更新了mod资源，下载到的mod还是旧版本
 
-  每次更新了mod资源之后，要在mod的behavior和resource文件夹下面，更改 *pack_manifest.json* 的版本号，比如上个mod的version是[0, 0, 1]，那么这次mod的version就要是[0, 0, 2]。地图mod和组件mod如果有更新，都要改version才会触发更新
+  每次更新了mod资源之后，要在mod的behavior和resource文件夹下面，更改 *manifest.json* 的版本号，比如上个mod的version是[0, 0, 1]，那么这次mod的version就要是[0, 0, 2]。地图mod和组件mod如果有更新，都要改version才会触发更新
 
   ![](./picture/BugFix/9.png)
 
-  
+
 
   ### 上传MOD，提示打包失败
 
@@ -84,13 +84,13 @@ time: 分钟
   - mod的python文件里面有语法错误
   - mod里面没有modMain.py
 
-  
+
 
   ### **mod在联机大厅\网络游戏服上运行的时候，手机客户端的部分逻辑无法正常运行**
 
   如果开发的mod运行在联机大厅\网络游戏服上面的时候，客户端有一部分逻辑失效了，很有可能是是客户端线程里面import了包含服务端线程内容的模块，导致客户端线程不能正常工作
 
-  
+
 
 ## 开发打包设置建议
 
@@ -130,8 +130,8 @@ mod里面不要有中文或乱码字符命名的文件（behavior文件夹和res
 | [1003](#1003) | UI             | UI控件controls内缺少特定子控件        | [按钮控件](../../18-界面与交互/30-UI说明文档.md#按钮)                    |
 | [2001](#2001) | 自定义远程武器 | 自定义远程武器序列帧未找到对应texture | [自定义远程武器](../15-自定义游戏内容/6-自定义远程武器.md)  |
 | [2002](#2002) | 自定义远程武器 | 自定义远程武器序列帧配置错误          | [自定义远程武器](../15-自定义游戏内容/6-自定义远程武器.md)  |
-| [3001](#3001) | JSON           | JSON文件格式错误                      | 1.[JSON语法](https://minecraft-zh.gamepedia.com/JSON)  2.[使用vscode检查JSON格式](#使用vscode检查json文件格式) |
-| [3002](#3002) | JSON           | JSON文件内容错误                      | [MC官方WIKI](https://minecraft-zh.gamepedia.com/基岩版实体组件文档)
+| [3001](#3001) | JSON           | JSON文件格式错误                      | 1.[JSON语法](https://zh.minecraft.wiki/w/JSON)  2.[使用vscode检查JSON格式](#使用vscode检查json文件格式) |
+| [3002](#3002) | JSON           | JSON文件内容错误                      | [MC官方WIKI](https://zh.minecraft.wiki/w/基岩版实体组件文档)
 | [4001](#4001)  | 自定义配方     | 配置的物品加载失败                    | [自定义物品](../15-自定义游戏内容/1-自定义物品/1-自定义基础物品.md) |
 | [5001](#5001)  | 自定义物品     | 自定义物品ID错误                      | [自定义物品](../15-自定义游戏内容/1-自定义物品/1-自定义基础物品.md) |
 |               |                |                                       |                                                              |
@@ -322,7 +322,7 @@ Function: CustomRangedWeaponItem::initClient in c:\editor\handheld\src-plugins\c
       "category": "Equipment"
     },
     "components": {
-      "minecraft:icon": "customrangedweapon:bow",  
+      "minecraft:icon": "customrangedweapon:bow",
       "netease:frame_animation": {
         "frame_count": 4,
         "texture_name": "customrangedweapon:bow_frame",  # 对应item_texture.json中的命名
@@ -395,7 +395,7 @@ Assertion failed: The frame_count (***4***) of custom item (***customrangedweapo
       "category": "Equipment"
     },
     "components": {
-      "minecraft:icon": "customrangedweapon:bow",  
+      "minecraft:icon": "customrangedweapon:bow",
       "netease:frame_animation": {
         "frame_count": 4,  # 自定义远程武器的frame_count配置值
         "texture_name": "customrangedweapon:bow_frame",  # 对应item_texture.json中的命名
@@ -468,7 +468,7 @@ Assertion failed: node parse failed: ***minecraft:map_color*** Condition is fals
 
 ##### 解决方案
 
-在自己的mod目录下搜索上述存在错误内容的字段，检查是否与原生内容中对应字段内容相符。如上述 ***minecraft:map_color***。建议在[MC官方WIKI](https://minecraft-zh.gamepedia.com/基岩版实体组件文档)上搜索此关键字获得对应的描述信息。
+在自己的mod目录下搜索上述存在错误内容的字段，检查是否与原生内容中对应字段内容相符。如上述 ***minecraft:map_color***。建议在[MC官方WIKI](https://zh.minecraft.wiki/w/基岩版实体组件文档)上搜索此关键字获得对应的描述信息。
 
 <span id="使用vscode检查json文件格式"></span>附：参考MC中的原生内容
 
@@ -478,7 +478,7 @@ Assertion failed: node parse failed: ***minecraft:map_color*** Condition is fals
 C:\MCStudioDownload\game\MinecraftPE_Netease\1.21.0.119233
 ```
 
-其中“1.21.0.119233”为版本号，可能发生变化。因此我们需要使用vscode（或其他支持全局搜索的工具）打开“C:\MCStudioDownload\game\MinecraftPE_Netease\1.21.0.119233\data”目录，全局搜索希望参考的字段，**注意**：部分字段在这里是找不到的，但实际也能使用，一般以[MC官方WIKI](https://minecraft-zh.gamepedia.com/基岩版实体组件文档)为准。
+其中“1.21.0.119233”为版本号，可能发生变化。因此我们需要使用vscode（或其他支持全局搜索的工具）打开“C:\MCStudioDownload\game\MinecraftPE_Netease\1.21.0.119233\data”目录，全局搜索希望参考的字段，**注意**：部分字段在这里是找不到的，但实际也能使用，一般以[MC官方WIKI](https://zh.minecraft.wiki/w/基岩版实体组件文档)为准。
 
 ### <span id="4001"></span>4001
 
@@ -524,8 +524,7 @@ Assertion failed: [custom define item]JSON: ***netease_items_beh/caomei.json*** 
     "minecraft:item": {
         "description": {
             "category": "Construction",
-            "identifier": "caomei",  # 错误位置，缺少命名空间，应该改为mymod:caomei
-            "register_to_create_menu": true
+            "identifier": "caomei" //错误位置，缺少命名空间，应该改为mymod:caomei
         },
         "components": {
             "minecraft:max_stack_size": 64

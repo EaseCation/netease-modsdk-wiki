@@ -14,7 +14,7 @@ class ItemCategory(object):
 	Nature = 2				# 自然栏
 	Equipment = 3			# 装备栏
 	Items = 4				# 物品栏
-	Custom = 8				# 自定义
+	Custom = 7				# 自定义
 
 ``` 
 

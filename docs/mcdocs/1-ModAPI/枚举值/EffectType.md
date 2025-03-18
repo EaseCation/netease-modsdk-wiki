@@ -40,6 +40,7 @@ class EffectType(object):
 	SLOW_FALLING = "slow_falling"            # 缓慢降落，降低掉落速度，减少掉落伤害
 	BAD_OMEN = "bad_omen"                    # 不祥之兆， 进入村庄时触发袭击
 	HERO_OF_THE_VILLAGE = "village_hero"     # 村庄英雄，与村民交易价格降低
+	DARKNESS = "darkness"                    # 黑暗,是一种会将玩家的视野限制在15格内，且导致屏幕不时变暗的状态效果。
 
 ``` 
 

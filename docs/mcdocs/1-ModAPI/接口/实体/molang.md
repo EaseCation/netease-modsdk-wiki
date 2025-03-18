@@ -3,6 +3,78 @@ sidebarDepth: 1
 ---
 # molang
 
+## EvalMolangExpression
+
+<span style="display:inline;color:#ff5555">服务端</span><span style="display:inline;color:#7575f9">客户端</span>
+
+### 服务端接口
+
+<span id="s0"></span>
+method in mod.server.component.queryVariableCompServer.QueryVariableComponentServer
+
+- 描述
+
+    在实体上下文上执行molang表达式
+
+- 参数
+
+    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- | :--- |
+    | expression | str | molang表达式 |
+
+- 返回值
+
+    | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- |
+    | dict | 执行结果在"value"的键中，如果有执行错误，通过"error"的键返回错误信息 |
+
+- 备注
+    - molang最初是为渲染设计的，所以在服务端上大部分接口是无法获取到数据的。
+
+- 示例
+
+```python
+import mod.server.extraServerApi as serverApi
+comp = serverApi.GetEngineCompFactory().CreateQueryVariable(entityId)
+result = comp.EvalMolangExpression('query.can_fly')
+```
+
+
+
+### 客户端接口
+
+<span id="c0"></span>
+method in mod.client.component.queryVariableCompClient.QueryVariableComponentClient
+
+- 描述
+
+    在实体上下文上执行molang表达式
+
+- 参数
+
+    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- | :--- |
+    | expression | str | molang表达式 |
+
+- 返回值
+
+    | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- |
+    | dict | 执行结果在"value"的键中，如果有执行错误，通过"error"的键返回错误信息 |
+
+- 备注
+    -     本接口执行时没有渲染上下文，某些molang无法通过该种方式获取到正确的值，如query.actor_count【获取最近一帧渲染实体数量】 会永远返回0。
+
+- 示例
+
+```python
+import mod.client.extraClientApi as clientApi
+comp = clientApi.GetEngineCompFactory().CreateQueryVariable(entityId)
+result = comp.EvalMolangExpression('query.can_fly')
+```
+
+
+
 ## Get
 
 <span style="display:inline;color:#7575f9">客户端</span>
@@ -59,7 +131,8 @@ method in mod.client.component.queryVariableCompClient.QueryVariableComponentCli
 
 - 备注
     - 因为没有渲染上下文，某些molang无法通过该种方式获取到正确的值，如query.is_first_person、variable.is_first_person等。
-    - 当molangName传入query.get_name或者query.owner_identifier等需要返回字符串的变量值时，返回其hash64，类型是个int，可以用于比较。query.get_name：返回生物的名字；query.owner_identifier：返回其owner的identifier
+    - 当molangName传入query.get_name或者query.owner_identifier等需要返回字符串的变量值时，返回其hash64，类型是个long，可以用于与GetStringHash64获取的值比较。query.get_name：返回生物的名字；query.owner_identifier：返回其owner的identifier
+    - 该接口无法进行molang运算，例如无法计算query.average_frame_time(20)
 
 - 示例
 

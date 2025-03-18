@@ -20,6 +20,7 @@ class AttributeBuffType(object):
 	Poison = 7                    # 中毒
 	FatalPoison = 8               # 致命中毒
 	SelfHeal = 9                  # 自愈
+	SelfDestruct = 10             # 自毁
 
 ``` 
 

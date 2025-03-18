@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 进阶
 time: 5分钟
 ---

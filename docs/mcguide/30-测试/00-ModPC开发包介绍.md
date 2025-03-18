@@ -68,39 +68,39 @@ ModPC右上角有一个开发者菜单，该菜单内置了一键热更、重载
 
 4. Debug Control(调试控制)：如下图所示打开调试控制窗口，在这里你可以自定义一些指令，并把它创建为按钮触发，这样能让开发者快速多次地执行常用的指令，如创建一个围栏用于测试，传送玩家到固定点等等
 
-![debugbutton](./images/debugbutton.png) 
+![debugbutton](./images/debugbutton.png)
 
 5. Level Debug(世界调试)：如下图打开世界调试窗口，在这里可以查看当前世界和区块的一些信息，也可以点击重载世界按钮重新加载存档。
 
-![leveldebug](./images/leveldebug.png) 
+![leveldebug](./images/leveldebug.png)
 
 6. Mob Debug(生物调试)：如下图所示打开生物调试窗口，在这里你可以使用`Ctrl`加上`鼠标右键`选中一个生物，并查看它的信息
 
-![mobdebug](./images/mobdebug.png) 
+![mobdebug](./images/mobdebug.png)
 
 7. Options(选项)：如下图所示打开选项窗口，这里你可以查看和编辑游戏的所有选项设置
 
-![options](./images/options.png) 
+![options](./images/options.png)
 
 8. Player Debug(玩家调试)：如下图打开玩家调试窗口，在这里你可以查看与玩家相关的信息
 
-![playerdebug](./images/playerdebug.png) 
+![playerdebug](./images/playerdebug.png)
 
 9. Weather Editor(天气编辑器)：如下图所示打开天气编辑器效果，在这里你可以查看和编辑天气相关的属性
 
-![weathereditor](./images/weathereditor.png) 
+![weathereditor](./images/weathereditor.png)
 
 10. Sound Editor(音效编辑器):如下图所示打开音效编辑器，在这里你可以查看和试听游戏内的音效
 
-![soundeditor](./images/soundeditor.png) 
+![soundeditor](./images/soundeditor.png)
 
 11. Geometry Editor(网格编辑器):如下图所示打开网格编辑器，在这里你可以查看和编辑游戏所有模型的网格信息(修改会存盘，需谨慎)
 
-![geometry](./images/geometry.png) 
+![geometry](./images/geometry.png)
 
 12. Track(性能跟踪)：如下图所示分别打开性能跟踪窗口，在这里你能查看游戏运行时的内存占用和各类线程触发情况。
 
-![track](./images/track.png) 
+![track](./images/track.png)
 
 >注：其他未提及内容开发者可自行体验，后续会对部分内容进行调整。
 ## 四、什么时候需要用到Mod PC开发包
@@ -110,7 +110,7 @@ ModPC右上角有一个开发者菜单，该菜单内置了一键热更、重载
 当我们用编辑器打开一个存档时，后台会启动一个内置的Mod PC开发包，以支持我们在编辑器进行地形编辑，资源放置等功能。
 >注：内嵌编辑器的ModPC开发包只开启了部分功能，如游戏地形区块的加载和卸载，我们在地形编辑器所操作的地形就依赖这个功能。
 
- ![ModPCEditor](./images/ModPCEditor.png) 
+ ![ModPCEditor](./images/ModPCEditor.png)
 
 ### 2. 编辑器内运行测试
 当我们在编辑器的右上角点击运行时，实质上就是打开一个新的ModPC开发包来加载模组存档（不同于编辑器内置的ModPC开发包），让开发者进行测试，如下图所示。
@@ -120,12 +120,12 @@ ModPC右上角有一个开发者菜单，该菜单内置了一键热更、重载
 ### 3. 启动器中进行开发测试
 在启动器界面，当我们把鼠标悬浮在一个模组作品上时，会出现`开发测试`的按钮，点击开发测试的本质实际上也是用ModPC开发包打开模组存档，但开发测试可以在加载之前调整一些游戏的设置选项，如下图所示
 
- ![developtest](./images/developtest.gif) 
+ ![developtest](./images/developtest.gif)
 
 ### 4. 工具箱打开Mod PC开发包（多人联机测试）
 就像[ModPC开发包多人测试](./0-ModPC开发包多人测试.md)的教程中所说的那样，当我们需要在一台电脑开多个ModPC开发包时，可以通过工具箱中找到对应的选项单独打开未加载存档的ModPC开发包
 
- ![ModPCEditor](./images/toolbox.png) 
+ ![ModPCEditor](./images/toolbox.png)
 
 ## 四、注意事项
 >当我们将云端列表中的作品下载到本地时，选中作品有一个`上线测试`的功能，这里的`上线测试并不是用ModPC包打开存档`，恰恰相反，为了让开发者在上线前对自己的作品进行更接近实际应用场景的测试，上线测试功能使用了官方正式版客户端进行模拟测试，让开发者能够了解模组真正上线后的运行情况。

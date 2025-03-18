@@ -1,5 +1,1135 @@
 # Apollo更新信息
 
+## 2025.03.13 更新内容
+1. 发布Apollo 3.3beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 3.3.0.beta20250313 |
+   | proxy   | 3.3.0.beta20250313 |
+   | master  | 3.3.0.beta20250313 |
+   | service | 3.3.0.beta20250313 |
+
+2. 发布Apollo2.0 3.3beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion              |
+   | ---------------- | ----------------------- |
+   | proxy            | 3.3.0.java.beta20250313 |
+   | master           | 3.3.0.java.beta20250313 |
+   | geyser           | 3.3.0.java.beta20250313 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT         |
+
+	其他插件版本要求：
+
+    |            | verion             |
+    | ---------- | ------------------ |
+    | BungeeCord | 1.20-R0.3-SNAPSHOT |
+    | ViaVersion | 4.10.2             |
+
+## 2025.01.07 更新内容
+1. 发布Apollo 3.2正式版
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion            |
+   | ------- | --------------------- |
+   | game    | 3.2.0.stable20250107 |
+   | proxy   | 3.2.0.stable20250107 |
+   | master  | 3.2.0.stable20250107 |
+   | service | 3.2.0.stable20250107 |
+
+2. 发布Apollo2.0 3.2正式包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 3.2.0.java.stable20250107 |
+   | master           | 3.2.0.java.stable20250107 |
+   | geyser           | 3.2.0.java.stable20250107 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT            |
+
+   其他插件版本要求：
+
+   |            | verion             |
+   | ---------- | ------------------ |
+   | BungeeCord | 1.20-R0.3-SNAPSHOT |
+   | ViaVersion | 4.10.2             |
+   注：由于Viaversion转换1.20.5版本头颅（模型）会过滤掉非法昵称的信息，导致自定义方块和中文昵称的头颅（模型）出错，因此无法直接使用官网版本。可选择MCS内容库中的“ViaVersion-4.10.2”资源或自行修改。
+
+3. 额外注意
+
+   由于微软代码改动，新增的网络包需要依赖在登录完成时服务器发送的配方表。如配方表为空，可能会导致客户端闪退。
+
+   该问题将于Apollo 3.3版本修复，在当前版本中，请不要使用<a href="./4-SDK/6-大厅与游戏服API.html?key=RecipesSyncOnLogin&docindex=1&type=0" rel="noopenner">RecipesSyncOnLogin</a>接口关闭服务器配方表的同步功能。
+
+## 2024.12.10 更新内容
+1. 发布Apollo 3.2beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 3.2.0.beta20241211 |
+   | proxy   | 3.2.0.beta20241211 |
+   | master  | 3.2.0.beta20241211 |
+   | service | 3.2.0.beta20241211 |
+
+2. 发布Apollo2.0 3.2beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion              |
+   | ---------------- | ----------------------- |
+   | proxy            | 3.2.0.java.beta20241211 |
+   | master           | 3.2.0.java.beta20241211 |
+   | geyser           | 3.2.0.java.beta20241211 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT         |
+
+	其他插件版本要求：
+
+    |            | verion             |
+    | ---------- | ------------------ |
+    | BungeeCord | 1.20-R0.3-SNAPSHOT |
+    | ViaVersion | 4.10.2             |
+    注：由于Viaversion转换1.20.5版本头颅（模型）会过滤掉非法昵称的信息，导致自定义方块和中文昵称的头颅（模型）出错，因此无法直接使用官网版本。可选择MCS内容库中的“ViaVersion-4.10.2”资源或自行修改。
+
+
+## 2024.11.20 更新内容
+1. 发布Apollo 3.1正式版
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion            |
+   | ------- | --------------------- |
+   | game    | 3.1.0.release20241119 |
+   | proxy   | 3.1.0.release20241119 |
+   | master  | 3.1.0.release20241119 |
+   | service | 3.1.0.release20241119 |
+
+2. 发布Apollo2.0 3.1正式包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 3.1.0.java.release20241119 |
+   | master           | 3.1.0.java.release20241119 |
+   | geyser           | 3.1.0.java.release20241119 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT            |
+
+   其他插件版本要求：
+
+   |            | verion             |
+   | ---------- | ------------------ |
+   | BungeeCord | 1.20-R0.3-SNAPSHOT |
+   | ViaVersion | 4.10.2             |
+
+## 2024.10.17 更新内容
+1. 发布Apollo 3.1beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 3.1.0.beta20241017 |
+   | proxy   | 3.1.0.beta20241017 |
+   | master  | 3.1.0.beta20241017 |
+   | service | 3.1.0.beta20241017 |
+
+2. 发布Apollo2.0  3.1beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion              |
+   | ---------------- | ----------------------- |
+   | proxy            | 3.1.0.java.beta20241017 |
+   | master           | 3.1.0.java.beta20241017 |
+   | geyser           | 3.1.0.java.beta20241017 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT         |
+
+	其他插件版本要求：
+
+    |            | verion             |
+    | ---------- | ------------------ |
+    | BungeeCord | 1.20-R0.3-SNAPSHOT |
+    | ViaVersion | 4.10.2             |
+
+
+## 2024.09.12 更新内容
+1. 发布Apollo 3.0正式版
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion            |
+   | ------- | --------------------- |
+   | game    | 3.0.0.release20240912 |
+   | proxy   | 3.0.0.release20240912 |
+   | master  | 3.0.0.release20240912 |
+   | service | 3.0.0.release20240912 |
+
+2. 发布Apollo2.0 3.0正式包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 3.0.0.java.release20240912 |
+   | master           | 3.0.0.java.release20240912 |
+   | geyser           | 3.0.0.java.release20240912 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT            |
+
+   其他插件版本要求：
+
+   |            | verion             |
+   | ---------- | ------------------ |
+   | BungeeCord | 1.20-R0.3-SNAPSHOT |
+   | ViaVersion | 4.10.2             |
+
+## 2024.08.27 更新内容
+
+1. Apollo 更新内容
+
+   - 修复了伪造SimpleEventPacket的外挂崩服
+   - deploy.json添加了packet_threshold字段可限制客户端发包频率阈值，详见<a href="../../mcguide/27-网络游戏/课程3：简易网络服模板部署与常见操作/第4节：网络服进阶配置.html#deploy-json" rel="noopenner">deploy.json</a>
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion             |
+   | ------- | ---------------------- |
+   | game    | 2.12.0.release20240808 |
+   | proxy   | 2.12.0.release20240808 |
+   | master  | 2.12.0.release20240808 |
+   | service | 2.12.0.release20240808 |
+
+## 2024.08.15 更新内容
+
+1. 发布Apollo 3.0beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 3.0.0.beta20240815 |
+   | proxy   | 3.0.0.beta20240815 |
+   | master  | 3.0.0.beta20240815 |
+   | service | 3.0.0.beta20240815 |
+
+2. 发布Apollo2.0  3.0beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion              |
+   | ---------------- | ----------------------- |
+   | proxy            | 3.0.0.java.beta20240815 |
+   | master           | 3.0.0.java.beta20240815 |
+   | geyser           | 3.0.0.java.beta20240815 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT         |
+
+	其他插件版本要求：
+
+    |            | verion             |
+    | ---------- | ------------------ |
+    | BungeeCord | 1.20-R0.3-SNAPSHOT |
+    | ViaVersion | 4.10.2             |
+
+## 2024.08.08 更新内容
+
+1. Apollo 更新内容
+
+   - 修复了proxy的崩溃
+   - 增加nbt校验
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion             |
+   | ------- | ---------------------- |
+   | game    | 2.12.0.release20240808 |
+   | proxy   | 2.12.0.release20240808 |
+   | master  | 2.12.0.release20240808 |
+   | service | 2.12.0.release20240808 |
+
+2. Apollo2.0 更新内容
+
+   - 修复了proxy的崩溃
+   - 修复自定义方块、自定义物品的显示问题
+   - 修复了头颅导致客户端崩溃的问题
+   - 修复玩家uuid异常的问题
+   - 修复内存泄露
+   - **本次更新需要同时升级SpigotMaster插件**
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.12.0.java.release20240808 |
+   | master           | 2.12.0.java.release20240808 |
+   | geyser           | 2.12.0.java.release20240808 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT             |
+
+   其他插件版本要求：
+
+   |            | verion             |
+   | ---------- | ------------------ |
+   | BungeeCord | 1.20-R0.3-SNAPSHOT |
+   | ViaVersion | 4.10.2             |
+
+## 2024.06.20 更新内容
+
+1. 发布Apollo 2.12正式版
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion             |
+   | ------- | ---------------------- |
+   | game    | 2.12.0.release20240620 |
+   | proxy   | 2.12.0.release20240620 |
+   | master  | 2.12.0.release20240620 |
+   | service | 2.12.0.release20240620 |
+
+2. 发布Apollo2.0 2.12正式包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.12.0.java.release20240620 |
+   | master           | 2.12.0.java.release20240620 |
+   | geyser           | 2.12.0.java.release20240620 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.12-SNAPSHOT             |
+
+   其他插件版本要求：
+
+   |            | verion             |
+   | ---------- | ------------------ |
+   | BungeeCord | 1.20-R0.3-SNAPSHOT |
+   | ViaVersion | 4.10.2             |
+
+## 2024.06.14 更新内容
+
+1. 发布Apollo2.0 2.12beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.12.0.java.beta20240614    |
+   | master           | 2.12.0.java.beta20240614    |
+   | geyser           | 2.12.0.java.beta20240614    |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.12-SNAPSHOT             |
+
+
+   其他插件版本要求：
+   |                  | verion                      |
+   | ---------------- | --------------------------- |
+   | BungeeCord       | 1.20-R0.3-SNAPSHOT          |
+   | ViaVersion       | 4.10.2                      |
+
+## 2024.05.23 更新内容
+
+1. 发布Apollo 2.12beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 2.12.0.beta20240523 |
+   | proxy   | 2.12.0.beta20240523 |
+   | master  | 2.12.0.beta20240523 |
+   | service | 2.12.0.beta20240523 |
+2. Apollo2.0 将在后续beta包更新。
+
+## 2024.04.23 更新内容
+
+1. Apollo 更新内容
+
+   修复1.18新版本物品的某些问题
+
+## 2024.04.11 更新内容
+
+1. 发布Apollo 2.11正式版
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion             |
+   | ------- | ---------------------- |
+   | game    | 2.11.0.release20240411 |
+   | proxy   | 2.11.0.release20240411 |
+   | master  | 2.11.0.release20240411 |
+   | service | 2.11.0.release20240411 |
+
+2. 发布Apollo2.0 2.11正式包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.11.0.java.release20240411 |
+   | master           | 2.11.0.java.release20240411 |
+   | geyser           | 2.11.0.java.release20240411 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.11-SNAPSHOT             |
+
+## 2024.03.19 更新内容
+
+1. 发布Apollo 2.11beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 2.11.0.beta20240319 |
+   | proxy   | 2.11.0.beta20240319 |
+   | master  | 2.11.0.beta20240319 |
+   | service | 2.11.0.beta20240319 |
+
+2. 发布Apollo2.0 2.11beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion              |
+   | ---------------- | ----------------------- |
+   | proxy            | 2.11.0.java.beta20240319 |
+   | master           | 2.11.0.java.beta20240319 |
+   | geyser           | 2.11.0.java.beta20240319 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.11-SNAPSHOT         |
+
+## 2024.01.18 更新内容
+
+- 发布2.10正式版
+
+  Apollo 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+  |         | app_verion             |
+  | ------- | ---------------------- |
+  | game    | 2.10.0.release20240118 |
+  | proxy   | 2.10.0.release20240118 |
+  | master  | 2.10.0.release20240118 |
+  | service | 2.10.0.release20240118 |
+
+  Apollo2.0 引擎及插件版本分别是：
+
+  |                  | app_verion                  |
+  | ---------------- | --------------------------- |
+  | proxy            | 2.10.0.java.release20240118 |
+  | master           | 2.10.0.java.release20240118 |
+  | geyser           | 2.10.0.java.release20240118 |
+  | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+  | SpigotMaster插件 | 1.3.10-SNAPSHOT             |
+
+## 2023.12.20 更新内容
+
+1. Apollo 更新内容
+
+   修复部分情况下部署可能出现的异常
+
+   Apollo 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.9.0.release20231116 |
+   | proxy   | 2.9.0.release20231116 |
+   | master  | 2.9.0.release20231116 |
+   | service | 2.9.0.release20231116 |
+
+2. 发布Apollo 2.10beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 2.10.0.beta20231220 |
+   | proxy   | 2.10.0.beta20231220 |
+   | master  | 2.10.0.beta20231220 |
+   | service | 2.10.0.beta20231220 |
+
+3. 发布Apollo2.0 2.10beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion              |
+   | ---------------- | ----------------------- |
+   | proxy            | 2.10.0.java.beta20231220 |
+   | master           | 2.10.0.java.beta20231220 |
+   | geyser           | 2.10.0.java.beta20231220 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.11-SNAPSHOT         |
+
+## 2023.11.21 更新内容
+
+1. Apollo 更新内容
+
+   新增开启玩家发包数据统计接口 [GetPlayerIpHash](./4-SDK/6-大厅与游戏服API.html#getplayeriphash)
+
+   Apollo 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.9.0.release20231116 |
+   | proxy   | 2.9.0.release20231116 |
+   | master  | 2.9.0.release20231116 |
+   | service | 2.9.0.release20231116 |
+
+2. Apollo2.0 更新内容
+
+   更新SpigotMaster插件，添加玩家共同在线上报
+
+   Apollo2.0 引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.9.0.java.release20231116 |
+   | master           | 2.9.0.java.release20231116 |
+   | geyser           | 2.9.0.java.release20231116 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.11-SNAPSHOT            |
+
+## 2023.11.16 更新内容
+
+- 发布2.9正式版
+
+  Apollo 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+  |         | app_verion            |
+  | ------- | --------------------- |
+  | game    | 2.9.0.release20231116 |
+  | proxy   | 2.9.0.release20231116 |
+  | master  | 2.9.0.release20231116 |
+  | service | 2.9.0.release20231116 |
+
+  Apollo2.0 引擎及插件版本分别是：
+
+  |                  | app_verion                 |
+  | ---------------- | -------------------------- |
+  | proxy            | 2.9.0.java.release20231116 |
+  | master           | 2.9.0.java.release20231116 |
+  | geyser           | 2.9.0.java.release20231116 |
+  | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+  | SpigotMaster插件 | 1.3.10-SNAPSHOT            |
+
+## 2023.10.24 更新内容
+
+### 2.9beta更新内容
+
+1. 发布Apollo 2.9beta包
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 2.9.0.beta20231024 |
+   | proxy   | 2.9.0.beta20231024 |
+   | master  | 2.9.0.beta20231024 |
+   | service | 2.9.0.beta20231024 |
+
+2. 发布Apollo2.0 2.9beta包
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion              |
+   | ---------------- | ----------------------- |
+   | proxy            | 2.9.0.java.beta20231024 |
+   | master           | 2.9.0.java.beta20231024 |
+   | geyser           | 2.9.0.java.beta20231024 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.10-SNAPSHOT         |
+
+### 2.8更新内容
+
+1. Apollo 更新内容
+
+   - 修复打开状态的木桶摧毁后的auxvalue问题和在itemRenderer中显示异常问题
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.8.0.release20230907 |
+   | proxy   | 2.8.0.release20230907 |
+   | master  | 2.8.0.release20230907 |
+   | service | 2.8.0.release20230907 |
+
+2. Apollo2.0 更新内容
+
+    - 修复apollo2.0中烟花表现不正常的问题
+    - formUi文档添加对不同按钮的返回进行处理的示例和详解内容<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/30-Spigot服Demo详解/6-ServerFormDemo详解.html" rel="noopenner">ServerFormDemo详解</a>
+
+    引擎及插件版本分别是：
+
+    |                  | app_verion                 |
+    | ---------------- | -------------------------- |
+    | proxy            | 2.8.0.java.release20230907 |
+    | master           | 2.8.0.java.release20230907 |
+    | geyser           | 2.8.0.java.release20230907 |
+    | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+    | SpigotMaster插件 | 1.3.10-SNAPSHOT            |
+
+
+
+## 2023.09.19 2.8更新内容
+
+1.Apollo2.0 更新内容
+
+1. 更新后，spigot网络服的玩家将使用网易uuid，已上线网络服不受影响，详见<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/13-1-【必读】玩家uuid数据存储说明.html" rel="noopenner">玩家uuid数据存储说明</a>
+
+2. 增加根据标题显示不同风格的表单界面示例，详见<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/30-Spigot服Demo详解/6-ServerFormDemo详解.html" rel="noopenner">ServerFormDemo详解</a>
+
+3. 增加原生箱子UI转FormUI示例，详见InventoryToFormUIDemo
+
+4. 引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.8.0.java.release20230907 |
+   | master           | 2.8.0.java.release20230907 |
+   | geyser           | 2.8.0.java.release20230907 |
+   | BungeeMaster插件 | 1.0.3-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.10-SNAPSHOT             |
+
+## 2023.09.07 2.8更新内容
+
+1. Apollo 更新内容
+   - 修复末影箱可能导致服务器崩溃问题
+2. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.8.0.release20230907 |
+| proxy   | 2.8.0.release20230907 |
+| master  | 2.8.0.release20230907 |
+| service | 2.8.0.release20230907 |
+
+2. Apollo2.0 更新内容
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.8.0.java.release20230907 |
+   | master           | 2.8.0.java.release20230907 |
+   | geyser           | 2.8.0.java.release20230907 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.9-SNAPSHOT             |
+
+
+
+## 2023.08.15 2.8beta更新内容
+
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.8.0.beta20230815 |
+| proxy   | 2.8.0.beta20230815 |
+| master  | 2.8.0.beta20230815 |
+| service | 2.8.0.beta20230815 |
+
+2. Apollo2.0 更新内容
+
+   - 新增修改实体重力接口 **setEntityGravity**
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.8.0.java.beta20230815    |
+   | master           | 2.8.0.java.beta20230815    |
+   | geyser           | 2.8.0.java.beta20230815    |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.9-SNAPSHOT             |
+
+## 2023.08.10 2.7更新内容
+
+1. Apollo 更新内容
+   - 新增开启玩家发包数据统计接口 [EnableNetgamePacketIdStatistics](./4-SDK/6-大厅与游戏服API.html#EnableNetgamePacketIdStatistics)
+   - 新增获取玩家发包数量接口 [GetAndClearNetgamePacketIdStatistics](./4-SDK/6-大厅与游戏服API.html#GetAndClearNetgamePacketIdStatistics)
+
+2. Apollo2.0 更新内容
+
+   - 修复部分情况下玩家位置异常问题
+
+## 2023.06.27 2.7更新内容
+
+1. Apollo2.0 更新内容
+
+   - 新增world参数的生成生物接口
+   - 修复paper1.12下spigotmaster报错问题
+
+   插件版本是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | SpigotMaster插件 | 1.3.8-SNAPSHOT             |
+
+## 2023.06.21 2.7更新内容
+
+1. 修复开启区块不存档性能开关后、设置实体不存档后，实体泄露的问题
+
+2. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.7.0.release20230621 |
+| proxy   | 2.7.0.release20230621 |
+| master  | 2.7.0.release20230621 |
+| service | 2.7.0.release20230621 |
+
+
+3. Apollo2.0 更新内容
+
+   - 新增发送玩家广播基岩版原生数据包功能
+
+   - 优化spigotmaster插件大小
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.7.0.java.release20230621 |
+   | master           | 2.7.0.java.release20230621 |
+   | geyser           | 2.7.0.java.release20230621 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.7-SNAPSHOT             |
+
+## 2023.05.30 2.6更新内容
+
+1. 修复ServerPlayerBornPosEvent重生时，位置修正导致的事件设置位置偏移问题
+
+2. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.6.0.release20230530 |
+| proxy   | 2.6.0.release20230530 |
+| master  | 2.6.0.release20230530 |
+| service | 2.6.0.release20230530 |
+
+
+3. Apollo2.0 更新内容
+
+   - 新增动态设置实体AABB接口：** setEntityScale **
+   - 新增骑乘组件(minecraft:rideable)支持
+   - 新增蓄力跳组件(minecraft:can_power_jump)支持
+   - 新增自定义方块支持
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.6.10.java.release20230530    |
+   | master           | 2.6.10.java.release20230530    |
+   | geyser           | 2.6.10.java.release20230530    |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.5-SNAPSHOT             |
+
+
+## 2023.05.26 2.7beta更新内容
+
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.7.0.beta20230526 |
+| proxy   | 2.7.0.beta20230526 |
+| master  | 2.7.0.beta20230526 |
+| service | 2.7.0.beta20230526 |
+
+2. Apollo2.0 更新内容
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.7.0.java.beta20230526    |
+   | master           | 2.7.0.java.beta20230526    |
+   | geyser           | 2.7.0.java.beta20230526    |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.4-SNAPSHOT             |
+
+## 2023.05.04 2.6更新内容
+
+1. 新增[AddGetPlayerLockTask](./4-SDK/6-大厅与游戏服API.html#AddGetPlayerLockTask)，添加获取玩家在线锁时的处理任务，在所有任务都完成后，才会继续玩家的登录流程<!--by czh-->
+
+2. 修复了停服时崩溃的问题
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.6.0.release20230504 |
+| proxy   | 2.6.0.release20230504 |
+| master  | 2.6.0.release20230504 |
+| service | 2.6.0.release20230504 |
+
+## 2023.04.18 2.6、2.5更新内容
+
+1. 外放2.6正式版。
+
+   引擎app_verion（studio中需要选择的引擎版本）分别是：
+
+   | 2.6     | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.6.0.release20230418 |
+   | proxy   | 2.6.0.release20230418 |
+   | master  | 2.6.0.release20230418 |
+   | service | 2.6.0.release20230418 |
+
+   | 2.5     | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.5.0.release20230418 |
+   | proxy   | 2.5.0.release20230418 |
+   | master  | 2.5.0.release20230418 |
+   | service | 2.5.0.release20230418 |
+
+2. Apollo2.0 更新内容
+
+   - 修复自定义实体相关问题
+   - 优化自定义实体写法
+   - 优化SpigotMasterAPI文档格式
+   - 新增动态设置实体AABB接口：** setEntitySize **
+
+   引擎及插件版本分别是：
+
+   | 2.6              | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.6.10.java.release20230418 |
+   | master           | 2.6.10.java.release20230418 |
+   | geyser           | 2.6.10.java.release20230418 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.3-SNAPSHOT              |
+
+   | 2.5              | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.5.10.java.release20230418 |
+   | master           | 2.5.10.java.release20230418 |
+   | geyser           | 2.5.10.java.release20230418 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.3-SNAPSHOT              |
+
+## 2023.04.06 2.6、2.5更新内容
+
+1. 外放2.6正式版。
+
+   引擎app_verion（studio中需要选择的引擎版本）分别是：
+
+   | 2.6     | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.6.0.release20230406 |
+   | proxy   | 2.6.0.release20230406 |
+   | master  | 2.6.0.release20230406 |
+   | service | 2.6.0.release20230406 |
+
+   | 2.5     | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.5.0.release20230406 |
+   | proxy   | 2.5.0.release20230406 |
+   | master  | 2.5.0.release20230406 |
+   | service | 2.5.0.release20230406 |
+
+2. Apollo2.0 更新内容
+
+   - 支持服务端UI，详见<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/30-Spigot服Demo详解/6-ServerFormDemo详解.html" rel="noopenner">ServerFormDemo详解</a>
+
+   引擎及插件版本分别是：
+
+   | 2.6              | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.6.10.java.release20230406 |
+   | master           | 2.6.10.java.release20230406 |
+   | geyser           | 2.6.10.java.release20230406 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.2-SNAPSHOT              |
+
+   | 2.5              | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.5.10.java.release20230406 |
+   | master           | 2.5.10.java.release20230406 |
+   | geyser           | 2.5.10.java.release20230406 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.2-SNAPSHOT              |
+
+## 2023.03.23 2.5更新内容
+
+1. 修复了一个刷物品的bug
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.5.0.release20230323 |
+| proxy   | 2.5.0.release20230323 |
+| master  | 2.5.0.release20230323 |
+| service | 2.5.0.release20230323 |
+
+2. Apollo2.0 更新内容
+
+   - 支持了自定义实体，详见<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/23-Spigot服自定义实体原理简介.html" rel="noopenner">Spigot自定义实体</a>
+   - proxy与geyser现在合并为一个进程，但部署的配置不变。在部署服务器文档中的<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/11-部署服务器.html#负载-协议转换部分部署流程" rel="noopenner">负载-协议转换部分部署流程</a>调整了相关描述，并且增加了<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/11-部署服务器.html#proxy与geyser服的性能参数" rel="noopenner">Proxy与Geyser服的性能参数</a>的描述
+   - 新增<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/13-其他部署时可配置字段.html" rel="noopenner">其他部署时可配置字段</a>文档，讲解命令补全及放置破坏距离的配置
+   - SpigotMaster插件、BungeeMaster插件以及示例Demo更改为在McStudio的内容库中下载，详见<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/99-下载内容.html" rel="noopenner">下载内容</a>
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                  |
+   | ---------------- | --------------------------- |
+   | proxy            | 2.5.10.java.release20230323 |
+   | master           | 2.5.10.java.release20230323 |
+   | geyser           | 2.5.10.java.release20230323 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT              |
+   | SpigotMaster插件 | 1.3.1-SNAPSHOT              |
+
+## 2023.03.14 2.6beta更新内容
+
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.6.0.beta20230314 |
+| proxy   | 2.6.0.beta20230314 |
+| master  | 2.6.0.beta20230314 |
+| service | 2.6.0.beta20230314 |
+
+2. Apollo2.0 更新内容
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.6.0.java.beta20230314    |
+   | master           | 2.6.0.java.beta20230314    |
+   | geyser           | 2.6.0.java.beta20230314    |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.0-SNAPSHOT             |
+
+## 2023.03.09 2.5更新内容
+
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+   |         | app_verion            |
+   | ------- | --------------------- |
+   | game    | 2.5.0.release20230309 |
+   | proxy   | 2.5.0.release20230309 |
+   | master  | 2.5.0.release20230309 |
+   | service | 2.5.0.release20230309 |
+
+2. Apollo2.0 更新内容
+
+   - 支持`master`运营指令
+   - `SpigotMaster`支持 `Paper 1.18.2`
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.5.0.java.release20230309 |
+   | master           | 2.5.0.java.release20230309 |
+   | geyser           | 2.5.0.java.release20230309 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.0-SNAPSHOT             |
+
+## 2023.02.21 2.5更新内容
+
+1. 修复了红石刷冰机的内存泄露问题
+
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.5.0.release20230221 |
+| proxy   | 2.5.0.release20230221 |
+| master  | 2.5.0.release20230221 |
+| service | 2.5.0.release20230221 |
+
+2. Apollo2.0 更新内容
+
+   - 支持设置是否开启客户端的命令补全功能，可在配置文件`deploy.json`的common中添加了`command_suggestions`字段控制。
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.5.0.java.release20230221 |
+   | master           | 2.5.0.java.release20230221 |
+   | geyser           | 2.5.0.java.release20230221 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.0-SNAPSHOT             |
+
+## 2023.02.07 2.5更新内容
+
+1. 权限管理插件迭代，修复无法识别mod类型的问题。
+
+2. 官网插件规范新增`server.properties`文件编写规范
+
+2. Apollo2.0 更新内容
+
+   - SpigotMaster修复商城签名问题
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.5.0.java.release20230207 |
+   | master           | 2.5.0.java.release20230207 |
+   | geyser           | 2.5.0.java.release20230207 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.3.0-SNAPSHOT             |
+
+## 2023.01.12 2.5更新内容
+
+1. 战斗系统插件修复了2.5版本 ui界面不显示属性数值的问题
+
+2. Apollo2.0 更新内容
+
+   - SpigotMaster插件文档新增聊天扩展相关，包括disableClientChatExtension、enableClientChatExtension接口，以及CLIENT_LOAD_ADDON_FINISH事件
+   - 优化卡顿问题
+   - 添加客户端区块缓存支持
+
+   引擎及插件版本分别是：
+
+   |                  | app_verion                 |
+   | ---------------- | -------------------------- |
+   | proxy            | 2.5.0.java.release20230111 |
+   | master           | 2.5.0.java.release20230111 |
+   | geyser           | 2.5.0.java.release20230111 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+   | SpigotMaster插件 | 1.2.4-SNAPSHOT             |
+
+## 2022.12.29 2.5更新内容
+
+1. 外放2.5正式版。引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+    |         | app_verion            |
+    | ------- | --------------------- |
+    | game    | 2.5.0.release20221229 |
+    | proxy   | 2.5.0.release20221229 |
+    | master  | 2.5.0.release20221229 |
+    | service | 2.5.0.release20221229 |
+
+2. Apollo2.0 更新内容
+
+    - 新增CustomHumanModelDemo示例，展示如何更改玩家模型
+
+    - 外放2.5正式版。引擎及插件版本分别是：
+
+    |                  | app_verion                 |
+    | ---------------- | -------------------------- |
+    | proxy            | 2.5.0.java.release20221229 |
+    | master           | 2.5.0.java.release20221229 |
+    | geyser           | 2.5.0.java.release20221229 |
+    | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+    | SpigotMaster插件 | 1.2.4-SNAPSHOT             |
+
+
+## 2022.12.15 2.4更新内容
+
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.4.0.release20221215 |
+| proxy   | 2.4.0.release20221215 |
+| master  | 2.4.0.release20221215 |
+| service | 2.4.0.release20221215 |
+
+2. Apollo2.0 更新内容
+
+|                  | app_verion                 |
+| ---------------- | -------------------------- |
+| proxy            | 2.4.0.java.release20221215 |
+| master           | 2.4.0.java.release20221215 |
+| geyser           | 2.4.0.java.release20221215 |
+| BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+| SpigotMaster插件 | 1.2.3-SNAPSHOT             |
+
+## 2022.12.06 2.5beta更新内容
+
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.5.0.beta20221206 |
+| proxy   | 2.5.0.beta20221206 |
+| master  | 2.5.0.beta20221206 |
+| service | 2.5.0.beta20221206 |
+
+## 2022.12.01 2.4更新内容
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.4.0.release20221201 |
+| proxy   | 2.4.0.release20221201 |
+| master  | 2.4.0.release20221201 |
+| service | 2.4.0.release20221201 |
+
+2. Apollo2.0 更新内容
+
+   - 新增客户端版本限制逻辑，目前低于2.4的客户端不允许登录Apollo2.0的服
+
+   - 新增监听SpigotMaster事件接口
+
+   - 新增商城相关接口、事件及Demo
+
+   - 移除了攻击cd显示
+
+   - 修复了马的跳跃动作及交互文字
+
+   - 修复了部分系统信息为非中文的问题
+
+   - Spigot开服工具 app_version 分别是
+
+      |                  | app_verion                 |
+      | ---------------- | -------------------------- |
+      | proxy            | 1.0.8.java.release20221201 |
+      | master           | 1.0.8.java.release20221201 |
+      | geyser           | 1.0.8.java.release20221201 |
+      | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+      | SpigotMaster插件 | 1.2.3-SNAPSHOT             |
+
+## 2022.11.15 2.4更新内容
+
+1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+
+|         | app_verion            |
+| ------- | --------------------- |
+| game    | 2.4.0.release20221115 |
+| proxy   | 2.4.0.release20221115 |
+| master  | 2.4.0.release20221115 |
+| service | 2.4.0.release20221115 |
+
+2. 新增<a href="../../mcguide/27-网络游戏/课程8：性能优化/第7节：服务器部署优化.html" rel="noopenner"> 服务器部署优化 </a>文档
+
+4. Apollo2.0 更新内容
+   - spigot开服工具的geyser服不再需要配置数量，并且新增了单服最大人数及单服最大内存的配置
+   - 更新SpigotMaster，新增setItemLayer，getItemLayer，removeItemLayer接口；废弃getCustomItemMaterial接口
+   - 自定义物品支持全物品换皮
+   - 自定义物品Demo，新增工具、武器、盔甲、弓样例
+   - 新增客户端生物模型Demo
+   - Spigot开服工具 app_version 分别是
+
+      |                  | app_verion                 |
+      | ---------------- | -------------------------- |
+      | proxy            | 1.0.8.java.release20221115 |
+      | master           | 1.0.8.java.release20221115 |
+      | geyser           | 1.0.8.java.release20221115 |
+      | BungeeMaster插件 | 1.0.2-SNAPSHOT             |
+      | SpigotMaster插件 | 1.2.2-SNAPSHOT             |
+
 ## 2022.11.08 2.4更新内容
 
 1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
@@ -33,7 +1163,7 @@
 | master  | 2.3.0.release20221018 |
 | service | 2.3.0.release20221018 |
 
-2. 开服工具2.0正式外放，详情参考<a href="../../mcguide/27-网络游戏/课程8：使用Spigot开服/10-支持基岩版客户端的Java版网络游戏概述.html" rel="noopenner"> 支持基岩版客户端的Java版网络游戏概述 </a>
+2. 开服工具2.0正式外放，详情参考<a href="../../mcguide/27-网络游戏/课程10：使用Spigot开服/10-支持基岩版客户端的Java版网络游戏概述.html" rel="noopenner"> 支持基岩版客户端的Java版网络游戏概述 </a>
 
 - 支持同时使用Spigot，Apollo，模组SDK进行开服
 
@@ -123,7 +1253,7 @@
 
 
 2. launcherApi.GetUIDByNickname接口支持PC端
-3. 新增<a href="../../mcguide/27-网络游戏/课程5：实用知识/第20节：Redis缓存的使用.html" rel="noopenner"> Apollo上使用redis来为mysql进行mem cache的案例 </a>文档
+3. 新增<a href="../../mcguide/27-网络游戏/课程8：性能优化/第5节：Redis缓存的使用.html" rel="noopenner"> Apollo上使用redis来为mysql进行mem cache的案例 </a>文档
 4. 修复在传送纬度时突然请求切服会导致服务器崩溃
 
 ## 2022.07.05 2.2更新内容
@@ -203,7 +1333,7 @@
 | master  | 2.1.0.release20220412 |
 | service | 2.1.0.release20220412 |
 
-2. 新增<a href="../../mcguide/27-网络游戏/课程5：实用知识/第5节：Grafana监控进阶功能.html" rel="noopenner"> Grafana监控进阶功能 </a>介绍文档
+2. 新增<a href="../../mcguide/27-网络游戏/课程9：服务器上线/第5节：Grafana监控进阶功能.html" rel="noopenner"> Grafana监控进阶功能 </a>介绍文档
 
 ## 2022.03.29 2.0更新内容
 
@@ -227,7 +1357,7 @@
 3. 调整[GetUserAuthInfo](./4-SDK/10-启动器信息API.md#GetUserAuthInfo)，调整实现，区分手机端登录玩家和PC端登录玩家<!--by xltang-->
 4. 调整[GetUserGuest](./4-SDK/10-启动器信息API.md#GetUserGuest)，此接口已废弃<!--by xltang-->
 5. 调整[ShareApolloGame](./4-SDK/10-启动器信息API.md#ShareApolloGame)，调整逻辑，仅支持大厅服、游戏服调用，仅支持手机端登录玩家<!--by xltang-->
-   
+
 ## 2022.03.15 2.0更新内容
 
 1. 引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
@@ -276,7 +1406,7 @@
 
 2. 新增滚动更新服务器和滚动关服相关api支持，详见[RollingCloseServersEndEvent](4-SDK/2-控制服事件.html#RollingCloseServersEndEvent)，[RollingUpdateServersEndEvent](4-SDK/2-控制服事件.html#RollingUpdateServersEndEvent)，[RollingCloseServers](4-SDK/4-控制服API.html#RollingCloseServers)，[RollingUpdateServers](4-SDK/4-控制服API.html#RollingUpdateServers)，滚动更新服务器<!--by czh-->
 3. 反作弊插件：修正砂轮使用附魔书祛魔可以刷经验的问题
-4. 新增<a href="../../mcguide/27-网络游戏/课程5：实用知识/第18节：使用ELK查询服务器日志.html" rel="noopenner"> 使用ELK查询服务器日志 </a>介绍文档
+4. 新增<a href="../../mcguide/27-网络游戏/课程9：服务器上线/第10节：使用ELK查询服务器日志.html" rel="noopenner"> 使用ELK查询服务器日志 </a>介绍文档
 5. 修复了蜂箱刷生物的问题
 
 ## 2022.01.20 2.0更新内容
@@ -445,7 +1575,7 @@
 | master  | 1.24.0.release20211028 |
 | service | 1.24.0.release20211028 |
 
-2. 新增<a href="../../mcguide/27-网络游戏/课程5：实用知识/第14节：多版本客户端引擎支持.html" rel="noopenner"> 多版本客户端引擎支持 </a>介绍文档
+2. 新增<a href="../../mcguide/27-网络游戏/课程9：服务器上线/第7节：多版本客户端引擎支持.html" rel="noopenner"> 多版本客户端引擎支持 </a>介绍文档
 3. 新增[GetProtocolVersionByUID](./4-SDK/4-控制服API.html#GetProtocolVersionByUID)，获取在线玩家客户端协议版本号<!--by yfg-->
 4. 新增[GetServerProtocolVersion](./4-SDK/6-大厅与游戏服API.html#GetServerProtocolVersion)，获取服务器的协议版本号<!--by yfg-->
 5. 升级接口[GetOnlineServerInfoOfMultiPlayers](./4-SDK/7-公共API.html#GetOnlineServerInfoOfMultiPlayers)，支持获协议版本号<!--by yfg-->
@@ -527,9 +1657,9 @@
 - 弹幕插件迭代，具体参见弹幕插件readme中“1.0.5版本”更新说明
 - 称号插件迭代，具体参见称号插件readme中“1.0.7版本”更新说明
 - 经济插件迭代，具体参见经济插件readme中“2.0.13版本”更新说明
-- 新增<a href="../../mcguide/27-网络游戏/课程5：实用知识/第12节：控制台调试.html" rel="noopenner"> 控制台调试 </a>介绍文档。
+- 新增<a href="../../mcguide/27-网络游戏/课程7：开发技巧/第3节：控制台调试.html" rel="noopenner"> 控制台调试 </a>介绍文档。
 - 补充<a href="../../mcguide/27-网络游戏/课程1：成为Apollo服主及相关准备/第4节：申请开发阶段服务器.html" rel="noopenner"> 私钥生成 </a>说明文档。
-- 新增<a href="../../mcguide/27-网络游戏/课程5：实用知识/第11节：快速切服.html" rel="noopenner"> 快速切服 </a>指引文档。
+- 新增<a href="../../mcguide/27-网络游戏/课程8：性能优化/第3节：快速切服.html" rel="noopenner"> 快速切服 </a>指引文档。
 
 ## 2021.08.23 1.24 beta更新内容
 
@@ -597,13 +1727,13 @@
 
 9. 新增文档<a href="../../mcguide/27-网络游戏/课程1：成为Apollo服主及相关准备/第5节（拓展）：使用数据库前端连接数据库.html" rel="noopenner"> 使用数据库前端连接数据库 </a>
 
-10. 新增文档<a href="../../mcguide/27-网络游戏/课程5：实用知识/第10节：性能开关.html" rel="noopenner"> 性能开关 </a>
+10. 新增文档<a href="../../mcguide/27-网络游戏/课程8：性能优化/第2节：性能开关.html" rel="noopenner"> 性能开关 </a>
 
 11. 领地插件迭代，新增事件，具体参见领地插件readme中“1.0.14版本”更新说明
 
 12. NPC插件迭代，新增事件，具体参加NPC插件readme中“1.0.5版本”更新说明
 
-    
+
 
 ## 2021.07.22 1.23更新内容
 
@@ -722,7 +1852,7 @@
 
 2. 使用apollo公共配置中配置,替换插件配置中的gameid和gamekey。<!--by yfg-->
 3. 新增文档<a href="../../mcguide/27-网络游戏/课程2：Apollo基础知识/第7节：Mod和网络游戏Mod相互转换.html" rel="noopenner"> Mod和网络游戏Mod相互转换文档 </a>。<!--by yfg-->
-4. 新增文档<a href="../../mcguide/27-网络游戏/课程5：实用知识/第8节：多账号协同部署.html" rel="noopenner"> 多账号协同部署 </a>
+4. 新增文档<a href="../../mcguide/27-网络游戏/课程7：开发技巧/第2节：多账号协同部署.html" rel="noopenner"> 多账号协同部署 </a>
 5. 新增[GetServerIdByUid](./4-SDK/4-控制服API.html#GetServerIdByUid)，获取在线玩家所在的服务器的ID。<!--by xltang-->
 6. 新增[NotifyToMaster](./4-SDK/8-服务器通信.html#NotifyToMaster)，用于service给master发消息。<!--by xltang-->
 7. 新增[RegisterOpCommand(功能服)](./4-SDK/5-功能服API.html#RegisterOpCommand)，用于注册一个新的HTTP接口。<!--by xltang-->
@@ -1289,7 +2419,7 @@
 | service | 1.17.0.release20200611 |
 
 2. 数据统计相关功能和文档完善。运营数据统计插件的readme.txt中，仔细说明支持的所有运营数据类型；介绍插件和grafana influxDB的关系
-3. 新增服务端接口【CleanBlockTileEntityCustomData】，清空指定位置的特殊方块（箱子、头颅、熔炉、花盆等）绑定的TileEntity内存储的自定义数据。 
+3. 新增服务端接口【CleanBlockTileEntityCustomData】，清空指定位置的特殊方块（箱子、头颅、熔炉、花盆等）绑定的TileEntity内存储的自定义数据。
 4. 新增服务端接口【GetBlockTileEntityCustomData】，读取指定位置的特殊方块（箱子、头颅、熔炉、花盆等）绑定的TileEntity内存储的自定义数据。
 5. 新增服务端接口【GetBlockTileEntityWholeCustomData】，读取指定位置的特殊方块（箱子、头颅、熔炉、花盆等）绑定的TileEntity内存储的自定义数据字典。
 6. 新增服务端接口【SetBlockTileEntityCustomData】，设置指定位置的特殊方块（箱子、头颅、熔炉、花盆等）绑定的TileEntity内存储的自定义数据。
@@ -1314,8 +2444,8 @@
 | master  | 1.17.0.release20200528 |
 | service | 1.17.0.release20200528 |
 
-2. 新增服务端事件【StoreBuySuccServerEvent】, 当玩家在游戏内购买成功时触发。 
-3. 服务端新增接口【GetWholeExtraData】, 获取完整的实体数据/全局数据字典，数据存放到leveldb。 
+2. 新增服务端事件【StoreBuySuccServerEvent】, 当玩家在游戏内购买成功时触发。
+3. 服务端新增接口【GetWholeExtraData】, 获取完整的实体数据/全局数据字典，数据存放到leveldb。
 4. 服务端新增接口【CleanExtraData】，清理指定key的实体数据/全局数据，数据存放到leveldb。
 5. 服务端mysql连接池新增【AsyncExecuteFunctionWithOrderKey】接口
 6. 升级了云端信息插件，支持同步玩家的额外数据。
@@ -1479,7 +2609,7 @@
 
 9. CommonNetgameApi新增GetWeekOnlineKey函数，返回redis中存储指定玩家每周在线时间的key。
 
- 
+
 
 ## 2020.1.15  1.16更新内容
 
@@ -1509,13 +2639,13 @@
 
 9. 新增SendMsgToPlayer接口：给某个玩家发送聊天消息
 
-10. 新增OnCarriedNewItemChangedServerEvent事件：右手物品物品切换的服务端事件
+10. 新增OnCarriedNewItemChangedServerEvent事件：右手物品切换的服务端事件
 
 11. 新增OnOffhandItemChangedServerEvent事件：左手物品切换服务端事件
 
 12. 新增npc插件，从MC Studio的C++网络服的“网络服Mod”分页中的“公共Mod”处下载的neteaseNpc目录。
 
- 
+
 
 ## 2019.12.26  1.15更新内容
 
@@ -1565,21 +2695,21 @@
 
 19. 新增GetServerId接口：获取service的服务器id
 
-20. 新增公告插件，从MC Studio的C++网络服的“网络服Mod”分页中的“公共Mod”处下载的neteaseAnnounce. 
+20. 新增公告插件，从MC Studio的C++网络服的“网络服Mod”分页中的“公共Mod”处下载的neteaseAnnounce.
 
 neteaseAnnounceMaster. neteaseAnnounceService目录。
 
-21. 新增权限插件，从MC Studio的C++网络服的“网络服Mod”分页中的“公共Mod”处下载的neteaseAuth. 
+21. 新增权限插件，从MC Studio的C++网络服的“网络服Mod”分页中的“公共Mod”处下载的neteaseAuth.
 
 neteaseAuthMaster目录。
 
-22. 新增商场插件，从MC Studio的C++网络服的“网络服Mod”分页中的“公共Mod”处下载的neteaseShop. 
+22. 新增商场插件，从MC Studio的C++网络服的“网络服Mod”分页中的“公共Mod”处下载的neteaseShop.
 
 neteaseShopMaster目录。
 
- 
 
- 
+
+
 
 ## 2019.11.28  1.15更新内容
 
@@ -1601,7 +2731,7 @@ neteaseShopMaster目录。
 
 5. 登录事件可以区分登录还是切服；登出事件可以区分登出还是切服。
 
- 
+
 
 ## 2019.10.31  1.15更新内容
 
@@ -1625,7 +2755,7 @@ neteaseShopMaster目录。
 
 6. game/lobby 打印错误时出现trace问题修复
 
- 
+
 
 ## 2019.9.27  1.15更新内容
 
@@ -1639,7 +2769,7 @@ neteaseShopMaster目录。
 | master  | 1.14.release20190926   |
 | service | 1.14.release20190926   |
 
- 
+
 
 ## 2019.9.26  1.14更新内容
 
@@ -1657,7 +2787,7 @@ neteaseShopMaster目录。
 
 3. lobby/game 脚本加载server.properties trace问题修复。
 
- 
+
 
 ## 2019.9.12  1.14更新内容
 
@@ -1685,9 +2815,9 @@ neteaseShopMaster目录。
 
 8. 玩家当前位置异常导致lobby dump问题修复。
 
- 
 
- 
+
+
 
 ## 2019.8.2  1.14更新内容
 
@@ -1715,4 +2845,3 @@ neteaseShopMaster目录。
 
 8. 允许设置developer mods加载顺序。
 
- 
