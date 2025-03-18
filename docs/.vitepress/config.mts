@@ -5,8 +5,17 @@ import generateSidebar from '../../scripts/sidebar.js';
 export default defineConfig({
   lang: 'zh-CN',
   title: "我的世界中国版 ModSDK",
-  description: "我的世界中国版 ModSDK Wiki 镜像",
+  description: "ModSDK 开发者文档 镜像，但提供更优质的搜索",
   ignoreDeadLinks: true,
+  head: [
+    ['script', { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-HPBDPVLP03' }],
+    ['script', {}, `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HPBDPVLP03');
+    `]
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
