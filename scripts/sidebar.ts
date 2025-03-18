@@ -102,7 +102,7 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
                         text: displayText,
                         items: [],
                         order,
-                        collapsed: i < 2 ? false : DEFAULT_COLLAPSED,
+                        collapsed: DEFAULT_COLLAPSED,
                         // 为目录添加活动匹配模式
                         activeMatch: i === 0 ? `^/${segment}(?:/|$)` : undefined
                     };
