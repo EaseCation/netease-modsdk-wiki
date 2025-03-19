@@ -230,6 +230,31 @@ function getDirectoryRootType(path) {
 }
 
 /**
+ * 从正文中提取"描述"的内容
+ * @param {string} content Markdown内容
+ * @return {string} 提取的描述文本
+ */
+function extractAPIDescription(content) {
+    // 匹配"- 描述"部分，直到下一个部分标题(如"- 参数"、"- 返回值"等)或文档结束
+    const descriptionRegex = /-\s*描述\s*\n([\s\S]*?)(?=\n\s*-\s*(?:参数|返回值|备注|示例)|$)/;
+    const match = content.match(descriptionRegex);
+
+    if (match && match[1]) {
+        // 提取第一行并进行清理：
+        // 1. 移除缩进
+        // 2. 移除 Markdown 符号如 "-", "*", ">", 数字列表前缀 "1." 等
+        const firstLine = match[1].split('\n')[0].trim();
+        return firstLine
+            .replace(/^[\s>*-]*\s*/, '')         // 移除开头的 >, *, - 等符号
+            .replace(/^\d+\.\s*/, '')            // 移除数字列表前缀，如 "1. "
+            .replace(/^\[.*?\]\s*/, '')          // 移除可能的 [xxx] 标记
+            .trim();
+    }
+
+    return ''; // 如果没有找到描述，返回空字符串
+}
+
+/**
  * 生成符合VitePress的Algolia索引记录
  */
 async function generateAlgoliaRecords() {
@@ -275,6 +300,8 @@ async function generateAlgoliaRecords() {
                 const objectID = `${page.path}${anchor}`;
                 const url = `https://modsdk.easecation.net${page.path}${anchor}`;
 
+                const description = extractAPIDescription(cleanedContent);
+                
                 // 创建记录
                 const record = {
                     objectID,
@@ -282,6 +309,7 @@ async function generateAlgoliaRecords() {
                     type: level ? `lvl${level}` : 'content', // 标识这是什么级别的标题
                     hierarchy,
                     content: cleanedContent,
+                    description,
                     _tags: ['zh-CN'],
                     lang: "zh-CN",
                     priority: priority, // 添加优先级字段
@@ -426,7 +454,7 @@ async function settingAlgolia() {
                 attributesForFaceting: ['lang', 'type', 'rootType'],
                 attributesToHighlight: ['hierarchy.lvl0', 'hierarchy.lvl1', 'hierarchy.lvl2', 'content'],
                 attributesToSnippet: ['content:50'],
-                attributesToRetrieve: ['hierarchy', 'content', 'type', 'url', 'lang', 'priority', 'rootType'],
+                attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'lang', 'priority', 'rootType'],
                 searchableAttributes: [
                     'hierarchy.lvl0',
                     'hierarchy.lvl1',

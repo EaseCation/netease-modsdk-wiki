@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import { fileURLToPath, URL } from 'node:url'
 import generateSidebar from '../../scripts/sidebar.js';
 import { withMermaid } from "vitepress-plugin-mermaid";
 
@@ -8,6 +9,19 @@ export default withMermaid({
   title: "我的世界中国版 ModSDK",
   description: "ModSDK 开发者文档 镜像，但提供更优质的搜索",
   ignoreDeadLinks: true,
+  // 替换原生搜索组件，自定义展示的搜索结果内容
+  vite: {
+    resolve: {
+      alias: [
+        {
+          find: /^.*\/VPAlgoliaSearchBox\.vue$/,
+          replacement: fileURLToPath(
+            new URL('./theme/components/AlgoliaSearch.vue', import.meta.url)
+          )
+        }
+      ]
+    }
+  },
   locales: {
     root: {
       label: '简体中文',
