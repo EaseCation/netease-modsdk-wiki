@@ -14,6 +14,7 @@ class GameType(object):
 	Survival = 0              # 生存模式
 	Creative = 1              # 创造模式
 	Adventure = 2             # 冒险模式
+	Spectator = 6             # 旁观模式
 	Default = Survival        # 默认类型，默认为生存模式
 
 ``` 

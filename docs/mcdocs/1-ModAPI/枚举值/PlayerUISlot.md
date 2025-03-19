@@ -42,6 +42,7 @@ class PlayerUISlot(object):
 	CreatedItemOutput = 50 # 创造输出物品生成位
 	SmithingTableInput = 51 # 锻造台输入位
 	SmithingTableMaterial = 52 # 锻造台材料位
+	SmithingTableTemplate = 53 # 锻造台模板位
 
 ``` 
 

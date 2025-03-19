@@ -7,9 +7,10 @@ class in mod.common.minecraftEnum
     实体类型枚举
 
 - 备注
-    - 当实体行为包内使用[runtime_identifier](https://mc.163.com/dev/mcmanual/mc-dev/mconline/15-%E7%8E%A9%E6%B3%95%E7%BB%84%E4%BB%B6%E6%95%99%E7%A8%8B%E3%80%90%E6%96%B0%E7%89%88%E3%80%91/7-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E4%BD%93/4-%E6%8E%A2%E7%B4%A2%E5%AE%9E%E4%BD%93%E7%9A%84%E8%A1%8C%E4%B8%BA%E6%96%87%E4%BB%B6.html#%E7%90%86%E8%A7%A3%E5%AE%9E%E4%BD%93%E8%A1%8C%E4%B8%BA%E7%9A%84%E6%8F%8F%E8%BF%B0%E4%BF%A1%E6%81%AF)
+    - 当实体行为包内使用[runtime_identifier](https://mc.163.com/dev/mcmanual/mc-dev/mconline/100-%E5%8E%86%E5%8F%B2%E5%BD%92%E6%A1%A3%E6%95%99%E7%A8%8B/15-%E7%8E%A9%E6%B3%95%E7%BB%84%E4%BB%B6%E6%95%99%E7%A8%8B%E3%80%90%E6%96%B0%E7%89%88%E3%80%91/7-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E4%BD%93/4-%E6%8E%A2%E7%B4%A2%E5%AE%9E%E4%BD%93%E7%9A%84%E8%A1%8C%E4%B8%BA%E6%96%87%E4%BB%B6.html#%E7%90%86%E8%A7%A3%E5%AE%9E%E4%BD%93%E8%A1%8C%E4%B8%BA%E7%9A%84%E6%8F%8F%E8%BF%B0%E4%BF%A1%E6%81%AF)
         字段继承某种实体的特征时，此时实体所属分类与runtime_indentifier所指向的实体相同。
     - 自定义实体未使用runtime_identifier字段时该实体默认只属于Mob类。
+    - 在控制台打印枚举值为位运算结果，例如，EntityType.Zombie 输出为 199456。
 
 
 
@@ -147,11 +148,19 @@ class EntityType(object):
 	Piglin = 123 | Mob								# 猪灵
 	Hoglin = 124 | Animal							# 疣猪兽
 	Strider = 125 | Animal							# 炽足兽
-	Zoglin = 126 | Mob								# 僵尸疣猪兽
+	Zoglin = 126 | UndeadMob						# 僵尸疣猪兽
 	PiglinBrute = 127 | Mob							# 猪灵蛮兵
 	Goat = 128 | Animal								# 山羊
 	GlowSquid = 129 | WaterAnimal					# 发光鱿鱼
 	Axolotl = 130 | Animal							# 美西螈
+	Warden = 131 | Monster							# 监守者
+	Frog = 132 | Animal								# 青蛙
+	Tadpole = 133 | WaterAnimal						# 蝌蚪
+	Allay = 134 | Mob								# 悦灵
+	ChestBoatRideable = 136 | BoatRideable			# 可乘骑运输船
+	TraderLlama = 137 | Llama						# 行商羊驼
+	Camel = 138 | Animal							# 骆驼
+	Sniffer = 139 | Animal							# 嗅探兽
 	CustomProjectile = 254 | Projectile				# 自定义抛射物
 	EntityExtension = 255							# 实体扩展
 	MAX_ENTITY_ID = 256								# 最大实体ID

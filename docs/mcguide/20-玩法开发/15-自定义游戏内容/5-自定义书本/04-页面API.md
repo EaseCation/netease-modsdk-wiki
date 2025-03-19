@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 入门
 time: 分钟
 sidebarDepth: 4
@@ -296,7 +296,7 @@ BasePage提供了一系列方法方便开发者在页面中进行排版，这些
       pass
   def func_2(args1, args2):
       pass
-  
+
   callbackDict_1 = {
       "func": func_1
   }
@@ -304,7 +304,7 @@ BasePage提供了一系列方法方便开发者在页面中进行排版，这些
       "func": func_2,
       "args": [1, 2]
   }
-  
+
   page = BasePage()
   page.Call(callbackDict_1)
   page.Call(callbackDict_2)
@@ -393,6 +393,6 @@ TitlePage提供了对标题的处理方法，方便开发者，具体的示例�
 - 备注
 
   - 该函数是在你自定义页面重写**Show**方法的时候调用，用于排版标题，如何使用见Demo。
-  
-    
+
+
 

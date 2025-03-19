@@ -15,7 +15,7 @@ sidebarDepth: 1
 - 描述
 
     **Lobby/Game接口**，申请添加为启动器中的好友
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -44,7 +44,7 @@ launcherApi.ApplyUserFriend(123, 456, '我想加个好友', callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，获取玩家是否点赞了当前网络服（仅支持PC玩家）
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -70,7 +70,7 @@ launcherApi.GetPeGameUserStars(123, callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，获取玩家对本游戏的评分
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -96,7 +96,7 @@ launcherApi.GetPeGameUserStars(123, callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，根据玩家昵称获取玩家uid
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -122,7 +122,7 @@ launcherApi.GetUIDByNickname('我的昵称', callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，获取在线玩家实名制、是否绑定信息
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -148,7 +148,7 @@ launcherApi.GetUserAuthInfo(123, callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，获取启动器中玩家好友信息
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -174,7 +174,7 @@ launcherApi.GetUserFriend(123, callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，获取启动器中玩家是否游客的信息, 此接口已废弃
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -187,10 +187,10 @@ launcherApi.GetUserFriend(123, callback)
 - 备注
 
     除了官网渠道和苹果渠道之外，其他第三方渠道启动器无法返回确定的游客信息，guest字段返回2
-    
+
     此接口已废弃
-    
-    
+
+
 - 示例
 
 ```python
@@ -207,7 +207,7 @@ launcherApi.GetUserGuest(123, callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，获取启动器中玩家会员信息
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -220,8 +220,8 @@ launcherApi.GetUserGuest(123, callback)
 - 备注
 
     只能获取体验过本游戏玩家会员信息。要求在MCStudio中配置游戏ID（路径：服务器配置->更多->游戏ID）
-    
-    
+
+
 - 示例
 
 ```python
@@ -238,7 +238,7 @@ launcherApi.GetUsersVIP([123], callback)
 - 描述
 
     **Master/Service/Lobby/Game接口**，游戏是否在维护中
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -263,7 +263,7 @@ launcherApi.IsGameUnderMaintenance(callback)
 - 描述
 
     **Lobby/Game接口**，在RN上拉起“网络游戏分享”的界面，界面包含游戏ICON以及描述
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -278,10 +278,10 @@ launcherApi.IsGameUnderMaintenance(callback)
 - 备注
 
     此函数只能在大厅服和游戏服中调用，不支持功能服和控制服环境
-    
+
     此函数仅支持在手机端登录的玩家
-    
-    
+
+
 - 示例
 
 ```python

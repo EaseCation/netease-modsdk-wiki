@@ -40,6 +40,10 @@ class ActorDamageCause(object):
     Stalactite = "stalactite"				# 被钟乳石砸到
     Stalagmite = "stalagmite"				# 掉落到石笋上
     RamAttack = "ram_attack"				# 山羊冲撞
+    Custom = "custom"						# 自定义
+    SonicBoom = "sonic_boom"				# 音波尖啸(监守者的远程攻击)
+    Campfire = "camp_fire"					# 营火
+    SoulCampfire = "soul_camp_fire"			# 灵魂营火(营火的灵魂火变种)
 
 ``` 
 

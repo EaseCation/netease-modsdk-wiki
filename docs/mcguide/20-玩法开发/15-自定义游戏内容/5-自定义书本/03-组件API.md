@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 入门
 time: 分钟
 sidebarDepth: 4
@@ -76,7 +76,7 @@ sidebarDepth: 4
 - 参数
 
   无
-  
+
 - 返回值
 
   | 数据类型 | 说明     |
@@ -99,9 +99,9 @@ sidebarDepth: 4
       # 清空组件内的数据
       self.clearData()
       # 只需要在前面完成别的逻辑，最后调用父类方法即可。
-     	return BaseComp.Hide(self)		
+     	return BaseComp.Hide(self)
   ```
-  
+
 #### Reset<span id="Reset"></span>
 
 - 描述
@@ -111,7 +111,7 @@ sidebarDepth: 4
 - 参数
 
   无
-  
+
 - 返回值
 
   | 数据类型 | 说明     |
@@ -127,15 +127,15 @@ sidebarDepth: 4
 - 示例
 
   为了说明Reset函数重写的必要性，这里以一个错误例子为例，该例子中UI控件节点的结构如下：
-  
+
   ```python
   | RootUINode		# 组件封装的控件节点（根节点）
   	| entity		# 布娃娃控件
   	| background	# 图片控件
   ```
-  
+
   我们希望在组件中提供一个偏移属性，让 entity 节点相对于自己的默认位置（UI Json中布局）往上移动3px。
-  
+
   ```python
   def Show(self):
       # 获取 entity 节点
@@ -145,13 +145,13 @@ sidebarDepth: 4
       newPos = (pos[0], pos[1] - 3)
       entityNode.SetPosition(newPos)
   ```
-  
+
   Show方法偏移之前是需要获取该节点的位置的，每次的Show就会导致该节点偏移叠加起来，最终的结果看起来就会如下图所示（组件逐渐上移）。
-  
+
   <img src="../picture/customBook/API/comps/Reset错误示例.gif" alt="Reset错误示例" style="zoom: 85%;" />
-  
+
   为了解决UI控件复用导致的问题，可以使用Reset的方法对该类进行属性重置，让每次读取得到的pos都是与UI json中定义的默认值一致。
-  
+
   ```python
   def Show(self):
       # 获取 entity 节点
@@ -162,17 +162,17 @@ sidebarDepth: 4
       entityNode.SetPosition(newPos)
       # 记录下位置
       self.originPos = pos
-  
+
   def Reset(self):
       entityNode = self.GetRootUINode().GetChildByPath("/entity").asNeteasePaperDoll()
       # 恢复位置属性
       entityNode.SetPosition(self.originPos)
   ```
-  
+
   该方法为统一接口，主要是**提示开发者使用组件复用的时候需要留意的问题**，开发者完全可以通过别的方式实现属性的重置（比如第一次读取就将默认属性存储下来然后后面show的时候读取）而**不重写Reset方法**。
-  
+
   比如我们的Demo中的一个自定义组件**MyRecyleToggle**，具体可见示例[CustomBookMod](../../13-模组SDK编程/60-Demo示例.md#CustomBookMod)中的“**behavior_pack/tutorialScripts/comps/recycleToggleComp.py”**以及包含它的自定义页面“**behavior_pack/tutorialScripts/pages/recyclePage.py”**和**json**数据“**behavior_pack/customBooks/RecycleBook”**中的用法（该书本对应的物品中文名称为：“**回收组件测试书本**”），这个组件的**Reset**方法并没有具体实现，而是自己组件记录下状态，只从**json**数据中读取第一次数据。
-  
+
   另外，为了方便开发者，一些常见的复用问题已经内置工具方法解决，比如关于节点的偏移导致的控件复用问题，可以使用**BaseComp**中提供工具的方法 **SetNodeOffset** 解决，更多的可见下面的方法。
 
 ### 2.排版UI控件的方法
@@ -190,7 +190,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 - 参数
 
   无
-  
+
 - 返回值
 
   | 数据类型        | 说明                                 |
@@ -603,7 +603,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 - 示例
 
   仍然以**Reset**函数的示例说明，组件中的UI控件节点结构如下所示：
-  
+
   ```python
   | RootUINode		# 组件封装的控件节点（根节点）
   	| entity		# 布娃娃控件
@@ -611,7 +611,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   ```
 
   在显示的时候将 entity 节点相对于自己的默认位置（UI Json中布局）往上移动3px。
-  
+
   ```python
   def Show(self):
       # 获取 entity 节点
@@ -619,7 +619,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
       # 偏移 entity 节点
       self.SetNodeOffset(entityNode, (0, -3))
   ```
-  
+
   并且无需再重写**Reset**函数。
 
 #### SetNodeSize
@@ -744,7 +744,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   | 参数名 | 数据类型      | 说明             |
   | ------ | ------------- | ---------------- |
   | node   | BaseUIControl | 指定的UI控件节点 |
-  
+
 - 返回值
 
   | 数据类型        | 说明                         |
@@ -819,7 +819,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
       pass
   def func_2(args1, args2):
       pass
-  
+
   callbackDict_1 = {
       "func": func_1	# func_1函数没有参数，所以这里不传入参数列表
   }
@@ -827,7 +827,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
       "func": func_2,
       "args": [1, 2]	# func_2函数需要两个参数，所以这里传入的是包含两个参数的参数列表
   }
-  
+
   comp = BaseComp()
   comp.Call(callbackDict_1)
   comp.Call(callbackDict_2)
@@ -875,7 +875,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 
 - 备注
 
-  <img src="../picture/customBook/API/comps/textComp对齐方式.png" alt="textComp对齐方式.png" style="zoom: 80%;" />
+  <img src="../picture/customBook/API/comps/textComp对齐方式.png" alt="textComp对齐方式" style="zoom: 80%;" />
 
   **Fit前缀**的表示UI控件**根节点**的大小会自适应文本内容（**红色框**为UI控件根节点的实际边框），所以**Fit**类型的文本组件调用**SetSize**方法是**无效**的。需注意，文本框的对齐方式和其所在的组件的实际对齐是没关系的，组件的对齐是需要调用各种Align方法实现的，对齐的对象是UI控件根节点，而文本框的对齐表示的是框内对齐方式（并且**框内是不支持垂直居中**的）。
 
@@ -892,7 +892,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   # 创建TextComp实例
   textComp = TextComp(bcf.TextAlign.Fit_Center)
   ```
-  
+
 
 #### SetDataBeforeShow
 
@@ -916,7 +916,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 - 备注
 
   - 该函数应该在组件显示之前被调用（也就是在组件调用**Show**之前）
-  
+
 - 示例
 
   ```python
@@ -945,7 +945,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 - 备注
 
   - 在使用该方法之前需保证组件处于显示状态（也就是调用**Show**之后），因为该方法本质是调用控件节点的**SetAlpha**。
-  
+
 - 示例
 
   ```python
@@ -974,7 +974,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 - 备注
 
   - 在使用该方法之前需保证组件处于显示状态（也就是调用**Show**之后），因为该方法本质是调用控件节点的**SetColor**。
-  
+
 - 示例
 
   ```python
@@ -1003,7 +1003,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 
 - 备注
 
-  <img src="../picture/customBook/API/comps/图片缩放规则.png" alt="图片缩放规则.png" style="zoom: 80%;" />
+  <img src="../picture/customBook/API/comps/图片缩放规则.png" alt="图片缩放规则" style="zoom: 80%;" />
 
   **Fit**表示图片保持固定长宽比，而**Ninesliced**会改变原有图片的长宽比，使之适应给定的大小。
 
@@ -1071,7 +1071,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 - 备注
 
   - 在使用该方法之前需保证组件处于显示状态（也就是调用**Show**之后），因为该方法本质是调用控件节点的**SetAlpha**。
-  
+
 - 示例
 
   ```python
@@ -1098,7 +1098,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 
 - 备注
 
-  <img src="../picture/customBook/API/comps/highlightComp.gif" alt="highlightComp.png" style="zoom: 120%;" />
+  <img src="../picture/customBook/API/comps/highlightComp.gif" alt="highlightComp" style="zoom: 120%;" />
 
   该组件每隔3秒会播放下一个物品，点击能显示物品信息。
 
@@ -1111,7 +1111,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   # 获取预设组件类 HighlightComp
   HighlightComp = bookManager.GetHighlightCompCls()
   # 创建HighlightComp实例
-  highlightComp = HighlightComp()	
+  highlightComp = HighlightComp()
   ```
 
 #### SetDataBeforeShow
@@ -1157,7 +1157,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
       },
       {
           "item": "minecraft:iron_sword",
-          "data": 0                    
+          "data": 0
       }
   ]
   highlightComp.SetDataBeforeShow(itemData)	# 设置了3个物品的轮播
@@ -1166,7 +1166,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 
   结果如下图所示：
 
-  <img src="../picture/customBook/API/comps/highlightComp2.gif" alt="highlightComp2.png" style="zoom: 120%;" />
+  <img src="../picture/customBook/API/comps/highlightComp2.gif" alt="highlightComp2" style="zoom: 120%;" />
 
 ### 3.TableRecipeComp
 
@@ -1188,7 +1188,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 
 - 备注
 
-  <img src="../picture/customBook/API/comps/tableRecipe1.png" alt="tableRecipe1.png" style="zoom: 120%;" />
+  <img src="../picture/customBook/API/comps/tableRecipe1.png" alt="tableRecipe1" style="zoom: 120%;" />
 
   如果合成表输出有多个物品，则在合成物品处和轮播物品组件一样对输出的物品进行轮播，点击物品能显示物品信息。
 
@@ -1201,7 +1201,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   # 获取预设组件类 TableRecipeComp
   TableRecipeComp = bookManager.GetTableRecipeCompCls()
   # 创建TableRecipeComp实例
-  tableRecipeComp = TableRecipeComp()	
+  tableRecipeComp = TableRecipeComp()
   ```
 
 #### SetDataBeforeShow
@@ -1233,10 +1233,10 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   tableRecipeComp.SetDataBeforeShow("minecraft:honey_bottle", 0)	# 设置蜂蜜的配方
   tableRecipeComp.Show()
   ```
-  
+
   结果如下图所示：
-  
-  <img src="../picture/customBook/API/comps/tableRecipe2.png" alt="tableRecipe2.png" style="zoom: 80%;" />
+
+  <img src="../picture/customBook/API/comps/tableRecipe2.png" alt="tableRecipe2" style="zoom: 80%;" />
 
 ### 4.EntityComp
 
@@ -1258,7 +1258,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 
 - 备注
 
-  <img src="../picture/customBook/API/comps/entity1.gif" alt="entity1.gif" style="zoom: 100%;" />
+  <img src="../picture/customBook/API/comps/entity1.gif" alt="entity1" style="zoom: 100%;" />
 
   该组件在显示的时候，设定的实体会自动进行旋转。
 
@@ -1271,7 +1271,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   # 获取预设组件类 EntityComp
   EntityComp = bookManager.GetEntityCompCls()
   # 创建EntityComp实例
-  entityComp = EntityComp()	
+  entityComp = EntityComp()
   ```
 
 #### SetDataBeforeShow
@@ -1308,10 +1308,10 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   entityComp.SetDataBeforeShow(entityName, molang_dict, entityOffset)	# 设置牛
   entityComp.Show()
   ```
-  
+
   结果如下图所示：
-  
-  <img src="../picture/customBook/API/comps/entity2.gif" alt="entity2.gif" style="zoom: 100%;" />
+
+  <img src="../picture/customBook/API/comps/entity2.gif" alt="entity2" style="zoom: 100%;" />
 
 ### 5.ProgressBarComp
 
@@ -1340,7 +1340,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   # 获取预设组件类 ProgressBarComp
   ProgressBarComp = bookManager.GetProgressBarCompCls()
   # 创建ProgressBarComp实例
-  progressBarComp = ProgressBarComp()	
+  progressBarComp = ProgressBarComp()
   ```
 
 #### SetDataBeforeShow
@@ -1376,7 +1376,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
 
   结果如下图所示：
 
-  <img src="../picture/customBook/API/comps/progressBar.png" alt="progressBar.png" style="zoom: 100%;" />
+  <img src="../picture/customBook/API/comps/progressBar.png" alt="progressBar" style="zoom: 100%;" />
 
 ### 6.ButtonComp
 
@@ -1405,7 +1405,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   # 获取预设组件类 ButtonComp
   ButtonComp = bookManager.GetButtonCompCls()
   # 创建ButtonComp实例
-  buttonComp = ButtonComp()	
+  buttonComp = ButtonComp()
   ```
 
 #### SetDataBeforeShow
@@ -1445,7 +1445,7 @@ BaseComp提供了一系列方法方便开发者在页面中进行排版，这些
   ```python
   def OnPress(arg):
       print "on button press with arg '{0}'".format(arg)
-  
+
   pressCallBackDict = {
       "func": OnPress,
       "args": [1]

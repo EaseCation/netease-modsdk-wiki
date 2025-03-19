@@ -13,6 +13,16 @@
 
 ## 如何使用
 
+### 拉取项目
+
+由于包含众多图片，本项目使用 lfs 进行大文件管理。
+请确保已安装 Git LFS。
+
+```bash
+git lfs install
+git clone htps://github.com/EaseCation/netease-modsdk-wiki.git
+```
+
 ### 安装依赖
 
 ```bash

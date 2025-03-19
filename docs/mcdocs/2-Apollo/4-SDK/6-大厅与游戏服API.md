@@ -6,77 +6,6 @@ sidebarDepth: 1
 
 这里是lobbygame的一些通用的接口
 
-<span id="存档"></span>
-### 存档
-
-<span id="QueryPlayerDataResult"></span>
-#### QueryPlayerDataResult
-
-- 描述
-
-    不建议开发者使用，把mc地图中玩家存档字符串告知引擎。需要在queryPlayerDataEvent事件的监听函数中调用本api
-    
-- 参数
-
-    | 参数名 | 数据类型 | 说明 |
-    | :--- | :--- | :--- |
-    | dbCallIndex | int | 对应【queryPlayerDataEvent】事件的传入唯一ID |
-    | success | bool | 是否成功 |
-    | dataStr | str | mc地图中玩家存档字符串。 |
-- 返回值
-
-    无
-- 示例
-
-```python
-import lobbyGame.netgameApi as lobbyGameApi
-lobbyGameApi.QueryPlayerDataResult(dbCallIndex, success, dataStr)
- ```
-<span id="SavePlayerDataResult"></span>
-#### SavePlayerDataResult
-
-- 描述
-
-    不建议开发者使用，把玩家数据存档状态告知引擎。mod中需要把玩家数据保存到mysql/mongo中。在savePlayerDataOnShutDownEvent/savePlayerDataEvent事件的监听函数中调用本api
-    
-- 参数
-
-    | 参数名 | 数据类型 | 说明 |
-    | :--- | :--- | :--- |
-    | dbCallIndex | int | 【savePlayerDataEvent/savePlayerDataOnShutDownEvent】事件中传入唯一ID |
-    | success | bool | 存档是否成功 |
-- 返回值
-
-    无
-- 示例
-
-```python
-import lobbyGame.netgameApi as lobbyGameApi
-lobbyGameApi.SavePlayerDataResult(dbCallIndex, success)
- ```
-<span id="SetUseDatabaseSave"></span>
-#### SetUseDatabaseSave
-
-- 描述
-
-    设置是否使用数据库定时存档。定时存档会定时触发savePlayerDataEvent事件
-    
-- 参数
-
-    | 参数名 | 数据类型 | 说明 |
-    | :--- | :--- | :--- |
-    | bUseDatabase | bool | 是否使用数据库 |
-    | dbName | str | 30个字符内的英文字符串，建议使用项目英文名 |
-    | internalSaveSecond | int | 触发定时存档的时间间隔，单位秒 |
-- 返回值
-
-    无
-- 示例
-
-```python
-import lobbyGame.netgameApi as lobbyGameApi
-lobbyGameApi.SetUseDatabaseSave(True, 'test', 30)
- ```
 <span id="配置"></span>
 ### 配置
 
@@ -86,7 +15,7 @@ lobbyGameApi.SetUseDatabaseSave(True, 'test', 30)
 - 描述
 
     获取服务器公共配置，包括本服、所有db和所有功能服的配置，具体参见备注，注意可能不包含其他大厅服和游戏服配置，不能获取所有服的配置
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -151,22 +80,21 @@ lobbyGameApi.SetUseDatabaseSave(True, 'test', 30)
     ],
     }
     ```
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 conf = lobbyGameApi.GetCommonConfig()
 bDebugLevel = conf['log_debug_level'] #获取日志等级配置
- ```
+```
 <span id="GetMongoConfig"></span>
 #### GetMongoConfig
 
 - 描述
 
     获取mongo数据库的连接参数，对应公共配置中mongo配置，公共配置参见[GetCommonConfig](#GetCommonConfig)备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -177,14 +105,14 @@ bDebugLevel = conf['log_debug_level'] #获取日志等级配置
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 exist, host, user, password, database, port = lobbyGameApi.GetMongoConfig()
- ```
+```
 <span id="GetMysqlConfig"></span>
 #### GetMysqlConfig
 
 - 描述
 
     获取mysql数据库的连接参数，对应公共配置中mysql配置，公共配置参见[GetCommonConfig](#GetCommonConfig)备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -195,14 +123,14 @@ exist, host, user, password, database, port = lobbyGameApi.GetMongoConfig()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 exist, host, user, password, database, port = lobbyGameApi.GetMysqlConfig()
- ```
+```
 <span id="GetRedisConfig"></span>
 #### GetRedisConfig
 
 - 描述
 
     获取redis数据库的连接参数，对应公共配置中redis配置，公共配置参见[GetCommonConfig](#GetCommonConfig)备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -213,14 +141,14 @@ exist, host, user, password, database, port = lobbyGameApi.GetMysqlConfig()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 exist, host, port, password = lobbyGameApi.GetRedisConfig()
- ```
+```
 <span id="GetServerId"></span>
 #### GetServerId
 
 - 描述
 
     获取本服的服务器id，服务器id对应公共配置中serverid，公共配置参见[GetCommonConfig](#GetCommonConfig)备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -231,7 +159,7 @@ exist, host, port, password = lobbyGameApi.GetRedisConfig()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 serverId = lobbyGameApi.GetServerId()
- ```
+```
 <span id="地图"></span>
 ### 地图
 
@@ -241,7 +169,7 @@ serverId = lobbyGameApi.GetServerId()
 - 描述
 
     删除禁止龙蛋传送的地图区域
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -255,21 +183,20 @@ serverId = lobbyGameApi.GetServerId()
 - 备注
 
     具体使用方式可以参考领地插件
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 suc = lobbyGameApi.DelForbidDragonEggTeleportField(1)
- ```
+```
 <span id="DelForbidFlowField"></span>
 #### DelForbidFlowField
 
 - 描述
 
     删除地图区域，不同的ID的区域边界会阻挡流体的流动
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -283,21 +210,20 @@ suc = lobbyGameApi.DelForbidDragonEggTeleportField(1)
 - 备注
 
     具体使用方式可以参考领地插件
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 suc = lobbyGameApi.DelForbidFlowField(1)
- ```
+```
 <span id="SetEnableLimitArea"></span>
 #### SetEnableLimitArea
 
 - 描述
 
     设置地图最大区域，超过区域的地形不再生成
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -313,22 +239,21 @@ suc = lobbyGameApi.DelForbidFlowField(1)
     无
 - 备注
 
-    真实应用中，请用墙壁把区域围起来。
-    
-    
+    真实应用中，请用墙壁把区域围起来。并且在server.properties中将client-side-chunk-generation-enabled配置为false
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.SetEnableLimitArea(limit, x, y, z, offsetX, offsetZ)
- ```
+```
 <span id="SetForbidDragonEggTeleportField"></span>
 #### SetForbidDragonEggTeleportField
 
 - 描述
 
     设置禁止龙蛋传送的地图区域
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -347,21 +272,20 @@ lobbyGameApi.SetEnableLimitArea(limit, x, y, z, offsetX, offsetZ)
 - 备注
 
     具体使用方式可以参考领地插件
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 suc = lobbyGameApi.SetForbidDragonEggTeleportField(1, 0, (-5, -5, -5), (5, 5, 5), 0, True)
- ```
+```
 <span id="SetForbidFlowField"></span>
 #### SetForbidFlowField
 
 - 描述
 
     设置地图区域，不同的ID的区域边界会阻挡流体的流动
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -380,21 +304,20 @@ suc = lobbyGameApi.SetForbidDragonEggTeleportField(1, 0, (-5, -5, -5), (5, 5, 5)
 - 备注
 
     具体使用方式可以参考领地插件
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 suc = lobbyGameApi.SetForbidFlowField(1, 0, (-5, -5, -5), (5, 5, 5), 0, True)
- ```
+```
 <span id="SetLevelGameType"></span>
 #### SetLevelGameType
 
 - 描述
 
     强制设置游戏的玩法模式
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -406,21 +329,20 @@ suc = lobbyGameApi.SetForbidFlowField(1, 0, (-5, -5, -5), (5, 5, 5), 0, True)
 - 备注
 
     真实应用中，请在服务器Mod初始化时调用此函数
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.SetLevelGameType(2)
- ```
+```
 <span id="SetShowFakeSeed"></span>
 #### SetShowFakeSeed
 
 - 描述
 
     在客户端【设置】中，显示虚假的游戏地图种子
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -434,24 +356,23 @@ lobbyGameApi.SetLevelGameType(2)
 - 备注
 
     此API只影响调用之后才登录的玩家，所以强烈建议在Mod初始化时就调用此API
-    
+
     此API调用效果会持久化保存到地图文件中
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 suc = lobbyGameApi.SetShowFakeSeed(123456789)
 print "SetShowFakeSeed suc={}".format(suc)
- ```
+```
 <span id="StopShowFakeSeed"></span>
 #### StopShowFakeSeed
 
 - 描述
 
     在客户端【设置】中，显示真实的游戏地图种子
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -460,17 +381,16 @@ print "SetShowFakeSeed suc={}".format(suc)
 - 备注
 
     此API只影响调用之后才登录的玩家，所以强烈建议在Mod初始化时就调用此API
-    
+
     此API调用效果会持久化保存到地图文件中
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 suc = lobbyGameApi.StopShowFakeSeed()
 print "StopShowFakeSeed suc={}".format(suc)
- ```
+```
 <span id="玩家"></span>
 ### 玩家
 
@@ -480,7 +400,7 @@ print "StopShowFakeSeed suc={}".format(suc)
 - 描述
 
     获取玩家客户端连接的proxy服务器id
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -496,14 +416,14 @@ print "StopShowFakeSeed suc={}".format(suc)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 nickname = lobbyGameApi.GetConnectingProxyIdOfPlayer(playerId)
- ```
+```
 <span id="GetPlatformUid"></span>
 #### GetPlatformUid
 
 - 描述
 
     获取玩家登录端的uid，假如玩家从手机端登录，返回手机端的uid，否则返回PC端的uid
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -519,14 +439,14 @@ nickname = lobbyGameApi.GetConnectingProxyIdOfPlayer(playerId)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 platformUid = lobbyGameApi.GetPlatformUid(playerId)
- ```
+```
 <span id="GetPlayerIdByUid"></span>
 #### GetPlayerIdByUid
 
 - 描述
 
     根据玩家uid获取玩家ID（也即playerId）。若玩家不在这个lobby/game，则返回为空字符
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -537,14 +457,37 @@ platformUid = lobbyGameApi.GetPlatformUid(playerId)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 playerId = lobbyGameApi.GetPlayerIdByUid(123)
- ```
+```
+<span id="GetPlayerIpHash"></span>
+#### GetPlayerIpHash
+
+- 描述
+
+    获取玩家客户端ip的特征哈希值
+
+- 参数
+
+    | 参数名 | 数据类型 | 说明 |
+    | :--- | :--- | :--- |
+    | playerId | str | 玩家id |
+- 返回值
+
+    | 数据类型 | 说明 |
+    | :--- | :--- |
+    | str | 一个32位哈希字符串 |
+- 示例
+
+```python
+import lobbyGame.netgameApi as lobbyGameApi
+ipHash = lobbyGameApi.GetPlayerIpHash(playerId)
+```
 <span id="GetPlayerLockResult"></span>
 #### GetPlayerLockResult
 
 - 描述
 
     不建议开发者使用，把获取玩家在线锁结果告知给引擎层
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -559,14 +502,14 @@ playerId = lobbyGameApi.GetPlayerIdByUid(123)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.GetPlayerLockResult(id, suc)
- ```
+```
 <span id="GetPlayerNickname"></span>
 #### GetPlayerNickname
 
 - 描述
 
     获取玩家的昵称。
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -582,14 +525,14 @@ lobbyGameApi.GetPlayerLockResult(id, suc)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 nickname = lobbyGameApi.GetPlayerNickname(playerId)
- ```
+```
 <span id="GetPlayerUid"></span>
 #### GetPlayerUid
 
 - 描述
 
     获取玩家的uid
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -605,14 +548,14 @@ nickname = lobbyGameApi.GetPlayerNickname(playerId)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 uid = lobbyGameApi.GetPlayerUid(playerId)
- ```
+```
 <span id="GetUidIsSilent"></span>
 #### GetUidIsSilent
 
 - 描述
 
     根据玩家uid获取是否被禁言
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -623,14 +566,14 @@ uid = lobbyGameApi.GetPlayerUid(playerId)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 isSilent = lobbyGameApi.GetUidIsSilent(123)
- ```
+```
 <span id="HidePlayerFootprint"></span>
 #### HidePlayerFootprint
 
 - 描述
 
     隐藏某个玩家的会员脚印外观
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -648,14 +591,14 @@ isSilent = lobbyGameApi.GetUidIsSilent(123)
 import lobbyGame.netgameApi as lobbyGameApi
 # 隐藏玩家的会员脚印外观
 result = lobbyGameApi.HidePlayerFootprint(playerId, True)
- ```
+```
 <span id="HidePlayerMagicCircle"></span>
 #### HidePlayerMagicCircle
 
 - 描述
 
     隐藏某个玩家的会员法阵外观
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -673,14 +616,14 @@ result = lobbyGameApi.HidePlayerFootprint(playerId, True)
 import lobbyGame.netgameApi as lobbyGameApi
 # 隐藏玩家的会员法阵外观
 result = lobbyGameApi.HidePlayerMagicCircle(playerId, True)
- ```
+```
 <span id="IsPlayerPeUser"></span>
 #### IsPlayerPeUser
 
 - 描述
 
     获取玩家是否从手机端登录
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -696,14 +639,14 @@ result = lobbyGameApi.HidePlayerMagicCircle(playerId, True)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 isPeUser = lobbyGameApi.IsPlayerPeUser(playerId)
- ```
+```
 <span id="ReleasePlayerLockResult"></span>
 #### ReleasePlayerLockResult
 
 - 描述
 
     不建议开发者使用，把释放玩家在线锁结果告知给引擎层
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -718,14 +661,14 @@ isPeUser = lobbyGameApi.IsPlayerPeUser(playerId)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.ReleasePlayerLockResult(id, suc)
- ```
+```
 <span id="SetAutoRespawn"></span>
 #### SetAutoRespawn
 
 - 描述
 
     设置是否启用自动重生逻辑
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -744,14 +687,14 @@ lobbyGameApi.ReleasePlayerLockResult(id, suc)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.SetAutoRespawn(autoRespawn, internalSeconds, minY, x, y, z)
- ```
+```
 <span id="ShieldPlayerJoinText"></span>
 #### ShieldPlayerJoinText
 
 - 描述
 
     是否屏蔽客户端左上角 “xxx 加入了游戏”的提示
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -765,14 +708,14 @@ lobbyGameApi.SetAutoRespawn(autoRespawn, internalSeconds, minY, x, y, z)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.ShieldPlayerJoinText(True)
- ```
+```
 <span id="TryToKickoutPlayer"></span>
 #### TryToKickoutPlayer
 
 - 描述
 
     把玩家踢下线，message中的文字会显示在客户端的断线提示中
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -787,70 +730,31 @@ lobbyGameApi.ShieldPlayerJoinText(True)
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.TryToKickoutPlayer(playerId, "GM把你踢下线")
- ```
-<span id="调试"></span>
-### 调试
+```
+<span id="商城"></span>
+### 商城
 
-<span id="StartChunkProfile"></span>
-#### StartChunkProfile
+<span id="NotifyClientToOpenShopUi"></span>
+#### NotifyClientToOpenShopUi
 
 - 描述
 
-    开始启动服务端区块读写性能统计，启动后调用[StopChunkProfile](#StopChunkProfile)即可获得近期的服务端区块读写信息
-    
+    通知客户端打开商城界面
+
+- 参数
+
+    | 参数名 | 数据类型 | 说明 |
+    | :--- | :--- | :--- |
+    | playerId | str | 玩家id |
 - 返回值
 
-    | 数据类型 | 说明 |
-    | :--- | :--- |
-    | bool | 执行结果 |
-- 备注
-
-    启动区块读写信息记录有比较大的消耗，不建议长期启用
-    
-    
+    无
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
-suc = lobbyGameApi.StartChunkProfile()
-print "StartChunkProfile suc={}".format(suc)
-# 之后通过计时器或者其他触发方式调用StopChunkProfile
-data = lobbyGameApi.StopChunkProfile()
-for singleData in data:
-        print "time is {}".format(time.strftime("%H:%M:%S", time.localtime(singleData["timestamp"])))
-        print "saveChunks is {}".format(singleData["saveChunks"])
-        print "loadChunks is {}".format(singleData["loadChunks"])
- ```
-<span id="StopChunkProfile"></span>
-#### StopChunkProfile
-
-- 描述
-
-    结束服务端区块读写性能统计，并返回近期区块读写信息，与[StartChunkProfile](#StartChunkProfile)配合使用
-    
-- 返回值
-
-    | 数据类型 | 说明 |
-    | :--- | :--- |
-    | list(dict) | 每个字典都是1秒内的区块读写信息，按照时间线排序，timestamp：类型为int，统计的具体时间（秒）；saveChunks：类型为list(dict)，1秒内写chunk的坐标和维度；loadChunks：类型为list(dict)，1秒内读chunk的坐标和维度 |
-- 备注
-
-    启动区块读写信息记录有比较大的消耗，不建议长期启用
-    
-    
-- 示例
-
-```python
-import lobbyGame.netgameApi as lobbyGameApi
-suc = lobbyGameApi.StartChunkProfile()
-print "StartChunkProfile suc={}".format(suc)
-# 之后通过计时器或者其他触发方式调用StopChunkProfile
-data = lobbyGameApi.StopChunkProfile()
-for singleData in data:
-        print "time is {}".format(time.strftime("%H:%M:%S", time.localtime(singleData["timestamp"])))
-        print "saveChunks is {}".format(singleData["saveChunks"])
-        print "loadChunks is {}".format(singleData["loadChunks"])
- ```
+lobbyGameApi.NotifyClientToOpenShopUi('123456')
+```
 <span id="关服"></span>
 ### 关服
 
@@ -860,7 +764,7 @@ for singleData in data:
 - 描述
 
     不建议开发者使用，设置脚本层的优雅关机逻辑已经执行完毕，引擎可以开始优雅关机了
-    
+
 - 返回值
 
     无
@@ -869,14 +773,14 @@ for singleData in data:
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.SetGracefulShutdownOk()
- ```
+```
 <span id="SetShutdownOk"></span>
 #### SetShutdownOk
 
 - 描述
 
     不建议开发者使用，设置脚本层的强制关机逻辑已经执行完毕，引擎可以开始强制关机了
-    
+
 - 返回值
 
     无
@@ -885,14 +789,14 @@ lobbyGameApi.SetGracefulShutdownOk()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.SetShutdownOk()
- ```
+```
 <span id="ShutdownServer"></span>
 #### ShutdownServer
 
 - 描述
 
     强制关机
-    
+
 - 返回值
 
     无
@@ -901,17 +805,67 @@ lobbyGameApi.SetShutdownOk()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.ShutdownServer()
- ```
+```
 <span id="服务器"></span>
 ### 服务器
 
+<span id="AddGetPlayerLockTask"></span>
+#### AddGetPlayerLockTask
+
+- 描述
+
+    添加获取玩家在线锁时的处理任务，会在玩家刚连接到服务端时执行，在所有任务都完成后，才会继续玩家的登录流程
+
+- 参数
+
+    | 参数名 | 数据类型 | 说明 |
+    | :--- | :--- | :--- |
+    | func | function | 处理任务，需要接收两个参数：uid和callback，详见示例 |
+- 返回值
+
+    | 数据类型 | 说明 |
+    | :--- | :--- |
+    | bool | True:添加成功<br>False:添加失败 |
+- 备注
+
+    使用到的插件需要在netease_require.json添加neteaseOnline前置
+
+- 示例
+
+```python
+def mysqlTask(uid, callback):
+        # task需要有两个参数
+        # uid为正在登录的玩家的uid
+        # callback为task处理完成后，告诉引擎处理结果的回调，没有输入参数
+        def query(conn, uid):
+                # 执行一些查询
+                cursor = conn.cursor()
+                query = "SELECT * FROM neteaseUserMail LIMIT %s"
+                params = (num, )
+                try:
+                        cursor.execute(query, params)
+                        records = cursor.fetchall()
+                except Exception as e:
+                        logout.error("mysqlFunc error=%s"%str(e))
+                        records = None
+                finally:
+                        cursor.close()
+                return records
+        def queryCb(records):
+                # 每个task都需要回调一次callback，记得处理异常情况！否则玩家会一直卡在loading界面！
+                callback()
+        mysqlPool.AsyncExecuteFunctionWithOrderKey(query, "global", queryCb, uid)
+
+import lobbyGame.netgameApi as lobbyGameApi
+lobbyGameApi.AddGetPlayerLockTask(mysqlTask)
+```
 <span id="CheckMasterExist"></span>
 #### CheckMasterExist
 
 - 描述
 
     检查服务器是否与master建立连接
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -922,14 +876,14 @@ lobbyGameApi.ShutdownServer()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 exist = lobbyGameApi.CheckMasterExist()
- ```
+```
 <span id="GetLastFrameTime"></span>
 #### GetLastFrameTime
 
 - 描述
 
     获取服务端脚本上一帧运行时间
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -940,14 +894,14 @@ exist = lobbyGameApi.CheckMasterExist()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lastFrameTime = lobbyGameApi.GetLastFrameTime()
- ```
+```
 <span id="GetOnlinePlayerNum"></span>
 #### GetOnlinePlayerNum
 
 - 描述
 
     获取当前服务器的在线人数
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -958,14 +912,14 @@ lastFrameTime = lobbyGameApi.GetLastFrameTime()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 num = lobbyGameApi.GetOnlinePlayerNum()
- ```
+```
 <span id="GetServerProtocolVersion"></span>
 #### GetServerProtocolVersion
 
 - 描述
 
     获取服务器的协议版本号
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -976,14 +930,14 @@ num = lobbyGameApi.GetOnlinePlayerNum()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 protocolVersion = lobbyGameApi.GetServerProtocolVersion()
- ```
+```
 <span id="IsServiceConnected"></span>
 #### IsServiceConnected
 
 - 描述
 
     检查服务器是否与某个service建立连接
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -994,14 +948,14 @@ protocolVersion = lobbyGameApi.GetServerProtocolVersion()
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 bConnected = lobbyGameApi.IsServiceConnected(8000)
- ```
+```
 <span id="IsShowDebugLog"></span>
 #### IsShowDebugLog
 
 - 描述
 
     当前服务器是否打印debug等级的日志
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -1010,39 +964,37 @@ bConnected = lobbyGameApi.IsServiceConnected(8000)
 - 备注
 
     基本无需关注
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 bDebug = lobbyGameApi.IsShowDebugLog()
- ```
+```
 <span id="ResetServer"></span>
 #### ResetServer
 
 - 描述
 
     重置服务器
-    
+
 - 返回值
 
     无
 - 备注
 
-    
+
     注意，对于生存服，若使用了存档A，则重置后仍使用存档A，且重置过程中不会保存地图。
-    
-    
+
+
     重置本服的方法：重置前确保玩家退出本服，重置过程不允许玩家进入本服，本服启动后可以发消息给master或service，告知本服就绪，然后玩家可以进入本服了
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.ResetServer()
- ```
+```
 <span id="切服"></span>
 ### 切服
 
@@ -1052,7 +1004,7 @@ lobbyGameApi.ResetServer()
 - 描述
 
     玩家转移到指定类型的服务器，假如同类服务器有多个，就根据负载均衡选择一个
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1067,8 +1019,7 @@ lobbyGameApi.ResetServer()
 - 备注
 
     玩家只会切到一个可用的服务，也即要求目标服务器是正常工作状态，不能是断开连接、滚动关服、已关服等异常状态，若转移的目标服务器不可用，则切服失败
-    
-    
+
 - 示例
 
 ```python
@@ -1078,14 +1029,14 @@ transData = {'position' : [1,2,3]}
 def cbFunc(isSuc, reasonCode, message):
         print "TransferToOtherServer callback, isSuc={} reason={}".format(isSuc, message)
 lobbyGameApi.TransferToOtherServer('123', 'game', json.dumps(transData), cbFunc)
- ```
+```
 <span id="TransferToOtherServerById"></span>
 #### TransferToOtherServerById
 
 - 描述
 
     玩家迁移到指定服务器id的服务器
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1100,10 +1051,9 @@ lobbyGameApi.TransferToOtherServer('123', 'game', json.dumps(transData), cbFunc)
 - 备注
 
     用法详情见示例Mod sample
-    
+
     要求目标服务器是正常工作状态，不能是断开连接、滚动关服、已关服等异常状态，若转移的目标服务器不可用，则切服失败
-    
-    
+
 - 示例
 
 ```python
@@ -1113,7 +1063,7 @@ transData = {'position' : [1,2,3]}
 def cbFunc(isSuc, reasonCode, message):
         print "TransferToOtherServerById callback, isSuc={} reason={}".format(isSuc, message)
 lobbyGameApi.TransferToOtherServerById('123', 2000000, json.dumps(transData), cbFunc)
- ```
+```
 <span id="主城模式"></span>
 ### 主城模式
 
@@ -1123,7 +1073,7 @@ lobbyGameApi.TransferToOtherServerById('123', 2000000, json.dumps(transData), cb
 - 描述
 
     设置游戏为主城模式：包括有无法改变地形，不切换日夜，不改变天气，不刷新生物等限制
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1137,7 +1087,7 @@ lobbyGameApi.TransferToOtherServerById('123', 2000000, json.dumps(transData), cb
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.SetCityMode(isCityMode)
- ```
+```
 <span id="HTTP服务器"></span>
 ### HTTP服务器
 
@@ -1147,7 +1097,7 @@ lobbyGameApi.SetCityMode(isCityMode)
 - 描述
 
     注册一个新的HTTP接口
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1160,16 +1110,15 @@ lobbyGameApi.SetCityMode(isCityMode)
 - 备注
 
     当多个游戏服/功能服都注册了同一个url的时候，请求会默认被广播到所有注册了这个url的服务器，返回结果中也会综合所有服务器的返回结果
-    
+
     通过在请求中增加opUid【类型为int】参数，可以指定此请求仅转发给对应uid当前在线的服务器
-    
+
     通过在请求中增加opServerIds【类型为list(int)】参数，可以指定此请求仅转发给服务器ID在opServerIds列表中的服务器
-    
+
     通过在请求中增加opServerType【类型为str】参数，可以指定此请求仅转发给服务器类型为opServerType的服务器
-    
+
     当此API注册的url和【masterHttp.RegisterMasterHttp】注册的url相同时，两者只能保留一个，晚执行的语句会顶替掉先执行语句的回调
-    
-    
+
 - 示例
 
 ```python
@@ -1182,14 +1131,14 @@ class GameExtraApiSystem(ServerSystem):
                 print "OnGameUrlTest1", clientId, requestData
                 # 返回处理结果
                 lobbyGameApi.ResponseOpCommandSuccess(clientId, {"result":"exec success"})
- ```
+```
 <span id="ResponseOpCommandFail"></span>
 #### ResponseOpCommandFail
 
 - 描述
 
     发送HTTP的失败Response，支持异步返回，返回时候指定请求传入的clientId
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1208,19 +1157,19 @@ class GameExtraApiSystem(ServerSystem):
         def __init__(self, namespace, systemName):
                 ServerSystem.__init__(self, namespace, systemName)
                 lobbyGameApi.RegisterOpCommand("/api/game-url-test2", self.OnServiceUrlTest2)
-        
+
         def OnServiceUrlTest2(self, clientId, requestData):
                 print "OnServiceUrlTest2", clientId, requestData
                 # 返回处理结果
                 lobbyGameApi.ResponseOpCommandFail(clientId, 1, "exec failed")
- ```
+```
 <span id="ResponseOpCommandSuccess"></span>
 #### ResponseOpCommandSuccess
 
 - 描述
 
     发送HTTP的成功Response，支持异步返回，返回时候指定请求传入的clientId
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1242,14 +1191,14 @@ class GameExtraApiSystem(ServerSystem):
                 print "OnGameUrlTest1", clientId, requestData
                 # 返回处理结果
                 lobbyGameApi.ResponseOpCommandSuccess(clientId, {"result":"exec success"})
- ```
+```
 <span id="UnRegisterOpCommand"></span>
 #### UnRegisterOpCommand
 
 - 描述
 
     注销一个已注册的HTTP接口
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1266,30 +1215,30 @@ class GameExtraApiSystem(ServerSystem):
         def __init__(self, namespace, systemName):
                 ServerSystem.__init__(self, namespace, systemName)
                 lobbyGameApi.RegisterOpCommand("/api/game-url-test1", self.OnGameUrlTest1)
-        
+
         def Destroy(self):
                 lobbyGameApi.UnRegisterOpCommand("/api/game-url-test1")
-        
+
         def OnGameUrlTest1(self, clientId, requestData):
                 print "OnGameUrlTest1", clientId, requestData
                 # 返回处理结果
                 lobbyGameApi.ResponseOpCommandSuccess(clientId, {"result":"exec success"})
- ```
-<span id="商城"></span>
-### 商城
+```
+<span id="调试"></span>
+### 调试
 
-<span id="NotifyClientToOpenShopUi"></span>
-#### NotifyClientToOpenShopUi
+<span id="EnableNetgamePacketIdStatistics"></span>
+#### EnableNetgamePacketIdStatistics
 
 - 描述
 
-    通知客户端打开商城界面
-    
+    开启（或关闭）玩家向服务器发包的数量统计。长时间不使用数据时请关掉统计，避免内存泄露。
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
     | :--- | :--- | :--- |
-    | playerId | str | 玩家id |
+    | enable | bool | True开启/False关闭 |
 - 返回值
 
     无
@@ -1297,8 +1246,91 @@ class GameExtraApiSystem(ServerSystem):
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
-lobbyGameApi.NotifyClientToOpenShopUi('123456')
- ```
+lobbyGameApi.EnableNetgamePacketIdStatistics(True)
+```
+<span id="GetAndClearNetgamePacketIdStatistics"></span>
+#### GetAndClearNetgamePacketIdStatistics
+
+- 描述
+
+    获取玩家向服务器发包的数量统计，然后重置统计数据。即每次返回从上一次获取到现在的数量。需要用EnableNetgamePacketIdStatistics开启后才有数据
+
+- 返回值
+
+    | 数据类型 | 说明 |
+    | :--- | :--- |
+    | dict | key:playerId，value:一个dict表示packetId对应的数量 |
+- 备注
+
+    packetId可参考[这个网站](https://wiki.vg/Bedrock_Protocol)
+
+- 示例
+
+```python
+import lobbyGame.netgameApi as lobbyGameApi
+result = lobbyGameApi.GetAndClearNetgamePacketIdStatistics()
+for playerId, packets in result.iteritems():
+        for packetId, count in packets.iteritems():
+                print playerId, packetId, count
+```
+<span id="StartChunkProfile"></span>
+#### StartChunkProfile
+
+- 描述
+
+    开始启动服务端区块读写性能统计，启动后调用[StopChunkProfile](#StopChunkProfile)即可获得近期的服务端区块读写信息
+
+- 返回值
+
+    | 数据类型 | 说明 |
+    | :--- | :--- |
+    | bool | 执行结果 |
+- 备注
+
+    启动区块读写信息记录有比较大的消耗，不建议长期启用
+
+- 示例
+
+```python
+import lobbyGame.netgameApi as lobbyGameApi
+suc = lobbyGameApi.StartChunkProfile()
+print "StartChunkProfile suc={}".format(suc)
+# 之后通过计时器或者其他触发方式调用StopChunkProfile
+data = lobbyGameApi.StopChunkProfile()
+for singleData in data:
+        print "time is {}".format(time.strftime("%H:%M:%S", time.localtime(singleData["timestamp"])))
+        print "saveChunks is {}".format(singleData["saveChunks"])
+        print "loadChunks is {}".format(singleData["loadChunks"])
+```
+<span id="StopChunkProfile"></span>
+#### StopChunkProfile
+
+- 描述
+
+    结束服务端区块读写性能统计，并返回近期区块读写信息，与[StartChunkProfile](#StartChunkProfile)配合使用
+
+- 返回值
+
+    | 数据类型 | 说明 |
+    | :--- | :--- |
+    | list(dict) | 每个字典都是1秒内的区块读写信息，按照时间线排序，timestamp：类型为int，统计的具体时间（秒）；saveChunks：类型为list(dict)，1秒内写chunk的坐标和维度；loadChunks：类型为list(dict)，1秒内读chunk的坐标和维度 |
+- 备注
+
+    启动区块读写信息记录有比较大的消耗，不建议长期启用
+
+- 示例
+
+```python
+import lobbyGame.netgameApi as lobbyGameApi
+suc = lobbyGameApi.StartChunkProfile()
+print "StartChunkProfile suc={}".format(suc)
+# 之后通过计时器或者其他触发方式调用StopChunkProfile
+data = lobbyGameApi.StopChunkProfile()
+for singleData in data:
+        print "time is {}".format(time.strftime("%H:%M:%S", time.localtime(singleData["timestamp"])))
+        print "saveChunks is {}".format(singleData["saveChunks"])
+        print "loadChunks is {}".format(singleData["loadChunks"])
+```
 <span id="性能开关"></span>
 ### 性能开关
 
@@ -1311,7 +1343,7 @@ lobbyGameApi.NotifyClientToOpenShopUi('123456')
     只有当调用此接口关闭之后，才会进入到【关】的状态，关闭这类原生逻辑能够提
     高服务器的性能，承载更高的同时在线人数，同时也会使一些生存服的玩法失效。另外，强烈建议在服务
     器初始化时调用此接口，同时不要在服务器运行中途修改
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1324,14 +1356,13 @@ lobbyGameApi.NotifyClientToOpenShopUi('123456')
 - 备注
 
     当extra的值为None的时候，默认影响到的开关不包括【LoadSavedEntityFromChunk】。
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 lobbyGameApi.ChangeAllPerformanceSwitch(True)
- ```
+```
 <span id="ChangePerformanceSwitch"></span>
 #### ChangePerformanceSwitch
 
@@ -1340,7 +1371,7 @@ lobbyGameApi.ChangeAllPerformanceSwitch(True)
     关闭/打开某个游戏原生逻辑，所有的逻辑默认状态均为【开】（也就是is_disable=False），
     只有当调用此接口关闭之后，才会进入到【关】的状态，关闭这类原生逻辑能够提高服务器的性能，
     承载更高的同时在线人数，同时也会使一些生存服的玩法失效。另外，强烈建议在服务器初始化时调用此接口，同时不要在服务器运行中途修改
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1396,6 +1427,7 @@ lobbyGameApi.ChangeAllPerformanceSwitch(True)
     开关介绍：是否在登录完成后发送服务器配方表，disable后客户端无法收到登录后的配方表，客户端无法进行合成，烧炼以及炼药
     适用情况：玩家不进行合成，烧炼以及炼药
     影响mod sdk的范围：不影响sdk
+    注意：由于微软代码改动，新增的网络包需要依赖在登录完成时服务器发送的配方表。如配方表为空，可能会导致客户端闪退。该问题将于Apollo 3.3版本修复，在当前3.2版本中，请不要使用RecipesSyncOnLogin接口关闭服务器配方表的同步功能。
     '''
     RecipesSyncOnLogin = 5
     '''
@@ -1517,15 +1549,14 @@ lobbyGameApi.ChangeAllPerformanceSwitch(True)
     '''
     LoadSavedEntityFromChunk = 27
     ```
-    
-    
+
 - 示例
 
 ```python
 import lobbyGame.netgameApi as lobbyGameApi
 import lobbyGame.netgameConsts as netgameConsts
 lobbyGameApi.ChangePerformanceSwitch(netgameConsts.DisableSwitch.ChunkLoadUsePriority, True)
- ```
+```
 这里是lobby的一些接口
 
 <span id="主城模式"></span>
@@ -1537,7 +1568,7 @@ lobbyGameApi.ChangePerformanceSwitch(netgameConsts.DisableSwitch.ChunkLoadUsePri
 - 描述
 
     【废弃】设置游戏为主城模式：包括有无法改变地形，不切换日夜，不改变天气，不刷新生物等限制
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -1551,4 +1582,4 @@ lobbyGameApi.ChangePerformanceSwitch(netgameConsts.DisableSwitch.ChunkLoadUsePri
 ```python
 import lobby.netgameApi as lobbyApi
 lobbyApi.SetCityMode(isCityMode)
- ```
+```

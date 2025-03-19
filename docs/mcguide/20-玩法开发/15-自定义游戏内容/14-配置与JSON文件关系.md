@@ -1,5 +1,5 @@
 ---
-front: 
+front:
 hard: 入门
 time: 分钟
 ---
@@ -20,7 +20,7 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 
 ![image](./images/editjsonfile.gif)
 
-<br/> 
+<br/>
 
 关于如何进行配置的创建和使用可参考[配置的使用](./0-配置.md)，下面为你列出了当前编辑器支持的所有配置及其对应的文件:
 >**点击标题的链接可以从Json文件层面深入了解自定义游戏内容的原理和作用：**
@@ -30,9 +30,9 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 ## [自定义实体](./3-自定义生物/01-自定义基础生物.md)配置对应文件
 
 >  行为包json：behavior_pack_xxxxxx/entities/实体名称.json
-> 
+>
 >  资源包json：resource_pack_xxxxxx/entity/实体名称.json
-> 
+>
 >  语言文件(单个模组唯一)：resource_pack_xxxxxx/texts/zh_CN.lang
 
 <br/>
@@ -40,13 +40,13 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 ## [自定义物品](./1-自定义物品/1-自定义基础物品.md)配置对应文件
 
 >  行为包json：***behavior_pack_xxxxxx/netease_items_beh/物品名称.json***
-> 
+>
 >  资源包json：***resource_pack_xxxxxx/netease_items_res/物品名称.json***
-> 
+>
 >  语言文件(单个模组唯一)：***resource_pack_xxxxxx/texts/zh_CN.lang***
-> 
+>
 >  盔甲穿戴属性文件：***resource_pack_xxxxxx/textures/物品名称.json***
-> 
+>
 >  物品贴图文件(单个模组唯一)：***resource_pack_xxxxxx/textures/item_texture.json***
 
 <br/>
@@ -54,11 +54,11 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 ## [自定义方块](./2-自定义方块/0-自定义方块概述.md)配置对应文件
 
 >  行为包json：***behavior_pack_xxxxxx/netease_blocks/方块名称.json***
-> 
+>
 >  方块贴图文件(单个模组唯一):***resource_pack_xxxxxx/textures/item_texture.json***
-> 
+>
 >  方块列表文件：***resource_pack_xxxxxx/block.json***
-> 
+>
 >  语言文件(单个模组唯一)：***resource_pack_xxxxxx/texts/zh_CN.lang***
 
 <br/>
@@ -69,13 +69,13 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 
 <br/>
 
-## <a href="../../../mconline/20-玩法地图教程/第05章：设置NPC的基本状态和交易表/课程03.给NPC添加对应的交易表.html" rel="noopenner"> 自定义交易表 </a>配置对应文件
+## <a href="../../../mconline/100-历史归档教程/20-玩法地图教程/第05章：设置NPC的基本状态和交易表/课程03.给NPC添加对应的交易表.html" rel="noopenner"> 自定义交易表 </a>配置对应文件
 
 >  行为包json：***behavior_pack_xxxxxx/trading/交易表名称.json***
 
 <br/>
 
-## <a href="../../../mconline/10-addon教程/第12章：更完善的自定义掉落物/课程01.更完善的自定义掉落物.html" rel="noopenner"> 自定义掉落表 </a>配置对应文件
+## <a href="../../../mconline/100-历史归档教程/10-addon教程/第12章：更完善的自定义掉落物/课程01.更完善的自定义掉落物.html" rel="noopenner"> 自定义掉落表 </a>配置对应文件
 
 >  行为包json：***behavior_pack_xxxxxx/loot_tables/掉落表名称.json***
 
@@ -99,7 +99,7 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 
 ## [自定义生物群系](./4-自定义维度/2-群系地貌.md)配置对应文件
 >  行为包json：***behavior_pack_xxxxxx/netease_biomes/生物群系配置名称.json***
-> 
+>
 >  语言文件(单个模组唯一)：***resource_pack_xxxxxx/texts/zh_CN.lang***
 
 <br/>
@@ -107,7 +107,7 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 ## [自定义特征](./4-自定义维度/4-自定义特征.md)配置对应文件
 
 >  行为包json：***behavior_pack_xxxxxx/netease_features/特征名称.json***
-> 
+>
 >  语言文件(单个模组唯一)：***resource_pack_xxxxxx/texts/zh_CN.lang***
 
 <br/>

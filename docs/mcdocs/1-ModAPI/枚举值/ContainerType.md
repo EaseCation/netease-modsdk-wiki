@@ -33,6 +33,9 @@ class ContainerType(object):
 	STONECUTTER = 29 # 切石机
 	CARTOGRAPHY = 30 # 制图台
 	SMITHING_TABLE= 33 # 锻造台
+	CHEST_BOAT = 34 # 运输船
+	DECORATED_POT = 35 # 饰纹陶罐
+	CRAFTER = 36 # 合成器
 
 ``` 
 

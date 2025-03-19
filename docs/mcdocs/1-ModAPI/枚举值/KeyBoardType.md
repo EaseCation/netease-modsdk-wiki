@@ -10,7 +10,10 @@ class in mod.common.minecraftEnum
 
 ```python
 class KeyBoardType:
-	KEY_GOBACK = 4			# 鼠标中键
+	KEY_GOBACK = 4			# 旧版本遗留，已弃用
+	KEY_MOUSE_LEFT = -99 	# 鼠标左键
+	KEY_MOUSE_RIGHT = -98 	# 鼠标右键
+	KEY_MOUSE_Middle = -97 	# 鼠标中键
 
 	KEY_BACKSPACE = 8		# Backspace键	
 	KEY_TAB = 9				# Tab键

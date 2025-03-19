@@ -15,7 +15,7 @@ sidebarDepth: 1
 - 描述
 
     获取服务器公共配置，包括所有服务器和db的配置，具体参见备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -95,8 +95,8 @@ sidebarDepth: 1
     ],
     }
     ```
-    
-    
+
+
 - 示例
 
 ```python
@@ -111,7 +111,7 @@ serverlist = conf['log_debug_level'] #获取日志等级配置
 - 描述
 
     获取服务器id，服务器id对应公共配置中serverid，公共配置参见[GetCommonConfig](#GetCommonConfig)备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -129,7 +129,7 @@ serverId = netServiceApi.GetServerId()
 - 描述
 
     根据服务器id获取服务器加载mod列表
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -153,7 +153,7 @@ mods = netServiceApi.GetServerLoadedModsById(4000)
 - 描述
 
     根据服务器类型获取服务器加载mod列表。若同种类型服务器配置了不同的mod，则返回其中一个对应mod列表。
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -177,7 +177,7 @@ mods = netServiceApi.GetServerLoadedModsByType("survivalGame")
 - 描述
 
     获取service配置，该配置对应公共配置中servicelist下对应service的配置，公共配置参见[GetCommonConfig](#GetCommonConfig)备注
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -191,20 +191,20 @@ serviceConf = netServiceApi.GetServiceConfig()
 print serviceConf
 # 结果实例如下：
 # {
-#        "app_type": "service", 
-#        "app_version": "1.15.0.release20191128", 
-#        "http_port": 8520, 
-#        "ip": "127.0.0.1", 
-#        "mods": "service", 
+#        "app_type": "service",
+#        "app_version": "1.15.0.release20191128",
+#        "http_port": 8520,
+#        "ip": "127.0.0.1",
+#        "mods": "service",
 #        "module_names": [
-#                "netease_salog_0", 
+#                "netease_salog_0",
 #                "netease_salog_1",
 #               "netease_uniqueid",
 #               "netease_stats_log_0",
 #               "netease_stats_log_1",
 #               "netease_stats_monitor"
-#        ], 
-#        "serverid": 11, 
+#        ],
+#        "serverid": 11,
 #        "type": "service"
 # }
  ```
@@ -217,7 +217,7 @@ print serviceConf
 - 描述
 
     开始启动大厅服/游戏服与功能服之间的脚本事件收发包统计，启动后调用[StopRecordEvent()](#StopRecordEvent)即可获取两个函数调用之间引擎收发包的统计信息
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -246,7 +246,7 @@ for eventName, data in result["recvRequest"].iteritems():
 - 描述
 
     停止大厅服/游戏服与功能服之间的脚本事件收发包统计并输出结果，与[StartRecordEvent()](#StartRecordEvent)配合使用，输出结果为字典，具体见示例
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -278,7 +278,7 @@ for eventName, data in result["recvRequest"].iteritems():
 - 描述
 
     注册一个新的HTTP接口
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -291,16 +291,16 @@ for eventName, data in result["recvRequest"].iteritems():
 - 备注
 
     当多个游戏服/功能服都注册了同一个url的时候，请求会默认被广播到所有注册了这个url的服务器，返回结果中也会综合所有服务器的返回结果
-    
+
     通过在请求中增加opUid【类型为int】参数，可以指定此请求仅转发给对应uid当前在线的服务器
-    
+
     通过在请求中增加opServerIds【类型为list(int)】参数，可以指定此请求仅转发给服务器ID在opServerIds列表中的服务器
-    
+
     通过在请求中增加opServerType【类型为str】参数，可以指定此请求仅转发给服务器类型为opServerType的服务器
-    
+
     当此API注册的url和【masterHttp.RegisterMasterHttp】注册的url相同时，两者只能保留一个，晚执行的语句会顶替掉先执行语句的回调
-    
-    
+
+
 - 示例
 
 ```python
@@ -309,7 +309,7 @@ class ServiceApiSys(ServiceSystem):
         def __init__(self,namespace,systemName):
                 ServiceSystem.__init__(self, namespace, systemName)
                 serviceNetgameApi.RegisterOpCommand("/api/game-url-test1", self.OnServiceUrlTest1)
-        
+
         def OnServiceUrlTest1(self, clientId, requestData):
                 print "OnServiceUrlTest1", clientId, requestData
                 # 返回处理结果
@@ -321,7 +321,7 @@ class ServiceApiSys(ServiceSystem):
 - 描述
 
     发送HTTP的失败Response，支持异步返回，返回时候指定请求传入的clientId
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -340,7 +340,7 @@ class ServiceApiSys(ServiceSystem):
         def __init__(self,namespace,systemName):
                 ServiceSystem.__init__(self, namespace, systemName)
                 serviceNetgameApi.RegisterOpCommand("/api/game-url-test3", self.OnServiceUrlTest3)
-        
+
         def OnServiceUrlTest3(self, clientId, requestData):
                 print "OnServiceUrlTest3", clientId, requestData
                 # 返回处理结果
@@ -352,7 +352,7 @@ class ServiceApiSys(ServiceSystem):
 - 描述
 
     发送HTTP的成功Response，支持异步返回，返回时候指定请求传入的clientId
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -370,7 +370,7 @@ class ServiceApiSys(ServiceSystem):
         def __init__(self,namespace,systemName):
                 ServiceSystem.__init__(self, namespace, systemName)
                 serviceNetgameApi.RegisterOpCommand("/api/game-url-test1", self.OnServiceUrlTest1)
-        
+
         def OnServiceUrlTest1(self, clientId, requestData):
                 print "OnServiceUrlTest1", clientId, requestData
                 # 返回处理结果
@@ -382,7 +382,7 @@ class ServiceApiSys(ServiceSystem):
 - 描述
 
     注销一个已注册的HTTP接口
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -399,10 +399,10 @@ class ServiceApiSys(ServiceSystem):
         def __init__(self,namespace,systemName):
                 ServiceSystem.__init__(self, namespace, systemName)
                 serviceNetgameApi.RegisterOpCommand("/api/game-url-test1", self.OnServiceUrlTest1)
-        
+
         def Destroy(self):
                 serviceNetgameApi.UnRegisterOpCommand("/api/game-url-test1")
-        
+
         def OnServiceUrlTest1(self, clientId, requestData):
                 print "OnServiceUrlTest1", clientId, requestData
                 # 返回处理结果
@@ -419,7 +419,7 @@ class ServiceApiSys(ServiceSystem):
 - 描述
 
     注册一个新的HTTP接口
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -430,6 +430,15 @@ class ServiceApiSys(ServiceSystem):
 - 返回值
 
     无
+- 备注
+
+    若您在机器上架设了自建服务来访问service的http服务（插件通过api调用不需要），那么需要遵循以下规范：
+    1. 登录机器，到master目录下打开netgame_common.json，复制apollo_secret的值（该secret不同网络服不一样，不同阶段也不一样，生成之后不会改变）
+    2. 在http请求头中添加Request-Timestamp字段，值为当前的秒时间戳
+    3. 在http请求头中添加Request-Sign字段，值为md5(请求方法+url+请求参数+上述时间戳+apollo_secret的值)
+    例如md5(POST/netease/hunter-debug{}1665561365bJetTlJRa60H2Pt3qL6duTIGu0MypJuh) = 84b9ffadbf797cc9d2772fdbc86f411b
+
+
 - 示例
 
 ```python
@@ -456,7 +465,7 @@ class HttpHandler(object):
 - 描述
 
     给master发送http请求
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -483,7 +492,7 @@ serviceHttp.SendHttpRequestToMaster(url, json.dumps(params))
 - 描述
 
     发送HTTP的Response。支持异步返回，返回时指定输入clientId
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -524,7 +533,7 @@ class HttpHandler(object):
 - 描述
 
     重置服务器
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -535,13 +544,13 @@ class HttpHandler(object):
     无
 - 备注
 
-    
+
     注意，对于生存服，若使用了存档A，则重置后仍使用存档A，且重置过程中不会保存地图。
-    
-    
+
+
     若需要重置游戏服GameA，使用方法：重置前确保玩家退出对应GameA，重置过程不允许玩家进入GameA，GameA重置完毕后GameA可以发消息告知master或service，告知GameA就绪，然后玩家可以进入GameA了
-    
-    
+
+
 - 示例
 
 ```python
@@ -557,7 +566,7 @@ serverManager.ResetServer(4000)
 - 描述
 
     根据类型获取服务器id列表
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -581,7 +590,7 @@ serverIds = serverManager.GetServerIdsByServerType("lobby")
 - 描述
 
     获取服务器的协议版本号。多协议版本引擎中（比如同时支持1.14客户端和1.15客户端），需要把客户端分配到相同协议版本的lobby/game中
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -604,7 +613,7 @@ version = serverManager.GetServerProtocolVersion(6000)
 - 描述
 
     获取服务器类型
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |
@@ -627,7 +636,7 @@ serverType = serverManager.GetServerType(6000)
 - 描述
 
     获取所有lobby/game服务器的状态。只有状态1表示服务器正常服务，其他状态表示服务器不能对外服务
-    
+
 - 返回值
 
     | 数据类型 | 说明 |
@@ -645,7 +654,7 @@ statusDict = serverManager.GetServersStatus()
 - 描述
 
     service是否与lobby/game/proxy建立连接
-    
+
 - 参数
 
     | 参数名 | 数据类型 | 说明 |

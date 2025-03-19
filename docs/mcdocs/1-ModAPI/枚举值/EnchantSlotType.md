@@ -44,6 +44,7 @@ class EnchantSlotType(object):
 	COSMETIC_HEAD = 262144		# 骷髅模型/凋零骷髅模型/模型/僵尸模型/龙的模型/爬行者的模型/雕刻南瓜
 	COMPASS = 524288			# 指南针
 	MUSHROOM_STICK = 1048576	# 诡异菌钓竿
+	BRUSH = 2097152				# 刷子
 
 ``` 
 
