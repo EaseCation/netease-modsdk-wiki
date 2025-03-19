@@ -73,137 +73,133 @@ mentions:
 ```
 :::
 
-## Properties
+## 属性 Properties
 
-### Control
+### 控制属性 (基础属性)
 
-|       Property Name       |         Type         | Default Value |                                                                                            Description                                                                                             |
-| ------------------------- | :------------------: | :-----------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| visible                   |       boolean        |    `true`     | If the UI element should be visible                                                                                                                                                                |
-| enabled                   |       boolean        |    `true`     | If true and if the UI element or any of its children have the locked state then they will be in the locked                                                                                         |
-| layer                     |         int          |      `0`      | Z-Index/Layer (like zindex in CSS) relative to parent element. Higher layers will render above                                                                                                     |
-| alpha                     |        float         |     `1.0`     | Alpha/transparency of the element. It will only affect the UI element. Its children will be unaffected. If you want the alpha to apply for both the parent and children also use `propagate_alpha` |
-| propagate_alpha           |       boolean        |    `false`    | If `alpha` should not only apply to the parent if possible but also all its children                                                                                                               |
-| clips_children            |       boolean        |    `false`    | Cuts off visually and interactively everything beyond the bounderies of the UI element                                                                                                             |
-| allow_clipping            |       boolean        |    `true`     | If `clips_children` works in the UI element. Otherwise, it won't have any effect                                                                                                                   |
-| clip_offset               |    Vector [x, y]     |   `[0, 0]`    | Offset from the start of the clipping                                                                                                                                                              |
-| clip_state_change_event   |        string        |               |                                                                                                                                                                                                    |
-| enable_scissor_test       |       boolean        |               | [https://www.khronos.org/opengl/wiki/Scissor_Test](https://www.khronos.org/opengl/wiki/Scissor_Test)                                                                                               |
-| property_bag              |        object        |               | [Property bag](/json-ui/json-ui-documentation#property-bag) contains properties/variables that are more related with the data than the actually structure and look of the UI element               |
-| selected                  |       boolean        |               | If the text box is selected by default                                                                                                                                                             |
-| use_child_anchors         |       boolean        |    `false`    | Use the `anchor_from` and`anchor_to` of the child of the UI element                                                                                                                                |
-| controls                  |        array         |               | For adding children to the element                                                                                                                                                                 |
-| anims                     |       string[]       |               | Array of the animation names                                                                                                                                                                       |
-| disable_anim_fast_forward |       boolean        |               |                                                                                                                                                                                                    |
-| animation_reset_name      |        string        |               |                                                                                                                                                                                                    |
-| ignored                   |       boolean        |    `false`    | If the UI element should be ignored                                                                                                                                                                |
-| variables                 |   array or object    |               | A bunch of conditions that change the variables values                                                                                                                                             |
-| modifications             |        array         |               | Allows to modify the UI files of resource packs below (vanilla being the most bottom one)                                                                                                          |
-| grid_position             | Vector [row, column] |               | Position that the control will take inside the grid. This also allows to modify specific grid items of a hardcoded grid                                                                            |
-| collection_index          |         int          |               | Index that the control takes in the collection                                                                                                                                                     |
+|         属性名称          |        类型        |  默认值  |                                                                                            描述                                                                                            |
+| ------------------------- | :----------------: | :------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| visible                   |      布尔值        |  `true`  | 是否显示该UI元素                                                                                                                                                                         |
+| enabled                   |      布尔值        |  `true`  | 当设置为true时，如果UI元素或其子元素处于锁定状态，则会保持锁定                                                                                                                           |
+| layer                     |       整数         |   `0`    | Z轴层级（类似CSS的z-index），数值越大越靠前显示                                                                                                                                          |
+| alpha                     |      浮点数        |  `1.0`   | 元素透明度（仅影响当前元素）。如需同时影响子元素需启用`propagate_alpha`                                                                                                                  |
+| propagate_alpha           |      布尔值        | `false`  | 是否将透明度同时应用于所有子元素                                                                                                                                                         |
+| clips_children            |      布尔值        | `false`  | 是否裁剪超出元素边界的子元素内容（视觉与交互）                                                                                                                                           |
+| allow_clipping            |      布尔值        |  `true`  | 是否启用子元素裁剪功能                                                                                                                                                                   |
+| clip_offset               |   向量 [x, y]      | `[0, 0]` | 裁剪起始偏移量                                                                                                                                                                           |
+| clip_state_change_event   |       字符串       |          |                                                                                                                                                                                          |
+| enable_scissor_test       |      布尔值        |          | [Scissor Test功能说明](https://www.khronos.org/opengl/wiki/Scissor_Test)                                                                                                                 |
+| property_bag              |       对象         |          | [属性包](/json-ui/json-ui-documentation#property-bag)，存放与UI元素数据结构相关的属性                                                                                                    |
+| selected                  |      布尔值        |          | 文本框是否默认被选中                                                                                                                                                                     |
+| use_child_anchors         |      布尔值        | `false`  | 是否使用子元素的锚点设置                                                                                                                                                                 |
+| controls                  |       数组         |          | 子元素列表                                                                                                                                                                               |
+| anims                     |     字符串数组     |          | 动画名称列表                                                                                                                                                                             |
+| disable_anim_fast_forward |      布尔值        |          |                                                                                                                                                                                          |
+| animation_reset_name      |       字符串       |          |                                                                                                                                                                                          |
+| ignored                   |      布尔值        | `false`  | 是否忽略该UI元素                                                                                                                                                                         |
+| variables                 |  数组或对象  |          | 用于动态修改变量值的条件集合                                                                                                                                                             |
+| modifications             |       数组         |          | 允许修改底层资源包的UI文件（原版资源包在最底层）                                                                                                                                         |
+| grid_position             | 向量 [行, 列] |          | 元素在网格布局中的位置，可用于修改预设网格的特定项                                                                                                                                       |
+| collection_index          |       整数         |          | 元素在集合中的索引位置                                                                                                                                                                   |
 
-#### Legacy (no longer works)
+#### 已弃用属性
 
-| Property Name |   Type   | Default Value |                                                                                     Description                                                                                     |
-| ------------- | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| z_order       |   int    |       0       | First version of the `layer` property                                                                                                                                              |
-| scroll_report | string[] |               | Array of the name of the controls to notify when content inside of the scroll panel changes                                                                                         |
-| alignment     |   enum   |               | Possible values: <br> `top_left` <br> `top_middle` <br> `top_right` <br> `left_middle` <br> `center` <br> `right_middle` <br> `bottom_left` <br> `bottom_middle` <br> `bottom_right` |
+| 属性名称     |   类型   | 默认值 |                                                                     描述                                                                     |
+| ------------ | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| z_order      |   整数   |   0    | `layer`属性的早期版本                                                                                                                      |
+| scroll_report | 字符串数组 |        | 当滚动面板内容变化时需要通知的控件名称列表                                                                                                  |
+| alignment    |   枚举   |        | 可选值：<br>`top_left`<br>`top_middle`<br>`top_right`<br>`left_middle`<br>`center`<br>`right_middle`<br>`bottom_left`<br>`bottom_middle`<br>`bottom_right` |
 
-### Layout
+### 布局属性 (panel)
 
-|       Property Name        |          Type          |      Default Value       |                                                                                                                                                                                                                                                                                                                                                                                                                    Description                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| -------------------------- | :--------------------: | :----------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| size                       | Vector [width, height] | `["default", "default"]` | Size of the UI element. <br> Possible values: <br> `"default"` (Default value which is `"100%"`) <br> `0` (Number of pixels) <br> `"0px"` (Number of pixels. It's the same as 0 but it's put inside a string with px at the end. It's used when you want to sum or subtract a percentage based value with a specific number of pixels. (e.g. `"75% + 12px"`)) <br> `"0%"` (Percentage of relative to the parent element) <br> `"0%c"` (Percentage of the total width/height of the element children) <br> `"0%cm"` (Percentage of the width/height of the biggest visible child of that element) <br> `"0%sm"` (Percentage of the width/height of the sibling element) <br> `"0%y"` (Percentage of the element height) <br> `"0%x"` (Percentage of the element width) <br> `"fill"` (Expands to the remaining width/height of the parent element) |
-| max_size                   | Vector [width, height] | `["default", "default"]` | Maximum size of the UI element can have                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| min_size                   | Vector [width, height] | `["default", "default"]` | Minimum size of the UI element can have                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| offset                     |     Vector [x, y]      |         `[0, 0]`         | Position of the UI element relative to the parent UI element. It's TopLeft based meaning the coordinates [0, 0] start at the top left of the screen. <br> `10`- pixels <br> `"10px"` - pixels <br> `"50%"` - Width/height of the parent element <br> `"50%x"` - Width of the element <br> `"50%y"` - Height of the element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| anchor_from                |          enum          |         `center`         | Anchor point in the parent element. <br> Possible values: <br> `top_left` <br> `top_middle` <br> `top_right` <br> `left_middle` <br> `center` <br> `right_middle` <br> `bottom_left` <br> `bottom_middle` <br> `bottom_right`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| anchor_to                  |          enum          |         `center`         | Anchor point in the element. <br> Possible values: <br> `top_left` <br> `top_middle` <br> `top_right` <br> `left_middle` <br> `center` <br> `right_middle` <br> `bottom_left` <br> `bottom_middle` <br> `bottom_right`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| inherit_max_sibling_width  |        boolean         |         `false`          | Use the maximum width of the sibling element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| inherit_max_sibling_height |        boolean         |         `false`          | Use the maximum height of the sibling element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| use_anchored_offset        |        boolean         |                          |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| contained                  |        boolean         |                          |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| draggable                  |          enum          |                          | Makes the element draggable through cursor. The element should be able to accept input in order to be draggable (`input_panel`, `button`, etc.) and must have the required button mappings. <br> Possible values: `vertical`, `horizontal` and `both`    |
-| follows_cursor             |        boolean         |         `false`          | Follows the cursor                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|           属性名称           |          类型           |      默认值      |                                                                                                                                                                                                                                                                                                                                                     描述                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------- | :---------------------: | :--------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| size                         | 向量 [宽度, 高度] | `["default", "default"]` | 元素尺寸：<br>`"default"`（默认值即`"100%"`）<br>`0`（像素值）<br>`"0px"`（带px后缀的像素值，支持百分比与像素混合运算如`"75% + 12px"`）<br>`"0%"`（相对父元素百分比）<br>`"0%c"`（相对子元素总尺寸百分比）<br>`"0%cm"`（相对最大可见子元素百分比）<br>`"0%sm"`（相对兄弟元素百分比）<br>`"0%y"`（相对元素高度百分比）<br>`"0%x"`（相对元素宽度百分比）<br>`"fill"`（填充父元素剩余空间） |
+| max_size                     | 向量 [宽度, 高度] | `["default", "default"]` | 元素最大尺寸                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| min_size                     | 向量 [宽度, 高度] | `["default", "default"]` | 元素最小尺寸                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| offset                       |     向量 [x, y]      |     `[0, 0]`     | 相对于父元素的偏移位置（基于左上角坐标系）：<br>`10`-像素<br>`"10px"`-像素<br>`"50%"`-父元素尺寸百分比<br>`"50%x"`-元素宽度百分比<br>`"50%y"`-元素高度百分比                                                                                                                               |
+| anchor_from                  |         枚举          |     `center`     | 父元素锚点位置：<br>`top_left`<br>`top_middle`<br>`top_right`<br>`left_middle`<br>`center`<br>`right_middle`<br>`bottom_left`<br>`bottom_middle`<br>`bottom_right`                                                                                                                                                                                                                   |
+| anchor_to                    |         枚举          |     `center`     | 元素自身锚点位置：<br>`top_left`<br>`top_middle`<br>`top_right`<br>`left_middle`<br>`center`<br>`right_middle`<br>`bottom_left`<br>`bottom_middle`<br>`bottom_right`                                                                                                                                                                                                                |
+| inherit_max_sibling_width    |        布尔值         |      `false`     | 使用同级元素的最大宽度                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| inherit_max_sibling_height   |        布尔值         |      `false`     | 使用同级元素的最大高度                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| use_anchored_offset          |        布尔值         |                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| contained                    |        布尔值         |                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| draggable                    |         枚举          |                  | 使元素可通过光标拖动（需元素支持输入）。可能值：`vertical`（垂直）、`horizontal`（水平）、`both`（双向）                                                                                             |
+| follows_cursor               |        布尔值         |      `false`     | 是否跟随光标移动                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
-### Data Binding
+### 数据绑定
 
-| Property Name |                                           Type                                            | Default Value |                    Description                     |
-| ------------- | :---------------------------------------------------------------------------------------: | :-----------: | -------------------------------------------------- |
-| bindings      | Vector of [binding object](/json-ui/json-ui-documentation#data-binding-array-object) |               | Bind and work with hardcoded values in the element |
+| 属性名称 |                               类型                                | 默认值 |           描述           |
+| -------- | :---------------------------------------------------------------: | :----: | ----------------------- |
+| bindings | [绑定对象数组](/json-ui/json-ui-documentation#data-binding-array-object) |        | 将硬编码值绑定到元素属性 |
 
+#### 数据绑定对象
 
-#### Data Binding Array Object
+|        属性名称        |   类型   | 默认值  |                                                                       描述                                                                       |
+| ---------------------- | :------: | :-----: | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| ignored                | 布尔值  | `false` | 是否忽略该绑定                                                                                                                                  |
+| binding_type           |  枚举   |         | 可能值：<br>`global`<br>`view`<br>`collection`<br>`collection_details`<br>`none`                                                               |
+| binding_name           | 字符串  |         | 存储数据绑定名称或条件的值                                                                                                                      |
+| binding_name_override  | 字符串  |         | 应用`binding_name`值的属性名称                                                                                                                  |
+| binding_collection_name | 字符串  |         | 使用的集合名称                                                                                                                                  |
+| binding_collection_prefix | 字符串  |         |                                                                                                                                                 |
+| binding_condition      |  枚举   |         | 绑定条件：<br>`always`<br>`always_when_visible`<br>`visible`<br>`once`<br>`none`<br>`visibility_changed`                                       |
+| source_control_name    | 字符串  |         | 被观察的源控件名称                                                                                                                              |
+| source_property_name   | 字符串  |         | 源控件属性值                                                                                                                                    |
+| target_property_name   | 字符串  |         | 目标应用属性                                                                                                                                    |
+| resolve_sibling_scope  | 布尔值  |         | 是否允许在同级控件中解析`source_control_name`                                                                                                   |
 
-Data Binding allows to bind hardcoded values/variables to an element property.
+### 堆叠面板 (stack_panel)
 
-|       Property Name       |  Type   | Default Value |                                                                                Description                                                                                |
-| ------------------------- | :-----: | :-----------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ignored                   | boolean |    `false`    | If binding should be ignored                                                                                                                                              |
-| binding_type              |  enum   |               | Possible values: <br> `global` <br> `view` <br> `collection` <br> `collection_details` <br> `none`                                                                        |
-| binding_name              | string  |               | Stores the value of the data binding name or condition with it                                                                                                            |
-| binding_name_override     | string  |               | Name of the UI element property that will apply the stored value in `binding_name`                                                                                        |
-| binding_collection_name   | string  |               | Name of the collection of items to be used                                                                                                                                |
-| binding_collection_prefix | string  |               |                                                                                                                                                                           |
-| binding_condition         |  enum   |               | Condition for the data binding to happen. <br> Possible values: <br> `always` <br> `always_when_visible` <br> `visible` <br> `once` <br> `none` <br> `visibility_changed` |
-| source_control_name       | string  |               | Name of the UI element to observe its property values                                                                                                                     |
-| source_property_name      | string  |               | Store the value of the property value of the UI element refered in `source_control_name`                                                                                  |
-| target_property_name      | string  |               | The UI element property that the stored value in `source_property_name` will be applied to                                                                                |
-| resolve_sibling_scope     | boolean |               | If `true`, allows the selection of a sibling element in the same control instead of its child, for `source_control_name`                                                  |
+|  属性名称  |  类型  | 默认值   |                    描述                     |
+| ---------- | :----: | -------- | ------------------------------------------- |
+| orientation |  枚举  | `vertical` | 子元素排列方向：<br>`vertical`<br>`horizontal` |
 
-### Stack Panel
+### 网格布局 (grid)
 
-| Property Name | Type  | Default Value |                                                Description                                                 |
-| ------------- | :---: | :-----------: | ---------------------------------------------------------------------------------------------------------- |
-| orientation   | enum  |  `vertical`   | Direction the elements stack inside `stack_panel`. <br> Possible values: <br> `vertical` <br> `horizontal` |
+|        属性名称         |          类型           | 默认值 |                                     描述                                      |
+| ----------------------- | :---------------------: | ------ | ---------------------------------------------------------------------------- |
+| grid_dimensions         | 向量 [行数, 列数] |        | 网格的行列数                                                                 |
+| maximum_grid_items      |         整数          |        | 网格最大生成项数                                                             |
+| grid_dimension_binding  |         字符串         |        | 网格尺寸绑定名称                                                             |
+| grid_rescaling_type     |         枚举          |        | 网格缩放方向：<br>`vertical`<br>`horizontal`<br>`none`                       |
+| grid_fill_direction     |         枚举          |        | 填充方向：<br>`vertical`<br>`horizontal`<br>`none`                           |
+| grid_item_template      |         字符串         |        | 支持集合的控件模板（如`"common.container_item"`、`"inventory_items"`等）     |
+| precached_grid_item_count |         整数          |        |                                                                              |
 
-### Grid
+### 文本属性 (Label)
 
-|       Property Name       |          Type          | Default Value |                                                             Description                                                             |
-| ------------------------- | :--------------------: | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| grid_dimensions           | Vector [rows, columns] |               | Number of columns and rows the grid has                                                                                             |
-| maximum_grid_items        |          int           |               | Maximum number of items the grid will generate                                                                                      |
-| grid_dimension_binding    |         string         |               | Binding name for grid dimensions                                                                                                    |
-| grid_rescaling_type       |          enum          |               | Grid rescaling orientation. <br> Possible values: <br> `vertical` <br> `horizontal` <br> `none`                                     |
-| grid_fill_direction       |          enum          |               | Possible values: <br> `vertical` <br> `horizontal` <br> `none`                                                                      |
-| grid_item_template        |         string         |               | An element capable of handling collections <br> (e.g. `"common.container_item"`, `"container_items"`, `"inventory_items"` and etc.) |
-| precached_grid_item_count |          int           |               |                                                                                                                                     |
+|         属性名称          |       类型        |    默认值    |                                                                 描述                                                                 |
+| ------------------------- | :--------------: | :----------: | ----------------------------------------------------------------------------------------------------------------------------------- |
+| text                      |      字符串      |              | 文本内容                                                                                                                            |
+| color                     | 向量 [r, g, b]  | `[1.0, 1.0, 1.0]` | 文本颜色（RGB值0.0-1.0）                                                                                |
+| locked_color              | 向量 [r, g, b]  |              | 父元素禁用时的文本颜色                                                                                                              |
+| shadow                    |      布尔值      |   `false`    | 是否显示文字阴影                                                                                                                    |
+| hide_hyphen               |      布尔值      |   `false`    | 是否隐藏换行连字符                                                                                                                  |
+| notify_on_ellipses        |    字符串数组    |              | 当文本出现省略号时需要通知的控件列表                                                                                                |
+| enable_profanity_filter   |      布尔值      |   `false`    | 是否启用脏话过滤                                                                                                                    |
+| locked_alpha              |     浮点数       |              | 父元素禁用时的透明度                                                                                                                |
+| font_size                 |      枚举       |   `normal`   | 字号：<br>`small`<br>`normal`<br>`large`<br>`extra_large`                                                                          |
+| font_scale_factor         |     浮点数       |    `1.0`     | 文本缩放比例                                                                                                                        |
+| localize                  |      布尔值      |   `false`    | 是否启用文本本地化                                                                                                                  |
+| line_padding              |      数值       |              | 行间距                                                                                                                              |
+| font_type                 |      枚举       |  `default`   | 字体类型：<br>`default`<br>`rune`<br>`unicode`<br>`smooth`<br>`MinecraftTen`<br>或自定义字体                                       |
+| backup_font_type          |      枚举       |  `default`   | 备用字体类型                                                                                                                        |
+| text_alignment            |      枚举       |              | 文本对齐方式（未设置时根据锚点自动调整）                                                                                            |
 
-### Text
+#### 已弃用属性
 
-|      Property Name      |       Type       |   Default Value   |                                                      Description                                                      |
-| ----------------------- | :--------------: | :---------------: | --------------------------------------------------------------------------------------------------------------------- |
-| text                    |      string      |                   | Text content                                                                                                          |
-| color                   | Vector [r, g, b] | `[1.0, 1.0, 1.0]` | Text color. RGB value from 0.0 to 1.0                                                                                                          |
-| locked_color            | Vector [r, g, b] |                   | Text color when a parent has `enabled: false`                                                                         |
-| shadow                  |     boolean      |      `false`      | Text shadow                                                                                                           |
-| hide_hyphen             |     boolean      |      `false`      | Hide hyphen caused by word breaking                                                                                   |
-| notify_on_ellipses      |     string[]     |                   | Array of names of the controls to notify when text gets or loses ellipses                                             |
-| enable_profanity_filter |     boolean      |      `false`      | If "bad" words should be censored                                                                                     |
-| locked_alpha            |      float       |                   | Alpha/transparency of label when a parent has `enabled: false`                                                        |
-| font_size               |       enum       |     `normal`      | Size of the text. <br> Possible values: <br> `small` <br> `normal` <br> `large` <br> `extra_large`                    |
-| font_scale_factor       |      float       |       `1.0`       | Scale of the text                                                                                                     |
-| localize                |     boolean      |      `false`      | If ```text``` should be able to be translated                                                                         |
-| line_padding            |      number      |                   | Space between lines                                                                                                   |
-| font_type               |       enum       |     `default`     | Font of the text. <br> Possible values: <br> `default` <br> `rune` <br> `unicode` <br> `smooth` <br> `MinecraftTen` <br> or any other custom font                                                                                                      |
-| backup_font_type        |       enum       |     `default`     | Font used if `font_type` didn't work                                                                                  |
-| text_alignment          |       enum       |                   | Text alignment direction. If it's not defined it will adjust automatically based on `anchor_from` and ```anchor_to``` |
-
-#### Legacy (no longer works)
-
-| Property Name |  Type   | Default Value |                             Description                             |
-| ------------- | :-----: | :-----------: | ------------------------------------------------------------------- |
-| wrap          | boolean |     `false`     | Break text into lines if text is bigger than width of the element |
-| clip          | boolean |     `false`     |                                                                     |
+| 属性名称 |  类型   | 默认值  |              描述              |
+| -------- | :-----: | :-----: | ------------------------------ |
+| wrap     | 布尔值 | `false` | 是否自动换行（已失效）         |
+| clip     | 布尔值 | `false` | 是否裁剪文本（已失效）         |
 
 <br>
 
-Use of `notify_on_ellipses`. Mostly used with hardcoded texts.
+`notify_on_ellipses`使用示例（常用于硬编码文本）：
 
-<CodeHeader>RP/ui/example_file.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/ui/example_file.json]
 {
   "label": {
     ...
@@ -224,101 +220,100 @@ Use of `notify_on_ellipses`. Mostly used with hardcoded texts.
   }
 }
 ```
+:::
 
-### Sprite
+### 精灵属性 (sprite)
 
-|        Property Name        |                     Type                      | Default Value |                                                                                       Description                                                                                        |
-| --------------------------- | :-------------------------------------------: | :-----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| texture                     |                    string                     |               | Image path starting from pack root. (e.g. `"textures/ui/White"`)                                                                                                                         |
-| allow_debug_missing_texture |                    boolean                    |    `true`     | Display the missing_texture if the texture is not found                                                                                                                                  |
-| uv                          |                 Vector [u, v]                 |               | Start position of the texture mapping                                                                                                                                                    |
-| uv_size                     |            Vector [width, height]             |               | Size of the texture mapping                                                                                                                                                              |
-| texture_file_system         |                    string                     |`InUserPackage`| Source to get the texture.  <br> Possible values: <br> `InUserPackage` <br> `InAppPackage` <br> `RawPath` <br> `RawPersistent` <br> `InSettingsDir` <br> `InExternalDir` <br> `InServerPackage` <br> `InDataDir` <br> `InUserDir` <br> `InWorldDir` <br> `StoreCache` <br> Usage is Unknown |
-| nineslice_size              | int, Vector [x, y] or Vector [x0, y0, x1, y1] |               | 9-slice. A method that divides an texture into 9 pieces. When resized the corners will stay in place and the rest will stretch                                                           |
-| tiled                       |                boolean or enum                |               | If the texture will tile when the size of the UI element is bigger than the texture size. <br> Possible values: <br> `true`/`false` <br> `x` <br> `y`                                    |
-| tiled_scale                 |                Vector [sX, sY]                |    `false`    | Scale of the tile textures                                                                                                                                                               |
-| clip_direction              |                     enum                      |               | Start point position for the `clip_ratio`. If `down`, the image will begin to appear from the bottom. <br> Possible values: <br> `left` <br> `right` <br> `up` <br> `down` <br> `center` |
-| clip_ratio                  |                     float                     |               | How much to clip. From 0.0 to 1.0                                                                                                                                                        |
-| clip_pixelperfect           |                    boolean                    |               | If the clip should try to be the most pixel accurate possible                                                                                                                            |
-| keep_ratio                  |                    boolean                    |    `true`    | Keep ratio when resizing image                                                                                                                                                           |
-| bilinear                    |                    boolean                    |    `false`    | Use the bilinear function when resizing the image                                                                                                                                        |
-| fill                        |                    boolean                    |    `false`    | Scratch the image to the size                                                                                                                                                            |
-| $fit_to_width               |                    boolean                    |               |                                                                                                                                                                                          |
-| zip_folder                  |                    string                     |               |                                                                                                                                                                                          |
-| grayscale                   |                    boolean                    |    `false`    | Render image in black and white                                                                                                                                                          |
-| force_texture_reload        |                    boolean                    |               | Reload image when the texture path is changed                                                                                                                                            |
-| base_size                   |            Vector [width, height]             |               |                                                                                                                                                                                          |
+|          属性名称          |              类型              |   默认值    |                                                                                         描述                                                                                         |
+| ------------------------- | :---------------------------: | :--------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| texture                   |             字符串             |            | 图片路径（从资源包根目录开始，如`"textures/ui/White"`）                                                                                                                            |
+| allow_debug_missing_texture |             布尔值             |   `true`   | 当纹理缺失时显示调试纹理                                                                                                                           |
+| uv                        |         向量 [u, v]          |            | 纹理映射起始坐标                                                                                                                          |
+| uv_size                   |      向量 [宽, 高]        |            | 纹理映射尺寸                                                                                                                              |
+| texture_file_system       |             字符串             |`InUserPackage`| 纹理来源：<br>`InUserPackage`<br>`InAppPackage`<br>`RawPath`<br>`RawPersistent`<br>`InSettingsDir`<br>`InExternalDir`<br>`InServerPackage`<br>`InDataDir`<br>`InUserDir`<br>`InWorldDir`<br>`StoreCache` |
+| nineslice_size            | 整数/向量[x,y]/向量[x0,y0,x1,y1] |            | 九宫格切割尺寸（保持四角不拉伸）                                                                                                            |
+| tiled                     |          布尔值或枚举           |            | 平铺方式：<br>`true`/`false`<br>`x`<br>`y`                                                                                                |
+| tiled_scale               |       向量 [sX, sY]         |   `false`   | 平铺纹理缩放比例                                                                                                                          |
+| clip_direction            |             枚举              |            | 裁剪起始方向：<br>`left`<br>`right`<br>`up`<br>`down`<br>`center`                                                                        |
+| clip_ratio                |            浮点数             |            | 裁剪比例（0.0-1.0）                                                                                                                     |
+| clip_pixelperfect         |             布尔值             |            | 是否启用像素级精确裁剪                                                                                                                    |
+| keep_ratio                |             布尔值             |   `true`    | 调整尺寸时保持宽高比                                                                                                                      |
+| bilinear                  |             布尔值             |   `false`   | 是否使用双线性过滤                                                                                                                        |
+| fill                      |             布尔值             |   `false`   | 是否拉伸填充                                                                                                                              |
+| $fit_to_width             |             布尔值             |            |                                                                                                                                          |
+| zip_folder                |             字符串             |            |                                                                                                                                          |
+| grayscale                 |             布尔值             |   `false`   | 是否显示为灰度图像                                                                                                                        |
+| force_texture_reload      |             布尔值             |            | 纹理路径变更时强制重载                                                                                                                    |
+| base_size                 |      向量 [宽, 高]        |            |                                                                                                                                          |
 
-To use clipping, bind a `#*_ratio` binding name to a `#clip-ratio` property with binding condition `"always"`. Progress arrow and fuel images in furnace UI work like this.
+使用裁剪功能时，需将`#*_ratio`绑定到`#clip-ratio`属性并设置条件为`"always"`。熔炉UI中的进度箭头和燃料图标即采用此机制。
 
-### Input
+### 输入属性 (input)
 
-|           Property Name            |                                            Type                                             | Default Value | Description |
-| ---------------------------------- | :-----------------------------------------------------------------------------------------: | :-----------: | ----------- |
-| button_mappings                    | Vector of [mapping object](/json-ui/json-ui-documentation#button-mapping-array-object) |               |             |
-| modal                              |                                           boolean                                           |               |             |
-| inline_modal                       |                                           boolean                                           |               |             |
-| always_listen_to_input             |                                           boolean                                           |               |             |
-| always_handle_pointer              |                                           boolean                                           |               |             |
-| always_handle_controller_direction |                                           boolean                                           |               |             |
-| hover_enabled                      |                                           boolean                                           |               |             |
-| prevent_touch_input                |                                           boolean                                           |               |             |
-| consume_event                      |                                           boolean                                           |               |             |
-| consume_hover_events               |                                           boolean                                           |               |             |
-| gesture_tracking_button            |                                           string                                            |               |             |
+|            属性名称            |                                 类型                                  | 默认值 | 描述 |
+| ----------------------------- | :-------------------------------------------------------------------: | :----: | ---- |
+| button_mappings               | [映射对象数组](/json-ui/json-ui-documentation#button-mapping-array-object) |        |      |
+| modal                         |                                  布尔值                                  |        |      |
+| inline_modal                  |                                  布尔值                                  |        |      |
+| always_listen_to_input        |                                  布尔值                                  |        |      |
+| always_handle_pointer         |                                  布尔值                                  |        |      |
+| always_handle_controller_direction |                                  布尔值                                  |        |      |
+| hover_enabled                 |                                  布尔值                                  |        |      |
+| prevent_touch_input           |                                  布尔值                                  |        |      |
+| consume_event                 |                                  布尔值                                  |        |      |
+| consume_hover_events          |                                  布尔值                                  |        |      |
+| gesture_tracking_button       |                                  字符串                                  |        |      |
 
-#### Button Mapping Array Object
+#### 按钮映射对象 (Button Mapping Array Object)
 
-|          Property Name           |  Type   | Default Value |                                    Description                                     |
-| -------------------------------- | :-----: | :-----------: | ---------------------------------------------------------------------------------- |
-| ignored                          | boolean |    `false`    | If mapping should be ignored                                                       |
-| from_button_id                   | string  |               | ID of the action that fires the event                                              |
-| to_button_id                     | string  |               | ID of the action to be executed when event is fired                                |
-| mapping_type                     |  enum   |               | Possible values: <br> `global` <br> `pressed` <br> `double_pressed` <br> `focused` |
-| scope                            |  enum   |               | Possible values: <br> `view` <br> `controller`                                     |
-| input_mode_condition             |  enum   |               | Possible values: <br> `not_gaze` <br> `not_gamepad` <br> `gamepad_and_not_gaze`    |
-| ignore_input_scope               | boolean |               |                                                                                    |
-| consume_event                    | boolean |               |                                                                                    |
-| handle_select                    | boolean |               |                                                                                    |
-| handle_deselect                  | boolean |               |                                                                                    |
-| button_up_right_of_first_refusal | boolean |               |                                                                                    |
+|          属性名称          |  类型   | 默认值  |                                      描述                                      |
+| ------------------------- | :-----: | :-----: | ----------------------------------------------------------------------------- |
+| ignored                   | 布尔值 | `false` | 是否忽略该映射                                                                |
+| from_button_id            | 字符串 |         | 触发事件的原始按钮ID                                                          |
+| to_button_id              | 字符串 |         | 事件触发后执行的目标按钮ID                                                    |
+| mapping_type              |  枚举   |         | 可能值：<br>`global`<br>`pressed`<br>`double_pressed`<br>`focused`            |
+| scope                     |  枚举   |         | 可能值：<br>`view`<br>`controller`                                            |
+| input_mode_condition      |  枚举   |         | 可能值：<br>`not_gaze`<br>`not_gamepad`<br>`gamepad_and_not_gaze`             |
+| ignore_input_scope        | 布尔值 |         |                                                                               |
+| consume_event             | 布尔值 |         |                                                                               |
+| handle_select             | 布尔值 |         |                                                                               |
+| handle_deselect           | 布尔值 |         |                                                                               |
+| button_up_right_of_first_refusal | 布尔值 |         |                                                                               |
 
-### Focus
+### 焦点属性 (Focus)
 
-|        Property Name         |                                                     Type                                                      | Default Value |                                                                                           Description                                                                                           |
-| ---------------------------- | :-----------------------------------------------------------------------------------------------------------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| default_focus_precedence     |                                                      int                                                      |               |                                                                                                                                                                                                 |
-| focus_enabled                |                                                    boolean                                                    |               | If the arrow keys or controller can focus the element                                                                                                                                           |
-| focus_wrap_enabled           |                                                    boolean                                                    |               |                                                                                                                                                                                                 |
-| focus_magnet_enabled         |                                                    boolean                                                    |               |                                                                                                                                                                                                 |
-| focus_identifier             |                                                    string                                                     |               | Focus identifier for this element                                                                                                                                                               |
-| focus_change_down            |                                                    string                                                     |               | Identifier (`focus_identifier`) of the focusable element that will recieve focus when on button.menu_down. If you want to prevent the focus to escape from the bottom use `FOCUS_OVERRIDE_STOP` |
-| focus_change_up              |                                                    string                                                     |               | Identifier (`focus_identifier`) of the focusable element that will recieve focus when on button.menu_up. If you want to prevent the focus to escape from the top use `FOCUS_OVERRIDE_STOP`      |
-| focus_change_left            |                                                    string                                                     |               | Identifier (`focus_identifier`) of the focusable element that will recieve focus when on button.menu_left. If you want to prevent the focus to escape from the left use `FOCUS_OVERRIDE_STOP`   |
-| focus_change_right           |                                                    string                                                     |               | Identifier (`focus_identifier`) of the focusable element that will recieve focus when on button.menu_right. If you want to prevent the focus to escape from the right use `FOCUS_OVERRIDE_STOP` |
-| focus_mapping                |                                                     array                                                     |               |                                                                                                                                                                                                 |
-| focus_container              |                                                    boolean                                                    |               |                                                                                                                                                                                                 |
-| use_last_focus               |                                                    boolean                                                    |               |                                                                                                                                                                                                 |
-| focus_navigation_mode_left   |                                                     enum                                                      |               | Possible values: `none` <br> `stop` <br> `custom` <br> `contained`                                                                                                                              |
-| focus_navigation_mode_right  |                                                     enum                                                      |               | Possible values: `none` <br> `stop` <br> `custom` <br> `contained`                                                                                                                              |
-| focus_navigation_mode_down   |                                                     enum                                                      |               | Possible values: `none` <br> `stop` <br> `custom` <br> `contained`                                                                                                                              |
-| focus_navigation_mode_up     |                                                     enum                                                      |               | Possible values: `none` <br> `stop` <br> `custom` <br> `contained`                                                                                                                              |
-| focus_container_custom_left  | Vector of [focus container custom object](/json-ui/json-ui-documentation#focus-container-custom-array-object) |               |                                                                                                                                                                                                 |
-| focus_container_custom_right | Vector of [focus container custom object](/json-ui/json-ui-documentation#focus-container-custom-array-object) |               |                                                                                                                                                                                                 |
-| focus_container_custom_down  | Vector of [focus container custom object](/json-ui/json-ui-documentation#focus-container-custom-array-object) |               |                                                                                                                                                                                                 |
-| focus_container_custom_up    | Vector of [focus container custom object](/json-ui/json-ui-documentation#focus-container-custom-array-object) |               |                                                                                                                                                                                                 |
+|          属性名称          |                                   类型                                    | 默认值 |                                                                             描述                                                                             |
+| ------------------------- | :-----------------------------------------------------------------------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| default_focus_precedence  |                                    整数                                    |        |                                                                                                                                                             |
+| focus_enabled             |                                   布尔值                                   |        | 是否允许通过方向键或手柄聚焦                                                                                                                                |
+| focus_wrap_enabled        |                                   布尔值                                   |        |                                                                                                                                                             |
+| focus_magnet_enabled      |                                   布尔值                                   |        |                                                                                                                                                             |
+| focus_identifier          |                                   字符串                                   |        | 焦点标识符                                                                                                                                                  |
+| focus_change_down         |                                   字符串                                   |        | 按下方向键下时接收焦点的元素标识符（使用`FOCUS_OVERRIDE_STOP`可阻止焦点移出底部）                                                                           |
+| focus_change_up           |                                   字符串                                   |        | 按下方向键上时接收焦点的元素标识符（使用`FOCUS_OVERRIDE_STOP`可阻止焦点移出顶部）                                                                           |
+| focus_change_left         |                                   字符串                                   |        | 按下方向键左时接收焦点的元素标识符（使用`FOCUS_OVERRIDE_STOP`可阻止焦点移出左侧）                                                                           |
+| focus_change_right        |                                   字符串                                   |        | 按下方向键右时接收焦点的元素标识符（使用`FOCUS_OVERRIDE_STOP`可阻止焦点移出右侧）                                                                           |
+| focus_mapping             |                                   数组                                    |        |                                                                                                                                                             |
+| focus_container           |                                   布尔值                                   |        |                                                                                                                                                             |
+| use_last_focus            |                                   布尔值                                   |        |                                                                                                                                                             |
+| focus_navigation_mode_left |                                   枚举                                    |        | 可能值：<br>`none`<br>`stop`<br>`custom`<br>`contained`                                                                                                     |
+| focus_navigation_mode_right |                                   枚举                                    |        | 可能值：<br>`none`<br>`stop`<br>`custom`<br>`contained`                                                                                                     |
+| focus_navigation_mode_down |                                   枚举                                    |        | 可能值：<br>`none`<br>`stop`<br>`custom`<br>`contained`                                                                                                     |
+| focus_navigation_mode_up  |                                   枚举                                    |        | 可能值：<br>`none`<br>`stop`<br>`custom`<br>`contained`                                                                                                     |
+| focus_container_custom_left | [焦点容器对象数组](/json-ui/json-ui-documentation#focus-container-custom-array-object) |        |                                                                                                                                                             |
+| focus_container_custom_right | [焦点容器对象数组](/json-ui/json-ui-documentation#focus-container-custom-array-object) |        |                                                                                                                                                             |
+| focus_container_custom_down | [焦点容器对象数组](/json-ui/json-ui-documentation#focus-container-custom-array-object) |        |                                                                                                                                                             |
+| focus_container_custom_up | [焦点容器对象数组](/json-ui/json-ui-documentation#focus-container-custom-array-object) |        |                                                                                                                                                             |
 
+#### 焦点容器对象 Focus Container Custom Array Object
 
-#### Focus Container Custom Array Object
+|       属性名称        |  类型  |                                      描述                                       |
+| --------------------- | :----: | ------------------------------------------------------------------------------ |
+| other_focus_container_name | 字符串 | 接收焦点的目标容器名称                                                         |
+| focus_id_inside       | 字符串 | 目标容器内接收焦点的子元素标识符                                               |
 
-|       Property Name        |  Type  |                                                          Description                                                           |
-| -------------------------- | :----: | ------------------------------------------------------------------------------------------------------------------------------ |
-| other_focus_container_name | string | Name of the UI control that will receive focus when on button.menu_left, button.menu_right, button.menu_up or button.menu_down |
-| focus_id_inside            | string | Identifier (`focus_identifier`) of the focusable child control of the `other_focus_container_name` that will recieve the focus |
-
-<CodeHeader>RP/ui/example_file.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/ui/example_file.json]
 ...
 {
   "other_panel": {
@@ -334,312 +329,309 @@ To use clipping, bind a `#*_ratio` binding name to a `#clip-ratio` property with
     ...
     "focus_container_custom_up": [
       {
-        "other_focus_container_name": "other_panel" // name of the object that will receive focus when the focus of this container ends on `button.menu_up`
+        "other_focus_container_name": "other_panel"
       }
     ]
   }
 }
 ...
 ```
+:::
 
-### Button
+### 按钮属性 (button)
 
-|  Property Name  |  Type  | Default Value |                                Description                                 |
-| --------------- | :----: | :-----------: | -------------------------------------------------------------------------- |
-| default_control | string |               | Name of the child control that will be displayed only in the default state |
-| hover_control   | string |               | Name of the child control that will be displayed only in the hover state   |
-| pressed_control | string |               | Name of the child control that will be displayed only in the pressed state |
-| locked_control  | string |               | Name of the child control that will be displayed only in the locked state  |
+|     属性名称     |  类型  | 默认值 |                 描述                 |
+| --------------- | :----: | :----: | ------------------------------------ |
+| default_control | 字符串 |        | 默认状态下显示的子控件名称           |
+| hover_control   | 字符串 |        | 悬停状态下显示的子控件名称           |
+| pressed_control | 字符串 |        | 按下状态下显示的子控件名称           |
+| locked_control  | 字符串 |        | 锁定状态下显示的子控件名称           |
 
-### Toggle
+### 开关控件 (toggle)
 
-|         Property Name          |  Type   | Default Value |                                        Description                                        |
-| ------------------------------ | :-----: | :-----------: | ----------------------------------------------------------------------------------------- |
-| radio_toggle_group             | boolean |               |                                                                                           |
-| toggle_name                    | string  |               | Identifier for the toggle group it belongs to. It can be a custom one.                    |
-| toggle_default_state           | boolean |               |                                                                                           |
-| toggle_group_forced_index      |   int   |               | Index of the toggle in its group                                                          |
-| toggle_group_default_selected  |   int   |               | Index of the default toggle of the its group                                              |
-| reset_on_focus_lost            | boolean |               |                                                                                           |
-| toggle_on_hover                | string  |               |                                                                                           |
-| toggle_on_button               | string  |               |                                                                                           |
-| toggle_off_button              | string  |               |                                                                                           |
-| enable_directional_toggling    | boolean |               |                                                                                           |
-| toggle_grid_collection_name    | string  |               | Name of the collection the toggle belongs to                                              |
-| checked_control                | string  |               | Name of the child control that will be displayed only in the checked state                |
-| unchecked_control              | string  |               | Name of the child control that will be displayed only in the unchecked state              |
-| checked_hover_control          | string  |               | Name of the child control that will be displayed only in the checked hover state          |
-| unchecked_hover_control        | string  |               | Name of the child control that will be displayed only in the unchecked hover state        |
-| checked_locked_control         | string  |               | Name of the child control that will be displayed only in the checked locked state         |
-| unchecked_locked_control       | string  |               | Name of the child control that will be displayed only in the unchecked locked state       |
-| checked_locked_hover_control   | string  |               | Name of the child control that will be displayed only in the checked locked hover state   |
-| unchecked_locked_hover_control | string  |               | Name of the child control that will be displayed only in the unchecked locked hover state |
-### HardCoded Toggles
+|            属性名称            |  类型   | 默认值 |                                         描述                                         |
+| ----------------------------- | :-----: | :----: | ----------------------------------------------------------------------------------- |
+| radio_toggle_group            | 布尔值  |        |                                                                                     |
+| toggle_name                   | 字符串  |        | 所属切换组的标识符                                                                  |
+| toggle_default_state          | 布尔值  |        |                                                                                     |
+| toggle_group_forced_index     |  整数   |        | 切换项在组内的索引                                                                  |
+| toggle_group_default_selected |  整数   |        | 组内默认选中项的索引                                                                |
+| reset_on_focus_lost           | 布尔值  |        |                                                                                     |
+| toggle_on_hover               | 字符串  |        |                                                                                     |
+| toggle_on_button              | 字符串  |        |                                                                                     |
+| toggle_off_button             | 字符串  |        |                                                                                     |
+| enable_directional_toggling   | 布尔值  |        |                                                                                     |
+| toggle_grid_collection_name   | 字符串  |        | 所属集合名称                                                                        |
+| checked_control               | 字符串  |        | 选中状态下显示的子控件名称                                                          |
+| unchecked_control             | 字符串  |        | 未选中状态下显示的子控件名称                                                        |
+| checked_hover_control         | 字符串  |        | 选中悬停状态下显示的子控件名称                                                      |
+| unchecked_hover_control       | 字符串  |        | 未选中悬停状态下显示的子控件名称                                                    |
+| checked_locked_control        | 字符串  |        | 选中锁定状态下显示的子控件名称                                                      |
+| unchecked_locked_control      | 字符串  |        | 未选中锁定状态下显示的子控件名称                                                    |
+| checked_locked_hover_control  | 字符串  |        | 选中锁定悬停状态下显示的子控件名称                                                  |
+| unchecked_locked_hover_control | 字符串  |        | 未选中锁定悬停状态下显示的子控件名称                                                |
 
-In some screens,navigation tab group has its mapping default selected tabs,such as settings or inventory.
-I guess these values are right.
+### 硬编码切换组
+
+部分界面（如设置、物品栏）包含预设切换组索引，示例配置：
 ```json
 $search_index - $construction_index
-$survival_layout_index - $construction_index
+$survival_layout_index - $construction-index
 $recipe_book_layout_index - $equipment_index
 $creative_layout_index - $items_index
-``````
-And there are some must toggles in setting and inventory,even though you can not get a warning without dev version and open the assert diagnosis,they exactly esist and controlled by a function called *ScreenView::_passViewCommand::<lambda_6d65fd272578d43f1becb6eada4ff32c>::()::<lambda_2ab071547c9a470558c54e4d3cddb5f2>::operator()*,when you totally modify these screens,you may meet this assertion.
+```
 
-For example,in setting that is  accessibility and in inventory,the construction,equipment,items and nature tabs are must.
-### Dropdown
+部分必选切换项（如设置中的辅助功能、物品栏的建造/装备/物品/自然标签）即使未配置也不会显示警告，但在深度修改时可能触发断言错误。
 
-|      Property Name       |  Type  | Default Value |                             Description                              |
-| ------------------------ | :----: | :-----------: | -------------------------------------------------------------------- |
-| dropdown_name            | string |               | Identifier for the dropdown                                          |
-| dropdown_content_control | string |               | Name of the child control that will behave as the root content panel |
-| dropdown_area            | string |               | Name of the child control that will behave as the inside content     |
+### 下拉菜单 (dropdown)
 
-### Sound
+|       属性名称        |  类型  | 默认值 |               描述               |
+| -------------------- | :----: | :----: | -------------------------------- |
+| dropdown_name        | 字符串 |        | 下拉菜单标识符                   |
+| dropdown_content_control | 字符串 |        | 作为根内容面板的子控件名称       |
+| dropdown_area        | 字符串 |        | 内部内容区域的子控件名称         |
 
-| Property Name |                                       Type                                       |                                                     Description                                                     |
-| ------------- | :------------------------------------------------------------------------------: | ------------------------------------------------------------------------------------------------------------------- |
-| sound_name    |                                      string                                      | Name of the sound defined in the `RP/sounds/sound_definitions.json` file that plays when the pressed event is fired |
-| sound_volume  |                                      float                                       | Volume of the sound                                                                                                 |
-| sound_pitch   |                                      float                                       | Pitch of the sound                                                                                                  |
-| sounds        | Vector of [sound object](/json-ui/json-ui-documentation#sound-array-object) | Array of the sounds to play when the pressed event is fired                                                         |
+### 音效
 
-#### Sound Array Object
+|   属性名称    |                             类型                              |                     描述                      |
+| ------------ | :-----------------------------------------------------------: | -------------------------------------------- |
+| sound_name   |                            字符串                             | 触发时播放的音效定义（位于`sound_definitions.json`） |
+| sound_volume |                            浮点数                            | 音效音量                                      |
+| sound_pitch  |                            浮点数                            | 音效音调                                      |
+| sounds       | [音效对象数组](/json-ui/json-ui-documentation#sound-array-object) | 触发时播放的音效列表                          |
 
-|       Property Name       |  Type  |                                                     Description                                                     |
-| ------------------------- | :----: | ------------------------------------------------------------------------------------------------------------------- |
-| sound_name                | string | Name of the sound defined in the `RP/sounds/sound_definitions.json` file that plays when the pressed event is fired |
-| sound_volume              | float  | Volume of the sound                                                                                                 |
-| sound_pitch               | float  | Pitch of the sound                                                                                                  |
-| min_seconds_between_plays | float  | Seconds of wait before the sound can be played again                                                                |
+#### 音效对象
 
+|         属性名称          |  类型  |                     描述                      |
+| ------------------------ | :----: | -------------------------------------------- |
+| sound_name               | 字符串 | 音效定义名称                                  |
+| sound_volume             | 浮点数 | 音效音量                                      |
+| sound_pitch              | 浮点数 | 音效音调                                      |
+| min_seconds_between_plays | 浮点数 | 重复播放最小间隔时间                          |
 
-### Collection
+### 集合 (Collection)
 
-|  Property Name  |  Type  |            Description            |
-| --------------- | :----: | --------------------------------- |
-| collection_name | string | Name of the collection to be used |
+|    属性名称    |  类型  |      描述       |
+| ------------- | :----: | -------------- |
+| collection_name | 字符串 | 使用的集合名称 |
 
-### Text Edit
+### 文本编辑 (Text Edit)
 
-|           Property Name            |  Type   | Default Value |                                                                        Description                                                                         |
-| ---------------------------------- | :-----: | :-----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| text_box_name                      | string  |               | Identifier for text box                                                                                                                                    |
-| text_edit_box_grid_collection_name | string  |               | Name of the collection the `edit_box` belongs to                                                                                                           |
-| constrain_to_rect                  | boolean |               |                                                                                                                                                            |
-| enabled_newline                    | boolean |               | Allows multiline text                                                                                                                                      |
-| text_type                          |  enum   |               | Type of characters that the user is allowed to type in th text field. <br> Possible values: <br> `ExtendedASCII` <br> `IdentifierChars` <br> `NumberChars` |
-| max_length                         |   int   |               | Maximum number of characters allow in the text field                                                                                                       |
-| text_control                       | string  |               | Name of the child control that will be used for displaying the text                                                                                        |
-| place_holder_control               | string  |               | Name of the child control that will be used for display the placeholder text                                                                               |
-| can_be_deselected                  | boolean |               |                                                                                                                                                            |
-| always_listening                   | boolean |               |                                                                                                                                                            |
-| virtual_keyboard_buffer_control    | string  |               |                                                                                                                                                            |
+|            属性名称            |  类型   | 默认值 |                                     描述                                      |
+| ----------------------------- | :-----: | :----: | ---------------------------------------------------------------------------- |
+| text_box_name                 | 字符串  |        | 文本框标识符                                                                 |
+| text_edit_box_grid_collection_name | 字符串  |        | 所属集合名称                                                                 |
+| constrain_to_rect             | 布尔值  |        |                                                                              |
+| enabled_newline               | 布尔值  |        | 是否允许多行输入                                                             |
+| text_type                     |  枚举   |        | 允许输入的字符类型：<br>`ExtendedASCII`<br>`IdentifierChars`<br>`NumberChars` |
+| max_length                    |  整数   |        | 最大字符数限制                                                               |
+| text_control                  | 字符串  |        | 显示文本的子控件名称                                                         |
+| place_holder_control          | 字符串  |        | 占位文本的子控件名称                                                         |
+| can_be_deselected             | 布尔值  |        |                                                                              |
+| always_listening              | 布尔值  |        |                                                                              |
+| virtual_keyboard_buffer_control | 字符串  |        |                                                                              |
 
-### Slider
+### 滑动条 (slider)
 
-|        Property Name         |  Type   | Default Value |                                                 Description                                                  |
-| ---------------------------- | :-----: | :-----------: | ------------------------------------------------------------------------------------------------------------ |
-| slider_track_button          | string  |               | ID of the action for the slider track                                                                        |
-| slider_small_decrease_button | string  |               | ID of the action for the decrease slider                                                                     |
-| slider_small_increase_button | string  |               | ID of the action for the increase slider                                                                     |
-| slider_steps                 |   int   |               | nHow many steps (or values) does the slider have                                                             |
-| slider_direction             |  enum   |               | Orientation of the slider movement. <br> Possible values: <br> `vertical` <br> `horizontal`                  |
-| slider_timeout               | number  |               |                                                                                                              |
-| slider_collection_name       | string  |               | Name of the collection the slider belongs to                                                                 |
-| slider_name                  | string  |               | Identifier for the slider                                                                                    |
-| slider_select_on_hover       | boolean |               | Focus slider when it's hovered                                                                               |
-| slider_selected_button       | string  |               | ID of the action for when the slider is selected                                                             |
-| slider_deselected_button     | string  |               | ID of the action for when the slider is deselected                                                           |
-| slider_box_control           | string  |               | Name of the child control that will behave as the slider thumb                                               |
-| background_control           | string  |               | Name of the child control that will behave as the slider background                                          |
-| background_hover_control     | string  |               | Name of the child control that will behave as the slider background on hover                                 |
-| progress_control             | string  |               | Name of the child control that will behave as the slider background overlay for the slider progress          |
-| progress_hover_control       | string  |               | Name of the child control that will behave as the slider background overlay for the slider progress on hover |
+|          属性名称          |  类型   | 默认值 |                                     描述                                      |
+| ------------------------- | :-----: | :----: | ---------------------------------------------------------------------------- |
+| slider_track_button       | 字符串  |        | 滑动条轨道按钮ID                                                             |
+| slider_small_decrease_button | 字符串  |        | 减小按钮ID                                                                   |
+| slider_small_increase_button | 字符串  |        | 增大按钮ID                                                                   |
+| slider_steps              |  整数   |        | 滑动步数                                                                     |
+| slider_direction          |  枚举   |        | 滑动方向：<br>`vertical`<br>`horizontal`                                     |
+| slider_timeout            |  数值   |        |                                                                              |
+| slider_collection_name    | 字符串  |        | 所属集合名称                                                                 |
+| slider_name               | 字符串  |        | 滑动条标识符                                                                 |
+| slider_select_on_hover    | 布尔值  |        | 悬停时是否自动聚焦                                                           |
+| slider_selected_button    | 字符串  |        | 选中时触发的按钮ID                                                           |
+| slider_deselected_button  | 字符串  |        | 取消选中时触发的按钮ID                                                       |
+| slider_box_control        | 字符串  |        | 滑块按钮的子控件名称                                                         |
+| background_control        | 字符串  |        | 背景子控件名称                                                               |
+| background_hover_control  | 字符串  |        | 悬停背景子控件名称                                                           |
+| progress_control          | 字符串  |        | 进度条子控件名称                                                             |
+| progress_hover_control    | 字符串  |        | 悬停进度条子控件名称                                                         |
 
-### Slider Box
+### 滑动条按钮
 
-|  Property Name  |  Type  | Default Value |                              Description                              |
-| --------------- | :----: | :-----------: | --------------------------------------------------------------------- |
-| default_control | string |               | Name of the child control that will be displayed in the default state |
-| hover_control   | string |               | Name of the child control that will be displayed in the hover state   |
-| locked_control  | string |               | Name of the child control that will be displayed in the locked state  |
+|     属性名称     |  类型  | 默认值 |             描述             |
+| --------------- | :----: | :----: | ---------------------------- |
+| default_control | 字符串 |        | 默认状态下显示的子控件名称   |
+| hover_control   | 字符串 |        | 悬停状态下显示的子控件名称   |
+| locked_control  | 字符串 |        | 锁定状态下显示的子控件名称   |
 
-### Scroll View
+### 滚动视图
 
-|       Property Name        |  Type   | Default Value |                                            Description                                            |
-| -------------------------- | :-----: | :-----------: | ------------------------------------------------------------------------------------------------- |
-| scrollbar_track_button     | string  |               | ID of the action for the track button                                                             |
-| scrollbar_touch_button     | string  |               | ID of the action for the touch input                                                              |
-| scroll_speed               | number  |               | Scrolling speed                                                                                   |
-| gesture_control_enabled    | boolean |               |                                                                                                   |
-| always_handle_scrolling    | boolean |               |                                                                                                   |
-| touch_mode                 | boolean |               |                                                                                                   |
-| scrollbar_box              | string  |               | Name of child UI element or nested UI element that will behave as the scrollbar thumb.            |
-| scrollbar_track            | string  |               | Name of child UI element or nested UI element that will behave as the scrollbar track             |
-| scroll_view_port           | string  |               | Name of child UI element that will behave as the view port                                        |
-| scroll_content             | string  |               | Name of child UI element that will behave as the content root parent                              |
-| scroll_box_and_track_panel | string  |               | Name of child UI element that will contain the scrollbox and track controls                       |
-| jump_to_bottom_on_update   | boolean |               | Jump to the bottom when the scrolling panel has an update. For example, adds more children to it. |
+|          属性名称          |  类型   | 默认值 |                                     描述                                      |
+| ------------------------- | :-----: | :----: | ---------------------------------------------------------------------------- |
+| scrollbar_track_button    | 字符串  |        | 滚动条轨道按钮ID                                                             |
+| scrollbar_touch_button    | 字符串  |        | 触摸输入按钮ID                                                               |
+| scroll_speed              |  数值   |        | 滚动速度                                                                     |
+| gesture_control_enabled   | 布尔值  |        |                                                                              |
+| always_handle_scrolling   | 布尔值  |        |                                                                              |
+| touch_mode                | 布尔值  |        |                                                                              |
+| scrollbar_box             | 字符串  |        | 滚动条滑块子控件名称                                                         |
+| scrollbar_track           | 字符串  |        | 滚动条轨道子控件名称                                                         |
+| scroll_view_port          | 字符串  |        | 视口子控件名称                                                               |
+| scroll_content            | 字符串  |        | 内容根容器子控件名称                                                         |
+| scroll_box_and_track_panel | 字符串  |        | 包含滚动条和轨道的面板子控件名称                                             |
+| jump_to_bottom_on_update  | 布尔值  |        | 当内容更新时自动滚动到底部（例如新增子元素时）                               |
 
-### Custom Render
+### 自定义渲染
 
-| Property Name | Type  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ------------- | :---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| renderer      | enum  | Possible values: <br> `hover_text_renderer` <br> `3d_structure_renderer` <br> `splash_text_renderer` <br> `ui_holo_cursor` <br> `trial_time_renderer` <br> `panorama_renderer` <br> `actor_portrait_renderer` <br> `banner_pattern_renderer` <br> `live_player_renderer` <br> `web_view_renderer` <br> `hunger_renderer` <br> `bubbles_renderer` <br> `mob_effects_renderer` <br> `cursor_renderer` <br> `progress_indicator_renderer` <br> `camera_renderer` <br> `horse_jump_renderer` <br> `armor_renderer` <br> `horse_heart_renderer` <br> `heart_renderer` <br> `hotbar_cooldown_renderer` <br> `hotbar_renderer` <br> `hud_player_renderer` <br> `live_horse_renderer` <br> `holographic_postrenderer` <br> `enchanting_book_renderer` <br> `debug_screen_renderer` <br> `gradient_renderer` <br> `paper_doll_renderer` <br> `name_tag_renderer` <br> `flying_item_renderer` <br> `inventory_item_renderer` <br> `credits_renderer` <br> `vignette_renderer` <br> `progress_bar_renderer` <br> `debug_overlay_renderer` <br> `background_renderer` <br> `bohr_model_renderer` <br> `experience_renderer` (Legacy, no longer works) <br> `menu_background_renderer` (Legacy, no longer works) |
+| 属性名称 |  类型  |                                                                                                                                                                                                                    描述                                                                                                                                                                                                                    |
+| -------- | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| renderer |  枚举   | 可能值：<br>`hover_text_renderer`（悬浮文字）<br>`3d_structure_renderer`（3D结构）<br>`splash_text_renderer`（启动标语）<br>`ui_holo_cursor`（全息光标）<br>`trial_time_renderer`（试用倒计时）<br>`panorama_renderer`（全景图）<br>`actor_portrait_renderer`（角色肖像）<br>`banner_pattern_renderer`（旗帜图案）<br>`live_player_renderer`（实时玩家模型）<br>`web_view_renderer`（网页视图）<br>`hunger_renderer`（饥饿度）<br>`bubbles_renderer`（呼吸气泡）<br>`mob_effects_renderer`（状态效果）<br>`cursor_renderer`（光标）<br>`progress_indicator_renderer`（进度指示器）<br>`camera_renderer`（相机）<br>`horse_jump_renderer`（马匹跳跃）<br>`armor_renderer`（护甲值）<br>`horse_heart_renderer`（马匹生命值）<br>`heart_renderer`（心形生命值）<br>`hotbar_cooldown_renderer`（快捷栏冷却）<br>`hotbar_renderer`（快捷栏）<br>`hud_player_renderer`（HUD玩家模型）<br>`live_horse_renderer`（实时马匹模型）<br>`holographic_postrenderer`（全息后期处理）<br>`enchanting_book_renderer`（附魔书）<br>`debug_screen_renderer`（调试信息）<br>`gradient_renderer`（渐变色）<br>`paper_doll_renderer`（纸娃娃模型）<br>`name_tag_renderer`（名称标签）<br>`flying_item_renderer`（飞行物品）<br>`inventory_item_renderer`（物品栏图标）<br>`credits_renderer`（制作人员名单）<br>`vignette_renderer`（暗角效果）<br>`progress_bar_renderer`（进度条）<br>`debug_overlay_renderer`（调试覆盖层）<br>`background_renderer`（背景）<br>`bohr_model_renderer`（玻尔模型）<br>`experience_renderer`（经验值，已弃用）<br>`menu_background_renderer`（菜单背景，已弃用） |
 
+#### 渲染器说明
 
-####  Renderers
+|           渲染器名称           |                                  描述                                  |
+| ----------------------------- | --------------------------------------------------------------------- |
+| `flying_item_renderer`        | 物品交换时的飞行动画                                                  |
+| `inventory_item_renderer`     | 物品图标渲染（仅限游戏内界面）                                        |
+| `credits_renderer`            | 制作人员名单与终末之诗                                                |
+| `vignette_renderer`           | 暗角视觉效果                                                          |
+| `name_tag_renderer`           | 生物名称标签显示                                                      |
+| `paper_doll_renderer`         | 皮肤模型展示                                                          |
+| `debug_screen_renderer`       | 测试版调试信息显示                                                    |
+| `enchanting_book_renderer`    | 附魔台书本动画                                                        |
+| `gradient_renderer`           | 渐变颜色绘制                                                          |
+| `live_horse_renderer`         | 马匹/驴子/羊驼等生物模型                                              |
+| `live_player_renderer`        | 玩家模型展示                                                          |
+| `hud_player_renderer`         | 同步玩家动作的HUD模型                                                 |
+| `hotbar_renderer`             | 快捷栏槽位图标                                                        |
+| `hotbar_cooldown_renderer`    | 物品冷却效果                                                          |
+| `heart_renderer`              | 心形生命值显示                                                        |
+| `horse_heart_renderer`        | 坐骑生命值显示                                                        |
+| `armor_renderer`              | 护甲值显示                                                            |
+| `horse_jump_renderer`         | 马匹跳跃进度条                                                        |
+| `hunger_renderer`             | 饥饿度显示                                                            |
+| `bubbles_renderer`            | 水下呼吸气泡                                                          |
+| `mob_effects_renderer`        | 状态效果图标                                                          |
+| `cursor_renderer`             | 屏幕中心十字准星                                                      |
+| `progress_indicator_renderer` | 未使用                                                                |
+| `camera_renderer`             | 相机物品功能                                                          |
+| `web_view_renderer`           | 网页内容展示                                                          |
+| `banner_pattern_renderer`     | 旗帜图案渲染                                                          |
+| `actor_portrait_renderer`     | 角色肖像绘制                                                          |
+| `trial_time_renderer`         | 试用版世界使用倒计时                                                  |
+| `progress_bar_renderer`       | 多种进度条类型                                                        |
+| `3d_structure_renderer`       | 结构方块预览                                                          |
+| `splash_text_renderer`        | 随机启动标语显示（来自`splashes.json`）                               |
+| `hover_text_renderer`         | 工具提示显示                                                          |
+| `ui_holo_cursor`              | 全息光标效果                                                          |
+| `panorama_renderer`           | 商店界面的世界全景展示                                                |
 
-|         Renderer Name         |                                                  Description                                                   |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `flying_item_renderer`        | The flying item when you change an item from a slot to another                                                 |
-| `inventory_item_renderer`     | Renders an item icon. It only work in screens when ingame                                                      |
-| `credits_renderer`            | The credits and end poem                                                                                       |
-| `vignette_renderer`           | A vignette                                                                                                     |
-| `name_tag_renderer`           | It's something like the playername above the player head or the name above animals when used a nametag on them |
-| `paper_doll_renderer`         | A skin model                                                                                                   |
-| `debug_screen_renderer`       | The debug text that appears on the beta/preview versions                                                       |
-| `enchanting_book_renderer`    | The enchantment table book. It opens when there's an item to be enchanted                                      |
-| `gradient_renderer`           | Draws a gradient                                                                                               |
-| `live_horse_renderer`         | The horse/donkey/llama... model                                                                                |
-| `live_player_renderer`        | The player model                                                                                               |
-| `hud_player_renderer`         | The player model that imitates what the player is doing                                                        |
-| `hotbar_renderer`             | Gets the hotbar slot image for each slot                                                                       |
-| `hotbar_cooldown_renderer`    | Draws the item cooldown                                                                                        |
-| `heart_renderer`              | Draws the player health                                                                                        |
-| `horse_heart_renderer`        | Draws the horse/donkey/... health                                                                              |
-| `armor_renderer`              | Draws the player armor                                                                                         |
-| `horse_jump_renderer`         | Draws the horse jumping progress bar                                                                           |
-| `hunger_renderer`             | Draws the player hunger                                                                                        |
-| `bubbles_renderer`            | Draws the respiration bubbles                                                                                  |
-| `mob_effects_renderer`        | Draws the effects that are applied to the player                                                               |
-| `cursor_renderer`             | Draws the crosshair in the center of the screen                                                                |
-| `progress_indicator_renderer` | Not used                                                                                                       |
-| `camera_renderer`             | Used for the camera item                                                                                       |
-| `web_view_renderer`           | Shows a website view                                                                                           |
-| `banner_pattern_renderer`     | Renders a banner                                                                                               |
-| `actor_portrait_renderer`     | Draws an portrait                                                                                              |
-| `trial_time_renderer`         | In the trial version of the game it renders the time left to be able to use the world                          |
-| `progress_bar_renderer`       | Draws a progress bar. It has more than one type                                                                |
-| `3d_structure_renderer`       | Renders the structure block structure                                                                          |
-| `splash_text_renderer`        | Gets and renders a random splash text from the `splashes.json` file                                            |
-| `hover_text_renderer`         | Draws a tooltip                                                                                                |
-| `ui_holo_cursor`              |                                                                                                                |
-| `panorama_renderer`           | It's not the panoramas that appear behind the menus. It's the panorama of the worlds on the store.             |
+#### 特殊属性
 
+|        属性名称        |        类型        |        适用渲染器        |                 描述                 |
+| --------------------- | :---------------: | ------------------------ | ------------------------------------ |
+| gradient_direction    |       枚举        | `gradient_renderer`      | 渐变方向：<br>`vertical`<br>`horizontal` |
+| color1                | 向量 [r, g, b, a] | `gradient_renderer`      | 起始颜色                             |
+| color2                | 向量 [r, g, b, a] | `gradient_renderer`      | 结束颜色                             |
+| text_color            | 向量 [r, g, b, a] | `name_tag_renderer`      | 文本颜色                             |
+| background_color      | 向量 [r, g, b, a] | `name_tag_renderer`      | 背景颜色                             |
+| primary_color         | 向量 [r, g, b, a] | `progress_bar_renderer`  | 主色调                               |
+| secondary_color       | 向量 [r, g, b, a] | `progress_bar_renderer`  | 辅助色调                             |
+| camera_tilt_degrees   |       数值        | `paper_doll_renderer`    | 相机倾斜角度                         |
+| starting_rotation     |       数值        | `paper_doll_renderer`    | 初始旋转角度                         |
+| use_selected_skin     |      布尔值       | `paper_doll_renderer`    | 是否使用选定皮肤                     |
+| use_uuid              |      布尔值       | `paper_doll_renderer`    | 是否使用UUID标识                     |
+| use_skin_gui_scale    |      布尔值       | `paper_doll_renderer`    | 是否应用GUI缩放                      |
+| use_player_paperdoll  |      布尔值       | `paper_doll_renderer`    | 是否显示玩家纸娃娃模型               |
+| rotation              |       枚举        | `paper_doll_renderer`<br>`panorama_renderer` | 旋转模式：<br>`auto`<br>`gesture_x`<br>`custom_y` |
+| end_event             |      字符串       | `credits_renderer`       | 播放结束事件                         |
 
-#### Specific Properties
+### 屏幕属性
 
-|    Property Name     |        Type         |                   Renderer                    |                          Description                          |
-| -------------------- | :-----------------: | --------------------------------------------- | ------------------------------------------------------------- |
-| gradient_direction   |        enum         | `gradient_renderer`                           | Possible values: <br> `vertical` <br> `horizontal`            |
-| color1               | Vector [r, g, b, a] | `gradient_renderer`                           |                                                               |
-| color2               | Vector [r, g, b, a] | `gradient_renderer`                           |                                                               |
-| text_color           | Vector [r, g, b, a] | `name_tag_renderer`                           |                                                               |
-| background_color     | Vector [r, g, b, a] | `name_tag_renderer`                           |                                                               |
-| primary_color        | Vector [r, g, b, a] | `progress_bar_renderer`                       |                                                               |
-| secondary_color      | Vector [r, g, b, a] | `progress_bar_renderer`                       |                                                               |
-| camera_tilt_degrees  |       number        | `paper_doll_renderer`                         |                                                               |
-| starting_rotation    |       number        | `paper_doll_renderer`                         |                                                               |
-| use_selected_skin    |       boolean       | `paper_doll_renderer`                         |                                                               |
-| use_uuid             |       boolean       | `paper_doll_renderer`                         |                                                               |
-| use_skin_gui_scale   |       boolean       | `paper_doll_renderer`                         |                                                               |
-| use_player_paperdoll |       boolean       | `paper_doll_renderer`                         |                                                               |
-| rotation             |        enum         | `paper_doll_renderer` and `panorama_renderer` | Possible values: <br> `auto` <br> `gesture_x` <br> `custom_y` |
-| end_event            |       string        | `credits_renderer`                            |                                                               |
+|             属性名称             |  类型   |                               描述                                |
+| ------------------------------- | :-----: | ---------------------------------------------------------------- |
+| render_only_when_topmost        | 布尔值  | 仅在处于屏幕栈顶层时渲染                                         |
+| screen_not_flushable            | 布尔值  |                                                                  |
+| always_accepts_input            | 布尔值  |                                                                  |
+| render_game_behind              | 布尔值  | 允许下层屏幕继续接收用户输入                                     |
+| absorbs_input                   | 布尔值  |                                                                  |
+| is_showing_menu                 | 布尔值  |                                                                  |
+| is_modal                        | 布尔值  | 是否为模态窗口                                                   |
+| should_steal_mouse              | 布尔值  | 捕获并隐藏光标                                                   |
+| low_frequency_rendering         | 布尔值  | 低内存渲染模式                                                   |
+| screen_draws_last               | 布尔值  | 最后渲染的屏幕                                                   |
+| vr_mode                         | 布尔值  |                                                                  |
+| force_render_below              | 布尔值  | 强制渲染下层屏幕                                                 |
+| send_telemetry                  | 布尔值  |                                                                  |
+| close_on_player_hurt            | 布尔值  | 玩家受伤时关闭界面                                               |
+| cache_screen                    | 布尔值  |                                                                  |
+| load_screen_immediately         | 布尔值  |                                                                  |
+| gamepad_cursor                  | 布尔值  |                                                                  |
+| gamepad_cursor_deflection_mode  | 布尔值  |                                                                  |
+| should_be_skipped_during_automation | 布尔值  |                                                                  |
 
-### Screen
+### 选择轮盘
 
-|            Property Name            |  Type   |                                Description                                |
-| ----------------------------------- | :-----: | ------------------------------------------------------------------------- |
-| render_only_when_topmost            | boolean | Only render the screen if it's the most top screen in the screen stack    |
-| screen_not_flushable                | boolean |                                                                           |
-| always_accepts_input                | boolean |                                                                           |
-| render_game_behind                  | boolean | Doesn't prevent screen below of being able to receive input from the user |
-| absorbs_input                       | boolean |                                                                           |
-| is_showing_menu                     | boolean |                                                                           |
-| is_modal                            | boolean | It's a screen modal                                                       |
-| should_steal_mouse                  | boolean | Captures the cursor and hides it                                          |
-| low_frequency_rendering             | boolean | Uses less memory to render the screen                                     |
-| screen_draws_last                   | boolean | It's the last screen to be drawn/rendered                                 |
-| vr_mode                             | boolean |                                                                           |
-| force_render_below                  | boolean | Renders bottom screens below current screen in the screen stack           |
-| send_telemetry                      | boolean |                                                                           |
-| close_on_player_hurt                | boolean | Close the screen is the player takes damage                               |
-| cache_screen                        | boolean |                                                                           |
-| load_screen_immediately             | boolean |                                                                           |
-| gamepad_cursor                      | boolean |                                                                           |
-| gamepad_cursor_deflection_mode      | boolean |                                                                           |
-| should_be_skipped_during_automation | boolean |                                                                           |
+|         属性名称         |   类型   | 描述 |
+| ------------------------ | :------: | ---- |
+| inner_radius             |  数值   | 内半径 |
+| outer_radius             |  数值   | 外半径 |
+| state_controls           | 字符串数组 | 状态控件列表 |
+| slice_count              |  整数   | 分片数量 |
+| button_name              |  字符串  | 按钮名称 |
+| iterate_left_button_name |  字符串  | 左切换按钮 |
+| iterate_right_button_name |  字符串  | 右切换按钮 |
+| initial_button_slice     |  整数   | 初始分片索引 |
 
-### Selection Wheel
+### 文本转语音(TTS)
 
-|       Property Name       |   Type   | Description |
-| ------------------------- | :------: | ----------- |
-| inner_radius              |  number  |             |
-| outer_radius              |  number  |             |
-| state_controls            | string[] |             |
-| slice_count               | integer  |             |
-| button_name               |  string  |             |
-| iterate_left_button_name  |  string  |             |
-| iterate_right_button_name |  string  |             |
-| initial_button_slice      | integer  |             |
+|             属性名称             |   类型   |                                       描述                                        |
+| ------------------------------- | :------: | -------------------------------------------------------------------------------- |
+| tts_name                        |  字符串  | TTS名称标识                                                                      |
+| tts_control_header              |  字符串  |                                                                                  |
+| tts_section_header              |  字符串  |                                                                                  |
+| tts_control_type_order_priority |   整数   |                                                                                  |
+| tts_index_priority              |   整数   |                                                                                  |
+| tts_toggle_on                   |  字符串  | 切换开启时的TTS提示（用于toggle类型）                                            |
+| tts_toggle_off                  |  字符串  | 切换关闭时的TTS提示（用于toggle类型）                                            |
+| tts_override_control_value      |  字符串  |                                                                                  |
+| tts_inherit_siblings            |  布尔值  |                                                                                  |
+| tts_value_changed               |  字符串  |                                                                                  |
+| ttsSectionContainer             |  布尔值  |                                                                                  |
+| tts_ignore_count                |  布尔值  |                                                                                  |
+| tts_skip_message                |  布尔值  |                                                                                  |
+| tts_value_order_priority        |   整数   |                                                                                  |
+| tts_play_on_unchanged_focus_control |  布尔值  |                                                                                  |
+| tts_ignore_subsections          |  布尔值  |                                                                                  |
+| text_tts                        |  字符串  |                                                                                  |
+| use_priority                    |  布尔值  | 是否使用`priority`属性决定子控件的TTS优先级                                      |
+| priority                        |  布尔值  | 元素的TTS优先级顺序                                                              |
 
-### TTS
-|            Property Name            |  Type   |                                        Description                                         |
-| ----------------------------------- | :-----: | ------------------------------------------------------------------------------------------ |
-| tts_name                            | string  |                                                                                            |
-| tts_control_header                  | string  |                                                                                            |
-| tts_section_header                  | string  |                                                                                            |
-| tts_control_type_order_priority     | integer |                                                                                            |
-| tts_index_priority                  | integer |                                                                                            |
-| tts_toggle_on                       | string  | Use by the `toggle` type                                                                   |
-| tts_toggle_off                      | string  | Use by the `toggle` type                                                                   |
-| tts_override_control_value          | string  |                                                                                            |
-| tts_inherit_siblings                | boolean |                                                                                            |
-| tts_value_changed                   | string  |                                                                                            |
-| ttsSectionContainer                 | boolean |                                                                                            |
-| tts_ignore_count                    | boolean |                                                                                            |
-| tts_skip_message                    | boolean |                                                                                            |
-| tts_value_order_priority            | integer |                                                                                            |
-| tts_play_on_unchanged_focus_control | boolean |                                                                                            |
-| tts_ignore_subsections              | boolean |                                                                                            |
-| text_tts                            | string  |                                                                                            |
-| use_priority                        | boolean | If the `priority` property will be use to determine the TTS priority of each child control |
-| priority                            | boolean | Order/index of priority that the element has on TTS                                        |
+### 标签页（已弃用）
 
-### Tab (Legacy)
+| 属性名称    |  类型  | 默认值 |           描述            |
+| ----------- | :----: | :----: | ------------------------- |
+| tab_index   |  整数  |        | 标签页在组内的索引        |
+| tab_group   |  整数  |        | 所属标签组ID              |
+| tab_control | 字符串 |        | 标签激活时显示的控件名称  |
 
-| Property Name |  Type  | Default Value |                        Description                        |
-| ------------- | :----: | :-----------: | --------------------------------------------------------- |
-| tab_index     |  int   |               | ID of tab in its group                                    |
-| tab_group     |  int   |               | ID of the group the tab belongs to                        |
-| tab_control   | string |               | Name of the control that will show when the tab is active |
+### 轮播文本（已弃用）
 
-### Carousel Text (Legacy)
+|    属性名称    |        类型        | 默认值 |          描述          |
+| ------------- | :---------------: | :----: | ---------------------- |
+| always_rotate |      布尔值       |        |                        |
+| rotate_speed  |       数值        |        |                        |
+| hover_color   | 向量 [r, g, b, a] |        | 悬停状态颜色           |
+| hover_alpha   |      浮点数       |        | 悬停状态透明度         |
+| pressed_color | 向量 [r, g, b, a] |        | 按下状态颜色           |
+| pressed_alpha |      浮点数       |        | 按下状态透明度         |
 
-| Property Name |         Type         | Default Value |           Description           |
-| ------------- | :------------------: | :-----------: | ------------------------------- |
-| always_rotate |       boolean        |               |                                 |
-| rotate_speed  |        number        |               |                                 |
-| hover_color   | Vector [r, g, b, a], |               | `color` when element is hovered |
-| hover_alpha   |        float         |               | `alpha` when element is hovered |
-| pressed_color | Vector [r, g, b, a], |               | `color` when element is pressed |
-| pressed_alpha |        float         |               | `alpha` when element is pressed |
+## 属性附加说明
 
-## Properties Additional Information
+### 锚点属性
 
-### Anchor Properties
+锚点允许元素对齐到特定基点，该基点将作为位置、尺寸、缩放、动画等变换的参考原点。在JSON UI中，通过 `anchor_from` 和 `anchor_to` 两个属性共同实现这一功能。
 
-Anchors allows the elements to align to a certain point where position, size, scale, animations, etc will take as the point for transformation.
-In JSON UI, there's two properties `anchor_from` and `anchor_to` that together achieve this.
+大多数情况下，这两个属性会被赋予相同的值：
 
-Most people use them by giving them the same value:
-
-<CodeHeader>RP/ui/example_file.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/ui/example_file.json]
 {
   "element": {
     "anchor_from": "top_left",
@@ -647,19 +639,19 @@ Most people use them by giving them the same value:
   }
 }
 ```
+:::
 
 <WikiImage
 	src="/assets/images/json-ui/json-ui-documentation/anchor_same_value.png"
-	alt="Anchors with the same value"
+	alt="相同锚点值示例"
 	pixelated="true"
 	width=782
 />
 
-However, what happens when they have different values? Let's look at happens when `anchor_from: center` and `anchor_from: top_left`. It's the best example to demonstrate what's really happening.
+当两者采用不同值时会发生什么？以 `anchor_from: center` 和 `anchor_to: top_left` 的组合为例，这是理解其底层机制的最佳案例：
 
-<CodeHeader>RP/ui/example_file.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/ui/example_file.json]
 {
   "element": {
     "anchor_from": "center",
@@ -667,43 +659,42 @@ However, what happens when they have different values? Let's look at happens whe
   }
 }
 ```
+:::
 
 <WikiImage
 	src="/assets/images/json-ui/json-ui-documentation/anchor_center_top_left.png"
-	alt="Anchor from center to top left"
+	alt="中心锚点对齐左上角示例"
 	pixelated="true"
 	width=782
 />
 
-The top left point of the element is in the center point of the parent element.
+此时元素的左上角点将被定位到父元素的中心点。
 
-Another example:
+另一个复杂案例：
 
 <WikiImage
 	src="/assets/images/json-ui/json-ui-documentation/anchor_ce_rm_tm_tl.png"
-	alt="Anchor from center to right middle and anchor from top middle to top left"
+	alt="复合锚点对齐示例"
 	pixelated="true"
 	width=782
 />
 
-The blue box top left point is in the top middle point of the parent element. As for the black box, the right midde point is in the center of the parent.
+蓝色方框的左上角对齐到父元素的上边缘中点，而黑色方框的右侧中点则对齐到父元素中心。
 
+简而言之，`anchor_to` 表示元素自身的锚点，该锚点将与父元素的 `anchor_from` 指定位置进行对齐。
 
-Basically `anchor_to` is the anchor point in the element that will be attached to the `anchor_from` in  the parent element.
+### 变量属性
 
-### Variables Property
-
-| Name       |  Type  | Description |
-| ---------- | :----: | ----------- |
-| `requires` | string | condition   |
+| 名称        |   类型   | 描述         |
+| ----------- | :------: | ------------ |
+| `requires`  | string   | 触发条件     |
 
 <br>
 
-If you only have one variable to use, you should just use `"variables": {}`
+当仅需单个变量时，使用 `"variables": {}` 格式：
 
-<CodeHeader>RP/ui/example_file.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/ui/example_file.json]
 {
   "element": {
     ...
@@ -716,12 +707,12 @@ If you only have one variable to use, you should just use `"variables": {}`
   }
 }
 ```
+:::
 
-If you have multiple variables use `"variables": [{}]`
+多个变量时使用 `"variables": [{}]` 数组格式：
 
-<CodeHeader>RP/ui/example_file.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/ui/example_file.json]
 {
   "element": {
     ...
@@ -743,10 +734,11 @@ If you have multiple variables use `"variables": [{}]`
   }
 }
 ```
+:::
 
-## Property Bag
+## 属性包 Property Bag
 
-|                Name                |        Type         |                     Requirements                     |                           Description                           |
+|                名称                |        类型         |                     是否必要                     |                           说明                           |
 | ---------------------------------- | :-----------------: | ---------------------------------------------------- | --------------------------------------------------------------- |
 | #filtered_light_multiplier         |        float        | type[custom] <br> renderer[inventory_item_renderer]  |                                                                 |
 | #banner_patterns                   |       string        | type[custom] <br> renderer[inventory_item_renderer]  |                                                                 |
@@ -756,7 +748,7 @@ If you have multiple variables use `"variables": [{}]`
 | #disabled_filter_visible           |       boolean       | type[custom] <br> renderer[inventory_item_renderer]  |                                                                 |
 | #item_pickup_time                  |        float        | type[custom] <br> renderer[inventory_item_renderer]  |                                                                 |
 | #look_at_cursor                    |       boolean       | type[custom] <br> renderer[hud_player_renderer]      |                                                                 |
-| entity_type                        |        enum         | type[custom] <br> renderer[paper_doll_renderer]      | Possible values: <br> `player` <br> `npc`                       |
+| entity_type                        |        enum         | type[custom] <br> renderer[paper_doll_renderer]      | 可能值: <br> `player` <br> `npc`                       |
 | #skin_idx                          |         int         | type[custom] <br> renderer[paper_doll_renderer]      |                                                                 |
 | #player_uuid                       |       string        | type[custom] <br> renderer[paper_doll_renderer]      |                                                                 |
 | #skin_rotation                     |       boolean       | type[custom] <br> renderer[paper_doll_renderer]      |                                                                 |
@@ -820,7 +812,7 @@ If you have multiple variables use `"variables": [{}]`
 | #rare                              | Vector [r, g, b, a] |                                                      |                                                                 |
 | #epic                              | Vector [r, g, b, a] |                                                      |                                                                 |
 | #legendary                         | Vector [r, g, b, a] |                                                      |                                                                 |
-| reset_group                        |        enum         |                                                      | Possible values: <br> `video` <br> `audio` <br> `accessibility` |
+| reset_group                        |        enum         |                                                      | 可能值: <br> `video` <br> `audio` <br> `accessibility` |
 | #text                              |       string        |                                                      |                                                                 |
 | timer_duration                     |       number        |                                                      |                                                                 |
 | #should_host                       |       boolean       |                                                      |                                                                 |
@@ -842,11 +834,11 @@ If you have multiple variables use `"variables": [{}]`
 | experimental_radio_button_state    |       string        |                                                      |                                                                 |
 | classic_radio_button_state         |       string        |                                                      |                                                                 |
 
-## Animations
+## UI动画 Animations
 
-|  Animation Property Name  |     Type      |                                                                                                                                                                                                                                                                                       Description                                                                                                                                                                                                                                                                                        |
+|  动画属性字段  |     类型      |                                                                                                                                                                                                                                                                                       说明                                                                                                                                                                                                                                                                                        |
 | ------------------------- | :-----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| anim_type                 |     enum      | Possible values: <br> `alpha` <br> `clip` <br> `color` <br> `flip_book` <br> `offset` <br> `size` <br> `uv` <br> `wait` <br> `aseprite_flip_book`                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| anim_type                 |     enum      | 可能值: <br> `alpha` <br> `clip` <br> `color` <br> `flip_book` <br> `offset` <br> `size` <br> `uv` <br> `wait` <br> `aseprite_flip_book`                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | duration                  |    number     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | next                      |    string     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | destroy_at_end            |    string     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -854,7 +846,7 @@ If you have multiple variables use `"variables": [{}]`
 | end_event                 |    string     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | start_event               |    string     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | reset_event               |    string     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| easing                    |     enum      | Possible values: <br> `linear` <br> `spring` <br> `in_quad` <br> `out_quad` <br> `in_out_quad` <br> `in_cubic` <br> `out_cubic` <br> `in_out_cubic` <br> `in_quart` <br> `out_quart` <br> `in_out_quart` <br> `in_quint` <br> `out_quint` <br> `in_out_quint` <br> `in_sine` <br> `out_sine` <br> `in_out_sine` <br> `in_expo` <br> `out_expo` <br> `in_out_expo` <br> `in_circ` <br> `out_circ` <br> `in_out_circ` <br> `in_bounce` <br> `out_bounce` <br> `in_out_bounce` <br> `in_back` <br> `out_back` <br> `in_out_back` <br> `in_elastic` <br> `out_elastic` <br> `in_out_elastic` |
+| easing                    |     enum      | 可能值: <br> `linear` <br> `spring` <br> `in_quad` <br> `out_quad` <br> `in_out_quad` <br> `in_cubic` <br> `out_cubic` <br> `in_out_cubic` <br> `in_quart` <br> `out_quart` <br> `in_out_quart` <br> `in_quint` <br> `out_quint` <br> `in_out_quint` <br> `in_sine` <br> `out_sine` <br> `in_out_sine` <br> `in_expo` <br> `out_expo` <br> `in_out_expo` <br> `in_circ` <br> `out_circ` <br> `in_out_circ` <br> `in_bounce` <br> `out_bounce` <br> `in_out_bounce` <br> `in_back` <br> `out_back` <br> `in_out_back` <br> `in_elastic` <br> `out_elastic` <br> `in_out_elastic` |
 | from                      |               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | to                        |               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | initial_uv                | Vector [u, v] |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -866,11 +858,11 @@ If you have multiple variables use `"variables": [{}]`
 | scale_from_starting_alpha |    boolean    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | activated                 |    boolean    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
-For more information about the `aseprite_flip_book` animation type, please see our page on [Aseprite Animations](/json-ui/aseprite-animations)
+更多关于 `aseprite_flip_book` 动画类型的属性说明, 请前往 [Aseprite Animations](/json-ui/aseprite-animations) 查阅详细文档。
 
-## Global Variables
+## 全局变量 Global Variables
 
-|                Variable                |                                           Note                                            |
+|                变量名                |                                           说明                                            |
 | -------------------------------------- | ----------------------------------------------------------------------------------------- |
 | $store_disabled                        |                                                                                           |
 | $game_pad                              | There's a controller connected to the device                                              |
