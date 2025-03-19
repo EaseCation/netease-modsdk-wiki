@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:build": "node --max_old_space_size=8192 node_modules/.bin/vitepress build docs",
     "docs:algolia": "node scripts/algolia-upload.mjs",
     "docs:preview": "vitepress preview docs"
   },
