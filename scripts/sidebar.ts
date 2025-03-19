@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import fg from 'fast-glob';
+import matter from 'gray-matter'
 
 // 定义侧边栏项目接口
 interface SidebarItem {
@@ -34,9 +35,16 @@ const CATEGORY_MAP: Record<string, string> = {
  * 从名称中提取排序数字
  * 例如：'0-概述' 返回 0，'1-基础' 返回 1
  */
-function extractOrderNumber(name: string): number {
+function extractOrderNumber(name: string, matterData: any): number {
     const match = name.match(/^(\d+)-/);
-    return match ? parseInt(match[1], 10) : Number.MAX_SAFE_INTEGER; // 没有数字前缀的排在最后
+    if (match) {
+        return parseInt(match[1], 10);
+    } else if (matterData.order) {
+        return parseInt(matterData.order);
+    } else if (matterData.nav_order) {
+        return parseInt(matterData.nav_order);
+    }
+    return Number.MAX_SAFE_INTEGER;
 }
 
 /**
@@ -53,6 +61,14 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
 
         const segments = relativePath.split(path.sep);
         const categoryKey = segments[0];
+
+        // 读取文件内容，然后通过matter读取头部信息
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        const { data: matterData } = matter(fileContent);
+
+        if (matterData.hidden) {
+            continue;
+        }
 
         // 使用映射表获取显示名称
         const categoryName = CATEGORY_MAP[categoryKey] || categoryKey;
@@ -77,11 +93,11 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
                 link = `/${segment}`;
             }
 
-            const order = extractOrderNumber(segment); // 提取排序号
+            const order = extractOrderNumber(segment, matterData); // 提取排序号
 
             if (isLast) {
                 // 添加最终文件项
-                const title = await getTitleFromFile(filePath);
+                const title = await getTitleFromFile(filePath, matterData);
                 // 添加 activeMatch 以支持更精确的高亮匹配
                 const activeMatch = `^${link}(?:/|$)`;
                 currentLevel.push({ text: title, link, order, activeMatch });
@@ -158,25 +174,14 @@ function sortSidebarItems(items: SidebarItem[]): void {
 /**
  * 从文件 Frontmatter 或文件名提取标题
  */
-async function getTitleFromFile(filePath: string): Promise<string> {
-    try {
-        const content = await fs.readFile(filePath, 'utf-8');
-        // 寻找 title 在 frontmatter 中的位置
-        const frontmatterMatch = content.match(/^---\s*[\s\S]*?title:\s*(.*?)[\r\n][\s\S]*?---/);
-
-        if (frontmatterMatch && frontmatterMatch[1]) {
-            // 清理标题（移除引号等）
-            return frontmatterMatch[1].trim().replace(/['"]/g, '');
-        }
-
-        // 如果没有 frontmatter title，从文件名获取
-        const basename = path.basename(filePath, '.md');
-        // 普通文件，移除数字前缀和连字符
-        return basename.replace(/^\d+-\s*/, '').replace(/-/g, ' ');
-    } catch (error) {
-        console.error(`读取文件失败: ${filePath}`, error);
-        return path.basename(filePath, '.md');
+async function getTitleFromFile(filePath: string, matterData: any): Promise<string> {
+    if (matterData.title) {
+        return matterData.title.trim().replace(/['"]/g, '');
     }
+    // 如果没有 frontmatter title，从文件名获取
+    const basename = path.basename(filePath, '.md');
+    // 普通文件，移除数字前缀和连字符
+    return basename.replace(/^\d+-\s*/, '').replace(/-/g, ' ');
 }
 
 export default generateSidebar;
