@@ -15,7 +15,12 @@ interface SidebarItem {
 // 配置参数
 const DOCS_DIR = 'docs';          // 文档根目录
 const IGNORE_PATHS = ['README.md', 'readme.md', 'index.md']; // 忽略的文件名
-const DEFAULT_COLLAPSED = true;   // 默认折叠状态
+const DEFAULT_COLLAPSED_INDEX_MAP = {
+    'wiki': 1,
+    'mcdocs': 1,
+    'mcguide': 0,
+    'mconline': 0
+};
 
 // 一级目录名称映射表
 const CATEGORY_MAP: Record<string, string> = {
@@ -94,12 +99,11 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
 
                 if (!group) {
                     const groupLink = i === 0 ? `/${segment}` : undefined;
-
                     group = {
                         text: displayText,
                         items: [],
                         order,
-                        collapsed: i < 1 ? false : DEFAULT_COLLAPSED,
+                        collapsed: i > DEFAULT_COLLAPSED_INDEX_MAP[segments[0]],
                         // 为目录添加活动匹配模式
                         activeMatch: `^/${segment}(?:/|$)`,
                         link: groupLink
