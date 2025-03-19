@@ -1,12 +1,12 @@
 ---
-title: Vanilla 可用 Components - 完整
+title: 所有可用 Components - 完整
 category: Documentation
 mentions:
     - MedicalJewel105
 hidden: true
 ---
 
-# Vanilla 可用 Components - 完整
+# 所有可用 Components - 完整
 
 <!--@include: @/wiki/bedrock-wiki-mirror.md-->
 

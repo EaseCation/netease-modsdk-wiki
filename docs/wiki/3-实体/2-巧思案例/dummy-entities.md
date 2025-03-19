@@ -1,8 +1,8 @@
 ---
-title: Dummy Entities
-category: Tutorials
+title: 虚拟实体
+category: 教程
 tags:
-    - beginner
+    - 初学者
 mentions:
     - SirLich
     - Joelant05
@@ -10,26 +10,29 @@ mentions:
     - aexer0e
 ---
 
-Dummy entities are invisible entities which are used behind the scenes for game-play purposes. Dummy entities are a very useful tool, and this document will cover some of the ways they are utilized, as well as showing how to set up the resource side of things.
+# 虚拟实体
 
-## Using Dummies
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This is a non-exhaustive list of how dummies can be used:
+虚拟实体是游戏场景中不可见的幕后实用实体。本文将介绍这种多功能工具的使用场景，并展示如何配置资源文件。
 
--   **For data storage**: by adding tags to the entity, we can use it as a "game manager", much like Armor Stands used to be used.
--   **As a named entity:** by name-tagging a dummy, and then using `execute` to select for it, you can make command-blocks `/say` with a pretty display name.
--   **As a location marker:** you can run `execute` commands located at a dummy to get relative coordinates at a location.
--   **As a waypoint:** by making entities which are aggressive to your dummy, you can pathfind entities to any location by placing a dummy there.
+## 核心用途
 
-## Creating Dummies
+以下是虚拟实体的部分应用场景：
 
-### Behavior Entity
+- **数据存储**：通过给实体添加标签，我们可以将其作为"游戏管理器"使用（类似过去盔甲架的用法）。
+- **命名实体**：通过命名标签标识虚拟实体，配合`execute`指令选中目标，可以用命令块实现带精美显示名称的`/say`命令。
+- **坐标标记**：通过`execute`指令跟踪虚拟实体位置，获取相对坐标系的基准点。
+- **路径向导**：使敌对生物将虚拟实体设为目标，即可将实体路径引导至虚拟实体所在位置。
 
-You can use whatever behaviors you like, but here is a good template. The important aspects are: no damage, and can't be pushed.
+## 创建教程
 
-<CodeHeader>BP/entities/dummy.json</CodeHeader>
+### 行为配置
 
-```json
+这里提供一个标准模板（关键特性：免疫伤害且不可推动）。
+
+::: code-group
+```json [BP/entities/dummy.json]
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -40,11 +43,11 @@ You can use whatever behaviors you like, but here is a good template. The import
 			"is_experimental": false
 		},
 		"components": {
-			"minecraft:breathable": { //Optional, allows the entity to breath underwater
+			"minecraft:breathable": { // 可选，使实体能够在水中呼吸
 				"breathes_water": true
 			},
 			"minecraft:physics": { 
-				"has_gravity": false, //Optional, allows the entity to not be affected by gravity or water
+				"has_gravity": false, // 可选，使实体不受重力和水流影响
 				"has_collision": false
 			},
 			"minecraft:custom_hit_test": {
@@ -74,13 +77,12 @@ You can use whatever behaviors you like, but here is a good template. The import
 }
 ```
 
-If you want to disable collision at all (so you can place a block at it's position), you can use arrow runtime identifier, however, there can be some side effects.
+若要完全禁用碰撞（允许在其位置放置方块），可以使用弓箭runtime ID，但可能存在副作用。
 
-### Resource Entity
+### 资源配置
 
-<CodeHeader>RP/entity/dummy.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/dummy.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -100,12 +102,12 @@ If you want to disable collision at all (so you can place a block at it's positi
 	}
 }
 ```
+:::
 
-### Geometry
+### 模型配置
 
-<CodeHeader>RP/models/entity/dummy.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/models/entity/dummy.json]
 {
 	"format_version": "1.12.0",
 	"minecraft:geometry": [
@@ -119,12 +121,12 @@ If you want to disable collision at all (so you can place a block at it's positi
 	]
 }
 ```
+:::
 
-### Render Controller (Optional)
+### 渲染控制器（可选）
 
-<CodeHeader>RP/render_controllers/dummy.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/render_controllers/dummy.json]
 {
 	"format_version": "1.10.0",
 	"render_controllers": {
@@ -140,7 +142,8 @@ If you want to disable collision at all (so you can place a block at it's positi
 	}
 }
 ```
+:::
 
-### Texture (Optional)
+### 材质贴图（可选）
 
-You can either leave the texture location blank, or open the model in blockbench and create a blank texture.
+可以选择留空材质路径，或者使用Blockbench创建空白材质文件。

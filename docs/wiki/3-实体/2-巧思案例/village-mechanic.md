@@ -1,6 +1,6 @@
 ---
-title: Village Mechanic
-category: Tutorials
+title: 村庄机制
+category: 教程
 mentions:
     - AeroForta
     - MedicalJewel105
@@ -11,15 +11,18 @@ mentions:
     - ThomasOrs
 ---
 
-This article is for anyone who wants to try imitate the village mechanic for their entities
+# 村庄机制
 
-## Navigation Behavior
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-First let's start with some basic navigation behavior.
+本文适用于想要为自定义实体实现村庄机制的开发者
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
+## 导航行为
 
-```json
+首先从基本导航行为开始。
+
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:preferred_path":{
     "max_fall_blocks":1,
     "jump_cost":5,
@@ -48,12 +51,12 @@ First let's start with some basic navigation behavior.
     ]
 }
 ```
+:::
 
-Allows entity to do random walk.
+允许实体进行随机移动。
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:behavior.random_stroll":{
     "priority":9,
     "speed_multiplier":0.55,
@@ -61,83 +64,83 @@ Allows entity to do random walk.
     "y_dist":5
 }
 ```
+:::
 
-Make entity return to inside dwelling bound, in this case inside a village border. Requiring minecraft:dweller component that will be explained below.
+使实体返回居所范围（在此案例中即村庄边界）。需要下文将解释的`minecraft:dweller`组件。
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:behavior.move_towards_dwelling_restriction": {
     "priority": 4,
     "speed_multiplier": 1.0
 }
 ```
+:::
 
-Makes entity navigate around a village by creating a path to patrol. Used by Iron Golem.
+通过创建巡逻路径让实体在村庄周围移动。铁傀儡使用的机制。
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:behavior.move_through_village": {
 	"priority": 3,
 	"speed_multiplier": 0.6,
 	"only_at_night": true
 }
 ```
+:::
 
-Allows entity to enter a building and also take shelter when raining. Needs open door capabilities.
+允许实体进入建筑物并在下雨时寻找庇护所。需要开门能力。
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:behavior.move_indoors":{
     "priority":5
 }
 ```
+:::
 
-Makes entity stay indoors while sun is down.
+使实体在日落时留在室内。
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:behavior.restrict_open_door":{
     "priority": 5
 }
 ```
+:::
 
-Use in pair with:
+需搭配使用：
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:annotation.open_door":{
     "priority": 5
 }
 ```
+:::
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:navigation.walk":{
     "can_pass_doors":true,
     "can_open_doors":true
 }
 ```
+:::
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
  "minecraft:behavior.open_door":{
     "priority":6,
     "close_door_after":true
 }
 ```
+:::
 
-## Main Behavior
+## 核心行为
 
-<CodeHeader>BP/entities/custom_villager.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/custom_villager.json#components]
 "minecraft:dweller": {
 	"dwelling_type": "village",
 	"dweller_role": "inhabitant",
@@ -149,36 +152,34 @@ Use in pair with:
 	"first_founding_reward": 5
 }
 ```
+:::
 
-- `dweller_role: inhabitant`
-Allows entity claim a bed and bell.
-`minecraft:behavior.sleep` needed.
-- `preferred_profession: farmer`
-Optional for `minecraft:behavior.work`
-- `can_find_poi`
-Add it so entity is able to find point of interest.
-Known POI types:
+- `dweller_role: inhabitant`\
+允许实体认领床和钟，需搭配`minecraft:behavior.sleep`。
+- `preferred_profession: farmer`\
+为`minecraft:behavior.work`的可选参数
+- `can_find_poi`\
+启用后实体可寻找兴趣点。已知兴趣点类型：
 
 ```
-bed
-jobsite
-meeting_area
+bed    // 床
+jobsite    // 工作站点
+meeting_area    // 聚集点
 ```
 
-- `can_migrate`
-Defines if entity can migrate from one village to another or not.
+- `can_migrate`\
+定义实体是否能在不同村庄间迁移
 
-### Sleep
+### 睡眠行为
 
-You can find out how to make your entity sleep [here](/entities/sleeping-entities).
+可参考[睡眠实体指南](/entities/sleeping-entities)实现实体睡眠
 
-### Work
+### 工作行为
 
-Requires "dweller_role" set to be "inhabitant" also if "preferred_profession" doesn't exist the entity will try to move to the closest any job site.
+需要设置"dweller_role"为"inhabitant"，若未设置"preferred_profession"则实体将移动到最近的工作站点。
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [空值]
 "minecraft:behavior.work": {
 	"priority": 4,
 	"active_time": 250,
@@ -194,12 +195,12 @@ Requires "dweller_role" set to be "inhabitant" also if "preferred_profession" do
 	}
 }
 ```
+:::
 
+### 社交行为
 
-### Gathering
-
-Allows the entity to gather.
-Requires "dweller_role" set to be "inhabitant".
+允许实体进行社交活动。
+需要设置"dweller_role"为"inhabitant"。
 
 ```json
 "minecraft:behavior.mingle": {
@@ -212,16 +213,14 @@ Requires "dweller_role" set to be "inhabitant".
 }
 ```
 
+## 日程系统
 
-### Scheduler
+现在将所有机制整合到"minecraft:scheduler"中。
+首先创建简单配置。
+将工作行为放入组件组：
 
-Now you know everything about needed mechanic, let's try to put all of this together in "minecraft:scheduler"
-First let's do something simple.
-Put work behavior in component group work like this:
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [空值]
 "component_groups":{
     "work_schedule":{
         "minecraft:behavior.work":{
@@ -251,12 +250,12 @@ Put work behavior in component group work like this:
     }
 }
 ```
+:::
 
-Next, make your entity work.
+配置工作日程：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [空值]
 "minecraft:scheduler":{
     "min_delay_secs":0,
     "max_delay_secs":10,
@@ -267,12 +266,12 @@ Next, make your entity work.
                     {
                         "test":"hourly_clock_time",
                         "operator":">=",
-                        "value":0 //Morning
+                        "value":0 // 早晨
                     },
                     {
                         "test":"hourly_clock_time",
                         "operator":"<",
-                        "value":12000 //Evening
+                        "value":12000 // 傍晚
                     }
                 ]
             },
@@ -298,12 +297,12 @@ Next, make your entity work.
     ]
 }
 ```
+:::
 
-The events section looks something like this:
+事件部分配置示例：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [空值]
 "events":{
     "work":{
         "remove":{
@@ -331,27 +330,28 @@ The events section looks something like this:
     }
 }
 ```
+:::
 
-Open your world, spawn entity then put a bed and you should see green particle.
+进入游戏生成实体后放置床，应可见绿色粒子效果。
 
-## Other Behavior
+## 其他行为
 
-All of this is usable by custom entities:
-- `minecraft:behavior.move_to_village`
-Used by Pillager this may keep the entity to stay in the village.
-- `minecraft:behavior.stroll_towards_village`
-Used by fox to search a village and go there.
-- `minecraft:behavior.inspect_bookshelf`
-Used by librarian villager allows an entity to look at and inspect a bookshelf.
-- `minecraft:behavior.explore_outskirts`
-Allows entity to explore beyond the bounds of village (use schedule and component group to keep the entity return to the village).
-- `minecraft:behavior.defend_village_target`
-Use this on melee attack. Ranged attack can accidentally shoot any entity with inhabitant dwelling role.
+以下行为可供自定义实体使用：
+- `minecraft:behavior.move_to_village`\
+劫掠者使用该机制来留在村庄
+- `minecraft:behavior.stroll_towards_village`\
+狐狸使用该机制寻找并前往村庄
+- `minecraft:behavior.inspect_bookshelf`\
+管理员村民用于查看书架
+- `minecraft:behavior.explore_outskirts`\
+允许实体在村庄外探索（需搭配日程系统组件组保证返回）
+- `minecraft:behavior.defend_village_target`\
+用于近战攻击。远程攻击可能误伤具有"inhabitant" role的实体
 
-All of this can be used by custom entities and have relation to villager or village:
-| Behavior                                   | Uses                                                                                               | Note                                                                                                            |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `minecraft:behavior.defend_village_target` | Allows entity to attack other entity that hurt the entity who had "dweller_role": "inhabitant".    | Recommended to use only on entities with melee attack.                                                          |
-| `minecraft:behavior.hide`                  | Used by villager to hide and stay at defined POI.                                                  | Currently, there is no documentation for the POI type that's why I recommend not to change `"poi_type": "bed"`. |
-| `minecraft:behavior.move_to_village`       | Used by Illager and also witch. Allows entity to travel to a random x,y,z coordinate in a village. | -                                                                                                               |
-| `"minecraft:behavior.nap"`                 | Used by Fox to take a nap.                                                                         | Similar with sleep but offers more flexibility also has built-in wake up system by detecting specific entity.   |
+可用行为对照表：
+| 行为名称                                  | 用途                                                                                          | 备注                                                                                                          |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `minecraft:behavior.defend_village_target` | 允许实体攻击伤害村民的敌人                                                                    | 建议仅用于近战攻击型实体                                                                                      |
+| `minecraft:behavior.hide`                  | 村民用于在特定POI隐藏停留                                                                       | 当前POI类型文档不完整，建议保持`"poi_type": "bed"`                                                            |
+| `minecraft:behavior.move_to_village`       | 劫掠者和女巫用于在村庄范围内随机移动                                                           | -                                                                                                             |
+| `minecraft:behavior.nap`                   | 狐狸用于小憩                                                                                   | 类似睡眠但更灵活，内置感知特定实体自动唤醒系统                                                                |

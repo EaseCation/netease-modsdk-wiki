@@ -1,6 +1,6 @@
 ---
-title: Entity Attacks
-category: Tutorials
+title: 实体攻击机制
+category: 教程
 mentions:
     - Luthorius
     - TheDoctor15
@@ -9,43 +9,46 @@ mentions:
     - epxzzy
     - ThomasOrs
 tags:
-    - intermediate
+    - 中级
 ---
 
-Entity attacks are a complex subject that require many different things to work correctly:
+# 实体攻击机制
 
--   Navigation and movement abilities to move towards its target
--   Targeting abilities to pick which entity to attack
--   Attack type, such as melee or ranged
--   Attack damage and effects
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## Selecting Targets
+实体攻击需要多种系统协同工作才能正确运行：
 
-### Movement
+-   导航及移动能力以接近目标
+-   目标选择能力以确定攻击对象
+-   攻击类型（如近战或远程）
+-   伤害数值及附加效果
 
-Before a mob can attack, it will need various [movement components](/entities/entity-movement).
+## 目标选择
 
-Before starting to create your entity attacks, you should ensure that your entity can walk around, and navigate its surroundings.
+### 移动机制
+
+生物发起攻击前需要搭载多种[移动组件](/entities/entity-movement)。
+
+在开始配置攻击行为前，请确保实体具备基础移动和路径规划能力。
 
 :::warning
-Even if you are making an unmoving entity (like turret), you still need to add navigation component, so your entity can find the entity to shoot.
+即使要创建固定式防御单位（如炮塔），仍需要添加导航组件以便自动寻找射击目标。
 :::
 
-### Triggering Hostility
+### 激活敌对行为
 
-There are many ways to trigger hostility. The most common type `nearest_attackable_target`, is shown here. It generally allows you to define which entities this entity is interested in attacking:
+触发敌对状态有多种方式。以下为最常用的`nearest_attackable_target`组件示例，主要用于定义实体的主要攻击目标类型：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:behavior.nearest_attackable_target": {
-  "must_see": true, //If true, potential target must be in mob's line of sight
-  "reselect_targets": true, //Allows mob to select new target, if one is closer than current
-  "within_radius": 25.0, //Radius that potential target must be withing
-  "must_see_forget_duration": 17.0, //If "must_see" = true, time before forgetting target
+  "must_see": true, //如果为true，目标必须处于实体视线内
+  "reselect_targets": true, //允许切换更近的目标
+  "within_radius": 25.0, //有效搜索半径
+  "must_see_forget_duration": 17.0, //目标消失视野后的记忆时间
   "entity_types": [
     {
-      "filters": { //Entities to attack
+      "filters": { //有效攻击目标筛选
         "test": "is_family",
         "subject": "other",
         "value": "player"
@@ -55,25 +58,25 @@ There are many ways to trigger hostility. The most common type `nearest_attackab
   ]
 }
 ```
+:::
 
-For more fine control, you may also consider using one of the following components:
+如需更精细控制，可选用以下组件：
 
-| Component                                                | Note                                                         |
-| -------------------------------------------------------- | ------------------------------------------------------------ |
-| minecraft:behavior.nearest_attackable_target             | Targets entity meeting the given requirements                |
-| minecraft:behavior.nearest_prioritized_attackable_target | Allows for "priority": [integer] to be set after each filter |
-| minecraft:behavior.defend_trusted_target                 | Targets entity that hurts any entities specified in filters  |
+| 组件                                                | 说明                                                         |
+| ---------------------------------------------------- | ------------------------------------------------------------ |
+| minecraft:behavior.nearest_attackable_target         | 定位符合筛选条件的实体                |
+| minecraft:behavior.nearest_prioritized_attackable_target | 可通过filter后设置"priority": [整数]定义优先级 |
+| minecraft:behavior.defend_trusted_target         | 防御指定类型的友方单位                                |
 
-But there is also one more - `minecraft:lookat`
+另有特殊组件`minecraft:lookat`：
 
-This last component is slightly different to the other three, as it is for detecting and targeting entities that attempt eye contact. It is structured like so:
+该组件与其他三种不同，用于检测与实体发生视线交互的目标。配置示例：
 
-<CodeHeader>BP/entities/enderman.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/enderman.json]
 "minecraft:lookat": {
   "search_radius": 64.0,
-  "set_target": true, //Becomes a valid target if true
+  "set_target": true, //标记为有效目标
   "look_cooldown": 5.0,
   "filters": {
     "all_of": [
@@ -87,24 +90,24 @@ This last component is slightly different to the other three, as it is for detec
         "domain": "head",
         "subject": "other",
         "operator": "not",
-        "value": "carved_pumpkin"  //All players not with carved_pumpkin equipped on head
+        "value": "carved_pumpkin"  //未装备雕刻南瓜的玩家
       }
     ]
   }
 }
 ```
-
-### Target selecting
-
-:::tip
-This section shows you how to configure the "Targeting" components, explained above.
 :::
 
-Mobs find targets by using [filters](https://bedrock.dev/docs/stable/Entities#Filters) can be used to determine which entities are a valid target, through `test`, `subject`, `operator`, and `value`.
+### 目标筛选机制
 
-<CodeHeader></CodeHeader>
+:::tip
+本节说明如何配置上述「目标定位」组件。
+:::
 
-```json
+实体通过[筛选器](https://bedrock.dev/docs/stable/Entities#Filters)判定有效目标，使用`test`、`subject`、`operator`和`value`参数进行组合判断。
+
+::: code-group
+```json [原始CodeHeader的值]
 "entity_types":[
     {
         "filters":{
@@ -121,7 +124,7 @@ Mobs find targets by using [filters](https://bedrock.dev/docs/stable/Entities#Fi
                     "operator":"==",
                     "value":"iron_golem"
                 }
-                //anything that is equal to either" snow_golem" or "iron_golem"
+                //雪傀儡或铁傀儡
             ]
         },
         "max_dist":24
@@ -142,34 +145,34 @@ Mobs find targets by using [filters](https://bedrock.dev/docs/stable/Entities#Fi
                     "operator":"=!",
                     "value":"turtle_helmet"
                 }
-                //anything equal to player AND not wearing "turtle_helmet" on head
+                //未装备海龟盔甲的玩家
             ]
         },
         "max_dist":24
     }
 ]
 ```
+:::
 
-This would only target `snow_golem`s, `iron_golem`s, and `player`s that are **not** wearing `turtle_helmet`s.
+该配置将锁定雪傀儡、铁傀儡及未佩戴海龟头盔的玩家。
 
-## Types of Attack
+## 攻击类型
 
-Here are the available attacks:
+可用攻击方式列表：
 
-| Component                                            | Note                                                     |
+| 组件                                            | 说明                                                     |
 | ---------------------------------------------------- | -------------------------------------------------------- |
-| [minecraft:behavior.melee_attack](#melee)            | Deals damage to a single target                          |
-| [minecraft:behavior.ranged_attack](#ranged)          | Fires a projectile towards a target                      |
-| [minecraft:area_attack](#area)                       | Effectively melee attacks on anything withing range      |
-| [minecraft:behavior.knockback_roar](#knockback-roar) | Similar to minecraft:area_attack, but much more flexible |
+| [minecraft:behavior.melee_attack](#近战攻击)            | 单体近战攻击                        |
+| [minecraft:behavior.ranged_attack](#远程攻击)          | 发射弹射物                      |
+| [minecraft:area_attack](#范围攻击)                       | 范围内全体打击      |
+| [minecraft:behavior.knockback_roar](#击退怒吼) | 高自定义度的冲击波攻击 |
 
-### Melee
+### 近战攻击
 
-Melee attacks are the most common type of attack, they cause knockback, and have a 100% success rate at accuracy.
+最常见的攻击类型，带有击退效果且必定命中。
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "wiki:melee_attack": {
   "minecraft:attack": {
     "damage": 3,
@@ -178,81 +181,81 @@ Melee attacks are the most common type of attack, they cause knockback, and have
   },
   "minecraft:behavior.melee_attack": {
     "priority": 3,
-    "melee_fov": 90.0, //The allowable FOV the actor will use to determine if it can make a valid melee attack
+    "melee_fov": 90.0, //实体发动近战攻击时的有效视野角度
     "speed_multiplier": 1,
     "track_target": false,
     "require_complete_path": true
   }
 }
 ```
+:::
 
-Set the damage, choose a mob effect, and change some additional properties.
+可配置伤害数值、状态效果及攻击参数。
 
-The value defined in components stating integers of damage can simply be a constant, or a string containing 2 numbers, for a range of possible values.
+伤害数值支持固定值或区间范围：
 
-`"damage": 3` would result in 3 each time
+- `"damage": 3`：固定造成3点伤害
+- `"damage": [2, 6]`：随机造成2-6点伤害
 
-`"damage": [ 2, 6 ]` would result in any integer between 2 and 6
+状态效果支持列表：
 
-Both the mob effect and duration timer are optional, but when they are used, the available effects are as following:
-
-| Effect Name     |
+| 效果列表        |
 | --------------- |
-| speed           |
-| slowness        |
-| haste           |
-| mining_fatigue  |
-| strength        |
-| instant_health  |
-| instant_damage  |
-| jump_boost      |
-| nausea          |
-| regeneration    |
-| resistance      |
-| fire_resistance |
-| water_breathing |
-| invisibility    |
-| blindness       |
-| night_vision    |
-| hunger          |
-| weakness        |
-| poison          |
-| wither          |
-| health_boost    |
-| absorption      |
-| saturation      |
-| levitation      |
-| fatal_poison    |
-| slow_falling    |
-| conduit_power   |
-| bad_omen        |
-| village_hero    |
-| darkness        |
+| 速度           |
+| 缓慢        |
+| 急迫           |
+| 挖掘疲劳  |
+| 力量        |
+| 瞬间治疗  |
+| 瞬间伤害  |
+| 跳跃提升      |
+| 反胃          |
+| 生命恢复    |
+| 抗性提升      |
+| 防火         |
+| 水下呼吸    |
+| 隐身        |
+| 失明       |
+| 夜视    |
+| 饥饿          |
+| 虚弱        |
+| 中毒          |
+| 凋零          |
+| 生命提升    |
+| 伤害吸收      |
+| 饱和      |
+| 飘浮      |
+| 剧毒    |
+| 缓降    |
+| 潮涌能量   |
+| 不祥之兆        |
+| 村庄英雄    |
+| 黑暗        |
 
-### Ranged
+### 远程攻击
 
-Fires specified [projectiles](/documentation/projectiles) towards target at set intervals.
+按设定间隔发射指定[弹射物](/documentation/projectiles)。
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "wiki:ranged_attack": {
   "minecraft:behavior.ranged_attack": {
     "priority": 2,
-    "ranged_fov": 90.0, //The allowable FOV the actor will use to determine if it can make a valid ranged attack
-    "attack_interval_min": 1.0,
-    "attack_interval_max": 3.0,
-    "attack_radius": 15.0
+    "ranged_fov": 90.0, //实体发动远程攻击时的有效视野角度
+    "attack_interval_min": 1.0, //最小攻击间隔
+    "attack_interval_max": 3.0, //最大攻击间隔
+    "attack_radius": 15.0 //攻击范围
   },
   "minecraft:shooter": {
-    "def": "wiki:projectile"
+    "def": "wiki:projectile" //自定义弹射物定义
   }
 }
 ```
+:::
 
-List of vanilla projectiles:
+原版弹射物类型：
 
-| Vanilla Projectiles              |
+| 原版弹射物              |
 | -------------------------------- |
 | minecraft:arrow                  |
 | minecraft:dragon_fireball        |
@@ -271,33 +274,32 @@ List of vanilla projectiles:
 | minecraft:wither_skull_dangerous |
 | minecraft:xp_bottle              |
 
-Only one item has an effect on an entity's ranged attacks. Crossbows. If one is equipped, it is first required for it to be "charged" before the entity can fire anything. Regardless of the projectile stated in `minecraft:shooter`, the item to charge the crossbow with should always be `minecraft:arrow`.
+弩类武器需先装填后发射：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:behavior.charge_held_item": {
   "priority": 2,
   "items": [
-    "minecraft:arrow"
+    "minecraft:arrow" //弩的弹药类型固定为箭
   ]
 }
 ```
+:::
 
-Once `minecraft:behavior.charge_held_item` has been achieved, the entity will be able to execute the process of `minecraft:behavior.ranged_attack`, and will then need to charge again.
+完成装填后方可触发`minecraft:behavior.ranged_attack`。
 
-### Area
+### 范围攻击
 
-These attacks damage all entities within a set radius. It is different to both ranged and melee in that this component doesn’t actually require a target. Regardless of the entities behaviour, _all_ entities will be affected by this. It appears to be similar to melee attacks, as it deals knockback in a similar manner, though dealing damage at a constant rate.
+对范围内的所有实体造成伤害。与常规攻击不同，无需特定目标即可触发。
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:area_attack" : {
-  "damage_range": 1, //distance in blocks
-  "damage_per_tick": 2,
-  "cause": "contact",
-  "entity_filter": {
+  "damage_range": 1, //伤害作用范围（方块）
+  "damage_per_tick": 2, //每tick伤害量
+  "cause": "contact", //伤害来源类型
+  "entity_filter": { //有效目标筛选
      "any_of": [
       {
         "test": "is_family",
@@ -313,58 +315,58 @@ These attacks damage all entities within a set radius. It is different to both r
   }
 }
 ```
+:::
 
-[Entity damage sources](https://bedrock.dev/docs/stable/Addons#Entity%20Damage%20Source). It is important to take these into consideration, as certain items in vanilla can protect from some, like armour enchantments, and you can also make mobs immune to specific sources using `minecraft:damage_sensor`.
+需参考[实体伤害源类型](https://bedrock.dev/docs/stable/Addons#Entity%20Damage%20Source)进行配置，注意部分原版装备可减免特定类型伤害。
 
-### Knockback Roar
+### 击退怒吼
 
-Many similarities between this and `minecraft:area_attack`, this component though having much more flexibility.
+高灵活性范围攻击，可产生冲击波效果。
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "wiki:roar_attack": {
   "minecraft:behavior.knockback_roar":{
     "priority":2,
-    "duration":0.7,
-    "attack_time":0.2,
-    "knockback_damage":1,
-    "knockback_horizontal_strength":1,
-    "knockback_vertical_strength":1,
-    "knockback_range":5,
-    "knockback_filters":{
+    "duration":0.7, //技能总时长
+    "attack_time":0.2, //实际造成伤害时间点
+    "knockback_damage":1, //击退伤害
+    "knockback_horizontal_strength":1, //水平击退力度
+    "knockback_vertical_strength":1, //垂直击退力度
+    "knockback_range":5, //作用范围
+    "knockback_filters":{ //击退目标筛选
       "test":"is_family",
       "subject":"other",
       "operator":"==",
       "value":"player"
     },
-    "damage_filters":{
+    "damage_filters":{ //伤害目标筛选
       "test":"is_family",
       "subject":"other",
       "operator":"==",
       "value":"player"
     },
-    "on_roar_end":{
+    "on_roar_end":{ //技能结束触发事件
       "event":"wiki:other_event"
     },
-    "cooldown_time":10
+    "cooldown_time":10 //冷却时间
   }
 }
 ```
+:::
 
-This is more like a shockwave of damage. Extremely versatile in uses. Produces a particle effect, which can be disabled by adding a modified version of `knockback_roar.json` to a resource pack's particles folder.
+若需要隐藏默认粒子效果，可在资源包中覆盖相关粒子文件。
 
-## More on Attacks
+## 进阶攻击配置
 
-Entity Attacks don't have to be as simple as Mob being hostile towards X target, doing X attack, dealing X damage.
+攻击行为可通过事件系统进行更高级的交互设计。
 
-### Difficulty Dependant Attacks
+### 难度分级攻击
 
-Express components and values to use for each difficulty.
+不同游戏难度配置不同攻击参数：
 
-<CodeHeader>BP/entities/bee.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/bee.json]
 "easy_attack": {
     "minecraft:attack": {
         "damage": 2
@@ -385,18 +387,23 @@ Express components and values to use for each difficulty.
     }
 }
 ```
+:::
 
-### Switching Modes
+### 模式切换系统
 
-You can use events to make your mob only attack under specific circumstances, or swap between the different types of attack. This can be achieved through simple usage of [events](/entities/entity-events) and component groups. Two prime examples being `minecraft:environment_sensor` and `minecraft:target_nearby_sensor`. The two are pretty similar in regards of structure, difference being that one is for sensing environments and the other for testing for target distance.
+通过[事件系统](/entities/entity-events)和组件组实现攻击模式切换。常用传感器组件：
 
-#### Attacks
+| 传感器类型              | 说明                     |
+| ---------------------- | ----------------------- |
+| minecraft:environment_sensor | 环境条件监测       |
+| minecraft:target_nearby_sensor | 目标距离监测      |
 
-Component groups are required to define the different modes of attack, such as:
+#### 组件组示例
 
-<CodeHeader></CodeHeader>
+远程攻击配置组：
 
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "wiki:ranged_components": {
   "minecraft:shooter": {
     "def": "wiki:projectile"
@@ -410,10 +417,12 @@ Component groups are required to define the different modes of attack, such as:
   }
 }
 ```
+:::
 
-<CodeHeader></CodeHeader>
+近战攻击配置组：
 
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "wiki:melee_components": {
   "minecraft:attack": {
     "damage": 6
@@ -423,85 +432,41 @@ Component groups are required to define the different modes of attack, such as:
   }
 }
 ```
+:::
 
-Those are examples of your attack modes, but they are not the only ones you can use. `wiki:ranged_components` and `wiki:melee_components` are generic names for the components within them, they can have any name, but it's what's nested inside them that counts.
+#### 事件触发器
 
-#### Events
+距离传感器示例：
 
-These component groups won't actually do anything by themselves. Another component group is required, and some events to add/remove the attack modes.
-
-<CodeHeader></CodeHeader>
-
-```json
-"wiki:melee_swap": {    //When triggered, adds component group for ranged and removes melee component group
-  "remove": {
-    "component_groups": [
-      "wiki:ranged_components"
-    ]
-  },
-  "add": {
-    "component_groups": [
-      "wiki:melee_components"
-    ]
-  }
-}
-```
-
-<CodeHeader></CodeHeader>
-
-```json
-"wiki:ranged_swap": {   //When triggered, adds component group for melee and removes ranged component group
-  "remove": {
-    "component_groups": [
-      "wiki:melee_components"
-    ]
-  },
-  "add": {
-    "component_groups": [
-      "wiki:ranged_components"
-    ]
-  }
-}
-```
-
-The events are effectively for just turning attack modes on and off, by adding and removing different component groups.
-
-#### Sensors
-
-To trigger the events, another component group is used. Sensors are components that can trigger events when certain conditions are fulfilled. Here are 2 examples of different sensors:
-
--   For sensing the distance between the mob and target
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "wiki:switcher_range": {
   "minecraft:target_nearby_sensor": {
     "inside_range": 4.0,
     "outside_range": 5.0,
     "must_see":  true,
-    "on_inside_range": { //When target is within 4 blocks range, trigger "wiki:melee_swap" event
+    "on_inside_range": { //4格内切换近战
       "event": "wiki:melee_swap",
       "target": "self"
     },
-    "on_outside_range": { //When target is beyond 5 blocks range, trigger "wiki:ranged_swap" event
+    "on_outside_range": { //5格外切换远程
       "event": "wiki:ranged_swap",
       "target": "self"
     }
   }
 }
 ```
+:::
 
--   For sensing certain features of the environment of which the mob is exposed to
+环境传感器示例：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "wiki:switcher_environment": {
   "minecraft:environment_sensor": {
     "triggers": [
-      {
-        "filters": { //When underwater, trigger "wiki:melee_swap" event
+      { //水下转为近战
+        "filters": {
           "test": "is_underwater",
           "subject": "self",
           "operator": "==",
@@ -509,8 +474,8 @@ To trigger the events, another component group is used. Sensors are components t
         },
         "event": "wiki:melee_swap"
       },
-      {
-        "filters": { //When not underwater, trigger "wiki:ranged_swap" event
+      { //陆地转为远程
+        "filters": {
           "test": "is_underwater",
           "subject": "self",
           "operator": "==",
@@ -522,49 +487,39 @@ To trigger the events, another component group is used. Sensors are components t
   }
 }
 ```
-
-This uses `Filters`, similar to how the [target is initially selected](#target-selecting).
-
-:::tip
-You aren't limited to just 2 attack types, you can have as many as you want! Just make sure to have the event's and sensors to compensate for them.
 :::
 
-## Visual Animations
+:::tip
+攻击类型切换不限于两种模式，可根据需求扩展更多。
+:::
 
-Attacks and animations go hand in hand. Within resource packs, the following 3 directories are required:
+## 动作表现配置
 
--   animations (entityname.animation.json)
--   animation_controllers (entityname.animation_controller.json)
--   entity (entityname.json)
+攻击需配合动画系统实现完整表现。
 
-Or as long as you know the names of vanilla animations and animation controllers, you can define them in the latter directory and folder.
+### 动画资源
 
-### Animations
+建议使用[Blockbench](/guide/blockbench)制作动画，需在资源包中包含：
 
-Animations are self explanatory. The files themselves contain all specific animations for the given entity. The recommended way to make animations is by using [blockbench](/guide/blockbench).
+- animations文件夹（实体动画定义）
+- animation_controllers文件夹（动画控制器）
+- entity文件夹（实体定义）
 
-Though it is possible to create them in a simple text editor.
-
-| Vanilla Attack Animations                    |
+| 原版攻击动画                |
 | -------------------------------------------- |
 | "animation.zombie.attack_bare_hand"          |
 | "animation.skeleton.attack.v1.0"             |
 | "animation.humanoid.bow_and_arrow.v1.0"      |
 | "animation.humanoid.damage_nearby_mobs.v1.0" |
 
-A few examples of Animations. Locate /vanilla_resource_pack/animations for all of them.
+### 动画控制器
 
-### Animation Controllers
+控制动画的触发逻辑：
 
-List of states that trigger animations.
-
-| Vanilla Attack Animation Controllers           |
+| 原版动画控制器         |
 | ---------------------------------------------- |
 | "controller.animation.zombie.attack_bare_hand" |
 | "controller.animation.skeleton.attack"         |
 | "controller.animation.humanoid.bow_and_arrow"  |
-| "controller.animation.humanoid.attack"         |
 
-A few examples of Animation Controllers. Locate /vanilla_resource_pack/animation_controllers for all of them
-
-More information on animations can be found [here](https://bedrock.dev/docs/stable/Animations).
+更多动画系统细节请参考[官方文档](https://bedrock.dev/docs/stable/Animations)。

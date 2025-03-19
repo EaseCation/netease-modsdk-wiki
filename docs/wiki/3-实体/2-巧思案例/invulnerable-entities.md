@@ -1,6 +1,6 @@
 ---
-title: Invulnerable Entities
-category: Tutorials
+title: 无敌实体
+category: 教程
 tags:
     - beginner
 mentions:
@@ -10,58 +10,62 @@ mentions:
     - MedicalJewel105
 ---
 
-## Using Damage Sensor
+# 无敌实体
 
-The best and most flexible way of disabling damage for entities is using the `minecraft:damage_sensor` component. The component allows us to use `filters` to determine which damage sources can damage our entity.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-The best way to learn about this component is by using the vanilla examples for damage sensor or reading [documentation](https://bedrock.dev/docs/stable/Entities#minecraft:damage_sensor)
+## 使用伤害传感器组件
 
-### Completely Invulnerable Entity
+禁用实体伤害的最佳且最灵活的方式是使用 `minecraft:damage_sensor` 组件。该组件允许我们通过 `filters` 过滤器来指定哪些伤害源可以作用于实体。
 
-<CodeHeader>BP/entities/entity.json#minecraft:entity/components</CodeHeader>
+了解这个组件的最好方法是查阅原版伤害传感器示例或阅读[官方文档](https://bedrock.dev/docs/stable/Entities#minecraft:damage_sensor)
 
-```json
+### 完全无敌的实体
+
+::: code-group
+```json [BP/entities/entity.json#minecraft:entity/components]
 "minecraft:damage_sensor": {
     "triggers": {
-        "cause": "all",
-        "deals_damage": false
+        "cause": "all",      // 捕捉全部伤害类型
+        "deals_damage": false  // 取消实际伤害效果
     }
 }
 ```
+:::
 
-### Disable Damage from Player
+### 禁止玩家伤害
 
-<CodeHeader>BP/entities/entity.json#minecraft:entity/components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/entity.json#minecraft:entity/components]
 "minecraft:damage_sensor": {
     "triggers": {
-        "on_damage": {
-            "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "player"
+        "on_damage": {      // 当受到伤害时触发
+            "filters": {    // 过滤器配置
+                "test": "is_family", // 检测对象类型
+                "subject": "other",  // 检测施加伤害的主体
+                "value": "player"    // 当伤害来源为玩家时生效
             }
         },
-        "deals_damage": false
+        "deals_damage": false  // 取消实际伤害效果
     }
 }
 ```
+:::
 
-## Min Health
+## 最低生命值限制
 
-The `min` property in the `minecraft:health` component allows us to make invincible entities that cannot die. This includes when using `/kill @e`. This is not considered a good solution because entities like this are hard to get rid of.
+通过 `minecraft:health` 组件中的 `min`（最小值）属性，我们可以创建无法自然死亡的无敌实体（即使使用 `/kill @e` 命令也无法清除）。需要注意的是该方案可能引发后续问题——这类实体会永久驻留世界。
 
-If you choose to use this component, please make sure you have another method for killing the entity. Triggering `minecraft:instant_despawn` from something like an environment sensor, a timer, or an interact is a good solution. You also can call it using `/event`.
+如果使用此方案，**请务必配置备用清除机制**。例如通过环境传感器组件、计时器组件或互动组件触发的 `minecraft:instant_despawn` 事件实现清除，也可以通过执行 `/event` 命令手动触发。
 
-<CodeHeader>BP/entities/entity.json#minecraft:entity/components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/entity.json#minecraft:entity/components]
 "minecraft:health": {
-    "value": 1,
-    "max": 1,
-    "min": 1
+    "value": 1,     // 当前生命值
+    "max": 1,       // 最大生命值
+    "min": 1        // 生命值下限（设置为与max相等将保持血量恒定）
 }
 ```
+:::
 
-Note that setting it to 0 breaks some death and spawn animations/effects.
+> **技术提示**：将该值设置为0可能会导致部分死亡和重生动画/粒子效果无法正常显示。

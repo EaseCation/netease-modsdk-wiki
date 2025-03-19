@@ -1,48 +1,51 @@
 ---
-title: Sleeping Entities
-category: Tutorials
+title: 睡眠实体
+category: 教程
 tags:
-    - intermediate
+    - 中级
 mentions:
     - MedicalJewel105
     - SirLich
 ---
 
-This tutorial will explain how to make entity sleep.
+# 睡眠实体
 
-## Sleeping in beds
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This behavior is inspired from villagers.
+本文将指导如何为实体添加睡眠功能。
 
-### Features
+## 在床上睡眠
 
--   Entity sleeps during the night and wakes up at day time.
--   Interaction with entity will wake it up and after a while it goes sleeping again.
--   If entity is hurt, it wakes up.
+该行为的灵感来源于村民设计。
 
-### Behavior Pack
+### 特性
 
-In this section behavior pack components will be discussed.
+-   实体在夜晚自动入睡，天亮时苏醒
+-   与实体互动可唤醒它，并在一段时间后重新入睡
+-   实体受到伤害时会立即清醒
 
-#### Components
+### 行为包配置
 
-Let's start with some basic components that you need to add to your entity.
+本节将解析行为包所需组件。
 
-<CodeHeader>BP/entities/sleeping_entity.json#components</CodeHeader>
+#### 组件
 
-```json
+首先在实体组件中添加基础元素：
+
+::: code-group
+```json [行为包]
 "minecraft:dweller": {
     "dwelling_type": "village",
     "dweller_role": "inhabitant",
     "can_find_poi": true
 }
 ```
+:::
 
-Undocumented, needed for entity to be able to sleep.
+此组件未经官方文档记载，但实体需要它以实现睡眠功能。
 
-<CodeHeader>BP/entities/sleeping_entity.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [行为包]
 "minecraft:environment_sensor": {
     "triggers": [
         {
@@ -55,21 +58,20 @@ Undocumented, needed for entity to be able to sleep.
     ]
 }
 ```
-
-This component is required for entity understand when to sleep.
-It runs event if it isn't day time.
-
-:::warning
-You need some basic navigation components for your entity be able to move to bed.
 :::
 
-#### Component Groups
+用于识别何时进入睡眠状态，会在非白天时段触发`sleep`事件。
 
-Now you need some component groups for your entity with some components.
+:::warning
+注意：实体需具备基础导航组件才能移动到床上。
+:::
 
-<CodeHeader>BP/entities/sleeping_entity.json#component_groups</CodeHeader>
+#### 组件组
 
-```json
+接下来为实体配置复合组件组：
+
+::: code-group
+```json [行为包]
 "sleeping": {
     "minecraft:behavior.sleep": {
         "priority": 0,
@@ -118,26 +120,23 @@ Now you need some component groups for your entity with some components.
     }
 }
 ```
+:::
 
+参数解析：
 -   `minecraft:behavior.sleep`
+定义睡眠行为核心参数，优先级须设为`0`（最高级别）
 
-Determines sleep details, priority needs to be at `0` (the biggest weight).
-
--   `minecraft:damage_sensor``
-
-Add it if you want your entity wake up if it is being attacked.
+-   `minecraft:damage_sensor`
+实现受击苏醒功能
 
 -   `minecraft:environment_sensor`
-
-Runs `wake_up` event when it is day time.
+白昼时触发`wake_up`事件
 
 -   `minecraft:interact`
+允许玩家无伤害唤醒实体
 
-This makes player to be able wake up entity without hurting it.
-
-<CodeHeader>BP/entities/sleeping_entity.json#component_groups</CodeHeader>
-
-```json
+::: code-group
+```json [行为包]
 "sleep_timer": {
     "minecraft:timer": {
         "time": 15,
@@ -147,17 +146,16 @@ This makes player to be able wake up entity without hurting it.
     }
 }
 ```
+:::
 
-This component group is required for entity to fall asleep again (with some delay) after it was woken up.
+此组件组用于设置唤醒后的重新入睡延时。
 
-#### Events
+#### 事件配置
 
-Here you will find all events that you need.
-I don't really think it needs explanation.
+以下事件系统逻辑相对直观：
 
-<CodeHeader>BP/entities/sleeping_entity.json#events</CodeHeader>
-
-```json
+::: code-group
+```json [行为包]
 "sleep": {
     "add": {
         "component_groups": [
@@ -197,18 +195,18 @@ I don't really think it needs explanation.
     }
 }
 ```
+:::
 
-### Resource Pack
+### 资源包配置
 
-Don't forget that you need to add sleeping animation and controller for it to your entity!
+请确保为实体添加睡眠动画和动画控制器！
 
-#### Animation
+#### 动画配置
 
-Just copy/paste it.
+直接复制以下配置：
 
-<CodeHeader>RP/animations/sleeping_entity.animation.json</CodeHeader>
-
-```json
+::: code-group
+```json [资源包]
 {
 	"format_version": "1.8.0",
 	"animations": {
@@ -228,14 +226,14 @@ Just copy/paste it.
 	}
 }
 ```
+:::
 
-#### Animation Controller
+#### 动画控制器
 
-Again just copy/paste it if you need.
+推荐直接套用此模板：
 
-<CodeHeader>RP/animations_controllers/ac.sleeping_entity.sleep.json</CodeHeader>
-
-```json
+::: code-group
+```json [资源包]
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -262,36 +260,32 @@ Again just copy/paste it if you need.
 	}
 }
 ```
+:::
 
-Note that you will need to define animation in client entity like this:
+注意：需在客户端实体定义中关联动画：`"sleeping": "animation.sleeping_entity.sleep"`
 
-`"sleeping": "animation.sleeping_entity.sleep"`
-
-### Result
+### 效果演示
 
 ![](/assets/images/tutorials/sleeping-entities/result.png)
 
-## Taking naps
+## 小憩系统
 
-This behavior is inspired from foxes.
+此行为灵感来源于狐狸设计。
 
-### Features
+### 特色功能
 
--   Entity sleeps when feels safe, far from mobs or when the weather is not a thunderstorm.
--   Approaching the entity will make it wake up unless it's a trusted or sneaking player, or it's another entity with the family group `sleeping_entity`.
--   If entity is hurt, it wakes up.
+-   实体在安全环境（远离敌对生物且无雷暴天气）下进入小憩状态
+-   仅允许信任的潜行玩家或同族`sleeping_entity`实体靠近时不惊醒
+-   受击后自动苏醒
 
-### Behavior Pack
+### 行为包配置
 
-In this section behavior pack components will be discussed.
+#### 核心组件
 
-#### Components
+仅需一个核心组件：
 
-For this behavior you will need only one component:
-
-<CodeHeader>BP/entities/sleeping_entity.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [行为包]
 "minecraft:behavior.nap": {
     "priority": 8,
     "cooldown_min": 2.0,
@@ -350,22 +344,22 @@ For this behavior you will need only one component:
     }
 }
 ```
+:::
 
-If you want to also use the trusting mechanic, add:
+如需实现信任机制，可附加：
 
-<CodeHeader>BP/entities/sleeping_entity.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [行为包]
 "minecraft:trust": {}
 ```
+:::
 
-### Resource Pack
+### 资源包配置
 
-In our resource pack you can run an animation when entity starts to sleep.
+可通过动画控制器实现睡眠动画：
 
-<CodeHeader>RP/animations_controllers/ac.sleeping_entity.sleep.json</CodeHeader>
-
-```json
+::: code-group
+```json [资源包]
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -392,5 +386,6 @@ In our resource pack you can run an animation when entity starts to sleep.
 	}
 }
 ```
+::>
 
-The last thing, you will have to create and register a sleeping animation for you entity. If you don't know how to do it check out the [BlockBench page](/guide/blockbench.html#animating).
+最后需要为实体创建并注册睡眠动画，若存在制作难题可参考[BlockBench动画教程](/guide/blockbench.html#animating)。

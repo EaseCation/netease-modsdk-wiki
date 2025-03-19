@@ -1,11 +1,11 @@
 ---
-title: Vanilla 可用生成规则（Spawn Rules）
+title: 所有可用生成规则（Spawn Rules）
 category: Documentation
 mentions:
     - MedicalJewel105
 ---
 
-# Vanilla 可用生成规则（Spawn Rules）
+# 所有可用生成规则（Spawn Rules）
 
 <!--@include: @/wiki/bedrock-wiki-mirror.md-->
 

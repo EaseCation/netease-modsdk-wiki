@@ -1,6 +1,6 @@
 ---
-title: Entity Movement
-category: Tutorials
+title: 实体移动
+category: 教程
 mentions:
     - SirLich
     - sermah
@@ -8,138 +8,126 @@ mentions:
     - TheDoctor15
 ---
 
-In Minecraft, entities have the ability to move through the world, either by walking, swimming or flying. To get these behaviors, your entity will generally need quite a few behaviors, broken out into various types.
+# 实体移动
 
-As you read this tutorial, keep in mind that your entity will need at least:
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
--   [A component that sets the entities movement speed.](#movement-speed)
--   [A component to set how the entity will move (walking, flying, etc)](#movement-type)
--   [A component to set the entities navigation abilities, so it can generate paths.](#navigation-abilities)
--   [A component that sets where/when the entity should move (AI Goals).](#ai)
+在Minecraft中，实体可以通过行走、游泳或飞行的方式在世界中移动。要为实体赋予这些行为能力，通常需要配置多种不同类型的组件。
 
-:::tip
-The best way to create a moving entity is by picking a similar entity from the vanilla behavior pack, and copying the components into your entity.
+阅读本教程时请注意，您的实体至少需要以下组件：
 
-For example entities like Phantom, or Ghast, or Parrot are all flying entities, but have very different in-game behavior! Use the closest-matching entity as a template.
-:::
-
-## Movement Speed
-
-The first thing your entity needs is a speed component. This sets how quickly your entity will move through the world.
-
-| Component                                                                                                        | Note                             |
-| ---------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| [minecraft:movement](/entities/vanilla-usage-components#movement)                                         | Set movement speed (required)    |
-| [minecraft:underwater_movement](/entities/vanilla-usage-components#underwater-movement)                   | Set movement speed in the water. |
-| [minecraft:flying_speed](/entities/vanilla-usage-components#flying-speed)                                 | Set the speed in the air.        |
-
-You should always include `minecraft:movement`. Add the other two as needed.
-
-All vanilla "swimming" entities like Dolphin include `underwater_movement`. Only some flying entities have `flying_speed`. It is not known why this is the case.
-
-## Movement Type
-
-Your entity will also need a movement type. Movement types set hard-coded behavior for _how_ your entity will move through the world.
-
-You may only include one movement type in your entity. Select the component that most closely matches your needs. Generally `basic`, `amphibious` and `fly` are good ones to use.
-
-| Component                                                                                                 | Note                                                                                         |
-| --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [minecraft:movement.amphibious](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.amphibious) | This move control allows the mob to swim in the water and walk on land.                      |
-| [minecraft:movement.basic](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.basic)           | This component accents the movement of an entity.                                            |
-| [minecraft:movement.fly](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.fly)               | This move control causes the mob to fly.                                                     |
-| [minecraft:movement.generic](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.generic)       | This move control allows a mob to fly, swim, climb, etc.                                     |
-| [minecraft:movement.hover](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.hover)           | This move control causes the mob to hover.                                                   |
-| [minecraft:movement.jump](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.jump)             | Move control causes the mob to jump as it moves with a specified delay between jumps.        |
-| [minecraft:movement.skip](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.skip)             | This move control causes the mob to hop as it moves.                                         |
-| [minecraft:movement.sway](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.sway)             | This move control causes the mob to sway side to side, giving the impression it is swimming. |
-
-## Movement Modifiers
-
-Movement modifiers provide additional information about how your entity will move through the world. These components are not required for normal entities, but you should be aware of them.
-
-| Component                                                                                             | Note                                               |
-| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| [minecraft:water_movement](https://bedrock.dev/docs/stable/Entities#minecraft%3Awater_movement)       | Sets the friction the entity experiences in water. |
-| [minecraft:rail_movement](https://bedrock.dev/docs/stable/Entities#minecraft%3Arail_movement)         | Sets that the entity can move on rails (only).     |
-| [minecraft:friction_modifier](https://bedrock.dev/docs/stable/Entities#minecraft%3Afriction_modifier) | Sets the friction the entity experiences on land.  |
-
-## Navigation
-
-The next thing your entity needs is a navigation component. Navigation components have quite a few fields, like whether the entity can open doors or avoid sunlight. How you set these fields is generally more important than the navigation component you pick!
-
-The reason there are so many navigation components is that each one gives a slightly different hard-coded behavior. Pick the navigation component whose name/description best matches the kind of navigation your entity will be doing.
-
-You can only have one navigation component at any given time.
+-   [设置移动速度的基础组件](#移动速度)
+-   [定义移动方式的组件（行走/飞行等）](#移动方式)
+-   [设定导航能力的组件，用于生成移动路径](#导航能力)
+-   [控制实体移动时机和方向的AI组件](#人工智能)
 
 :::tip
-This component is very important. You should check vanilla examples for inspiration on what fields and values to use.
+创建移动实体的最佳方式是从原版行为包中找到类似实体，将其组件配置复制到您的实体中。
+
+例如像夜魅（Phantom）、恶魂（Ghast）或鹦鹉这类飞行实体，虽然具有完全不同的游戏行为，但它们都是通过基本相似的组件实现移动功能的。建议选择与目标实体最接近的原版生物作为模板。
 :::
 
-| Component                                                                                               | Note                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| [minecraft:navigation.climb](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.climb)     | Allows this entity to generate paths that include vertical walls like the vanilla Spiders do.                           |
-| [minecraft:navigation.float](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.float)     | Allows this entity to generate paths by flying around the air like the regular Ghast.                                   |
-| [minecraft:navigation.generic](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.generic) | Allows this entity to generate paths by walking, swimming, flying and climbing around, and jumping up and down a block. |
-| [minecraft:navigation.fly](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.fly)         | Allows this entity to generate paths in the air as the vanilla Parrots do.                                              |
-| [minecraft:navigation.swim](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.swim)       | Allows this entity to generate paths that include water.                                                                |
-| [minecraft:navigation.walk](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.walk)       | Allows this entity to generate paths by walking around and jumping up and down a block like regular mobs.               |
+## 移动速度
 
-## Navigation Abilities
+首先需要为实体配置移动速度组件，这些参数决定了实体在世界中的移动快慢。
 
-On top of the movement and the navigation component, there exist many additional components to augment the abilities of your entity as they move through the world.
+| 组件                                                                                                 | 说明                          |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------- |
+| [minecraft:movement](/entities/vanilla-usage-components#movement)                             | 设置基础移动速度（必需组件）  |
+| [minecraft:underwater_movement](/entities/vanilla-usage-components#underwater-movement)       | 设置水下移动速度              |
+| [minecraft:flying_speed](/entities/vanilla-usage-components#flying-speed)                     | 设置空中飞行速度              |
 
-| Component                                                                                                     | Note                                                                                                                              |
-| ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| [minecraft:annotation.break_door](https://bedrock.dev/docs/stable/Entities#minecraft%3Aannotation.break_door) | Allows entity to break doors. It must also be turned on in the navigation component.                                              |
-| [minecraft:annotation.open_door](https://bedrock.dev/docs/stable/Entities#minecraft%3Aannotation.open_door)   | Allows entity to open doors. It must also be turned on in the navigation component.                                               |
-| [minecraft:buoyant](https://bedrock.dev/docs/stable/Entities#minecraft%3Abuoyant)                             | Specifies which liquids the entity can float in.                                                                                    |
-| [minecraft:can_climb](https://bedrock.dev/docs/stable/Entities#minecraft%3Acan_climb)                         | Allows this entity to climb up ladders.                                                                                           |
-| [minecraft:can_fly](https://bedrock.dev/docs/stable/Entities#minecraft%3Acan_fly)                             | Marks the entity as being able to fly. The pathfinder won't be restricted to paths where a solid block is required underneath it. |
-| [minecraft:can_power_jump](https://bedrock.dev/docs/stable/Entities#minecraft%3Acan_power_jump)               | Allows the entity to power jump like the horse does in vanilla.                                                                   |
-| [minecraft:floats_in_liquid](https://bedrock.dev/docs/stable/Entities#minecraft%3Afloats_in_liquid)           | Sets that this entity can float in liquid blocks.                                                                                 |
-| [minecraft:jump.dynamic](https://bedrock.dev/docs/stable/Entities#minecraft%3Ajump.dynamic)                   | Defines a dynamic type jump control that will change jump properties based on the speed modifier of the mob.                      |
-| [minecraft:jump.static](https://bedrock.dev/docs/stable/Entities#minecraft%3Ajump.static)                     | Gives the entity the ability to jump.                                                                                             |
+所有实体必须包含`minecraft:movement`组件。其他两个组件按需添加。
 
-There are also components like `minecraft:preferred_path`, which will modify navigation based on block-based path-cost.
+原版水中生物（如海豚）都包含`underwater_movement`组件。部分飞行生物具有`flying_speed`组件（具体配置因生物而异）。
 
-## AI Goals
+## 移动方式
 
-The navigation component tells the entity _how_ to generate paths, but it doesn't say _when_ or _where_ to generate paths. This is what the AI components are for.
+实体需要配置移动类型组件来定义其基础运动模式。注意每个实体只能选择一种移动类型，请根据实际需求选择最匹配的类型。
 
-AI Goals are prefixed with `behavior` and follow a priority system to pick which behavior to run. The lower priorities will be picked first.
+| 组件                                                                                                 | 说明                                                                                     |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [minecraft:movement.amphibious](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.amphibious) | 两栖移动模式，允许同时在水中游泳和陆地行走                                               |
+| [minecraft:movement.basic](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.basic)           | 基础移动模式                                                                             |
+| [minecraft:movement.fly](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.fly)               | 飞行移动模式                                                                             |
+| [minecraft:movement.generic](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.generic)       | 通用移动模式，支持多种移动能力                                                           |
+| [minecraft:movement.hover](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.hover)           | 悬停移动模式                                                                             |
+| [minecraft:movement.jump](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.jump)             | 跳跃移动模式，可配置跳跃间隔时间                                                         |
+| [minecraft:movement.skip](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.skip)             | 蹦跳移动模式                                                                             |
+| [minecraft:movement.sway](https://bedrock.dev/docs/stable/Entities#minecraft%3Amovement.sway)             | 摆动移动模式，模拟水生生物游动姿态                                                       |
 
-In general, you should usually add quite a few AI components, with different priorities. Layered together, these will create realistic movement and behavior for your entity. As always, vanilla entities provide a good template for which components to add, and with what properties/priorities.
+## 移动修正
 
-There are too many AI components that generate paths to list in this document. A few will be provided as examples:
+下列组件可为实体移动提供额外的物理效果调整，常规情况下不是必须组件，但需要了解其功能。
 
-| Component                                                                                                                         |
-| --------------------------------------------------------------------------------------------------------------------------------- |
+| 组件                                                                                             | 说明                                       |
+| ---------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| [minecraft:water_movement](https://bedrock.dev/docs/stable/Entities#minecraft%3Awater_movement)       | 设置实体在水中的摩擦力                     |
+| [minecraft:rail_movement](https://bedrock.dev/docs/stable/Entities#minecraft%3Arail_movement)         | 使实体能够沿轨道移动（限轨道移动）         |
+| [minecraft:friction_modifier](https://bedrock.dev/docs/stable/Entities#minecraft%3Afriction_modifier) | 设置实体陆地移动摩擦力                     |
+
+## 导航能力
+
+导航组件定义了路径生成规则。每个导航组件都有独特的硬编码逻辑，需要根据实体的具体需求选择最匹配的类型。
+
+:::tip
+此组件对实体行为影响重大，建议参考原版生物的配置获取启发
+:::
+
+| 组件                                                                                               | 说明                                                                                   |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [minecraft:navigation.climb](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.climb)     | 允许生成墙面路径（类似蜘蛛的爬墙能力）                                                 |
+| [minecraft:navigation.float](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.float)     | 允许空中漂浮移动（类似恶魂的移动方式）                                                 |
+| [minecraft:navigation.generic](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.generic) | 通用导航模式，支持行走、游泳、飞行和攀爬等多种路径生成                                 |
+| [minecraft:navigation.fly](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.fly)         | 空中飞行导航（类似鹦鹉的飞行路径计算）                                                 |
+| [minecraft:navigation.swim](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.swim)       | 水体环境导航                                                                           |
+| [minecraft:navigation.walk](https://bedrock.dev/docs/stable/Entities#minecraft%3Anavigation.walk)       | 标准行走导航（类似普通生物的移动逻辑）                                                 |
+
+## 增强组件
+
+以下是增强实体移动能力的可选组件：
+
+| 组件                                                                                                     | 说明                                                                                     |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [minecraft:annotation.break_door](https://bedrock.dev/docs/stable/Entities#minecraft%3Aannotation.break_door) | 允许实体破坏门（需同时在导航组件中启用）                                                 |
+| [minecraft:annotation.open_door](https://bedrock.dev/docs/stable/Entities#minecraft%3Aannotation.open_door)   | 允许实体开门（需同时在导航组件中启用）                                                   |
+| [minecraft:buoyant](https://bedrock.dev/docs/stable/Entities#minecraft%3Abuoyant)                             | 指定实体可以漂浮的液体类型                                                               |
+| [minecraft:can_climb](https://bedrock.dev/docs/stable/Entities#minecraft%3Acan_climb)                         | 允许实体攀爬梯子                                                                         |
+| [minecraft:can_fly](https://bedrock.dev/docs/stable/Entities#minecraft%3Acan_fly)                             | 标记实体飞行能力（导航系统不会强制要求踏板支撑）                                         |
+| [minecraft:can_power_jump](https://bedrock.dev/docs/stable/Entities#minecraft%3Acan_power_jump)               | 允许进行强力跳跃（类似马匹的跳跃机制）                                                   |
+| [minecraft:floats_in_liquid](https://bedrock.dev/docs/stable/Entities#minecraft%3Afloats_in_liquid)           | 使实体能够在液体中漂浮                                                                   |
+| [minecraft:jump.dynamic](https://bedrock.dev/docs/stable/Entities#minecraft%3Ajump.dynamic)                   | 根据移动速度自动调整跳跃属性                                                             |
+| [minecraft:jump.static](https://bedrock.dev/docs/stable/Entities#minecraft%3Ajump.static)                     | 赋予实体基本的跳跃能力                                                                   |
+
+## 人工智能
+
+导航组件定义了移动方式，而AI目标组件决定移动的时机和目的地。AI目标通过优先级系统（数值越低优先级越高）控制行为选择。
+
+通常需要叠加多个不同优先级的AI组件来形成自然的行为模式。以下为部分常用AI组件示例：
+
+| 组件                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------- |
 | [minecraft:behavior.random_stroll](https://bedrock.dev/docs/stable/Entities#minecraft%3Abehavior.random_stroll)                   |
 | [minecraft:behavior.follow_owner](https://bedrock.dev/docs/stable/Entities#minecraft%3Abehavior.follow_owner)                     |
 | [minecraft:behavior.move_to_water](https://bedrock.dev/docs/stable/Entities#minecraft%3Abehavior.move_to_water)                   |
 | [minecraft:behavior.stroll_towards_village](https://bedrock.dev/docs/stable/Entities#minecraft%3Abehavior.stroll_towards_village) |
 
-For a full list, visit [bedrock.dev](https://bedrock.dev/docs/stable/Entities#AI%20Goals).
+完整列表请访问[基岩开发文档](https://bedrock.dev/docs/stable/Entities#AI%20Goals)。
 
-### Pathfinding
+### 路径规划
 
-Making entities go to specific places is one of the most common requests for Marketplace content.
-The best way to do pathfinding uses a second entity, which the first entity will be attracted to. I am going to call this secondary entity the **marker**. If you are confused on how to create a marker, visit the [Dummy Entities](/entities/dummy-entities) page.
+实现实体自动寻路是常用需求。推荐使用通过"诱饵实体"（Marker）进行引导的方案。若需要创建诱饵实体，请参考[虚拟实体教程](/entities/dummy-entities)。
 
-#### Idea
+#### 实现思路
 
-The way we are going to do pathfinding is actually fairly simple: Make our entity aggressive towards our marker, and then simply place our marker where we want our entity to path to. The hard part is knowing what components to add so we get really long-range pathing.
+基本原理是使主实体对诱饵实体产生敌对行为，通过放置诱饵实体引导主实体移动。关键点在于配置正确的组件参数以实现长距离寻路。
 
-#### Components
+#### 组件配置
 
-These components can be edited as needed to create good pathing. Make sure to update the `nearest_attackable_target` to point to your marker entity. This takes a `family_type`, so you should set one of those on your marker.
+以下配置中需要将`nearest_attackable_target`指向虚体诱饵（需要为诱饵实体设置family_type属性）。同时不要忘记添加常规的移动和导航组件。
 
-Don't forget to add some basic movement and navigation components so your entity is able to move.
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [标记目标锁定]
 "minecraft:behavior.nearest_attackable_target": {
     "priority": 0,
     "reselect_targets": true,
@@ -172,14 +160,14 @@ Don't forget to add some basic movement and navigation components so your entity
     "max": 1000
 }
 ```
+:::
 
-#### Detecting a reached waypoint
+#### 航点到达检测
 
-You can use `minecraft:target_nearby_sensor` to detect when you have reached the marker entity:
+使用目标临近传感器检测是否到达标记位置：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [临近传感器]
 "minecraft:target_nearby_sensor": {
     "inside_range": 2.0,
     "outside_range": 4.0,
@@ -192,11 +180,12 @@ You can use `minecraft:target_nearby_sensor` to detect when you have reached the
     }
 }
 ```
+:::
 
-## Other
+## 其他技巧
 
 :::tip
-You can trigger entity walking animation via command.
+可通过命令强制触发实体行走动画：
 `/execute as @e[type=...] at @s run tp @s ^^^0.1`
-This way you can control where entity goes and make it look natural.
+使用这种方式可以实现对实体移动路径的精确控制，并保持自然的动画效果。
 :::

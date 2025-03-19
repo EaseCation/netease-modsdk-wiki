@@ -100,8 +100,8 @@ class MyClientSystem(ClientSystem):
 
 BOOM！就这么简单！
 
-::: tip :bulb: 为什么需要这些System？
-不太理解为什么需要这些System？来阅读进一步的解释吧！[为什么是System](./2-为什么是System.md)
+:::details :bulb: 为什么需要这些System？
+<!--@include: @/wiki/1-Mod脚本开发/为什么是System.md-->
 :::
 
 ## 3. 运行你的Mod

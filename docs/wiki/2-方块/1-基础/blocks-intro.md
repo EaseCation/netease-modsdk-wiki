@@ -295,28 +295,22 @@ tile.wiki:compass_block.name=指南针方块
 
 ## 下一步学习
 
-<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 m-0 p-0">
-  <Card
-    title="扩展功能"
-    imgsrc-light="assets/images/homepage/crafting_table_0.png"
-    link="/blocks/block-components">
-    学习各类可用[方块组件](/blocks/block-components)打造独特玩法。
-    <br><br>
-    使用[geometry（几何组件）](/blocks/block-components#geometry)为方块添加自定义模型！还可以通过[collision_box（碰撞箱）](/blocks/block-components#collision-box)和[selection_box（选择框）](/blocks/block-components#selection-box)配置物理交互区域。
-  </Card>
-  <Card
-    title="创建变体"
-    imgsrc-light="assets/images/homepage/scripting.png">
-    利用[方块状态](/blocks/block-states)和[permutations（状态切换）](/blocks/block-permutations)实现条件触发的组件功能。
-    <br><br>
-    例如为储液罐方块添加多级液面高度功能，并支持多种液体类型。
-  </Card>
-  <Card 
-    title="复刻原版"
-    imgsrc-light="assets/images/homepage/diamond_ore_0.png"
-    link="/blocks/block-components">
-    在<b class="orange px-1 rounded-md">原版复刻</b>分类中查看多个完整实现案例。
-    <br><br>
-    从简单的[自定义玻璃方块](/blocks/custom-glass-blocks)开始，体验[material_instances（材质实例）](/blocks/block-components#material-instances)的应用！
-  </Card>
-</div>
+<MyFeatures :items="[
+  {
+    title: '扩展功能',
+    desc: '学习各类可用方块组件打造独特玩法。使用geometry（几何组件）为方块添加自定义模型！还可以通过collision_box（碰撞箱）和selection_box（选择框）配置物理交互区域。',
+    link: '/blocks/block-components',
+    image: 'assets/images/homepage/crafting_table_0.png'
+  },
+  {
+    title: '创建变体',
+    desc: '利用方块状态和permutations（状态切换）实现条件触发的组件功能。例如为储液罐方块添加多级液面高度功能，并支持多种液体类型。',
+    image: 'assets/images/homepage/scripting.png'
+  },
+  {
+    title: '复刻原版',
+    desc: '在原版复刻分类中查看多个完整实现案例。从简单的自定义玻璃方块开始，体验material_instances（材质实例）的应用！',
+    link: '/blocks/block-components',
+    image: 'assets/images/homepage/diamond_ore_0.png'
+  }
+]" />

@@ -1,5 +1,5 @@
 ---
-title: Aseprite动画
+title: 序列帧动画
 category: 教程
 mentions:
     - TheDataLioness
@@ -9,7 +9,7 @@ mentions:
     - stirante
 ---
 
-# Aseprite动画
+# 序列帧动画（Aseprite）
 
 <!--@include: @/wiki/bedrock-wiki-mirror.md-->
 

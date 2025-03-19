@@ -12,6 +12,11 @@ mentions:
 
 <!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
+:::warning ⚠️ 注意
+本教程仅适用于国际版的受限制的 JSON UI 系统（客户端无法实现脚本控制）<br>
+中国版无需使用此黑科技实现HUD元素新增。
+:::
+
 在本教程中，你将学习如何向HUD界面添加元素。
 
 ## 概述

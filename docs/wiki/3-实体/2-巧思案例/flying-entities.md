@@ -1,9 +1,9 @@
 ---
-title: Flying Entities
-category: Tutorials
+title: 飞行实体的控制方法
+category: 教程
 tags:
-    - recipe
-    - intermediate
+    - 配方
+    - 中级
 mentions:
     - SirLich
     - Joelant05
@@ -16,39 +16,42 @@ mentions:
     - TheItsNameless
 ---
 
-Whether making a plane or a dragon, adding controllability to flying entities will probably challenge most devs who haven't dabbled around this concept. Since there is no "right" way of adding a piloting mechanic to flying entities, I'll showcase 3 main workaround ways you can use to achieve this.
+# 飞行实体的控制方法
 
-## Great Jump, Slow Fall
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-While not exactly "flying", setting the entity's jumping power high and giving it slow falling & speed effects as it falls is probably the most straightforward method.
+无论是制作飞机还是飞龙，为飞行实体添加可控性对于未接触过此类概念的开发者来说都具有挑战性。由于没有"标准"方法来实现飞行操控，本文将展示三种主要的替代方案。
 
-To achieve this, we will need to add the `"minecraft:horse.jump_strength"` component to our entity. Adding this will allow you to control its jumping power and disable dismounting when the player presses the jump button.
+## 高跳缓降法
 
-<CodeHeader></CodeHeader>
+虽然不算严格意义上的"飞行"，但通过设置实体高跳跃能力并附加缓降和加速效果是最直接的方式。
 
-```json
+需要给实体添加 `"minecraft:horse.jump_strength"` 组件，该组件可控制跳跃高度并禁用跳跃键下马功能。
+
+::: code-group
+```json [组件配置]
 "minecraft:horse.jump_strength": {
     "value": 7
 }
 ```
+:::
 
-We can also use `"value"` as an object to utilize the **range bar** players will see when holding down the jump button.
+使用范围值对象可显示蓄力进度条：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [蓄力进度条配置]
 "minecraft:horse.jump_strength": {
     "value": { "range_min": 0.6, "range_max": 1.2 }
 }
 ```
+:::
 
-Now we will give it slow falling and speed as it's falling so that it doesn't instantly fall. To do this, we will make an animation controller and give it those effects when it's not on the ground as so:
+通过动画控制器在空中时附加缓降和加速效果：
 
-(You can read a tutorial on how to use animation controllers to execute commands [here](/animation-controllers/entity-commands).)
+（可参考[实体命令动画控制器教程](/animation-controllers/entity-commands)）
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [动画控制器]
 "controller.animation.dragon.flying":{
     "states":{
         "default":{
@@ -75,12 +78,12 @@ Now we will give it slow falling and speed as it's falling so that it doesn't in
     }
 }
 ```
+:::
 
-We'll also need to hook it up to our entity as so:
+实体描述符需关联控制器：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [实体配置]
 "description":{
     "identifier":"wiki:dragon",
     "is_spawnable":true,
@@ -96,20 +99,18 @@ We'll also need to hook it up to our entity as so:
     }
 }
 ```
+:::
 
-Now, we should have a mechanic at least resemblant of flying. You can change the values like jump_strength and speed, but the entity will always fall using this method.
+通过调整跳跃力度和速度参数可改变飞行体验，但实体最终仍会下落。
 
-## Controlling Through Looking
+## 视角控制法
 
-This is probably the most popular method of piloting flying entities, and unlike the first method, this one gives players control over the vertical movement of the entity so that you don't always have to fall every time you jump, with the downside being you can't look around freely without changing the entity's vertical trajectory.
+这是最流行的飞行控制方式，通过检测玩家俯仰角来控制垂直运动。优点是可主动控制升降，缺点是视角转动会影响飞行轨迹。
 
-This method detects the riding player's vertical rotation and applies levitation/slow_falling effects to the entity accordingly.
+使用命令方块检测玩家垂直视角并应用飘浮/缓降效果：
 
-There are multiple ways of achieving that, but in this tutorial, we'll be using the target selectors `rym` (minimum y-rotation) and `ry` (maximum y-rotation) in a chain of repeating command-blocks to detect the player's pitch, and depending on the range, giving our entity levitation or slowly falling.
-
-<CodeHeader></CodeHeader>
-
-```
+::: code-group
+```mcfunction
 execute @a[rxm=-90,rx=-25] ~~~ effect @e[type=wiki:dragon,r=1] levitation 1 6 true
 execute @a[rxm=-25,rx=-15] ~~~ effect @e[type=wiki:dragon,r=1] levitation 1 3 true
 execute @a[rxm=-15,rx=-5] ~~~ effect @e[type=wiki:dragon,r=1] levitation 1 2 true
@@ -117,17 +118,14 @@ execute @a[rxm=-5,rx=20] ~~~ effect @e[type=wiki:dragon,r=1] levitation 1 1 true
 execute @a[rxm=20,rx=35] ~~~ effect @e[type=wiki:dragon,r=1] slow_falling 1 1 true
 execute @a[rxm=35,rx=90] ~~~ effect @e[type=wiki:dragon,r=1] clear
 ```
+:::
 
-**Depending on how big your entity is and how far away the player's seat is from its pivot, you might need to change the radius `r` to a more significant value.**
+**注意：根据实体尺寸和坐骑点位置可能需要调整选择器半径 `r` 的数值**
 
-After you run those commands in a repeating command block, you should control its vertical movement by looking up and down.
-or you may use a simple animation controller and link it to the entity, so it always plays the function.
+建议通过动画控制器关联玩家实现持续效果：
 
-It's recommended that you link this animation controller to the player.
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [玩家动画控制器]
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -159,12 +157,12 @@ It's recommended that you link this animation controller to the player.
 	}
 }
 ```
+:::
 
-The entity will probably still be too slow when flying, so we'll borrow our animation controller from the first method with some changes to give the entity speed when it's flying.
+通过改良版动画控制器维持飞行速度:
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [改良版速度控制器]
 "controller.animation.dragon.flying":{
     "states":{
         "default":{
@@ -213,14 +211,12 @@ The entity will probably still be too slow when flying, so we'll borrow our anim
     }
 }
 ```
+:::
 
-_Since the entity's effects might be cleared when it's being flown, we changed the animation controller to give the entity speed every tick it's not on the ground._
+添加骑乘检测标签来优化误触发问题：
 
-You might also notice that the entity levitates when you go near it. We can fix this by giving the entity a tag when it's being ridden (removing it when it isn't being ridden) and only applying those effects when the entity has the tag by making and animating another animation controller and updating our commands.
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [骑乘检测控制器]
 "controller.animation.dragon.test_rider":{
     "states":{
         "default":{
@@ -246,10 +242,12 @@ You might also notice that the entity levitates when you go near it. We can fix 
     }
 }
 ```
+:::
 
-<CodeHeader></CodeHeader>
+对应调整命令选择器：
 
-```
+::: code-group
+```mcfunction
 execute @a[rxm=-90,rx=-25] ~~~ effect @e[type=wiki:dragon,r=1,tag=has_rider] levitation 1 6 true
 execute @a[rxm=-25,rx=-15] ~~~ effect @e[type=wiki:dragon,r=1,tag=has_rider] levitation 1 3 true
 execute @a[rxm=-15,rx=-5] ~~~ effect @e[type=wiki:dragon,r=1,tag=has_rider] levitation 1 2 true
@@ -257,29 +255,27 @@ execute @a[rxm=-5,rx=20] ~~~ effect @e[type=wiki:dragon,r=1,tag=has_rider] levit
 execute @a[rxm=20,rx=35] ~~~ effect @e[type=wiki:dragon,r=1,tag=has_rider] slow_falling 1 1 true
 execute @a[rxm=35,rx=90] ~~~ effect @e[type=wiki:dragon,r=1,tag=has_rider] clear
 ```
+:::
 
-## Controlling Through Jumping
+## 跳跃键控制法
 
-A third method of controlling flying entities uses the player's jump button. The entity rises when the player is holding the jump button and falls when they release their jump button.
+通过跳跃键实现升降控制：按住跳跃上升，松开自动下降。
 
-To do this, we need an animation controller attached to the player rather than the entity itself to detect when the player uses their jump button. We also need to disable dismounting when the player presses the jump button.
+首先禁用默认跳跃功能：
 
-First, on the entity, disable dismounting and jumping:
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [实体组件配置]
 "minecraft:horse.jump_strength": {
     "value": 0
 },
 "minecraft:can_power_jump": {}
 ```
+:::
 
-Next, we need an animation controller that causes the entity to levitate when the player uses their jump button and resets the levitation when they release their jump button.
+创建响应跳跃输入的动画控制器：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [跳跃键控制器]
 "controller.animation.fly_dragon":{
     "initial_state":"falling",
     "states":{
@@ -306,12 +302,12 @@ Next, we need an animation controller that causes the entity to levitate when th
     }
 }
 ```
+:::
 
-Now, we need a copy of the player's behavior file, which we will modify slightly. You can find the player's behavior file in the vanilla behavior pack provided by Mojang (found [here](https://aka.ms/behaviorpacktemplate)). Once you have copied the player's behavior file to your own behavior pack, find their `"description"` object and add the animation controller. We also want to ensure that the entity will only respond to the player's jump input when the player is riding it, so we can use a Molang query in the player's behavior to only activate the animation controller when the player is riding.
+需修改玩家行为文件（需从[官方模板包](https://aka.ms/behaviorpacktemplate)获取）并添加控制器：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [玩家配置文件]
 "description":{
     "identifier":"minecraft:player",
     "is_spawnable":false,
@@ -328,12 +324,12 @@ Now, we need a copy of the player's behavior file, which we will modify slightly
     }
 }
 ```
+:::
 
-The entity can now be controlled with the jump key, but there's a bug. If the player dismounts the entity while holding the jump key, it will continue rising. We can fix this with an animation controller on the entity itself that resets the levitation whenever a player dismounts it.
+添加离鞍状态复位控制器：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [离鞍复位控制器]
 "controller.animation.reset_levitation":{
     "initial_state":"no_rider",
     "states":{
@@ -357,3 +353,4 @@ The entity can now be controlled with the jump key, but there's a bug. If the pl
     }
 }
 ```
+:::
