@@ -98,8 +98,8 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
                     group = {
                         text: displayText,
                         items: [],
-                        order: order,
-                        collapsed: i < 2 ? false : DEFAULT_COLLAPSED,
+                        order,
+                        collapsed: i < 1 ? false : DEFAULT_COLLAPSED,
                         // 为目录添加活动匹配模式
                         activeMatch: `^/${segment}(?:/|$)`,
                         link: groupLink
