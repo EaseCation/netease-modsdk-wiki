@@ -5,11 +5,11 @@ layout: home
 hero:
   name: "我的世界中国版 ModSDK Wiki"
   text: ""
-  tagline: "《我的世界》开发者文档，但提供更优质的搜索引擎 🤩"
+  tagline: "《我的世界》开发者文档镜像，但提供更优质的搜索 🤩"
   actions:
     - theme: brand
       text: 开始
-      link: /wiki/0-欢迎
+      link: /wiki
 
 features:
   - icon: 🎯

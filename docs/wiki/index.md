@@ -51,22 +51,22 @@ next: false
 
 :::
 
-## 阅读官方文档镜像
+## 阅读 《我的世界》中国版 官方文档镜像
 
 <MyFeatures :items="[
   {
     title: 'API文档', 
-    desc: '查看官方API文档', 
+    desc: '中国版 ModSDK（Python2）API 文档', 
     link: '/mcdocs/0-欢迎' 
   },
   {
     title: '开发指南', 
-    desc: '查看官方开发指南', 
+    desc: '浏览每一个开发工具的使用说明！', 
     link: '/mcguide/0-欢迎' 
   },
   {
     title: '教学课程', 
-    desc: '查看官方教学课程', 
+    desc: '系统性地帮助您搭建开发知识体系！', 
     link: '/mconline/0-欢迎'
   }
 ]" />
