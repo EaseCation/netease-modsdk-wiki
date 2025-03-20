@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   # 构建工作
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,14 +49,13 @@ jobs:
         with:
           path: docs/.vitepress/dist
 
-  # 部署工作
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Refresh CDN Cache
+        env:
+          TENCENT_CLOUD_SECRET_ID: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
+          TENCENT_CLOUD_SECRET_KEY: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
+          TENCENT_CLOUD_ZONE_ID: ${{ secrets.TENCENT_CLOUD_ZONE_ID }}
+        run: node scripts/cdn-fresh.mjs
