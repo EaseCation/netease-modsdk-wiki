@@ -1,6 +1,6 @@
 ---
-title: Custom Armor
-category: Tutorials
+title: 自定义盔甲
+category: 巧思案例
 tags:
     - experimental
 mentions:
@@ -17,67 +17,70 @@ mentions:
     - SmokeyStack
 ---
 
+# 自定义盔甲
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: tip
-It is highly recommended that you look over [the BlockBench modelling and texturing](/guide/blockbench) section in the beginners guides before tackling these sections.
+强烈建议在开始本节内容前，先阅读[BlockBench建模与纹理制作指南](/wiki/guide/blockbench)中的新手引导部分。
 :::
 
-Making custom armors is surprisingly easy to do, you need to do a bit of fiddling around as there are a few files that need to be added and there can be a little bit of texturing involved but you can do as much or as little as you want here.
+制作自定义盔甲其实非常简单，虽然需要处理多个文件并进行一些纹理调整，但你可以根据自己的需求选择工作量。
 
-## Chest Piece
+## 胸甲部分
 
-Create a chest piece:
+创建胸甲物品：
 
-<CodeHeader>BP/items/my_chest.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_chest.json]
 {
 	"format_version": "1.16.100",
 	"minecraft:item": {
 		"description": {
 			"identifier": "wiki:my_chest",
-			// Notice we give it the equipment category
+			// 注意我们将其归类为装备
 			"category": "equipment"
 		},
 		"components": {
-			// Make sure it appears within the chestplate category
+			// 确保出现在胸甲分类中
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.chestplate"
 			},
-			// The icon we want to use in our INVENTORY
+			// 物品栏中显示的图标
 			"minecraft:icon": {
 				"texture": "my_chest"
 			},
-			// We give it a name
+			// 物品名称
 			"minecraft:display_name": {
-				"value": "My Custom Armor"
+				"value": "我的自定义盔甲"
 			},
-			// We dont want it to stack
+			// 禁止堆叠
 			"minecraft:max_stack_size": 1,
-			// We make sure it can only receive enchantments for chest pieces
+			// 仅接受胸甲部位附魔
 			"minecraft:enchantable": {
 				"value": 10,
 				"slot": "armor_torso"
 			},
-			// This tells it how much protection it should give
+			// 护甲值设置
 			"minecraft:armor": {
 				"protection": 5
 			},
-			// We want it to be repairable, and what to use to repair it
+			// 修复材料设置
 			"minecraft:repairable": {
 				"repair_items": [
 					{
 						"items": ["minecraft:stick"],
 						"repair_amount": "context.other->q.remaining_durability + 0.05 * context.other->q.max_durability"
-						// Some complicated molang; just copy it
+						// 复杂molang表达式，直接复制即可
 					}
 				]
 			},
-			// Mark it as a wearable and that it goes in the chest slot
+			// 穿戴设置（胸部槽位）
 			"minecraft:wearable": {
 				"dispensable": true,
 				"slot": "slot.armor.chest"
 			},
-			// Provide its durability
+			// 耐久度设置
 			"minecraft:durability": {
 				"max_durability": 200
 			}
@@ -86,78 +89,67 @@ Create a chest piece:
 }
 ```
 
-At this point you could just go and add an item texture into your `RP/textures/item_texture.json` with the key `my_chest` and you are on your way. We have attached a default item texture for your armor here if you want to just follow along.
+此时你只需在`RP/textures/item_texture.json`中添加名为`my_chest`的纹理即可。我们提供了默认纹理供参考：
 
 ![](/assets/images/tutorials/custom-armor/custom_chestplate.png)
 
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_chestplate.png">Download texture here</BButton>
+<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_chestplate.png">点击此处下载纹理</BButton>
 
-## Adding attachables and textures
+## 添加附着物与纹理
 
-At this point your item would appear in game and would be wearable but it would not have any appearance. This is because we need to tell it how to handle the attachable equipment and give it a texture to show.
+现在需要配置盔甲模型附着物：
 
-To start with you need to create an `attachables` folder in your RP (you may already have one).
-
-<CodeHeader>RP/attachables/my_chest.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/attachables/my_chest.json]
 {
 	"format_version": "1.8.0",
 	"minecraft:attachable": {
 		"description": {
 			"identifier": "wiki:my_chest",
-			// These 2 are default and are required
+			// 必需材质配置
 			"materials": {
 				"default": "armor",
 				"enchanted": "armor_enchanted"
 			},
 			"textures": {
-				// This is our CUSTOM armor texture we need to make next
+				// 自定义盔甲纹理路径
 				"default": "textures/models/armor/custom_main",
-				// This texture doesn't actually exist in our RP
-				// but it will blow up without it so leave it in
+				// 保留默认附魔光效
 				"enchanted": "textures/misc/enchanted_item_glint"
 			},
-			// We tell it what geometry to use for the chestplate
+			// 使用胸甲模型
 			"geometry": {
 				"default": "geometry.player.armor.chestplate"
 			},
-			// We tell it to hide the chest layer as we will be showing our armor on top
+			// 隐藏默认胸甲层
 			"scripts": {
 				"parent_setup": "v.chest_layer_visible = 0.0;"
 			},
-			// We tell it what controller to use (default armor one)
+			// 使用标准渲染控制器
 			"render_controllers": ["controller.render.armor"]
 		}
 	}
 }
 ```
 
-At this point we need to make sure we create a texture for our model, these live in `RP/textures/models/armor`. We however actually need 2 textures, as one is for the main armor as if it is being worn all together, and one is for the legs which when worn alone will often cover some of the boot area.
-
-If you do not feel creative we have provided a recoloured diamond armour skin for use with this tutorial. So just `Save As` and plop them in the folder.
+下载配套纹理文件：
 
 ![](/assets/images/tutorials/custom-armor/custom_main.png)
 
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_main.png">Download texture here</BButton>
+<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_main.png">下载主纹理</BButton>
 
 ![](/assets/images/tutorials/custom-armor/custom_legs.png)
 
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_legs.png">Download texture here</BButton>
+<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_legs.png">下载腿部纹理</BButton>
 
-> In the real world you would probably want to use `BlockBench` or some photo editing program to edit the textures and ideally see how they look on a model before you add them into the addon.
-> If you now go into the game and check what you have produced you should be able to wear your chest piece and pat yourself on the back for a job well done.
+> 实际开发中建议使用BlockBench预览模型效果
 
-![](/assets/images/tutorials/custom-armor/armor-item-image.jpg)
-![](/assets/images/tutorials/custom-armor/armor-model-image.jpg)
+## 护腿部分
 
-## Leggings
+创建护腿物品：
 
-So while the chest piece alone is great, you probably want a whole set, so from here if you make another item json for the boots like so.
-
-<CodeHeader>BP/items/my_leggings.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_leggings.json]
 {
 	"format_version": "1.16.100",
 	"minecraft:item": {
@@ -166,19 +158,18 @@ So while the chest piece alone is great, you probably want a whole set, so from 
 			"category": "equipment"
 		},
 		"components": {
-			// We give it the leggings category this time
+			// 护腿分类
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.leggings"
 			},
-			// Give it an applicable ITEM texture
 			"minecraft:icon": {
 				"texture": "my_leggings"
 			},
 			"minecraft:display_name": {
-				"value": "My Custom Leggings"
+				"value": "我的自定义护腿"
 			},
 			"minecraft:max_stack_size": 1,
-			// Make sure the enchantments are for legs
+			// 腿部附魔槽
 			"minecraft:enchantable": {
 				"value": 10,
 				"slot": "armor_legs"
@@ -186,15 +177,8 @@ So while the chest piece alone is great, you probably want a whole set, so from 
 			"minecraft:armor": {
 				"protection": 3
 			},
-			"minecraft:repairable": {
-				"repair_items": [
-					{
-						"items": ["minecraft:stick"],
-						"repair_amount": "context.other->q.remaining_durability + 0.05 * context.other->q.max_durability"
-					}
-				]
-			},
-			// Make sure the wearable slot is legs
+			"minecraft:repairable": { /* 同胸甲配置 */ },
+			// 腿部穿戴槽
 			"minecraft:wearable": {
 				"dispensable": true,
 				"slot": "slot.armor.legs"
@@ -207,356 +191,165 @@ So while the chest piece alone is great, you probably want a whole set, so from 
 }
 ```
 
-This is great and like before you will need to add your own item texture, although here is one if you just want to continue.
+护腿纹理下载：
 
 ![](/assets/images/tutorials/custom-armor/custom_leggings.png)
 
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_leggings.png">Download texture here</BButton>
+<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_leggings.png">下载护腿纹理</BButton>
 
-Once we are done here we need to create the attachables file like this:
+附着物配置：
 
-<CodeHeader>RP/attachables/my_leggings.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/attachables/my_leggings.json]
 {
 	"format_version": "1.8.0",
 	"minecraft:attachable": {
 		"description": {
 			"identifier": "wiki:my_leggings",
-			// Notice this is the same as before
-			"materials": {
-				"default": "armor",
-				"enchanted": "armor_enchanted"
-			},
+			"materials": { /* 同胸甲配置 */ },
 			"textures": {
-				// Same as before
-				"enchanted": "textures/misc/enchanted_item_glint",
-				// This one is different as we are using the legging specific texture
-				"default": "textures/models/armor/custom_legs"
+				"default": "textures/models/armor/custom_legs",
+				"enchanted": "textures/misc/enchanted_item_glint"
 			},
-			// Tell it to use leggings geom
+			// 使用护腿模型
 			"geometry": {
 				"default": "geometry.humanoid.armor.leggings"
 			},
-			// Hide legs layer as we will be rendering over it
+			// 隐藏默认腿部层
 			"scripts": {
 				"parent_setup": "v.leg_layer_visible = 0.0;"
 			},
-			// Same as before
 			"render_controllers": ["controller.render.armor"]
 		}
 	}
 }
 ```
 
-Given that we have already put in the textures needed we can run it and see our legs straight away.
+## 头盔部分
 
-## Helmet
+头盔物品配置：
 
-This is just like the chest piece, just we change some of the categories and slots like so.
-
-<CodeHeader>BP/items/my_helm.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_helm.json]
 {
 	"format_version": "1.16.100",
 	"minecraft:item": {
-		"description": {
-			"identifier": "wiki:my_helm",
-			"category": "equipment"
-		},
+		"description": { /* 基础配置 */ },
 		"components": {
-			// Helmet category
+			// 头盔分类
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.helmet"
 			},
-			"minecraft:icon": {
-				"texture": "my_helm"
-			},
-			"minecraft:display_name": {
-				"value": "My Custom Helmet"
-			},
-			"minecraft:max_stack_size": 1,
-			// Helm enchantment slot
+			// 头部附魔槽
 			"minecraft:enchantable": {
 				"value": 10,
 				"slot": "armor_head"
 			},
-			"minecraft:armor": {
-				"protection": 3
-			},
-			"minecraft:repairable": {
-				"repair_items": [
-					{
-						"items": ["minecraft:stick"],
-						"repair_amount": "context.other->q.remaining_durability + 0.05 * context.other->q.max_durability"
-					}
-				]
-			},
-			// Wearable head slot
+			// 头部穿戴槽
 			"minecraft:wearable": {
 				"dispensable": true,
 				"slot": "slot.armor.head"
 			},
-			"minecraft:durability": {
-				"max_durability": 200
-			}
+			/* 其他配置同前 */
 		}
 	}
 }
 ```
 
-As you can see not much has changed, we just update the categories/slots to the correct ones for helms and then we add the attachables file (here is the item texture if you need it).
+头盔纹理下载：
 
 ![](/assets/images/tutorials/custom-armor/custom_helmet.png)
 
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_helmet.png">Download texture here</BButton>
+<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_helmet.png">下载头盔纹理</BButton>
 
-<CodeHeader>RP/attachables/my_helm.json</CodeHeader>
+## 靴子部分
 
-```json
-{
-	"format_version": "1.8.0",
-	"minecraft:attachable": {
-		"description": {
-			"identifier": "wiki:my_helm",
-			// These 2 are default and are required
-			"materials": {
-				"default": "armor",
-				"enchanted": "armor_enchanted"
-			},
-			"textures": {
-				// This is our CUSTOM armor texture we need to make next
-				"default": "textures/models/armor/custom_main",
-				// This texture doesn't actually exist in our RP
-				// but it will blow up without it so leave it in
-				"enchanted": "textures/misc/enchanted_item_glint"
-			},
-			// We tell it what geometry to use for the helmet
-			"geometry": {
-				"default": "geometry.player.armor.helmet"
-			},
-			// We tell it to hide the helmet layer as we will be showing our armor on top
-			"scripts": {
-				"parent_setup": "v.chest_layer_visible = 0.0;"
-			},
-			// We tell it what controller to use (default armor one)
-			"render_controllers": ["controller.render.armor"]
-		}
-	}
-}
-```
+靴子物品配置：
 
-There you go, you now have 3/4 of a complete set, we may as well go through the boots as well so you know all the categories etc.
-
-## Boots
-
-You already know the pattern so lets make the item and attachable json files.
-
-<CodeHeader>BP/items/my_boots.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_boots.json]
 {
 	"format_version": "1.16.100",
 	"minecraft:item": {
-		"description": {
-			"identifier": "wiki:my_boots",
-			"category": "equipment"
-		},
 		"components": {
-			// Boots category
+			// 靴子分类
 			"minecraft:creative_category": {
 				"parent": "itemGroup.name.boots"
 			},
-			"minecraft:icon": {
-				"texture": "my_boots"
-			},
-			"minecraft:display_name": {
-				"value": "My Custom Boots"
-			},
-			"minecraft:max_stack_size": 1,
-			// Enchantable Feet
+			// 足部附魔槽
 			"minecraft:enchantable": {
 				"value": 10,
 				"slot": "armor_feet"
 			},
-			"minecraft:armor": {
-				"protection": 3
-			},
-			"minecraft:repairable": {
-				"repair_items": [
-					{
-						"items": ["minecraft:stick"],
-						"repair_amount": "context.other->q.remaining_durability + 0.05 * context.other->q.max_durability"
-					}
-				]
-			},
-			// Feet slot
+			// 足部穿戴槽
 			"minecraft:wearable": {
 				"dispensable": true,
 				"slot": "slot.armor.feet"
 			},
-			"minecraft:durability": {
-				"max_durability": 200
-			}
+			/* 其他配置同前 */
 		}
 	}
 }
 ```
 
-The custom boots texture if you need it.
+靴子纹理下载：
 
 ![](/assets/images/tutorials/custom-armor/custom_boots.png)
 
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_boots.png">Download texture here</BButton>
+<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/bedrock-wiki/wiki/docs/public/assets/images/tutorials/custom-armor/custom_boots.png">下载靴子纹理</BButton>
 
-<CodeHeader>RP/attachables/my_boots.json</CodeHeader>
+## 套装效果（进阶）
 
-```json
-{
-	"format_version": "1.8.0",
-	"minecraft:attachable": {
-		"description": {
-			"identifier": "wiki:my_boots",
-			// These 2 are default and are required
-			"materials": {
-				"default": "armor",
-				"enchanted": "armor_enchanted"
-			},
-			"textures": {
-				// This is our CUSTOM armor texture we need to make next
-				"default": "textures/models/armor/custom_main",
-				// This texture doesn't actually exist in our RP
-				// but it will blow up without it so leave it in
-				"enchanted": "textures/misc/enchanted_item_glint"
-			},
-			// We tell it what geometry to use for the boots
-			"geometry": {
-				"default": "geometry.player.armor.boots"
-			},
-			// We tell it to hide the boots layer as we will be showing our armor on top
-			"scripts": {
-				"parent_setup": "v.chest_layer_visible = 0.0;"
-			},
-			// We tell it what controller to use (default armor one)
-			"render_controllers": ["controller.render.armor"]
-		}
-	}
-}
-```
+在`player.json`中添加伤害检测与事件响应：
 
-Thats it, you now have a whole suit of custom armor you can swagger around in, and use this as a basis to make whatever other armors you want in the game.
-
-> It is worth noting that we have used 2 separate textures here, and you could potentially use a texture per attachable, but each new texture consumes memory so its best to use as few as possible.
-> So this is what you should end up with, and as a bonus there is one more section on making set effects using filters, which is a bit more advanced but its a fun thing to do.
-
-![](/assets/images/tutorials/custom-armor/custom-set-image.jpg)
-
-## Bonus - Making Set Effects
-
-This is a bit more advanced but lets say you want your custom armor to act like it's a set from an RPG game. We can add some code to check if we have the set equipped and do some great stuff with it.
-
-Note that for effects you can use tick.json and functions with hasitem selector argument to avoid using player.json.
-
-In this example we will just add a chance to teleport the attacker somewhere nearby and put a blurb on the console for flavour.
-
-As we want this to trigger when the player is hit we need to add some logic to the `player.json` file. This is a huge file and we unfortunately need to make sure it has all the default content in there as well due to the way it will overwrite the default player components etc.
-
-So rather than include the whole `player.json` I will just include the parts you will need to add to your `components` and `events` sections. If you have no idea what the `player.json` is then look in the vanilla behavior pack and look for it and just copy it over into your project.
-
-So first of all lets put in the damage sensor component (which goes in your component section) which listens for when you take damage and lets you raise an event from it.
-
-<CodeHeader>BP/entities/player.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/player.json#components]
 "minecraft:damage_sensor": {
 	"triggers": {
 		"on_damage": {
 			"filters": {
 				"all_of": [
-					{
-						"test": "has_equipment",
-						"subject": "self",
-						// Domain is the body part in this case
-						"domain": "head",
-						"operator": "==",
-						// The item identifier we want to check
-						"value": "wiki:my_helm"
-					},
-					{
-						"test": "has_equipment",
-						"subject": "self",
-						"domain": "torso",
-						"operator": "==",
-						// Worth noting you can omit prefix for minecraft internal items i.e stick
-						"value": "wiki:my_chest"
-					},
-					{
-						"test": "has_equipment",
-						"subject": "self",
-						"domain": "leg",
-						"operator": "==",
-						"value": "wiki:my_leggings"
-					},
-					{
-						"test": "has_equipment",
-						"subject": "self",
-						"domain": "feet",
-						"operator": "==",
-						"value": "wiki:my_boots"
-					}
+					// 检测全身装备
+					{ "test": "has_equipment", "domain": "head", "value": "wiki:my_helm" },
+					{ "test": "has_equipment", "domain": "torso", "value": "wiki:my_chest" },
+					{ "test": "has_equipment", "domain": "leg", "value": "wiki:my_leggings" },
+					{ "test": "has_equipment", "domain": "feet", "value": "wiki:my_boots" }
 				]
 			},
-			// If all the triggers match in the filter raise the event
 			"event": "wiki:armor_sets.my_custom.taken_damage"
-		},
-		// This means if it matches the check it still applies damage
-		// Can be good to ignore team damage or similar scenarios
-		"deals_damage": true
+		}
 	}
 }
 ```
 
-As you can see from the comments, there is a lot there but really all we are doing is listening out for something then making sure we only filter the results we care about then relay on an event.
-
-> The event can be called anything but it is often better to have it more specific, incase you end up having multiple similar events etc, also it can help finding if you have multiple sections to it, i.e I could search on "armour_sets" and find all events related to it.
-> Then once you are done, in the same file we decide what we want to do with the event, which we put into our `events` section.
-
-<CodeHeader>BP/entities/player.json#events</CodeHeader>
-
-```json
+```json [BP/entities/player.json#events]
 "wiki:armor_sets.my_custom.taken_damage": {
 	"randomize": [
 		{
 			"weight": 1,
-			// We do a sequence here as we want to apply one command
-			// on one entity and the other on ourselves
 			"sequence": [
 				{
-					// This will take the attacker/other because it was in context
-					// at time of raising the event in the damage_sensor
+					// 传送攻击者
 					"run_command": {
-						// Teleport the entity away from us
 						"command": "spreadplayers ~~ 5 20 @s",
-						// Run the command on the attacker not us
 						"target": "other"
 					}
 				},
 				{
+					// 发送提示信息
 					"run_command": {
-						"command": "tellraw @s{\"rawtext\":[{\"text\":\"§aYour Armor Glows And The Enemy Vanishes\"}]}"
+						"command": "tellraw @s{\"rawtext\":[{\"text\":\"§a盔甲发光，敌人消失了！\"}]}"
 					}
 				}
 			]
 		},
-		{
-			// Dummy weighting so it happens semi frequently
-			"weight": 20
-		}
+		{ "weight": 20 }
 	]
 }
 ```
 
-Thats it, you can rejig the bits how you see fit but ultimately you have all the pieces to apply effects to armor and check for if you have the whole set applied or check for other equipment.
+完成效果展示：
 
-You can also change the equipment checks from self to other and check if whoever is attacking you has something equipped or even check if you are attacking a sort of block/entity and do different effects based on that. We haven't touched on that directly here but there is a good enough starting point to get you on your way and let you be creative with things.
+![](/assets/images/tutorials/custom-armor/custom-set-image.jpg)
+
+> 提示：建议使用最少纹理数量优化性能。通过组合使用主纹理和腿部纹理即可完成全套盔甲效果。

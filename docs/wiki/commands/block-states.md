@@ -1,118 +1,125 @@
 ---
-title: Block States
-category: General
+title: 方块状态
+category: 基础
 mentions:
     - BedrockCommands
     - zheaEvyline
     - SmokeyStack
     - ThomasOrs
 tags:
-    - info
+    - 信息
 ---
 
-## Introduction
+# 方块状态
 
-[Sourced by Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-Block States or Block Properties are additional data that defines how the block appears or behaves. Such as the direction it is facing, it's color, it's variant, whether it is powered or unpowered and so on.
+## 引言
 
-This is used in a multitude of commands such as `/clone`, `/execute`, `/fill`, `/setblock` and `/testforblock`
+[由Bedrock Commands社区Discord提供](https://discord.gg/SYstTYx5G5)
 
-In Bedrock Edition we used Aux values (also known as Metadata) to define a block. However; as of 1.19.70 and beyond this is no longer supported and have been fully replaced with Block States instead.
+方块状态（Block States）或方块属性（Block Properties）是用于定义方块外观或行为的附加数据。例如方块的朝向、颜色、变种、是否充能等特性。
 
-<CodeHeader>example</CodeHeader>
+这些数据被广泛应用于多个命令中，包括但不限于：
+- `/clone`
+- `/execute`
+- `/fill`
+- `/setblock`
+- `/testforblock`
 
-```yaml
-#Aux Value Example:
+在基岩版中，我们曾使用辅助值（Aux Values，也称元数据）来定义方块。然而自1.19.70版本起，该机制已被全面弃用，并由方块状态完全取代。
+
+::: code-group
+```yaml [辅助值]
+#辅助值示例：
 /setblock ~ ~ ~ wool 1
-#It's Block State equivalent:
+#等效的方块状态写法：
 /setblock ~ ~ ~ wool ["color"="orange"]
 ```
+:::
 
-- Any command block using aux values will continue to function as it is however block states will need to be adopted when updating them.
-- Similarly any commands using aux values in behaviour or function packs with `min_engine_version` 1.19.63 or below will also continue to function however block states must be adopted if the `min_engine_version` is updated to 1.19.70 or above.
+- 使用辅助值的命令方块仍可继续工作，但在更新时需要改用方块状态
+- 同理，在行为包或功能包中使用辅助值的命令，若`min_engine_version`设置为1.19.63或更低版本仍可正常工作，但若将最低引擎版本更新至1.19.70或更高则必须改用方块状态
 
-## Block State Examples & Syntax
+## 方块状态示例与语法
 
-<CodeHeader>Examples</CodeHeader>
-
-```yaml
+::: code-group
+```yaml [示例]
 /setblock ~ ~ ~ wool ["color"="white"]
 /setblock ~ ~ ~ wheat ["growth"=0]
 /setblock ~ ~ ~ wood ["wood_type"="birch","stripped_bit"=true]
 /setblock ~ ~ ~ wool []
 ```
+:::
 
-- Block states are enclosed in square brackets ` [ ] `
-- When specifying multiple block states a comma ` , ` is used to separate them.
-- Quotation marks ` " " ` are used around strings such as `"birch", "spruce" etc..`
-- Integer values `0, 1, 2..` and boolean values `true/false` do not use quotation marks.
-- Leaving the brackets blank is also a correct syntax, it will simply default to 0.
-- `wool 0` is white wool hence you may simply write it as `wool []` instead of `wool ["color"="white"]`
+- 方块状态需用方括号 `[ ]` 包裹
+- 多个状态间用逗号 `,` 分隔
+- 字符串值需使用双引号包裹，如 `"birch"`、`"spruce"` 等
+- 整数值 `0, 1, 2...` 和布尔值 `true/false` 无需引号
+- 空括号 `[]` 是有效语法，表示使用默认值0
+- `wool 0` 对应白色羊毛，因此可简写为 `wool []` 替代 `wool ["color"="white"]`
 
-### Notes For Beginners
+### 新手须知
 
-- **Integers** are whole numbers. They are used to define a block from a 'range' of values.
-    - Example: Redstone power 1 to 15
-    - `["redstone_power"=10]`
+- **整数（Integer）**：用于定义数值范围
+  - 示例：红石信号强度1-15
+  - `["redstone_power"=10]`
 
-- **Boolean** is a programming term which refers to `true/false` values. You can simply understand it as yes or no questions.
-    - Is this piston powered? `yes/no`
-    - Is this button pressed? `yes/no`
-    - Is this log stripped? `yes/no`
-    - `["stripped_bit"=true]`
+- **布尔值（Boolean）**：表示二值状态（真/假）
+  - 是否被激活？是否被按下？是否去皮？
+  - `["stripped_bit"=true]`
 
-- **Strings** are unique 'text' inputs. You can simply understand it as multiple choice questions.
-    - What color is this wool? `"white"`, `"orange"`, `"brown"` etc..
-    - What wood type is this log? `"spruce"`, `"birch"`, `"acacia"` etc..
-    - `["wood_type"="spruce"]`
- 
- 
-## Block States List
-A list of all the block states currently available within Bedrock can be found at:
+- **字符串（String）**：用于多选类型
+  - 羊毛颜色？原木种类？
+  - `["wood_type"="spruce"]`
+
+## 方块状态列表
+完整方块状态清单可访问微软官方文档：
 https://learn.microsoft.com/en-us/minecraft/creator/reference/content/blockreference/examples/blockstateslist
 
-Note: In the site block states may be written as one word but make sure to separate them with underscores `_` when typing in commands.
+注意：文档中可能出现连写的状态名称，但在命令中需使用下划线 `_` 分隔
 
-Example: `buttonPressedBit` → `"button_pressed_bit"`
+示例：`buttonPressedBit` → `"button_pressed_bit"`
 
-## Converting Aux Values to Block States
-For your convenience; download any of the excel sheet below to find the full list of block IDs, their aux values and equivalent block states in Bedrock. *Shared by kayla@Mojang*
+## 辅助值与方块状态转换
+可通过下方表格下载完整转换对照表（由kayla@Mojang提供）：
 
 <BButton
     link="https://github.com/BedrockCommands/bedrockcommands.github.io/files/10987839/Aux-Value_to_Block-States_Map.xlsx"
     color=white
->Download Sheet 1</BButton>
+>下载表格1</BButton>
 
-Note: the above sheet was quickly generated and contains some minor errors. Boolean values `0` should be replaced with `false` and `1` should be replaced with `true` since the game doesn't recognize the syntax otherwise.
+注意：此表格为快速生成版本，布尔值需手动将`0`改为`false`，`1`改为`true`
 
-Alternate sheet: *Shared by @ItsRichHeart*
+替代表格（由@ItsRichHeart提供）：
 
 <BButton
   link="https://github.com/BedrockCommands/bedrockcommands.github.io/files/11069804/All.Block-Item.List.Bedrock.pdf"
     color=white
->Download Sheet 2</BButton>
+>下载表格2</BButton>
 
-You may also use this [Lookup Table](https://auxval-to-blockstates.netlify.app/) instead not needing to download any files.
+也可使用在线[查询工具](https://auxval-to-blockstates.netlify.app/)免下载转换
 
-## Known Issue
+## 已知问题
 
-Detecting blocks using commands such as `/execute` or `/testforblock` requires __all__ or __none__ of the block states specified else the command returns an error.
+使用 `/execute` 或 `/testforblock` 检测方块时，必须指定全部或完全不指定方块状态，否则会报错
 
-Example; detecting a pressed stone button on ground facing up:
-<CodeHeader></CodeHeader>
+示例：检测朝上方向被按下的石质按钮：
 
+::: code-group
 ```yaml
-#✅ Accepted:
+#✅ 有效写法：
 /execute if block ~~~ stone_button [“button_pressed_bit”=true,”facing_direction”=1] run say success
 /execute if block ~~~ stone_button run say success
 
-# ❌ Not Accepted:
+# ❌ 无效写法：
 /execute if block ~~~ stone_button [“button_pressed_bit”=true] run say success
 /execute if block ~~~ stone_button [“facing_direction”=1] run say success
 ```
-Though block states have replaced aux values, we still cannot detect blocks based on specific filters yet like we do with selector arguments.
+:::
 
-### Related Bug Reports
+虽然方块状态已取代辅助值，但目前仍无法像选择器参数那样进行精确过滤
+
+### 相关漏洞报告
 - [MCPE-133360](https://bugs.mojang.com/browse/MCPE-133360)
 - [MCPE-168391](https://bugs.mojang.com/browse/MCPE-168391)

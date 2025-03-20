@@ -1,5 +1,5 @@
 ---
-title: Pack Folder Structure
+title: 包文件夹结构
 show_toc: false
 mentions:
     - SirLich
@@ -11,6 +11,10 @@ mentions:
     - JaylyDev
     - SmokeyStack
 ---
+
+# 包文件夹结构
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
 <FolderView :paths="[
     'BP/manifest.json',
@@ -32,7 +36,7 @@ mentions:
     'BP/scripts/exampleScript.js',
     'BP/spawn_rules/example.spawn.json',
     'BP/texts/languages.json',
-    'BP/texts/\*.lang',
+    'BP/texts/*.lang',
     'BP/trading/example.trade.json',
     'BP/trading/economy_trades/example.trade.json',
     'BP/structures/example.mcstructure',
@@ -92,9 +96,9 @@ mentions:
     'RP/texts/zh_TW.lang',
     'RP/texts/zh_TW.lang',
     'RP/texts/ja_JP/font/glyph_2E.png',
-    'RP/texts/ja_JP/font/\*.png',
+    'RP/texts/ja_JP/font/*.png',
     'RP/texts/zh_TW/font/glyph_2E.png',
-    'RP/texts/zh_TW/font/\*.png',
+    'RP/texts/zh_TW/font/*.png',
     'RP/textures/item_texture.json',
     'RP/textures/terrain_texture.json',
     'RP/textures/flipbook_textures.json',
@@ -109,5 +113,5 @@ mentions:
     'RP/textures/entity/example.png',
     'RP/textures/items/example.png',
     'RP/textures/particle/example.png',
-    'RP/ui/\*.json'
+    'RP/ui/*.json'
 ]"></FolderView>

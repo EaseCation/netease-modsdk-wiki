@@ -1,87 +1,89 @@
 ---
-title: On Player Leave
-category: On Event Systems
+title: 玩家离开事件系统
+category: 事件系统
 mentions:
     - BedrockCommands
     - zheaEvyline
 nav_order: 3
 tags:
-    - system
+    - 系统
 ---
 
-## Introduction
+# 玩家离开事件系统
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This system will run your desired commands on the event that a player leaves the world.
+## 简介
 
-> **Note:** you cannot execute commands on the *players* that leave using selectors. However; you may use the [On Player Join](/commands/on-player-join) system to execute when they join back.
+[由 Bedrock Commands 社区 Discord 提供](https://discord.gg/SYstTYx5G5)
 
-## Setup
+本系统可在玩家离开世界时运行你指定的命令。
 
-*To be typed in Chat:*
+> **注意：** 无法通过选择器对离开的玩家本体执行命令。但你可以使用[玩家加入事件系统](/wiki/commands/on-player-join)在他们重新加入时执行命令。
+
+## 系统搭建
+
+*在聊天栏输入以下指令：*
 
 `/scoreboard objectives add total dummy`
 
-If you prefer to have the objective added automatically on world initialisation, follow the process outlined in [On First World Load.](/commands/on-first-world-load)
+若希望在世界初始化时自动添加计分项，请参照[首次世界加载事件系统](/wiki/commands/on-first-world-load)的操作流程。
 
-## System
+## 系统核心
 
-<CodeHeader>BP/functions/on_player_leave.mcfunction</CodeHeader>
-
-```yaml
+::: code-group
+```yaml [BP/functions/on_player_leave.mcfunction]
 scoreboard players reset new total
 execute as @a run scoreboard players add new total 1
 scoreboard players operation new total -= old total
 
 
-#Your Commands Here (example)
-execute if score new total matches ..-1 run say a player has left the world
+#在此处输入你的命令（示例）
+execute if score new total matches ..-1 run say 有玩家离开了世界
 
 
 scoreboard players reset old total
 execute as @a run scoreboard players add old total 1
 ```
 
-![commandBlockChain6](/assets/images/commands/commandBlockChain/6.png)
+![命令方块链6](/assets/images/commands/commandBlockChain/6.png)
 
-Here we have used a **`/say`** command as an example but you can use any command you prefer and as many as you require.
+此处我们以 **`/say`** 命令作为示例，你可以根据需要替换为任意命令并自由扩展。
 
-Just make sure to follow the given order and properly use the `/execute if score` command as shown to run the commands you need.
+请严格按照给定顺序排列命令，并正确使用示例中的 `/execute if score` 命令结构来触发你的自定义命令。
 
-## Explanation
+## 原理说明
 
-- **` new `** this FakePlayer name means the total number of players on the world in the current game tick.
-- **` old `** this FakePlayer name means the total number of players that were on the world in the previous game tick but also saves the values to be used in the *next* game tick.
+- **` new `** 这个虚拟玩家名称表示当前游戏刻中世界内的玩家总数
+- **` old `** 这个虚拟玩家名称表示前一游戏刻的玩家总数，同时会将数值保存供下一游戏刻使用
 
-These values are obtained using the [Entity Counter](/commands/entity-counter) system. It may be beneficial to refer to that doc for better understanding this one.
+这些数值通过[实体计数系统](/wiki/commands/entity-counter)获取，建议结合该文档以获得更深入的理解。
 
-By subtracting 'old' total from 'new' total we will be able to identify if player count has:
-- decreased ` ..-1 `
-- increased ` 1.. `
-- or if it's unchanged ` 0 `
+通过从'new'总数中减去'old'总数，我们可以判断玩家数量是否发生：
+- 减少 ` ..-1 `
+- 增加 ` 1.. `
+- 或保持不变 ` 0 `
 
-If it has decreased; we know that 1 or more players have left the game.
-With this knowledge we can run our desired commands from 'new' if it's score is -1 or less.
-- ie, if there were 10 players and someone leaves:
-    - that is ` new - old `
-    - which is ` 9 - 10 = -1 `
-    - hence we will detect by ` ..-1 `
+当检测到数值减少时（即得分为-1或更低），我们就能确定有1名或更多玩家离开了游戏。
+- 示例：原有10名玩家时有人离开
+    - 计算式为 ` new - old `
+    - 即 ` 9 - 10 = -1 `
+    - 因此通过 ` ..-1 ` 条件检测
 
-- The 'new' total value is obtained first, subtraction is performed after that to run your desired commands and lastly the 'old' total value is obtained to be used in the next game tick.
+- 系统首先获取'new'总数，执行减法运算后运行你的自定义命令，最后获取'old'总数供下一游戏刻使用
 
-:::tip
-All commands involved in a command-block-chain or function will only run in a sequence one after the other but it all still happens in the same tick regardless of the number of commands involved. We are able to achieve this system due to the fact that commands run along the end of a game tick after all events such as player log in, log out, death etc.. occur.
+:::tip 游戏刻解析
+所有在命令方块链或函数中运行的指令都会在同一游戏刻内按顺序依次执行。由于命令执行发生在游戏刻的末端（包含所有玩家登录、登出、死亡等事件之后），本系统得以精准运作。
 
-![gametick](/assets/images/commands/gametick.png)
+![游戏刻示意图](/assets/images/commands/gametick.png)
 :::
 
-## Tick JSON
+## Tick JSON 配置
 
-If you are using functions instead of command blocks, the ` on_player_leave ` function must be added to the ` tick.json ` in order to loop and run it continuously. Multiple files can be added to the ` tick.json ` by placing a comma after each string. Refer to [Functions](/commands/mcfunctions#tick-json) documentation for further info.
+若使用函数替代命令方块，需将 ` on_player_leave ` 函数添加至 ` tick.json ` 以实现循环执行。通过在字符串后添加逗号分隔，可将多个文件添加至 ` tick.json `。更多信息请参考[函数文档](/wiki/commands/mcfunctions#tick-json)。
 
-<CodeHeader>BP/functions/tick.json</CodeHeader>
-```json
+::: code-group
+```json [BP/functions/tick.json]
 {
   "values": [
     "on_player_leave"
@@ -89,7 +91,7 @@ If you are using functions instead of command blocks, the ` on_player_leave ` fu
 }
 ```
 
-If using functions, your pack folder structure will be be as follows:
+使用函数时，资源包文件夹结构如下：
 
 <FolderView
 	:paths="[
@@ -102,6 +104,6 @@ If using functions, your pack folder structure will be be as follows:
 ]"
 ></FolderView>
 
-> **Note:** the scoreboard names (in this case: 'total') may end up being used by other people. Appending ` _ ` and a set of randomly generated characters after would be a choice that reduces the probability of collisions. Similar technique can be employed for the ` .mcfunction ` filenames. Ex:
+> **注意：** 计分项名称（本例中的'total'）可能与他人重复。建议在名称后追加 ` _ ` 和随机字符组合来降低冲突概率，此技巧同样适用于 ` .mcfunction ` 文件名。例如：
 > - ` total_0fe678 `
 > - ` on_player_leave_0fe678.mcfunction `

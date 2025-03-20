@@ -1,3 +1,3 @@
 ---
-title: Concepts
+title: 概念 Concepts
 ---

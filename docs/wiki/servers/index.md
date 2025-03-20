@@ -1,3 +1,3 @@
 ---
-title: Servers & Realms
+title: 服务器 & 领域服
 ---

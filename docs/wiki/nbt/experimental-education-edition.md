@@ -1,13 +1,17 @@
 ---
-title: Experiments in Education Edition
-category: Tutorials
+title: 教育版中的实验性功能
+category: 巧思案例
 mentions:
     - Fabrimat
     - TheItsNameless
 tags:
-    - easy
-    - Last updated for Version 1.18.32 (MEE)
+    - 简单
+    - 最后更新于版本1.18.32（教育版）
 ---
+
+# 教育版中的实验性功能
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
 [structure]: /assets/images/nbt/structure.png
 [int]: /assets/images/nbt/int.png
@@ -16,22 +20,22 @@ tags:
 [string]: /assets/images/nbt/string.png
 [byte]: /assets/images/nbt/byte.png
 
-Education Edition is a variant of Bedrock Edition with some different features and limitations.
-For security reasons it doesn't allow you to enable Experimental Features from the game.
+教育版是基于基岩版的一个特殊版本，具有不同的功能特性与使用限制。
+出于安全考虑，该版本不允许在游戏中直接启用实验性功能。
 
-## Editing NBT
+## 编辑NBT数据
 
 ::: warning
-Always make a backup of your data before editing NBT files!
+在编辑NBT文件前请务必备份存档！
 
-Experimental features may not be compatible with every device and can cause your world to behave in unexpected way.
+实验性功能可能无法兼容所有设备，并可能导致您的世界出现异常行为。
 :::
 
-1. Extract the level.dat from your .mcworld, .mctemplate or com.mojang world folder.
-2. Open the file with NBT editor (NBT Studio for example).
-3. Select on the first node which is ![][structure] level.dat
-4. Create a new compound tag called ![][compound] experiments
-5. Select the new node and create a new ![][byte] byte with the name of the feature you need with a value of 1, which on 1.18.32 are:
+1. 从.mcworld、.mctemplate或com.mojang世界文件夹中提取level.dat文件
+2. 使用NBT编辑器（例如NBT Studio）打开该文件
+3. 选中根节点（显示为![][structure] level.dat）
+4. 新建一个名为![][compound] experiments的复合标签
+5. 选中该节点并新建一个![][byte]字节类型值，名称填写需要启用的功能名称，数值设为1。在1.18.32版本中可用的功能包括：
     - data_driven_biomes
     - data_driven_items
     - experimental_molang_features
@@ -45,8 +49,19 @@ Experimental features may not be compatible with every device and can cause your
 
 ![](/assets/images/nbt/experiments-education-edition/experiments-file.png)
 
-Finally, save the file and put it back in the world package or directory.
+最后保存文件并放回原世界文件包或目录中。
 
-## Tips
-Education Edition is usually one or two versions behind the classic Bedrock Edition, so you'll always know in advance which experimental features will be added to the stable gameplay and which will be modified or removed.
-Try to add only features that will persist over time if you want to use that world in your classroom.
+## 使用建议
+教育版通常会比标准基岩版落后一到两个版本，这意味着您可以提前知晓哪些实验性功能将被加入正式版，哪些可能被修改或移除。
+如果需要在教学环境中使用这些世界，建议仅启用那些长期稳定的功能。
+
+::: code-group
+```json [示例配置]
+{
+  "experiments": {
+    "data_driven_biomes": 1b,
+    "vanilla_experiments": 1b
+  }
+}
+```
+:::

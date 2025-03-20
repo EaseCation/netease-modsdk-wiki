@@ -1,9 +1,8 @@
 ---
-title: Materials
+title: 材质 Material
 tags:
     - expert
-category:
-    - General
+category: 基础
 mentions:
     - SirLich
     - Joelant05
@@ -11,53 +10,54 @@ mentions:
     - Luthorius
 ---
 
+# 材质 Material
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::warning
-Materials are not for the faint of heart. Be prepared for potential crashes, content log errors, and long loading times.
+材质系统不适合心理承受能力较弱的使用者。请做好应对潜在崩溃、内容日志错误和漫长加载时间的准备。
 :::
 
-## Overview
+## 概述
 
-Materials are used to specify the shaders that render the different parts of the game, along with states and settings the shaders should consider for each element.
-At the moment, most things in the game are hard-coded to use specific material and may not be assigned new ones. The only way to change how these elements are rendered is by editing their materials directly (potentially having unintentional effects on other parts) or creating new shaders (an old experimental feature no longer officially supported by Mojang). The only elements that allow default or custom materials to be assigned or removed are entities and particles.
+材质用于指定渲染游戏不同部分的着色器，以及着色器在处理每个元素时应考虑的状态和设置。目前游戏中的大多数内容都硬编码使用特定材质，无法分配新的材质。要改变这些元素的渲染方式，只能直接修改原有材质（可能会对其他部分产生意外影响）或创建新的着色器（这是Mojang已不再官方支持的旧实验性功能）。唯一可以分配或移除默认/自定义材质的元素是实体和粒子。
 
-If you are not prepared to go in-depth with the ins and outs, material presets can be found [here](/documentation/materials).
+如果您不打算深入探索材质系统的细节，可以在此处找到预设材质[文档](/wiki/documentation/materials)。
 
-## Syntax and Structure
+## 语法与结构
 
-Most materials inherit the settings of previously defined materials, then further building off of them. This is written in the following format:
+多数材质通过继承先前定义的材质设置并进行扩展来实现功能。其基本格式如下：
 
-<CodeHeader>RP/materials/name.material</CodeHeader>
-
-```json
+::: code-group
+```json [RP/materials/name.material]
 {
 	"materials": {
 		"version": "1.0.0",
-		"<New material ID>:<ID of material to use as a base>": {
-    		<defines, states, and other settings>
+		"<新材质ID>:<基础材质ID>": {
+    		<定义、状态及其他设置>
 		}
 	}
 }
 ```
-
-:::warning
-Although it may look similar, do not confuse material format files in packs. There are no namespaces used in materials.
 :::
 
-Some material files contain extensive branching trees of materials. For example, nearly all of the materials used by default entities are ultimately derivatives of the material `entity_static` in the entity.material file. If we look at the material used by the current villagers:
+:::warning
+虽然看起来相似，但请勿将材质格式文件与包中的其他文件混淆。材质系统中不使用命名空间。
+:::
 
-<CodeHeader></CodeHeader>
+部分材质文件包含复杂的继承树结构。例如，几乎所有默认实体使用的材质最终都继承自entity.material文件中的`entity_static`材质。以当前村民使用的材质为例：
 
+::: code-group
 ```json
 "villager_v2_masked:entity_multitexture_masked": {
     "depthFunc": "LessEqual"
-},
+}
 ```
+:::
 
-We can see that the material's name is `villager_v2_masked` and builds off the material named `entity_multitexture_masked`.
-Scrolling up in the file, we can find "entity_multitexture_masked" inheriting the settings from "entity_alphatest" and building further onto it:
+可以看出该材质名为`villager_v2_masked`，继承自`entity_multitexture_masked`材质。在该文件中向上追溯，可以发现`entity_multitexture_masked`继承自`entity_alphatest`并扩展了设置：
 
-<CodeHeader></CodeHeader>
-
+::: code-group
 ```json
 "entity_multitexture_masked:entity_alphatest":{
     "+defines":[
@@ -75,11 +75,11 @@ Scrolling up in the file, we can find "entity_multitexture_masked" inheriting th
     ]
 }
 ```
+:::
 
-"entity_alphatest" can then be followed to "entity_nocull"
+继续追溯`entity_alphatest`可发现其继承自`entity_nocull`：
 
-<CodeHeader></CodeHeader>
-
+::: code-group
 ```json
 "entity_alphatest:entity_nocull":{
     "+defines":[
@@ -94,11 +94,11 @@ Scrolling up in the file, we can find "entity_multitexture_masked" inheriting th
     "msaaSupport":"Both"
 }
 ```
+:::
 
-which can be followed to plain "entity"
+`entity_nocull`又继承自基础`entity`材质：
 
-<CodeHeader></CodeHeader>
-
+::: code-group
 ```json
 "entity_nocull:entity":{
     "+states":[
@@ -106,25 +106,24 @@ which can be followed to plain "entity"
     ]
 }
 ```
+:::
 
-which can then finally be followed to "entity_static"
+最终`entity`材质继承自`entity_static`：
 
-<CodeHeader></CodeHeader>
-
+::: code-group
 ```json
 "entity:entity_static":{
     "+defines":[
         "USE_OVERLAY"
     ],
     "msaaSupport":"Both"
-},
-
+}
 ```
+:::
 
-"entity_static" doesn't have a colon followed by another material, indicating that it's the bottom of this inheritance tree.
+`entity_static`材质没有冒号后的继承对象，表明这是继承链的终点：
 
-<CodeHeader></CodeHeader>
-
+::: code-group
 ```json
 "entity_static":{
     "vertexShader":"shaders/entity.vertex",
@@ -201,20 +200,22 @@ which can then finally be followed to "entity_static"
     ]
 }
 ```
+:::
 
-## 1.16.100+ Notes
+## 1.16.100+ 注意事项
 
-Warning for anybody who uses custom materials!
+使用自定义材质的用户请注意！
 
-Custom material inheriting is no longer valid and causes content log errors the workaround Is to define the material fully custom with just the prefix and material name.
+1.16.100版本后，自定义材质继承将不再有效并会导致内容日志错误。解决方法是使用前缀和材质名称直接定义完整材质。
 
-This was not an issue before 1.16.100.
+该问题在1.16.100版本前不存在：
 
+::: code-group
 ```json
 {
     "materials": {
         "version": "1.0.0",
-        "prefix:window_glass:entity": { //now throws a content log error.
+        "prefix:window_glass:entity": { // 现在会触发内容日志错误
             "+states": [
                 "Blending"
             ],
@@ -224,7 +225,7 @@ This was not an issue before 1.16.100.
                 "USE_ONLY_EMISSIVE"
             ]
         },
-        "prefix:window_glass:": { //corrects the content log error. Note: may have to also define the old inherited values.
+        "prefix:window_glass:": { // 修正错误的方法，注意：可能需要重新定义旧继承值
             "+states": [
                 "Blending"
             ],
@@ -237,3 +238,4 @@ This was not an issue before 1.16.100.
     }
 }
 ```
+:::

@@ -1,5 +1,5 @@
 ---
-title: Menu Categories
+title: 菜单分类
 mentions:
   - Warhead51707
   - yanasakana
@@ -13,37 +13,39 @@ mentions:
   - QuazChick
 ---
 
-Menu categories determine where items and blocks appear inside of the creative inventory and recipe book.
+# 菜单分类
 
-- A `category` can be defined to place the item under a tab (such as construction). Click [here](#list-of-categories) for a list of valid categories.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-- A `group` specifies which expandable group the item is placed into. If you use a custom value, a new expandable group won't be created, however items with the group will be placed next to each other in the creative inventory. Click [here](#list-of-groups) for a list of expandable groups.
+菜单分类决定了物品和方块在创造模式物品栏和配方书中的显示位置。
 
-- You can also set `is_hidden_in_commands` to true to remove this block/item from commands, such as `/give` and `/setblock`.
+- 通过定义`category`可将物品放置于特定标签页下（如"construction"建筑类）。点击[此处](#分类列表)查看有效分类列表。
 
-If `menu_category` is omitted, the item will only be accessible through commands and won't appear in the creative inventory or recipe book.
+- `group`参数用于指定物品所在的可展开分组。使用自定义值时不会创建新分组，但相同分组的物品会在创造模式物品栏中相邻排列。点击[此处](#分组列表)查看可展开分组列表。
 
-**NOTE:** The menu category of custom spawn eggs cannot be modified. You must instead create a custom item with the `minecraft:entity_placer` component.
+- 设置`is_hidden_in_commands`为true可让该物品/方块无法通过`/give`和`/setblock`等命令获取。
 
-<CodeHeader></CodeHeader>
+若省略`menu_category`参数，物品将只能通过命令获取，且不会出现在创造模式物品栏或配方书中。
 
-```json
+**注意：** 自定义刷怪蛋的菜单分类不可修改，需使用`minecraft:entity_placer`组件创建自定义物品实现类似功能。
+
+::: code-group
+```json [菜单分类配置]
 "menu_category": {
-  "category": "construction", // Tab the item is placed under
-  "group": "itemGroup.name.door", // Optional - Group the item is placed into
-  "is_hidden_in_commands": false // Optional - default is false (item is usable in commands)
+  "category": "construction", // 物品所在的标签页
+  "group": "itemGroup.name.door", // 可选 - 物品所在的展开分组
+  "is_hidden_in_commands": false // 可选 - 默认为false（可通过命令使用）
 }
 ```
 
-:::danger HIDDEN ITEMS INACCESSIBLE IN COMMANDS ([MCPE-177866](https://bugs.mojang.com/browse/MCPE-177866))
-Currently, setting the category to "none" in a custom item (not block) prevents the item from being used in commands, overriding the "is_hidden_in_commands" option. This issue doesn't affect blocks.
+:::danger 命令中隐藏物品不可访问的问题 ([MCPE-177866](https://bugs.mojang.com/browse/MCPE-177866))
+当前版本中，将自定义物品（非方块）的category设为"none"会覆盖"is_hidden_in_commands"设置，导致无法通过命令使用该物品。此问题不影响方块类物品。
 :::
 
-## Block Example
+## 方块示例
 
-<CodeHeader>BP/blocks/balsa_wood.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/blocks/balsa_wood.json]
 {
   "format_version": "1.20.50",
   "minecraft:block": {
@@ -51,18 +53,18 @@ Currently, setting the category to "none" in a custom item (not block) prevents 
       "identifier": "wiki:balsa_wood",
       "menu_category": {
         "category": "nature",
-        "group": "itemGroup.name.wood" // Placed into an expandable group
+        "group": "itemGroup.name.wood" // 归入可展开分组
       }
     }
   }
 }
 ```
+:::
 
-## Item Example
+## 物品示例
 
-<CodeHeader>BP/items/dagger.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/dagger.json]
 {
   "format_version": "1.20.50",
   "minecraft:item": {
@@ -70,111 +72,112 @@ Currently, setting the category to "none" in a custom item (not block) prevents 
       "identifier": "wiki:dagger",
       "menu_category": {
         "category": "equipment",
-        "is_hidden_in_commands": true // Item cannot be used in commands
+        "is_hidden_in_commands": true // 无法通过命令使用
       }
     }
   }
 }
 ```
+:::
 
-## List of Categories
+## 分类列表
 
-_For use with `menu_category` parameter, `category`._
+_用于`menu_category`参数中的`category`属性_
 
-| Category     | Description                                              |
-| ------------ | -------------------------------------------------------- |
-| construction | Added to the "Contruction" tab.                          |
-| equipment    | Added to the "Equipment" tab.                            |
-| items        | Added to the "Items" tab.                                |
-| nature       | Added to the "Nature" tab.                               |
-| none         | Not added to a tab and only accessible through commands. |
+| 分类名称     | 描述                                      |
+| ------------ | ----------------------------------------- |
+| construction | 显示在"建筑"标签页                        |
+| equipment    | 显示在"装备"标签页                        |
+| items        | 显示在"物品"标签页                        |
+| nature       | 显示在"自然"标签页                        |
+| none         | 不显示在任何标签页，只能通过命令获取      |
 
-## List of Groups
+## 分组列表
 
-_For use with the `menu_category` parameter, `group`._
+_用于`menu_category`参数中的`group`属性_
 
 <!-- page_dumper_start -->
-| Creative Categories:              |
-| --------------------------------- |
-| itemGroup.name.anvil              |
-| itemGroup.name.arrow              |
-| itemGroup.name.axe                |
-| itemGroup.name.banner             |
-| itemGroup.name.banner_pattern     |
-| itemGroup.name.bed                |
-| itemGroup.name.boat               |
-| itemGroup.name.boots              |
-| itemGroup.name.buttons            |
-| itemGroup.name.candles            |
-| itemGroup.name.chalkboard         |
-| itemGroup.name.chest              |
-| itemGroup.name.chestboat          |
-| itemGroup.name.chestplate         |
-| itemGroup.name.concrete           |
-| itemGroup.name.concretePowder     |
-| itemGroup.name.cookedFood         |
-| itemGroup.name.copper             |
-| itemGroup.name.coral              |
-| itemGroup.name.coral_decorations  |
-| itemGroup.name.crop               |
-| itemGroup.name.door               |
-| itemGroup.name.dye                |
-| itemGroup.name.enchantedBook      |
-| itemGroup.name.fence              |
-| itemGroup.name.fenceGate          |
-| itemGroup.name.firework           |
-| itemGroup.name.fireworkStars      |
-| itemGroup.name.flower             |
-| itemGroup.name.glass              |
-| itemGroup.name.glassPane          |
-| itemGroup.name.glazedTerracotta   |
-| itemGroup.name.goatHorn           |
-| itemGroup.name.grass              |
-| itemGroup.name.hanging_sign       |
-| itemGroup.name.helmet             |
-| itemGroup.name.hoe                |
-| itemGroup.name.horseArmor         |
-| itemGroup.name.leaves             |
-| itemGroup.name.leggings           |
-| itemGroup.name.lingeringPotion    |
-| itemGroup.name.log                |
-| itemGroup.name.minecart           |
-| itemGroup.name.miscFood           |
-| itemGroup.name.mobEgg             |
-| itemGroup.name.monsterStoneEgg    |
-| itemGroup.name.mushroom           |
-| itemGroup.name.netherWartBlock    |
-| itemGroup.name.ore                |
-| itemGroup.name.permission         |
-| itemGroup.name.pickaxe            |
-| itemGroup.name.planks             |
-| itemGroup.name.potion             |
-| itemGroup.name.potterySherds      |
-| itemGroup.name.pressurePlate      |
-| itemGroup.name.rail               |
-| itemGroup.name.rawFood            |
-| itemGroup.name.record             |
-| itemGroup.name.sandstone          |
-| itemGroup.name.sapling            |
-| itemGroup.name.sculk              |
-| itemGroup.name.seed               |
-| itemGroup.name.shovel             |
-| itemGroup.name.shulkerBox         |
-| itemGroup.name.sign               |
-| itemGroup.name.skull              |
-| itemGroup.name.slab               |
+| 创造模式分组:                  |
+| ----------------------------- |
+| itemGroup.name.anvil          |
+| itemGroup.name.arrow          |
+| itemGroup.name.axe            |
+| itemGroup.name.banner         |
+| itemGroup.name.banner_pattern |
+| itemGroup.name.bed            |
+| itemGroup.name.boat           |
+| itemGroup.name.boots          |
+| itemGroup.name.buttons        |
+| itemGroup.name.candles        |
+| itemGroup.name.chalkboard     |
+| itemGroup.name.chest          |
+| itemGroup.name.chestboat      |
+| itemGroup.name.chestplate     |
+| itemGroup.name.concrete       |
+| itemGroup.name.concretePowder |
+| itemGroup.name.cookedFood     |
+| itemGroup.name.copper         |
+| itemGroup.name.coral          |
+| itemGroup.name.coral_decorations |
+| itemGroup.name.crop           |
+| itemGroup.name.door           |
+| itemGroup.name.dye            |
+| itemGroup.name.enchantedBook  |
+| itemGroup.name.fence          |
+| itemGroup.name.fenceGate      |
+| itemGroup.name.firework       |
+| itemGroup.name.fireworkStars  |
+| itemGroup.name.flower         |
+| itemGroup.name.glass          |
+| itemGroup.name.glassPane      |
+| itemGroup.name.glazedTerracotta |
+| itemGroup.name.goatHorn       |
+| itemGroup.name.grass          |
+| itemGroup.name.hanging_sign   |
+| itemGroup.name.helmet         |
+| itemGroup.name.hoe            |
+| itemGroup.name.horseArmor     |
+| itemGroup.name.leaves         |
+| itemGroup.name.leggings       |
+| itemGroup.name.lingeringPotion|
+| itemGroup.name.log            |
+| itemGroup.name.minecart       |
+| itemGroup.name.miscFood       |
+| itemGroup.name.mobEgg         |
+| itemGroup.name.monsterStoneEgg|
+| itemGroup.name.mushroom       |
+| itemGroup.name.netherWartBlock|
+| itemGroup.name.ore            |
+| itemGroup.name.permission     |
+| itemGroup.name.pickaxe        |
+| itemGroup.name.planks         |
+| itemGroup.name.potion         |
+| itemGroup.name.potterySherds  |
+| itemGroup.name.pressurePlate  |
+| itemGroup.name.rail           |
+| itemGroup.name.rawFood        |
+| itemGroup.name.record         |
+| itemGroup.name.sandstone      |
+| itemGroup.name.sapling        |
+| itemGroup.name.sculk          |
+| itemGroup.name.seed           |
+| itemGroup.name.shovel         |
+| itemGroup.name.shulkerBox     |
+| itemGroup.name.sign           |
+| itemGroup.name.skull          |
+| itemGroup.name.slab           |
 | itemGroup.name.smithing_templates |
-| itemGroup.name.splashPotion       |
-| itemGroup.name.stainedClay        |
-| itemGroup.name.stairs             |
-| itemGroup.name.stone              |
-| itemGroup.name.stoneBrick         |
-| itemGroup.name.sword              |
-| itemGroup.name.trapdoor           |
-| itemGroup.name.walls              |
-| itemGroup.name.wood               |
-| itemGroup.name.wool               |
-| itemGroup.name.woolCarpet         |
+| itemGroup.name.splashPotion   |
+| itemGroup.name.stainedClay    |
+| itemGroup.name.stairs         |
+| itemGroup.name.stone          |
+| itemGroup.name.stoneBrick     |
+| itemGroup.name.sword          |
+| itemGroup.name.trapdoor       |
+| itemGroup.name.walls          |
+| itemGroup.name.wood           |
+| itemGroup.name.wool           |
+| itemGroup.name.woolCarpet     |
 
-*Last updated for 1.20.10*
+*最后更新版本：1.20.10*
 <!-- page_dumper_end -->

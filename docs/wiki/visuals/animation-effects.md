@@ -1,86 +1,88 @@
 ---
-title: Effects in Animations
+title: 动画中的效果
 mentions:
     - MedicalJewel105
-category:
-    - General
+category: 基础
 ---
 
-## Effects in Animations
+# 动画（Animation）中的效果
 
-Sometimes it is much easier to use particles or sounds in animation rather than in animation controller.
-Animations can have effects in them, such as:
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
--	Particles
--	Sounds
+## 动画中的效果
 
-### Particles
+在动画中使用 `粒子` 或 `音效` 有时比在动画控制器中更方便。动画可以包含以下效果：
 
-Minecraft Particles can be used in entity animations. For example, the phantom has an animation which emits the minecraft:phantom_trail particle constantly. Let's try to add a particle to our entity's attack animation.
+- 粒子效果
+- 音效效果
 
-<CodeHeader>RP/entity/my_entity.json</CodeHeader>
+### 粒子效果
 
-```json
+Minecraft粒子效果可用于实体动画。例如，幻影（phantom）拥有持续释放minecraft:phantom_trail粒子的动画。让我们尝试在实体的攻击动画中添加粒子效果。
+
+::: code-group
+```json [RP/entity/my_entity.json]
 "particle_effects": {
 	"flames": "minecraft:mobflame_emitter"
 }
 ```
-
-Here we defined a shortname for particle that we are going to use.
-
-You can find a list of particles [here](https://minecraft.wiki/w/Particles) or [here](/particles/vanilla-particles).
-
-:::warning Warning!
-Not every particle works there. If you have problems, consider trying another particle. For example, use this one.
-Also note that some particles emit constantly.
 :::
 
-### Sounds
+这里我们为将要使用的粒子定义了简称。
 
-If you want to use a sound, you need to define it too.
+你可以在[官方Wiki](https://minecraft.wiki/w/Particles)或[此处](/wiki/particles/vanilla-particles)找到完整的粒子列表。
 
-<CodeHeader>RP/entity/my_entity.json</CodeHeader>
+:::warning 注意！
+并非所有粒子都能正常使用。如果遇到问题，请尝试更换其他粒子。例如使用这个参考粒子。
+同时注意部分粒子会持续发射。
+:::
 
-```json
+### 音效效果
+
+若需使用音效，也需要提前定义：
+
+::: code-group
+```json [RP/entity/my_entity.json]
 "sound_effects": {
 	"meow": "mob.cat.meow"
 }
 ```
-
-:::warning Warning!
-Not every sound works there. If you have problems, consider trying another sound. For example, use this one.
 :::
 
-## Adding Effects to Animation
+:::warning 注意！
+并非所有音效都能正常使用。如果遇到问题，请尝试更换其他音效。例如使用这个参考音效。
+:::
 
-You can add particles or sounds to your animation mainly or in Blockbench.
+## 为动画添加效果
 
-### Mainly
+你可以通过代码或Blockbench为动画添加效果。
 
-You need to add the following to your animation:
+### 代码方式
 
-<CodeHeader>RP/animations/my_animation.json#my.animation</CodeHeader>
+在动画文件中添加以下内容：
 
-```json
+::: code-group
+```json [RP/animations/my_animation.json#my.animation]
 "particle_effects": {
     "0.0": {
         "effect": "flames",
-        "locator": "" //You need to add a locator in your model
+        "locator": "" //你需要在模型中添加定位器
     }
 }
 ```
+:::
 
-<CodeHeader>RP/animations/my_animation.json#my.animation</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animations/my_animation.json#my.animation]
 "sound_effects": {
     "0.0": {
         "effect": "meow"
 	}
 }
 ```
+:::
 
-You can call more than one particle at the same time:
+支持同时调用多个粒子效果：
 
 ```json
 "particle_effects": {
@@ -97,11 +99,10 @@ You can call more than one particle at the same time:
 }
 ```
 
-<Spoiler title="Example">
+<Spoiler title="完整示例">
 
-<CodeHeader>RP/animations/my_animation.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animations/my_animation.json]
 {
 	"format_version" : "1.8.0",
 	"animations" : {
@@ -143,39 +144,40 @@ You can call more than one particle at the same time:
 	}
 }
 ```
+:::
 
 </Spoiler>
 
-### In Blockbench
+### Blockbench方式
 
-First let's add a locator for our particle. Go to "Edit" section, select a group, right-click and choose "Add Locator":
+首先为粒子添加定位器。进入"Edit"模式，选择骨骼组，右键选择"Add Locator"：
 
 ![](/assets/images/visuals/animation-effects/add-locator.png)
 
-Rename it and move where you want.
+重命名并移动到目标位置。
 
-Then go to "Animate" section, choose an animation and click on a magic stick icon:
+然后进入"Animate"模式，选择动画并点击魔杖图标：
 
 ![](/assets/images/visuals/animation-effects/add-effect.png)
 
-Now click "+" to open menu and specify the data:
+点击"+"号打开菜单并配置参数：
 
 ![](/assets/images/visuals/animation-effects/specify-data.png)
 
-You can attach a sound to animation the same way.
+音效也可以用相同方式添加。
 
-Now save your animation and launch the game!
+保存动画后即可在游戏中查看效果：
 
 ![](/assets/images/visuals/animation-effects/showcase.png)
 
-## Offscreen Updating
+## 屏幕外更新
 
-You can set `"should_update_bones_and_effects_offscreen"` to `true` inside entity rp scripts for particle and sound effects to update offscreen, by default both of them will stop playing if the entity isn't being rendered on display.
+在实体资源包脚本中设置`"should_update_bones_and_effects_offscreen": true`可使粒子和音效在实体离开屏幕时继续更新，默认情况下两者在实体不可见时会停止播放。
 
-<CodeHeader>RP/entity/my_entity.json#description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/my_entity.json#description]
 "scripts": {
 	"should_update_bones_and_effects_offscreen": true
 }
 ```
+:::

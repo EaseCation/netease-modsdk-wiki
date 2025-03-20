@@ -1,30 +1,32 @@
 ---
-title: Material Creations
+title: 材质 Material 创作
 tags:
-    - expert
-category:
-    - General
+    - 专家
+category: 基础
 ---
 
+# 材质 Material 创作
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::warning
-Materials are not for the faint of heart. Be prepared for potential crashes, content log errors, and long loading times.
+材质创作并非易事。请做好应对潜在崩溃、内容日志错误和漫长加载时间的准备。
 :::
 
-On this page you can find material creations by community.
+本页面收录了社区创作的材质方案。
 
-## Custom material that glows and works with semi transparency.
+## 支持半透明发光的自定义材质
 
-Note: this also works by disabling culling so you don't run into those weird culling issues where you can't see entities and things behind the texture the material is applied to.
+注：该方案通过禁用剔除（culling）解决了材质应用后无法透过纹理看到实体和其他物体的异常显示问题。
 
-Note: Texture needs to have semi transparency in it to add the glow effect.
+注：纹理需要包含半透明通道才能实现发光效果。
 
-"customblend" is what you would call in your entity as a material.
+"customblend" 是你在实体中需要调用的材质名称。
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [customblend]
 {
     "customblend:entity_alphablend": {
         "+defines": [
@@ -39,20 +41,20 @@ Note: Texture needs to have semi transparency in it to add the glow effect.
     }
 }
 ```
+:::
 
 </Spoiler>
 
-Credit: StealthyX.
+作者：StealthyX
 
-## Alpha Channel Textures with Render Dragon
+## 在Render Dragon中使用Alpha通道纹理
 
-Material that allows for alpha channel textures with render dragon:
+适用于Render Dragon的Alpha通道纹理材质方案：
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [ambient_alpha]
 {
     "ambient_alpha:entity": {
         "+states": [
@@ -107,22 +109,22 @@ Material that allows for alpha channel textures with render dragon:
     }
 }
 ```
+:::
 
 </Spoiler>
 
-After some more testing was found out that this only works in 3rd person, but still useful since vanilla blending materials still were broken regardless of perspective.
+经进一步测试发现该方案仅在第三人称视角下有效，但由于原版混合材质在任意视角都存在显示问题，该方案仍具实用价值。
 
-Credit: Ambient.
+作者：Ambient
 
-## overlay_color in render controllers
+## 在渲染控制器中禁用overlay_color
 
-Material that doesn't permit overlay_color to be used in render controllers:
+禁止在渲染控制器中使用overlay_color的材质方案：
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [ambient_no_overlay]
 {
     "materials": {
         "version": "1.0.0",
@@ -209,15 +211,16 @@ Material that doesn't permit overlay_color to be used in render controllers:
     }
 }
 ```
+:::
 
 </Spoiler>
 
-May be useful for applying to a specific bone and not the entire geometry.
+该方案适用于需要对特定骨骼而非整个几何体应用材质的场景。
 
-Credit: Ambient.
+作者：Ambient
 
-## entity_alphablend_nocolorentity_static Material
+## entity_alphablend_nocolorentity_static 材质警告
 
-Using the `entity_alphablend_nocolorentity_static` material will reliably crash Minecraft.
+使用 `entity_alphablend_nocolorentity_static` 材质将导致Minecraft游戏崩溃。
 
-Credit: Gecko.
+作者：Gecko

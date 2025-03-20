@@ -1,200 +1,176 @@
 ---
-title: Scoreboard Timers
-category: Scoreboard Systems
+title: 记分板计时器
+category: 计分板系统
 mentions:
     - BedrockCommands
     - zheaEvyline
 nav_order: 5
 tags:
-    - system
+    - 系统
 ---
 
-## Introduction
+# 记分板计时器
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This system allows you to run your desired commands at specific intervals with any amount of delay that you wish to add.
+## 简介
 
-- **Some Examples:**
-    - Sending a message in chat every 2 hours.
-    - Running a 'lag clear' function every 10 minutes.
-    - Effecting players with 'speed' every 30 seconds.
- 
- This system is especially useful when you need to set up multiple timers on your world. When working with command blocks, you may use the [Tick Delay](/commands/intro-to-command-blocks#command-block-tick-delay) option to delay the time taken for your commands to run. However, when working with functions you will need to use a system like this.
+[源自 Bedrock Commands 社区 Discord](https://discord.gg/SYstTYx5G5)
 
-It is recommended to use this system while working with command blocks, as well if you wish to run all your timers in sync with one another, ie. with the same start time.
- 
-## Setup
+本系统允许你在指定时间间隔内运行自定义指令，延迟时长可根据需求自由设定。
 
-*To be typed in chat:*
-<CodeHeader></CodeHeader>
+- **应用场景示例:**
+    - 每2小时在聊天栏发送消息
+    - 每10分钟执行一次"清除延迟"函数
+    - 每30秒给玩家施加速度效果
 
-```yaml
+当需要在世界中设置多个计时器时，本系统尤为实用。使用命令方块时可通过[Tick 延迟](/wiki/commands/intro-to-command-blocks#command-block-tick-delay)选项来延迟指令执行，但在函数中则需要依赖此类系统。
+
+推荐在命令方块中也使用本系统，以便让所有计时器保持同步启动。
+
+## 初始设置
+
+*在聊天栏输入以下指令:*
+::: code-group
+```yaml [初始化]
 scoreboard objectives add ticks dummy
 scoreboard objectives add events dummy
 ```
 
-Once you have created these two objectives, you will need to define the interval for each repeating event you need on your world in the `ticks` objective.
+创建这两个记分项后，需要在`ticks`记分项中为每个重复事件定义间隔时间。
 
-To do that, first you must know that **1 second is approximately 20 game ticks in Minecraft**. Based on this knowledge, you will need to do some basic calculations to obtain the ticks equivalent for each interval you want to define.
-<CodeHeader></CodeHeader>
-
-```yaml
-# 2h = 20(t) × 60(s) × 60(m) × 2(h) = 144000t
+需注意**Minecraft中1秒约等于20游戏刻**，可通过基础运算换算所需时间对应的刻数。
+::: code-group
+```yaml [时间换算]
+# 2小时 = 20(t) × 60(秒) × 60(分) × 2(小时) = 144000刻
 scoreboard players set 2h ticks 144000
 
-#10m = 20(t) × 60(s) × 10(m) = 12000t
+#10分钟 = 20(t) × 60(秒) × 10(分) = 12000刻
 scoreboard players set 10m ticks 12000
 
-#30s = 20(t) × 30(s) = 600t
+#30秒 = 20(t) × 30(秒) = 600刻
 scoreboard players set 30s ticks 600
 ```
-We will now use this scoreboard data to make our timers function.
+:::
 
-## System
+## 系统实现
 
-<CodeHeader>mcfunction</CodeHeader>
-
-```yaml
+::: code-group
+```yaml [计时系统.mcfunction]
 scoreboard players add timer ticks 1
 scoreboard players operation * events = timer ticks
 
-#Chat Message (every 2h)
+# 聊天消息（每2小时）
 scoreboard players operation chatMessage events %= 2h ticks
-execute if score chatMessage events matches 0 run say Technoblade never dies!
+execute if score chatMessage events matches 0 run say 技术之刃永世长存！
 
-#Lag Clear (every 10m)
+# 延迟清理（每10分钟）
 scoreboard players operation lagClear events %= 10m ticks
 execute if score lagClear events matches 0 run function clear_lag
 
-#Speed Effect (every 30s)
+# 速度效果（每30秒）
 scoreboard players operation speedEffect events %= 30s ticks
 execute if score speedEffect events matches 0 run effect @a speed 10 2 true
 ```
-![commandBlockChain8](/assets/images/commands/commandBlockChain/8.png)
-
-Here we have taken 3 examples to give you an idea on how to do it, but you can add any timer you need and as many as you require.
-
-Just make sure to follow the given order and properly use the `/execute if score` command as shown to run the commands you need.
-
-## Explanation
-
-- **` events `** on this objective we label all the repeating events we want on our world.
-    - `chatMessage`
-    - `lagClear`
-    - `speedEffect`
-- **` ticks `** on this objective we define all the intervals for our events and also run our scoreboard timer.
-    - ` 2h` interval (static score 144000)
-    - `10m` interval (static score 12000)
-    - `30s` interval (static score 600)
-    - `timer` clock (variable score n+1)
-
-
-- **Command 1:** this command adds +1 score every tick to FakePlayer name `timer` indicating a tick has passed in the game. This is basically our scoreboard timer/clock which we will use for all the repeating events on our world.
-
-
-- **Command 2:** here we copy `timer` score to all our events using the ` * ` wildcard selector. This will allow us to perform operations to determine if the interval has been reached to run the commands for that particular event. Example:
-    - If `timer` score is 1200 that means 1200 game ticks have passed.
-    - And this command makes it so all our events FakePlayer names: `chatMessage`, `lagClear`, `speedEffect` scores are also 1200.
-
-
-- **Command 3:** we will use the ` %= ` modulo operation to check if our event score is divisible by it's corresponding interval. A number is said to be divisible when the remainder is 0.
-    - Chat Message: `1200/144000` Q=0, R=1200, *hence interval not reached.*
-    - Lag Clear: `1200/12000` Q=0, R=1200, *hence interval not reached.*
-    - Speed Effect: `1200/600` Q=2, R=0, *hence interval has reached and event commands can be executed.*
-Here we can note that the first 2 events are yet to happen but the 3rd event is happening for the second time.
-:::tip
-In Minecraft; scoreboard division is only calculated up to whole numbers and decimal values are ignored.
-![longDivision](/assets/images/commands/longDivision.png)
 :::
 
+![命令方块链示意图](/assets/images/commands/commandBlockChain/8.png)
 
-- **Command 4:** the remainder value obtained from the calculation is applied to the corresponding event FakePlayer name. Based on this knowledge we can run our command if it's score is equal to 0.
+本示例展示了三种计时器的实现方法，您可根据需求扩展更多计时器。请严格按照顺序编写指令，并正确使用`/execute if score`条件判断。
 
-The rest of the commands are identical in structure and only the event labels and interval values are changed.
+## 系统解析
 
-## Defining Events With Limited Intervals
+- **`events`记分项:** 用于标记所有需要重复执行的事件
+    - `chatMessage` - 聊天消息
+    - `lagClear` - 延迟清理
+    - `speedEffect` - 速度效果
+- **`ticks`记分项:** 存储事件间隔参数与计时器数值
+    - `2h`间隔（固定值144000）
+    - `10m`间隔（固定值12000）
+    - `30s`间隔（固定值600）
+    - `timer`计时器（动态累加值）
 
-To limit how many times an event occurs, you will need to create a new objective called `intervals` and define how many times the event should occur like so:
-<CodeHeader></CodeHeader>
+**指令详解:**
+1. **计时累加:** 每游戏刻为`timer`虚拟玩家分数+1，作为全局时间基准
+2. **数值同步:** 将`timer`数值复制到所有事件虚拟玩家，建立时间参照
+3. **模运算检测:** 使用` %= `运算符计算余数，当余数为0时触发事件
+4. **事件触发:** 根据模运算结果执行对应指令
 
-```yaml
-scoreboard objectives set chatMessage intervals 5
-scoreboard objectives set speedEffect intervals 10
+:::tip 模运算原理
+Minecraft中的分数除法仅保留整数部分，余数通过模运算获取。当余数为0时表示达到设定间隔。
+![长除法示意图](/assets/images/commands/longDivision.png)
+:::
+
+## 有限次数事件
+
+如需限制事件触发次数，可创建`intervals`记分项来设置剩余触发次数：
+::: code-group
+```yaml [次数限制]
+scoreboard players set chatMessage intervals 5
+scoreboard players set speedEffect intervals 10
 ```
 
-Once you have done that, modify your system from above like so:
-
-<CodeHeader>mcfunction</CodeHeader>
-
-```yaml
+修改系统函数如下：
+::: code-group
+```yaml [有限次数版.mcfunction]
 scoreboard players add timer ticks 1
 scoreboard players operation * events = timer ticks
 
-#Chat Message (every 10m)
+# 聊天消息（每2小时）
 scoreboard players operation chatMessage events %= 2h ticks
-execute if score chatMessage events matches 0 if score chatMessage intervals matches 1.. run say Technoblade never dies!
+execute if score chatMessage events matches 0 if score chatMessage intervals matches 1.. run say 技术之刃永世长存！
 execute if score chatMessage events matches 0 if score chatMessage intervals matches 1.. run scoreboard players remove chatMessage intervals 1
 
-#Speed Effect (every 30s)
+# 速度效果（每30秒）
 scoreboard players operation speedEffect events %= 30s ticks
 execute if score speedEffect events matches 0 if score speedEffect intervals matches 1.. run effect @a speed 10 2 true
 execute if score speedEffect events matches 0 if score speedEffect intervals matches 1.. run scoreboard players remove speedEffect intervals 1
 ```
-![commandBlockChain8](/assets/images/commands/commandBlockChain/8.png)
+:::
 
-## Executing Commands During Timeframe
+## 时段内持续执行
 
-To run commands during the timeframe between intervals for a particular system you may do something like this:
-<CodeHeader>mcfunction</CodeHeader>
-
-```yaml
-#Speed Effect (every 30s) + Particle (every tick)
+若需要在计时过程中持续执行指令（而不仅是在触发时刻）：
+::: code-group
+```yaml [持续效果.mcfunction]
+# 速度效果（每30秒） + 持续粒子效果
 scoreboard players operation speedEffect events %= 30s ticks
 execute if score speedEffect intervals matches 1.. as @a at @s run particle minecraft:shulker_bullet ~~~
 execute if score speedEffect events matches 0 if score speedEffect intervals matches 1.. run effect @a speed 10 2 true
 execute if score speedEffect events matches 0 if score speedEffect intervals matches 1.. run scoreboard players remove speedEffect intervals 1
 ```
-As shown in line 3; to run commands while the timer is running, all you need to do is remove the "if score" testing if the interval has been reached. And instead, only test if *any* interval is left, to run our commands.
+:::
 
-Let's say we had set the intervals for this event to 10, then that means players would also have particle trails for 300 seconds since `10*30s=300s`
+如设置触发次数为10次，粒子效果将持续300秒（10 × 30秒）。
 
-## Entity Timers
+## 实体独立计时器
 
-In some cases such as an entity despawn event you will need to run timers for each entity individually rather than a synchronised timer which could cause the event to trigger too soon. In such cases an Async Timer can be helpful.
-
-Let's say we want to:
-- kill all entities named "station" 5 minutes after they've been summoned.
-- play a shulker particle around them during that timeframe.
-- play a flame particle around them in the first 10 seconds.
-- play a pling sound to nearby players when the timer reaches half way.
-- stop the timer if a passive mob is nearby.
-- loop the timer if a hostile mob is nearby.
-
-<CodeHeader>mcfunction</CodeHeader>
-
-```yaml
-#Clock
+对于需要单独计时的实体（如定时消失），可使用异步计时系统：
+::: code-group
+```yaml [实体计时器.mcfunction]
+# 计时核心
 scoreboard players add @e [name=station, scores={ticks=0..}] ticks 1
 
-#Executing Commands while timer is running
+# 持续粒子效果
 execute as @e [name=station, scores={ticks=0..}] at @s run particle minecraft:shulker_bullet ~~~
 
-#Executing commands within a timeframe
+# 前10秒火焰粒子
 execute as @e [name=station, scores={ticks=0..200}] at @s run particle minecraft:basic_flame_particle ~~~
 
-#Executing commands at specific intervals
+# 中途提示音效
 execute as @e [name=station, scores={ticks=3600}] at @s run playsound note.pling @a [r=10]
 
-#Stopping the timer
+# 暂停计时条件
 execute as @e [name=station] at @s if entity @e [family=pacified, r=10, c=1] run scoreboard players set @s ticks -1
 
-#Looping the timer
+# 循环计时条件
 execute as @e [name=station, scores={ticks=6000}] at @s if entity @e [family=monster, r=10, c=1] run scoreboard players set @s ticks 0
 
-#End
+# 最终执行
 kill @e [name=station, scores={ticks=6000}]
 ```
-![commandBlockChain7](/assets/images/commands/commandBlockChain/7.png)
+:::
 
-As shown; setting the score to 0 when it completes the timeframe will loop the timer and setting the score to -1 will stop/disable it. You can still set the score to 0 to start the timer again.
+![实体计时器示意图](/assets/images/commands/commandBlockChain/7.png)
+
+通过将分数设为0可实现循环计时，设为-1可停止计时。实体将在6000刻（5分钟）后被清除。

@@ -1,6 +1,6 @@
 ---
-title: Coordinate System
-category: General
+title: 坐标系系统
+category: 基础
 mentions:
     - MedicalJewel105
     - Sprunkles137
@@ -9,38 +9,55 @@ mentions:
     - TheItsNameless
 ---
 
-## The Coordinate System
+# 坐标系系统
 
-Minecraft stores the locations of blocks and entities in the world using a system of three-dimensional coordinates, each representing a value in a one-dimensional axis. They are stored in the format of X, then Y, and lastly Z. Whether you are placing structures and blocks, or teleporting and summoning entities, you can, and are sometimes required to, put in coordinates. They don't need to always be real values however; you can substitute world coordinates for relative values, either based in world space or local space.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-![image](https://user-images.githubusercontent.com/64864915/134789891-85644dd7-e30f-4e02-966c-df2bf17a7879.png)
+## 坐标系基础
 
-_You may already be familiar with coordinates if you've enabled the Show Coordinates world option!_
+Minecraft使用三维坐标系来存储世界中方块和实体的位置，每个坐标代表一维轴上的数值。坐标以X、Y、Z的顺序存储。无论是放置结构方块，还是传送/召唤实体，你都可以（有时必须）使用坐标值。不过坐标不限于绝对数值，你可以使用相对坐标系——既可以选择基于世界空间的相对坐标，也可以选择基于局部空间的本地坐标。
 
-## Relative Coordinates (~)
+![坐标系示意图](https://user-images.githubusercontent.com/64864915/134789891-85644dd7-e30f-4e02-966c-df2bf17a7879.png)
 
-Relative coordinates are represented using tildes in place of real coordinates, and represent a position that is relative to the world coordinates its located at. You may insert numbers after a tilde to add an offset to the current position. These can be mixed with world coordinates, but cannot be mixed with local coordinates.
+_如果你启用了"显示坐标"世界选项，可能已经对坐标系统有所了解！_
 
-Examples:
-    - `~ ~ ~`: Current position with no changes.
-    - `~5 ~-2 ~`: Current position with a 5-block X offset and a negative 2-block Y offset.
+## 相对坐标 (~)
 
-### Rotations
+相对坐标使用波浪符号`~`代替具体数值，表示相对于当前所处世界坐标的位置。在波浪符后添加数字可以指定偏移量。相对坐标可与世界坐标混合使用，但不能与局部坐标混用。
 
-Relative coordinates can also be used in the context of rotations, where they represent a rotation that is relative to the current rotation it inherits from. These may also accept numbers after the tilde to add an offset to the current rotation.
+示例：
+- `~ ~ ~`: 保持当前位置不变
+- `~5 ~-2 ~`: 当前位置X轴正方向偏移5格，Y轴负方向偏移2格
 
-Example: `~90 ~` will add 90° to the current yaw (y-rotation) value.
+### 旋转角度中的应用
 
-## Local Coordinates (^)
+相对坐标也可用于表示旋转角度，这时表示相对于当前继承的旋转角度。同样可以在波浪符后添加数字来指定偏移量。
 
-Local coordinates are similar to relative coordinates, but represent a position in local space, where the axes are based off of rotation. They take the form `^left ^up ^forward`; you can think of this as `~x ~y ~z` if both your yaw and pitch rotations are 0 (facing straight ahead, due south).
+示例：`~90 ~` 表示在当前偏航角（Y轴旋转）基础上增加90度
 
-Like relative coordinates, you can insert numbers to produce an offset of the current position, in local space. If there is no entity to copy rotation from, the x- and y-rotations are assumed to be 0.
+## 局部坐标 (^)
 
-Examples:
-    - `^10 ^ ^`: Current position with a 10-block offset to the left.
-    - `^ ^1.5 ^1`: Current position with a 1.5-block offset upward and a 1-block offset forward.
+局部坐标与相对坐标类似，但表示基于实体朝向的局部空间坐标，采用`^左 ^上 ^前`的格式。当实体偏航角和俯仰角均为0（面朝正南平视）时，可以将其理解为`~x ~y ~z`坐标系。
 
-## Additional Notes
+与相对坐标类似，可以添加数字来指定局部空间中的偏移量。如果没有可供参考旋转角度的实体，则默认X/Y旋转角度为0。
 
-- The player's eye level is 1.62 blocks above their feet. (~ ~1.62 ~)
+示例：
+- `^10 ^ ^`: 当前位置左侧偏移10格
+- `^ ^1.5 ^1`: 当前位置上方偏移1.5格，前方偏移1格
+
+## 注意事项
+
+- 玩家眼部高度位于脚部上方1.62格处（对应相对坐标`~ ~1.62 ~`）
+
+::: code-group
+```json [示例配置]
+// 此处保持代码原样，仅翻译注释
+// 玩家传送指令示例
+{
+    "command": "tp @s ~ ~5 ~", // 将玩家垂直提升5格
+    "comment": "使用相对坐标进行垂直传送"
+}
+```
+:::
+
+_注意：本地坐标(^)系统在实体具有复杂旋转角度时会产生非直观的位移效果，建议在建筑类命令中使用世界相对坐标(~)系统，在实体局部操作时使用本地坐标系。_

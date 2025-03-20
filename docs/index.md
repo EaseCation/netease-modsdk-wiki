@@ -3,27 +3,27 @@
 layout: home
 
 hero:
-  name: "我的世界中国版 ModSDK"
+  name: "我的世界中国版 ModSDK Wiki"
   text: ""
-  tagline: "ModSDK 开发者文档镜像，但提供更优质的搜索引擎 🤩"
+  tagline: "《我的世界》开发者文档，但提供更优质的搜索引擎 🤩"
   actions:
     - theme: brand
       text: 开始
       link: /wiki/0-欢迎
 
 features:
+  - icon: 🎯
+    title: BedrockWiki 中文镜像
+    details: 国际版社区的超优质文档，助你更快地找到你需要的内容，更深入地理解引擎机制。
+    link: /wiki
   - icon: 🛠️
-    title: API文档
-    details: API是构建缤纷方块世界的基石，快来查查哪一个是你需要的。
+    title: ModSDK API文档
+    details: 中国版 ModSDK（Python2）API 文档。相比于官网，我们提供了更优质的搜索引擎！
     link: /mcdocs/0-欢迎
   - icon: 📙
-    title: 开发指南
+    title: 中国版开发指南
     details: 在开发指南中浏览每一个开发工具的使用说明，让它们更加得心应手。
     link: /mcguide/0-欢迎
-  - icon: 📝
-    title: 教学课程
-    details: 不断更新的系列课程，系统性地帮助您搭建开发知识体系。
-    link: /mconline/0-欢迎
 ---
 
 <br>

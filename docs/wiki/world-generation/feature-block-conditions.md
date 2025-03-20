@@ -1,72 +1,73 @@
 ---
-title: Block Conditions for Features
-category: Tutorials
+title: 方块的生成条件
+category: 巧思案例
 tags:
-    - experimental
+    - 实验性
 mentions:
     - PavelDobCZ23
     - SmokeyStack
     - ThomasOrs
 ---
 
-Sometimes you might need to place any feature conditionally depending on what blocks are below or above it for example. Not many features have the option to conditionally place them like so, but with a simple trick we can use it on anything we want.
+# 方块的生成条件
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+有时你可能需要根据下方或上方的方块条件来放置特定特征。虽然多数生成特征本身不具备条件判断功能，但我们可以通过简单的技巧实现这个需求。
 
 :::tip
-This technique utilizes `aggregate_feature` and `single_block_feature` features. If you want to learn more about those, visit [Feature Types](/world-generation/feature-types) article.
+本技巧利用了 `aggregate_feature` 和 `single_block_feature` 特征。若想了解更多相关内容，请参阅[特征类型](/wiki/world-generation/feature-types)文档。
 :::
 
-## Files
+## 文件结构
 
-### Features
+### 特征文件
 
-This feature places a `single_block_feature` which can be specified with the conditions we need for some other feature. The block can be kept there if it doesn't interrupt your desired features, but we will replace it with air in the next feature so that it doesn't cause any issues later on. This feature acts as a "dummy" feature because we only want its condition part but we don't need it to actually place anything.
+这个特征通过 `single_block_feature` 实现条件判断功能。我们可以保留这个占位方块（若不影响后续生成），但后续会将其替换为空气方块以避免干扰。该特征本质上是一个"虚拟"特征，因为我们只需要它的条件判断功能而不需要实际生成方块。
 
-<CodeHeader>BP/features/block_condition_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/block_condition_feature.json]
 {
     "format_version": "1.18.0",
     "minecraft:single_block_feature": {
         "description": {
             "identifier": "wiki:block_condition_feature"
         },
-        "places_block": "minecraft:cobblestone", //Any block that isn't in "may_replace" list.
+        "places_block": "minecraft:cobblestone", //任何不在"may_replace"列表中的方块
         "enforce_placement_rules": false,
         "enforce_survivability_rules": false,
-        "may_replace": ["minecraft:air"], //Only blocks the feature is allowed to be placed in.
-        "may_attach_to": { //Attachment conditions - what blocks can surround the feature when its being placed
-            "bottom": ["minecraft:grass"] //Only blocks the feature can be placed on top of.
+        "may_replace": ["minecraft:air"], //仅允许在特定方块上生成
+        "may_attach_to": { //附着条件 - 特征生成时周围允许存在的方块
+            "bottom": ["minecraft:grass"] //仅允许在草方块上方生成
         }
     }
 }
-//This "dummy" feature will only allow the feature to generate in the air, right above a grass block.
+//这个"虚拟"特征只允许在草方块正上方的空气方块位置生成
 ```
 
-This next feature is the one that is going to replace the cobblestone with the original air block that was there, however it can be omitted if you choose a block you actually want there or if it won't cause you any issues later.
+接下来的特征负责将圆石替换回原始空气方块。如果你选择保留占位方块或该方块不会造成干扰，可以省略此步骤。
 
-<CodeHeader>BP/features/block_replacement_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/block_replacement_feature.json]
 {
     "format_version": "1.18.0",
     "minecraft:single_block_feature": {
         "description": {
             "identifier": "wiki:block_replacement_feature"
         },
-        "places_block": "minecraft:air", //Replaces the block with another one which doesn't cause us any issue.
+        "places_block": "minecraft:air", //将占位方块替换为无影响的方块
         "enforce_placement_rules": false,
         "enforce_survivability_rules": false,
-        "may_replace": ["minecraft:cobblestone"] //The block that we specified in the previous feature.
+        "may_replace": ["minecraft:cobblestone"] //前一个特征中使用的占位方块
     }
 }
-//This feature will replace the block with air that originally was there so it won't cause us any issue.
+//此特征将占位方块替换回空气，避免后续生成问题
 ```
 
-This is a feature that places the condition "dummy" feature, the feature that gets rid of the "dummy" block placed by the condition and after that the actual features we want to conditionally place. It uses `early_out` with value `first_failure` to make the aggregate stop if the conditional placement fails. It is the feature placed by a feature rule.
+这个聚合特征按顺序执行：先放置条件判断方块，然后替换占位方块，最后生成实际特征。设置 `early_out` 为 `first_failure` 确保任一环节失败时立即终止流程。该特征通过特征规则调用。
 
-<CodeHeader>BP/features/aggregate_placement_rock_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/aggregate_placement_rock_feature.json]
 {
     "format_version": "1.18.0",
     "minecraft:aggregate_feature": {
@@ -74,22 +75,21 @@ This is a feature that places the condition "dummy" feature, the feature that ge
             "identifier": "wiki:aggregate_placement_rock_feature"
         },
         "features": [
-            "wiki:block_condition_feature", //Single block feature that is used as "dummy" feature to act as our condition.
-            "wiki:block_replacement_feature", //This feature replaces the "dummy" block we used in the feature above to not cause us any issues later.
-            //Any feature from this point on is what we actually want to place.
+            "wiki:block_condition_feature", //用于条件判断的虚拟特征
+            "wiki:block_replacement_feature", //清理占位方块的特征
+            //从此处开始添加需要条件生成的实际特征
             "wiki:rock_ore_feature"
         ],
-        "early_out": "first_failure" //This makes sure that if the first(or any) feature fails, it will not continue to place anything else in the list.
+        "early_out": "first_failure" //任一特征失败则终止后续生成
     }
 }
-//This is a feature that places all the features one by one in order and is placed by the feature rule.
+//该聚合特征按顺序执行所有子特征，由特征规则调用
 ```
 
-This is the actual feature we want to be conditionally placed. It is `ore_feature` which doesn't have actual condition for us to allow it to only be placed in air and on a grass block, so this technique has helped us achieve that.
+这是需要条件生成的矿石特征示例。由于原生 `ore_feature` 无法直接设置生成条件，本技巧完美解决了这个问题。
 
-<CodeHeader>BP/features/rock_ore_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/rock_ore_feature.json]
 {
 	"format_version": "1.18.0",
 	"minecraft:ore_feature": {
@@ -115,15 +115,16 @@ This is the actual feature we want to be conditionally placed. It is `ore_featur
 	}
 }
 ```
-:::tip
-If you want to learn more about ore features, you can visit [Generating Custom Ores](/world-generation/custom-ores) tutorial.
 :::
 
-### Feature Rule
+:::tip
+若想深入了解矿石特征，请参考[自定义矿石生成](/wiki/world-generation/custom-ores)教程。
+:::
 
-<CodeHeader>BP/feature_rules/overworld_after_surface_rock_feature.json</CodeHeader>
+### 特征规则
 
-```json
+::: code-group
+```json [BP/feature_rules/overworld_after_surface_rock_feature.json]
 {
 	"format_version": "1.18.0",
 	"minecraft:feature_rules": {
@@ -132,7 +133,7 @@ If you want to learn more about ore features, you can visit [Generating Custom O
 			"places_feature": "wiki:aggregate_placement_rock_feature"
 		},
 		"conditions": {
-			//Places the feature in any overworld biome along with features in the after_surface_pass
+			//在主世界生物群系的地表生成阶段后执行
 			"placement_pass": "after_surface_pass",
 			"minecraft:biome_filter": [
 				{
@@ -152,7 +153,7 @@ If you want to learn more about ore features, you can visit [Generating Custom O
 			]
 		},
 		"distribution": {
-			//1 in 3 chance to attempt 1 placement in chunk
+			//每个区块有1/3概率尝试生成1次
             "scatter_chance": 33,
 			"iterations": 1, 
 			"coordinate_eval_order": "xzy",
@@ -160,7 +161,7 @@ If you want to learn more about ore features, you can visit [Generating Custom O
 				"distribution": "uniform",
 				"extent": [0, 15]
 			},
-			//Places the feature along the heightmap
+			//根据地势高度生成
 			"y": "q.heightmap(v.worldx,v.worldz)",
 			"z": {
 				"distribution": "uniform",
@@ -171,12 +172,12 @@ If you want to learn more about ore features, you can visit [Generating Custom O
 }
 ```
 
-## Summary
+## 总结
 
-After reading this tutorial you should be able to use block conditions on any feature you want. This was a very basic example as this can be used for far more complex creations and can be used with any feature. 
+通过本教程，你已经掌握了如何为任意特征添加方块生成条件。虽然示例较为基础，但此技巧可扩展应用于复杂场景，兼容所有特征类型。
 
-Like that we have made a rock feature that can only be placed in air blocks and above grass blocks.
+最终我们实现了一个仅在草方块上方空气位置生成的岩石特征。
 
-Generation screenshot:
+生成效果截图：
 
 ![](/assets/images/world-generation/rock_feature.png)

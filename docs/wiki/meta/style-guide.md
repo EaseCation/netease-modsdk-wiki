@@ -1,5 +1,5 @@
 ---
-title: Style Guide
+title: 样式指南
 mentions:
     - SirLich
     - solvedDev
@@ -7,118 +7,121 @@ mentions:
     - ChibiMango
 ---
 
-This document will present the officially supported Bedrock-Wiki style guide for addon-creation. This guide aims to promote best practices while creating addons and create a consistent format for everyone to follow.
+# 样式指南
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+本文档将介绍基岩版Wiki官方推荐的附加包开发样式指南。本指南旨在推广附加包开发的最佳实践，并为开发者提供统一的格式规范。
 
 :::tip
-The style guide is a living, breathing document, which will evolve as addon-creation evolves. Please get in touch if you think something needs to be updated or changed!
+本样式指南是持续更新的动态文档，将随着附加包开发技术的发展而不断完善。如果您有任何更新建议，欢迎随时联系我们！
 :::
 
-## Folder Structure
+## 文件夹结构
 
--   No spaces in your file paths. `use_underscores`.
--   No `CAPITALS` in your identifiers, file names, or folder names.
--   The total character length of any path must not exceed 80 characters (console limitation).
--   Content folders should use consistent pluralization: Don't mix and match.
+-   文件路径中不要使用空格，使用下划线
+-   标识符、文件名和文件夹名不要使用全大写字母
+-   任何路径的总字符长度不得超过80个字符（控制台限制）
+-   内容文件夹应保持统一的复数形式：不要混合使用单复数
 
-## Identifiers
+## 标识符规范
 
-Do not use identifiers that begin with a number, and especially don't use an identifier that is _only_ a number. This applies to entities, component_groups, events, and anything else that takes a `namespace:name` pair.
+不要使用以数字开头的标识符，尤其不要使用纯数字作为标识符。此规则适用于实体（entities）、组件组（component_groups）、事件（events）以及其他所有使用`命名空间:名称`格式的内容。
 
-## File and Folder names
+## 文件与文件夹命名规范
 
-| Concept              | Example Identifier         |
-| -------------------- | -------------------------- |
-| Behavior Pack        | dragons_BP                 |
-| Resource Pack        | dragons_RP                 |
-| Geometry             | dragon.geo.json            |
-| Animation            | dragon.animation.json      |
-| Animation Controller | dragon.ac.json             |
-| RP Entity            | dragon.ce.json             |
-| BP Entity            | dragon.se.json             |
-| Item 1.16.100+       | dragon_tooth.item.json     |
-| BP Item              | dragon_tooth.item.bp.json  |
-| RP Item              | dragon_tooth.item.rp.json  |
-| Render Controller    | dragon.rc.json             |
-| Loot Table           | dragon.loot.json           |
-| Recipe               | dragon_saddle.recipe.json  |
-| Spawn Rules          | dragon.spawn.json          |
-| Trade Table          | dragon.trade.json          |
-| Particles            | dragon_magic.particle.json |
-| Texture              | dragon.png                 |
-| Gametest             | dragonTest.js              |
+| 概念                  | 示例标识符                  |
+| --------------------- | -------------------------- |
+| 行为包（Behavior Pack） | dragons_BP                 |
+| 资源包（Resource Pack） | dragons_RP                 |
+| 几何模型（Geometry）    | dragon.geo.json            |
+| 动画（Animation）       | dragon.animation.json      |
+| 动画控制器（Animation Controller） | dragon.ac.json             |
+| 资源包实体（RP Entity） | dragon.ce.json             |
+| 行为包实体（BP Entity） | dragon.se.json             |
+| 物品（1.16.100+）       | dragon_tooth.item.json     |
+| 行为包物品（BP Item）    | dragon_tooth.item.bp.json  |
+| 资源包物品（RP Item）    | dragon_tooth.item.rp.json  |
+| 渲染控制器（Render Controller） | dragon.rc.json             |
+| 战利品表（Loot Table）   | dragon.loot.json           |
+| 合成配方（Recipe）       | dragon_saddle.recipe.json  |
+| 生成规则（Spawn Rules）  | dragon.spawn.json          |
+| 交易表（Trade Table）    | dragon.trade.json          |
+| 粒子效果（Particles）    | dragon_magic.particle.json |
+| 纹理贴图（Texture）      | dragon.png                 |
+| 游戏测试（Gametest）     | dragonTest.js              |
 
-## Namespaces
+## 命名空间规范
 
-A suitable namespace should be unique to you or your team. Something like `mob` or `cars` or `content` or `custom` would be a **bad** namespace since another developer might come up with the same namespace as you.
+合适的命名空间应具有开发者唯一性。使用`mob`、`cars`、`content`或`custom`等通用词汇作为命名空间是**不恰当**的，因为这些名称可能与其他开发者重复。
 
-`minecraft` and `minecon` are reserved. Don't use these.
+`minecraft`和`minecon`为保留命名空间，请勿使用。
 
-For personal projects, use a convenient version of your player name, and for team projects, use a suitable version of your team name.
+个人项目建议使用玩家ID的变体，团队项目建议使用团队名称的变体。
 
-When multiple developers work on a project together, the namespace should always be shared. If credit is required, use sub-indexing: `minetite.sirlich:dragon`
+多人协作开发时应共享命名空间。如需注明贡献者，可以使用子索引形式：`minetite.sirlich:dragon`
 
-Where to use name-spaces:
+需要使用命名空间的场景：
 
--   entities
--   particles
--   component-groups
--   events
+-   实体（entities）
+-   粒子效果（particles）
+-   组件组（component-groups）
+-   事件（events）
 
-When not to use namespaces:
+不需要使用命名空间的场景：
 
--   do not include your namespace in any folder path or file-name
+-   不要在文件夹路径或文件名中包含命名空间
 
-## Sub-indexing
+## 子索引规范
 
-Sub indexing is the use of `.` to separate chained concepts. Sub-indexing should go in descending order from big to small:
+子索引使用`.`符号分隔层级概念，应按照从宏观到微观的降序排列：
 
 ✔️ `animation.controller.dragon.flying.taking_off`
 
 ❌ `animation.controller.dragon_take_off_flying`
 
-When using sub-indexing, use `_` as space, not another `.`.
+使用子索引时，使用`_`替代空格，不要使用多个`.`：
 
 ✔️ `animation.controller.dragon.flying.taking_off`
 
 ❌ `animation.controller.dragon.flying.taking.off`
 
-You can use sub-indexing in your entities:
+实体标识符可以使用子索引：
 `sirlich:dragon.drake`
 
-## Groups and Events should complement each other
+## 组件组与事件的对应关系
 
-| Group        | Event                  |
-| ------------ | ---------------------- |
-| sirlich:wild | ✔️ sirlich:become_wild |
-| sirlich:wild | ❌ sirlich:wild        |
-| sirlich:tame | ✔️ sirlich:on_tame     |
-| sirlich:tame | ❌ sirlich:tame        |
+| 组件组          | 事件                    |
+| -------------- | ---------------------- |
+| sirlich:wild   | ✔️ sirlich:become_wild |
+| sirlich:wild   | ❌ sirlich:wild        |
+| sirlich:tame   | ✔️ sirlich:on_tame     |
+| sirlich:tame   | ❌ sirlich:tame        |
 
-## Short-Names should be Generic
+## 短名称应保持通用性
 
-Short-names are file-specific identifiers, which are used to map between an identifier and a pretty name. They are handy because they allow us to re-use animation controllers and render controllers. For this reason, your short-names should be generic.
+短名称是文件内部的标识符，用于映射具体资源路径。通用短名称有助于复用动画控制器和渲染控制器：
 
 ✔️ `"sit": "animation.dragon.sit"`
 
 ❌ `"dragon_sitting": "animation.dragon.sit"`
 
-When we make short-names of this form, we can use a generic "sit" animation controller for all of them since we can use the `sit` short-name to play the sit animation.
+使用通用短名称后，我们可以为所有需要"坐下"动画的对象复用同一个"sit"动画控制器。
 
-## Functions should be nested
+## 函数的嵌套规范
 
-You can put functions in folders to achieve this.
+通过文件夹结构实现函数嵌套：
 
 ✔️ `function teleport/zone/hell`
 
 ❌ `function teleport_hellzone`
 
-## Group animations files when possible
+## 动画文件的组合规范
 
-Example:
+示例：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [示例动画文件]
 {
     "format_version": "1.8.0",
     "animations": {
@@ -128,8 +131,9 @@ Example:
   }
 }
 ```
+:::
 
-## Split textures by path, not name
+## 纹理路径组织规范
 
 ✔️ `textures/dragon/red`
 
@@ -137,31 +141,31 @@ Example:
 
 ✔️ `textures/npc/dragon_hunter/archer`
 
-❌ `textures npc/dragon_hunter_archer`
+❌ `textures/npc/dragon_hunter_archer`
 
-## .lang File Comments
+## .lang文件注释规范
 
-Comments intended for the localizer should always be in-line, in the following format:
+面向本地化人员的注释应使用行内格式：
 
-`the.key=The string<\t>## Comment, intended for the one localizing.`
+`the.key=字符串内容<\t>## 注释内容，供本地化人员参考`
 
-`<\t>` represents a tab-character.
+`<\t>`表示制表符。
 
-Own-line comments can be used for organizational purposes but should not store localization-critical information.
+独立行注释可用于组织结构，但不要存储关键本地化信息。
 
-## Acronyms when discussing
+## 常用缩略词对照表
 
-| Acronym | Concept                            |
-| ------- | ---------------------------------- |
-| BP      | Behavior Pack                      |
-| RP      | Resource pack                      |
-| VRP     | Vanilla Resource Pack              |
-| VBP     | Vanilla Behavior Pack              |
-| AC      | Animation Controller               |
-| RPAC    | Resource Pack Animation Controller |
-| BPAC    | Behavior Pack Animation Controller |
-| BB      | Blockbench                         |
-| BDS     | Bedrock Dedicated Server           |
-| FPV     | First Person View                  |
-| RD      | Render Dragon                      |
-| VSCode  | Visual Studio Code                 |
+| 缩略词 | 完整名称                     |
+| ------ | --------------------------- |
+| BP     | 行为包（Behavior Pack）      |
+| RP     | 资源包（Resource Pack）      |
+| VRP    | 原版资源包（Vanilla Resource Pack） |
+| VBP    | 原版行为包（Vanilla Behavior Pack） |
+| AC     | 动画控制器（Animation Controller） |
+| RPAC   | 资源包动画控制器（Resource Pack Animation Controller） |
+| BPAC   | 行为包动画控制器（Behavior Pack Animation Controller） |
+| BB     | Blockbench建模软件           |
+| BDS    | 基岩版专用服务器（Bedrock Dedicated Server） |
+| FPV    | 第一人称视角（First Person View） |
+| RD     | Render Dragon渲染引擎        |
+| VSCode | Visual Studio代码编辑器      |

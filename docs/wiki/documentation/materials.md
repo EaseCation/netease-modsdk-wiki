@@ -1,8 +1,8 @@
 ---
-title: Vanilla Materials
+title: 原版材质
 show_toc: false
 tags:
-    - expert
+    - 专家
 mentions:
     - SirLich
     - Luthorius
@@ -11,15 +11,19 @@ mentions:
     - ThomasOrs
 ---
 
+# 原版材质
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::warning
-Materials are not for the faint of heart. Be prepared for potential crashes, content log errors, and long loading times.
+材质系统不适合心理承受能力较弱者。请做好应对潜在崩溃、内容日志错误和漫长加载时间的准备。
 :::
 
-Materials are extremely useful for making entities more unique. You can make new ones for your addons, or use pre-existing vanilla materials.
+材质在使实体更具独特性方面极为有用。您既可以为附加包创建新材质，也可以使用现有的原版材质。
 
-You can learn more about creating materials [here](/visuals/materials).
+您可以通过[此链接](/wiki/visuals/materials)了解更多关于材质创建的内容。
 
-## List of Vanilla Materials
+## 原版材质列表
 
 | Vanilla_Material                                                                        |
 | --------------------------------------------------------------------------------------- |
@@ -81,339 +85,264 @@ You can learn more about creating materials [here](/visuals/materials).
 | [opaque_block_color](#opaque-block-color)                                               |
 | [opaque_block_color_uv2](#opaque-block-color-uv2)                                       |
 
-## Properties
+## 材质属性
 
-Materials can have a range of different properties which affect their appearance, including:
+材质可具备多种影响外观的属性，包括：
 
-### Backface-Culling
+### 背面剔除（Backface-Culling）
+使模型的内表面不被渲染。
 
-This makes the inside faces of models **not** render.
+### Alpha通道
+启用半透明效果，使用纹理的Alpha通道。
 
-### Alpha Channel
+### 自发光（Emissive）
+使纹理不受暗光影响，呈现发光效果。若使用Alpha通道，每个像素的发光强度与其透明度成正比。
 
-Enables analogue translucency, usage of the alpha channel of textures.
+### 固定透明度（Set Translucency）
+无论其他属性如何，始终以预设透明度完全渲染。
 
-### Emissive
+### 纹理混合（Texture Blending）
+当存在多个纹理时，可根据纹理通过某种滤镜改变实体外观。
 
-Causes the texture to not be affected by dim lighting, and appear to glow. If there is usage of the alpha channel, the emissivity is in direct proportion to how transparent each individual pixel is.
+## 材质细节说明
 
-### Set Translucency
-
-Regardless of other properties, is always completely rendered at a pre-determined translucency.
-
-### Texture Blending
-
-When multiple textures are present, may use a filter of sorts to change the entities appearance, based on the textures.
-
-## Details on the Materials
-
-The following is a last of each material, along with general known properties. The names are vague pointers to what each will do, some may act rather unpredictably, or have undocumented usages, so this only is what's certain for each:
+以下是各材质的具体说明及已知属性。材质名称仅作功能提示，部分材质可能表现不稳定或存在未记录的用法，以下信息仅包含已验证内容：
 
 :::warning
-The following section has currently **only** been tested for with single textures. Take it all with a pinch of salt. It is highly recommended to experiment with the materials yourself.
+以下内容目前**仅针对单纹理**进行过测试，请谨慎参考。强烈建议自行实验材质效果。
 :::
 
 ### alpha_block
-
--   Backface-culling
--   Completely Opaque
+- 背面剔除
+- 完全不透明
 
 ### alpha_block_color
-
--   Backface-Culling
--   Translucencies as Transparent
+- 背面剔除
+- 透明度处理为半透明
 
 ### banner
-
-Inconsistently renders objects with transparency behind.
-
--   N/A
+在透明物体后方渲染时表现不稳定
+- 无特殊属性
 
 ### banner_pole
-
-Inconsistently renders objects with transparency behind.
-
--   Backface-Culling
--   Transparency
+在透明物体后方渲染时表现不稳定
+- 背面剔除
+- 透明效果
 
 ### beacon_beam
-
--   Completely Opaque
+- 完全不透明
 
 ### beacon_beam_transparent
-
-This one is rather different. Particles that are behind it are rendered in front, and it appears to have "Frontface-Culling".
-
--   Alpha Channel
+特性特殊：后方粒子会渲染在前方，呈现"正面剔除"效果
+- Alpha通道
 
 ### charged_creeper
-
-Inconsistently renders objects with transparency behind.
-
--   Emissive
--   Set Translucency
+在透明物体后方渲染时表现不稳定
+- 自发光
+- 固定透明度
 
 ### conduit_wind
-
--   Transparency
--   Translucency as Transparency
+- 透明效果
+- 透明度处理为半透明
 
 ### entity
-
--   Completely Opaque
--   Backface Culling
+- 完全不透明
+- 背面剔除
 
 ### entity_alphablend
-
-Inconsistently renders objects with transparency behind.
-
--   Backface-Culling
--   Alpha Channel
+在透明物体后方渲染时表现不稳定
+- 背面剔除
+- Alpha通道
 
 ### entity_alphablend_nocolorentity_static
-
--   Unknown
--   Potential Crash
+- 未知属性
+- 可能导致崩溃
 
 ### entity_alphatest
-
--   Transparency
--   Translucency as Transparency
+- 透明效果
+- 透明度处理为半透明
 
 ### entity_alphatest_change_color
-
--   Transparency
--   Translucency as Opaque
+- 透明效果
+- 透明度处理为不透明
 
 ### entity_alphatest_change_color_glint
-
--   Unknown
+- 未知属性
 
 ### entity_alphatest_glint
-
--   Unknown
+- 未知属性
 
 ### entity_alphatest_glint_item
-
--   Unknown
+- 未知属性
 
 ### entity_alphatest_multicolor_tint
-
--   Greyscale
--   Backface-Culling
--   Transparency
--   Translucency as Opaque
+- 灰度处理
+- 背面剔除
+- 透明效果
+- 透明度处理为不透明
 
 ### entity_beam
-
--   Transparency
--   Translucency as Transparency
+- 透明效果
+- 透明度处理为半透明
 
 ### entity_beam_additive
-
-Particles always render on top
-
--   Transparency
--   Emissive
--   Backface-Culling
--   Set Translucency
+粒子始终渲染在最上层
+- 透明效果
+- 自发光
+- 背面剔除
+- 固定透明度
 
 ### entity_change_color
-
--   Completely Opaque
+- 完全不透明
 
 ### entity_change_color_glint
-
--   Unknown
+- 未知属性
 
 ### entity_custom
-
-Inconsistently renders objects with transparency behind.
-
--   Backface-Culling
--   Alpha Channel
+在透明物体后方渲染时表现不稳定
+- 背面剔除
+- Alpha通道
 
 ### entity_dissolve_layer0
-
-Inconsistently renders objects with transparency behind.
-
--   Unknown
+在透明物体后方渲染时表现不稳定
+- 未知属性
 
 ### entity_dissolve_layer1
-
--   Unknown
+- 未知属性
 
 ### entity_emissive
-
--   Emissive
--   Completely Opaque
--   Backface-Culling
+- 自发光
+- 完全不透明
+- 背面剔除
 
 ### entity_emissive_alpha
-
--   Emissive
--   Alpha Channel
--   Transparency
+- 自发光
+- Alpha通道
+- 透明效果
 
 ### entity_emissive_alpha_one_sided
-
--   Emissive
--   Alpha Channel
--   Transparency
--   Backface-Culling
+- 自发光
+- Alpha通道
+- 透明效果
+- 背面剔除
 
 ### entity_flat_color_line
-
--   Backface-Culling
--   Completely Opaque
+- 背面剔除
+- 完全不透明
 
 ### entity_glint
-
--   Unknown
+- 未知属性
 
 ### entity_lead_base
-
-Inconsistently renders objects with transparency behind.
-
--   Alpha Channel
+在透明物体后方渲染时表现不稳定
+- Alpha通道
 
 ### entity_loyalty_rope
-
--   Unknown
+- 未知属性
 
 ### entity_multitexture
-
--   Unknown
+- 未知属性
 
 ### entity_multitexture_alpha_test
-
--   Unknown
+- 未知属性
 
 ### entity_multitexture_alpha_test_color_mask
-
--   Unknown
+- 未知属性
 
 ### entity_multitexture_color_mask
-
--   Unknown
+- 未知属性
 
 ### entity_multitexture_masked
-
--   Unknown
+- 未知属性
 
 ### entity_multitexture_multiplicative_blend
-
--   Unknown
+- 未知属性
 
 ### entity_nocull
-
--   Completely Opaque
+- 完全不透明
 
 ### guardian_ghost
-
-Inconsistently renders objects with transparency behind.
-
--   Backface-Culling
--   Alpha Channel
+在透明物体后方渲染时表现不稳定
+- 背面剔除
+- Alpha通道
 
 ### item_in_hand
-
--   Completely Opaque
--   Backface-Culling
+- 完全不透明
+- 背面剔除
 
 ### item_in_hand_entity_alphatest
-
--   Transparency
--   Translucency into either Opaque or Transparent depends on level.
+- 透明效果
+- 根据透明度等级决定是否透明
 
 ### item_in_hand_entity_alphatest_color
-
--   Transparency
--   Translucency into either Opaque or Transparent depends on level.
+- 透明效果
+- 根据透明度等级决定是否透明
 
 ### item_in_hand_glint
-
--   Unknown
+- 未知属性
 
 ### item_in_hand_multicolor_tint
-
--   Greyscale
--   Completely Opaque
--   Backface-Culling
+- 灰度处理
+- 完全不透明
+- 背面剔除
 
 ### map
-
--   Transparency
--   Translucency into either Opaque or Transparent depends on level.
+- 透明效果
+- 根据透明度等级决定是否透明
 
 ### map_decoration
-
--   Backface-Culling
--   Transparency
--   Translucency into either Opaque or Transparent depends on level.
+- 背面剔除
+- 透明效果
+- 根据透明度等级决定是否透明
 
 ### map_marker
-
--   Backface-Culling
--   Transparency
--   Translucency into either Opaque or Transparent depends on level.
--   Potential Crash
+- 背面剔除
+- 透明效果
+- 根据透明度等级决定是否透明
+- 可能导致崩溃
 
 ### moving_block
-
--   Completely Opaque
--   Backface-Culling
+- 完全不透明
+- 背面剔除
 
 ### moving_block_alpha
-
--   Backface-Culling
--   Transparency
--   Translucency into either Opaque or Transparent depends on level.
+- 背面剔除
+- 透明效果
+- 根据透明度等级决定是否透明
 
 ### moving_block_alpha_seasons
-
--   Translucency into either Opaque or Transparent depends on level.
--   Transparency
+- 根据透明度等级决定是否透明
+- 透明效果
 
 ### moving_block_alpha_single_side
-
--   Backface-Culling
--   Transparency
--   Translucency into either Opaque or Transparent depends on level.
+- 背面剔除
+- 透明效果
+- 根据透明度等级决定是否透明
 
 ### moving_block_blend
-
-Inconsistently renders objects with transparency behind.
-
--   Backface-Culling
--   Alpha Channel
+在透明物体后方渲染时表现不稳定
+- 背面剔除
+- Alpha通道
 
 ### moving_block_double_side
-
--   Completely Opaque
+- 完全不透明
 
 ### moving_block_seasons
-
--   Completely Opaque
--   Backface-Culling
+- 完全不透明
+- 背面剔除
 
 ### opaque_block
-
--   Completely Opaque
--   Backface-Culling
+- 完全不透明
+- 背面剔除
 
 ### opaque_block_color
-
--   Completely Opaque
--   Backface-Culling
+- 完全不透明
+- 背面剔除
 
 ### opaque_block_color_uv2
-
--   Completely Opaque
--   Backface-Culling
-
+- 完全不透明
+- 背面剔除
 
 :::warning
-Please note, that these have also only been tested using a RenderDragon platform. Non-RenderDragon visuals may differ.
+请注意，以上测试结果均基于RenderDragon渲染平台。非RenderDragon的视觉效果可能存在差异。
 :::
-

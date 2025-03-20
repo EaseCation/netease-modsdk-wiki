@@ -1,37 +1,40 @@
 ---
-title: Vanilla Usage Components
-category: Documentation
+title: 原版使用组件
+category: 文档
 mentions:
     - MedicalJewel105
 ---
 
-This page was created with [Wiki Content Generator](https://github.com/Bedrock-OSS/bedrock-wiki-content-generator). If there are issues, contact us on [Bedrock OSS](https://discord.gg/XjV87YN) Discord server.
-Note that not more than 8 examples are shown for each component to keep this page fast to load. Namespace `minecraft` was also removed.
-If you want to see full page, you can do it [here](/items/vui-full). *Last updated for 1.20.10*
+# 原版使用组件
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+本页面由 [Wiki内容生成器](https://github.com/Bedrock-OSS/bedrock-wiki-content-generator) 创建。如有问题请联系 [Bedrock OSS](https://discord.gg/XjV87YN) Discord 服务器。  
+注意：为保持页面加载速度，每个组件最多展示8个示例。命名空间 `minecraft` 已省略。  
+如需查看完整内容，请访问[此处](/wiki/items/vui-full)。*最后更新版本：1.20.10*
 
 ## block
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 camera
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:block": "minecraft:camera"
 ```
+:::
 
 </Spoiler>
 
 ## camera
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 camera
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:camera": {
     "black_bars_duration": 0.2,
     "black_bars_screen_ratio": 0.08,
@@ -40,76 +43,76 @@ camera
     "slide_away_duration": 0.2
 }
 ```
+:::
 
 </Spoiler>
 
 ## foil
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 appleEnchanted
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:foil": true
 ```
+:::
 
 golden_apple
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:foil": false
 ```
+:::
 
 </Spoiler>
 
 ## food
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 apple
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
-    "nutrition": 4,
-    "saturation_modifier": "low"
+    "nutrition": 4, // 营养值
+    "saturation_modifier": "low" // 饱和度修正：低
 }
 ```
+:::
 
 appleEnchanted
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
     "nutrition": 4,
-    "saturation_modifier": "supernatural",
-    "can_always_eat": true,
-    "effects": [
+    "saturation_modifier": "supernatural", // 超自然饱和度
+    "can_always_eat": true, // 可随时食用
+    "effects": [ // 效果列表
         {
-            "name": "regeneration",
-            "chance": 1.0,
-            "duration": 30,
-            "amplifier": 4
+            "name": "regeneration", // 再生
+            "chance": 1.0, // 触发概率
+            "duration": 30, // 持续时间（秒）
+            "amplifier": 4 // 效果等级
         },
         {
-            "name": "absorption",
+            "name": "absorption", // 伤害吸收
             "chance": 1.0,
             "duration": 120,
             "amplifier": 3
         },
         {
-            "name": "resistance",
+            "name": "resistance", // 抗性提升
             "chance": 1.0,
             "duration": 300,
             "amplifier": 0
         },
         {
-            "name": "fire_resistance",
+            "name": "fire_resistance", // 火焰抗性
             "chance": 1.0,
             "duration": 300,
             "amplifier": 0
@@ -117,420 +120,420 @@ appleEnchanted
     ]
 }
 ```
+:::
 
 baked_potato
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
     "nutrition": 5,
-    "saturation_modifier": "normal"
+    "saturation_modifier": "normal" // 普通饱和度
 }
 ```
+:::
 
 beef
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
     "nutrition": 3,
     "saturation_modifier": "low"
 }
 ```
+:::
 
 beetroot
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
     "nutrition": 1,
     "saturation_modifier": "normal"
 }
 ```
+:::
 
 beetroot_soup
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
     "nutrition": 6,
     "saturation_modifier": "normal",
-    "using_converts_to": "bowl"
+    "using_converts_to": "bowl" // 使用后转换为碗
 }
 ```
+:::
 
 bread
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
     "nutrition": 5,
     "saturation_modifier": "normal"
 }
 ```
+:::
 
 carrot
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:food": {
     "nutrition": 3,
     "saturation_modifier": "normal"
 }
 ```
+:::
 
 </Spoiler>
 
 ## hand_equipped
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 appleEnchanted
 
-<CodeHeader></CodeHeader>
-
-```json
-"minecraft:hand_equipped": false
+::: code-group
+```json [原始CodeHeader的值]
+"minecraft:hand_equipped": false // 是否手持装备
 ```
+:::
 
 </Spoiler>
 
 ## max_damage
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 clownfish
 
-<CodeHeader></CodeHeader>
-
-```json
-"minecraft:max_damage": 0
+::: code-group
+```json [原始CodeHeader的值]
+"minecraft:max_damage": 0 // 最大耐久值
 ```
+:::
 
 cooked_fish
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_damage": 0
 ```
+:::
 
 cooked_salmon
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_damage": 0
 ```
+:::
 
 fish
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_damage": 0
 ```
+:::
 
 pufferfish
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_damage": 0
 ```
+:::
 
 salmon
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_damage": 0
 ```
+:::
 
 </Spoiler>
 
 ## max_stack_size
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 beetroot_soup
 
-<CodeHeader></CodeHeader>
-
-```json
-"minecraft:max_stack_size": 1
+::: code-group
+```json [原始CodeHeader的值]
+"minecraft:max_stack_size": 1 // 最大堆叠数量
 ```
+:::
 
 honey_bottle
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_stack_size": 16
 ```
+:::
 
 mushroom_stew
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_stack_size": 1
 ```
+:::
 
 rabbit_stew
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_stack_size": 1
 ```
+:::
 
 suspicious_stew
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:max_stack_size": 1
 ```
+:::
 
 </Spoiler>
 
 ## seed
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 beetroot_seeds
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
-    "crop_result": "beetroot"
+    "crop_result": "beetroot" // 种植产物
 }
 ```
+:::
 
 carrot
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
     "crop_result": "carrots"
 }
 ```
+:::
 
 glow_berries
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
-    "crop_result": "cave_vines",
-    "plant_at": [
+    "crop_result": "cave_vines", // 洞穴藤蔓
+    "plant_at": [ // 可种植位置
         "cave_vines",
         "cave_vines_head_with_berries"
     ],
-    "plant_at_any_solid_surface": true,
-    "plant_at_face": "DOWN"
+    "plant_at_any_solid_surface": true, // 可在任意固体表面种植
+    "plant_at_face": "DOWN" // 种植面：下方
 }
 ```
+:::
 
 melon_seeds
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
-    "crop_result": "melon_stem"
+    "crop_result": "melon_stem" // 西瓜茎
 }
 ```
+:::
 
 nether_wart
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
-    "plant_at": "soul_sand",
+    "plant_at": "soul_sand", // 必须种植在灵魂沙上
     "crop_result": "nether_wart"
 }
 ```
+:::
 
 pitcher_pod
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
-    "crop_result": "pitcher_crop"
+    "crop_result": "pitcher_crop" // 投手作物
 }
 ```
+:::
 
 potato
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
     "crop_result": "potatoes"
 }
 ```
+:::
 
 pumpkin_seeds
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:seed": {
-    "crop_result": "pumpkin_stem"
+    "crop_result": "pumpkin_stem" // 南瓜茎
 }
 ```
+:::
 
 </Spoiler>
 
 ## stacked_by_data
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 appleEnchanted
 
-<CodeHeader></CodeHeader>
-
-```json
-"minecraft:stacked_by_data": true
+::: code-group
+```json [原始CodeHeader的值]
+"minecraft:stacked_by_data": true // 允许数据值堆叠
 ```
+:::
 
 clownfish
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:stacked_by_data": true
 ```
+:::
 
 cooked_fish
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:stacked_by_data": true
 ```
+:::
 
 cooked_salmon
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:stacked_by_data": true
 ```
+:::
 
 fish
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:stacked_by_data": true
 ```
+:::
 
 golden_apple
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:stacked_by_data": true
 ```
+:::
 
 pufferfish
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:stacked_by_data": true
 ```
+:::
 
 salmon
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:stacked_by_data": true
 ```
+:::
 
 </Spoiler>
 
 ## use_duration
 
-<Spoiler title="Show">
+<Spoiler title="显示">
 
 apple
 
-<CodeHeader></CodeHeader>
-
-```json
-"minecraft:use_duration": 32
+::: code-group
+```json [原始CodeHeader的值]
+"minecraft:use_duration": 32 // 使用耗时（tick）
 ```
+:::
 
 appleEnchanted
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:use_duration": 32
 ```
+:::
 
 baked_potato
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:use_duration": 32
 ```
+:::
 
 beef
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:use_duration": 32
 ```
+:::
 
 beetroot
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:use_duration": 32
 ```
+:::
 
 beetroot_soup
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:use_duration": 32
 ```
+:::
 
 bread
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:use_duration": 32
 ```
+:::
 
 camera
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [原始CodeHeader的值]
 "minecraft:use_duration": 100000
 ```
+:::
 
 </Spoiler>
-

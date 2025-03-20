@@ -1,34 +1,38 @@
 ---
-title: Loot Tables
-category: Documentation
+title: 战利品表
+category: 文档
 nav_order: 1
 tags:
-    - Stable
-    - Last updated for Version 1.18.10
+    - 稳定
+    - 最后更新于版本1.18.10
 mentions:
     - Ciosciaa
     - Etanarvazac
     - SmokeyStack
 ---
 
+# 战利品表
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: warning
-This document is a work in progress.
+本文档仍在完善中。
 :::
 
-Loot tables are used to select a set of items from a declared collection. Loot tables can be used from:
+战利品表用于从预定义集合中选择一组物品。战利品表可通过以下方式调用：
 
-- The `/loot` command
-- Container contents
-- Block drops
-- Fishing
-- Mob drops
-- Equipment on spawned mobs
-- Other various mob actions
+- `/loot` 命令
+- 容器内容物
+- 方块掉落
+- 钓鱼
+- 生物掉落
+- 生成生物的装备
+- 其他各类生物行为
 
-A different collection of items may be chosen each instance the same loot table would be used, based on [external conditions](#), and [innate randomness](#). Such variation is crucial for playability and adventuring, especially in more RPG-driven systems.
+每次调用同一战利品表时，基于[外部条件](#)和[内在随机性](#)可能会选择不同的物品组合。这种变化性对于游戏可玩性和冒险体验至关重要，特别是在RPG元素更重的系统中。
 
-## Integration
-Loot tables are not registered add-on entries and are instead referenced by path from the above sources. Loot tables may be placed anywhere within a behavior pack, but it's recommended to place them under the top-level `loot_tables` directory, following vanilla convention.
+## 集成方式
+战利品表并非注册的附加包条目，而是通过路径引用。虽然可以放置在行为包任意位置，但建议遵循原版规范将其置于顶级`loot_tables`目录下。
 
 <FolderView
 	:paths="[
@@ -38,12 +42,11 @@ Loot tables are not registered add-on entries and are instead referenced by path
 	]"
 />
 
-## Structure
-Loot tables are represented as JSON objects with a single required `"pools"` array property.
+## 结构
+战利品表由包含必需属性`"pools"`数组的JSON对象表示。
 
-<CodeHeader>#</CodeHeader>
-
-```json
+::: code-group
+```json [根结构]
 {
 	"pools": [
 		…
@@ -51,14 +54,13 @@ Loot tables are represented as JSON objects with a single required `"pools"` arr
 }
 ```
 
-The loot returned from a loot table invocation will be the *collective sum* of the yields of all pools provided here.
+战利品表的调用结果将是所有池（pool）产出的总和。
 
-### Pools
-Pools act as isolated constructs for selecting items; the results of pools cannot be influenced by other pools.
+### 池（Pools）
+池是独立的物品选择单元，不同池之间的结果互不影响。
 
-<CodeHeader>#</CodeHeader>
-
-```json
+::: code-group
+```json [基础池示例]
 {
 	"rolls": 1,
 	
@@ -71,14 +73,13 @@ Pools act as isolated constructs for selecting items; the results of pools canno
 }
 ```
 
-Two types of pools are available: general-purpose [weighted random pools](#weighted-random-pools) and [tiered pools](#tiered-pools), the latter of which is traditionally used for selecting mob equipment.
+存在两种池类型：通用型[加权随机池](#加权随机池)和[分层池](#分层池)，后者传统上用于生物装备选择。
 
-#### Weighted Random Pools
-A traditional weighted random pool selects items based on relative weight, choosing a number of yields based on a configured roll count.
+#### 加权随机池
+传统加权随机池根据相对权重选择物品，通过配置的roll次数决定产出数量。
 
-<CodeHeader>artifacts.json/pools/0</CodeHeader>
-
-```json
+::: code-group
+```json [artifacts.json/pools/0]
 {
 	"rolls": {
 		"min": 2,
@@ -105,38 +106,36 @@ A traditional weighted random pool selects items based on relative weight, choos
 }
 ```
 
-##### Rolls
+##### 抽取次数（Rolls）
 
-
-###### Bonus Rolls
-The roll count for a weighted random pool may be altered based on the player's luck using the optional `"bonus_rolls"` property.
+###### 附加抽取（Bonus Rolls）
+可通过可选属性`"bonus_rolls"`基于玩家幸运值调整抽取次数。
 
 ```json
-
+// 示例待补充
 ```
 
-##### Entry Weighting
-The weight is the chance of this entry being chosen. The higher the weight in comparison to other entries in this "entries" array, the higher the chance of the entry being chosen.
+##### 条目权重
+权重值决定条目被选中的概率。权重相对于其他条目越高，选中几率越大。
 
 ```json
 "weight": 3
 ```
 
-
-
-###### Quality
-The weight of an entry can be changed based on the player's luck using the quality property.
+###### 质量（Quality）
+通过quality属性可根据玩家幸运值调整条目权重。
 
 ```json
 "quality": 2
 ```
 
-Currently, luck is only expressed when fishing with a fishing rod enchanted with Luck of the Sea.
+当前仅在使用附有"海之眷顾"附魔的钓鱼竿时生效。
 
-#### Tiered Pools
-Tiered pools are used to select exactly one entry from a collection.
+#### 分层池
+分层池用于从集合中精确选择一个条目。
 
-```json
+::: code-group
+```json [分层池示例]
 {
 	"tiers": {
 		"initial_range": 2,
@@ -170,7 +169,7 @@ Tiered pools are used to select exactly one entry from a collection.
 }
 ```
 
-A pool becomes tiered with the inclusion of the `"tiers"` object property:
+当包含`"tiers"`对象属性时即构成分层池：
 
 ```json
 "tiers": {
@@ -181,55 +180,60 @@ A pool becomes tiered with the inclusion of the `"tiers"` object property:
 }
 ```
 
-Entries in a tiered pool are *ordered*. The selected entry for a tiered pool is based on its index. To determine this index, a starting index is randomly rolled and then a batch of success rolls attempt to increment this starting index.
+分层池中的条目具有顺序性。选择过程分为两个阶段：
 
-The starting index is decided by rolling a random integer between 1 and the integer property `"initial_range"`. If no initial range is provided, it defaults to `1`, forcing a starting index of 1.
+1. 初始索引：在1到`"initial_range"`间随机选取整数
+2. 附加尝试：进行`"bonus_rolls"`次成功率`"bonus_chance"`的检定，每次成功索引+1
 
-Next, attempts are made to advanced the index using additional rolls. The count of these roll attempts is given as an integer to `"bonus_rolls"`. The chance that any such roll succeeds is given via `"bonus_chance"`. Chances for `"bonus_chance"` are out of 1, meaning `0.5` would be a 50% chance for any bonus roll to succeed. Each successful roll increases the index by 1. Both of these properties default to `0`, meaning both must be provided to use this additional rolls mechanic.
-
-The final determined index is used to select the corresponding entry as that pool's yield. Indices in tiered pools are one-indexed, meaning the first entry has an index of 1, the second has an index of 2, and so forth. If the determined index is larger than the entry count for that pool, no yield will be provided.
+最终索引对应条目将被选中（索引从1开始）。若索引超出条目总数则不产出。
 
 ::: warning
-All [conditions](#) on entries in a tiered pool are ignored. Conditions on the pool itself are still allowed.
+分层池中条目的[条件](#)将被忽略，但池级别的条件仍然有效。
 :::
 
-### Entries
-Entries are the selectable units of a pool. Three different types of entries are available.
+### 条目（Entries）
+条目是池中的可选项，包含三种类型。
 
 ```json
-
+// 示例待补充
 ```
 
-#### Item Entries
-Item entries are the fundamental entry type for selecting loot. Item entries refer to
+#### 物品条目
+基础条目类型，用于选择具体物品。
 
 ```json
-
+// 示例待补充
 ```
 
-#### Loot Table Entries
-Loot hierarchies can be formed using loot table entries.
+#### 战利品表条目
+支持嵌套调用其他战利品表。
 
 ```json
-
+// 示例待补充
 ```
 
-#### Empty Entries
-When selected, empty entries won't yield any loot for that roll.
+#### 空条目
+选中时不产生任何物品。
 
 ```json
 "type": "empty",
 "weight": 4
 ```
 
-Empty entries can generally be mimicked using [a roll count](#) whose range includes 0, [random chance conditions](#), or [count functions](#) that could randomly select 0. Their primary advantage is readability when using [weighted random pools](#): denoting by weight when a roll won't yield an entry may be easier to understand.
+空条目的作用可通过[0次抽取](#)、[随机条件](#)或[数量函数](#)实现，主要优势在于提升[加权随机池](#)的可读性。
 
-### Functions
-Functions are what makes loot tables so powerful. They can do a wide range of tasks for each entry in your loot table. For example, they can change the amount of an item is dropped, what enchantments are present (even on items that normally cannot be enchanted), the item name, it's lore, and it can even write books! View [item functions](/loot/item-functions) for a full list of functions and how they're used.
+### 函数（Functions）
+函数赋予战利品表强大功能，可实现：
 
-<CodeHeader>artifacts.json/pools/entries</CodeHeader>
+- 调整物品数量
+- 添加附魔（包括不可附魔物品）
+- 修改物品名称和描述
+- 编写书籍内容
 
-```json
+详见[物品函数文档](/wiki/loot/item-functions)。
+
+::: code-group
+```json [artifacts.json/pools/entries]
 {
 	"type": "item",
 	"name": "minecraft:dirt",
@@ -250,12 +254,14 @@ Functions are what makes loot tables so powerful. They can do a wide range of ta
 }
 ```
 
-### Conditions
-Conditions check to see if a certain criteria is met. Examples: "Was Zombie killed by Player", "Did the sword have the Looting enchantment on it? If so, what level?"
+### 条件（Conditions）
+条件用于检测特定标准是否满足，例如：
 
-<CodeHeader>artifacts.json/pools/entries</CodeHeader>
+- 僵尸是否被玩家击杀
+- 武器是否附有抢夺附魔及其等级
 
-```json
+::: code-group
+```json [artifacts.json/pools/entries]
 {
 	"conditions": [
 		{
@@ -288,5 +294,4 @@ Conditions check to see if a certain criteria is met. Examples: "Was Zombie kill
 }
 ```
 
-## Overrides
-
+## 覆盖规则

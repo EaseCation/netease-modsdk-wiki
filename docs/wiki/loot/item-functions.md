@@ -12,7 +12,7 @@ mentions:
 toc_max_level: 1
 ---
 
-Item functions modify the nature of an item in [loot tables](/loot/loot-tables) and [trade tables](/loot/trade-tables).
+Item functions modify the nature of an item in [loot tables](/wiki/loot/loot-tables) and [trade tables](/wiki/loot/trade-tables).
 
 TODO
 can enchantments be prefixed with minecraft:/whatever?
@@ -50,7 +50,7 @@ A handful of functions are available for basic item properties. These functions 
 | Trade table      | ❌      |
 
 ::: tip NOTE
-Trade tables use the [`"quantity"` property](/loot/trade-tables#quantity) to set their count.
+Trade tables use the [`"quantity"` property](/wiki/loot/trade-tables#quantity) to set their count.
 :::
 
 The `set_count` function sets the count for that item entry.

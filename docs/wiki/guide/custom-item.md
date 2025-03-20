@@ -1,11 +1,11 @@
 ---
-title: 'Create a custom Item'
-category: Guide
-description: How to create your first custom Item
+title: '创建自定义物品'
+category: 指南
+description: 如何创建你的第一个自定义物品
 nav_order: 5
 prefix: '5. '
 mentions:
-    - KaiFireborn
+    - KaiFireBorn
     - SirLich
     - cda94581
     - TheItsNameless
@@ -19,80 +19,73 @@ mentions:
     - davedavis
 ---
 
-In Minecraft, we can create custom items, which can be dropped, traded, crafted, and otherwise used like a normal item. There is a lot of power in the system, including the ability to make food, fuel, and tools.
+# 创建自定义物品
 
-In this tutorial we are going to learn how to create a simple "ectoplasm" item, which we will later use as a loot-table drop for our ghost entity.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+在Minecraft中，我们可以创建自定义物品，这些物品可以像普通物品一样被丢弃、交易、合成和使用。该系统具有强大的功能，包括制作食物、燃料和工具的能力。
+
+在本教程中，我们将学习如何创建一个简单的"灵质"（ectoplasm）物品，后续将作为幽灵实体的战利品掉落。
 
 <br>
 <img src="/assets/images/guide/custom_item/ectoplasm_view.png" width=150>
 <br>
 <br>
 
-Conceptually, items are made up of two parts:
+概念上，物品由两部分组成：
 
--   The visuals (texture, name)
--   The behaviors (how the item should behave)
+- 视觉元素（纹理、名称）
+- 行为特性（物品的行为方式）
 
-First, we will learn how to create a new simple item & define its behaviors. In the next section we will assign a texture to this item, so you can see it in game.
+首先我们将学习如何创建新物品并定义其行为，下一章节会为这个物品添加纹理使其在游戏中可见。
 
 :::warning
-This guide requires experimental features toggled on.
+本指南需要开启实验性功能
 :::
 
-## Item Behavior
+## 物品行为
 
-To make an item we will need a way to identify it and define how we want it to behave. To do this we will be making a file which tell Minecraft to apply certain behaviors to a specific item of our choice.
+创建物品需要定义标识符和行为特性。我们将通过创建文件告诉Minecraft如何为指定物品应用特定行为。
 
-At the end of this section we will have fully defined the behavior of our item.
+本节结束时我们将完整定义物品的行为特性。
 
-### Components
+### 组件
 
-Different items behave differently; you can eat a porkchop, enchanted items glow & eggs can only stack to 16. These are all examples of how the item behaves.
-We are able to define how our custom item will behave by using behavior components.
+不同物品具有不同行为：可以食用猪肉、附魔物品发光、鸡蛋最多堆叠16个。这些都是通过行为组件实现的。
 
-<Spoiler title="Example Components">
+<Spoiler title="组件示例">
 
-<CodeHeader>BP/items/example.json/components/</CodeHeader>
-
-```json
-"minecraft:food":
+::: code-group
+```json [示例组件]
+"minecraft:food": {...},
 "minecraft:foil": true,
 "minecraft:max_stack_size": 16
 ```
+:::
 
 </Spoiler>
 
-Components contain information which tells the game what our item should do. For example the component `"minecraft:foil"` determines whether the item should have an enchanted foil to it, so setting it to `true` will apply it.
-All components have a `value` attached to it which we can edit to get the behaviour we want.
+组件包含决定物品行为的信息。例如`"minecraft:foil"`组件控制物品是否显示附魔光效，设为`true`即可启用。
 
-For our ectoplasm, we will set it to have a stack size of 16, similar to eggs. To do this we use the component `"minecraft:max_stack_size"` and set its value to `16`.
+对于灵质物品，我们设置类似鸡蛋的堆叠上限16，使用`"minecraft:max_stack_size"`组件并设值为`16`。
 
-### Identifier
+### 标识符
 
-In order for the game to apply the correct components to the correct item, we need to be able to tell the game which item is ours. We do this by defining an identifier for our item.
+为了让游戏正确应用组件，我们需要为物品定义唯一标识符。原版鸡蛋的标识符是`minecraft:egg`，包含两部分：
 
-An identifier is a name unique to this item. For a vanilla minecraft egg it's identifier is `minecraft:egg`. An identifier is made of two parts,
+- 命名空间（`minecraft`）
+- 物品ID（`egg`）
 
--   The namespace (`minecraft`)
--   The id (`egg`)
+命名空间用于避免不同附加包之间的冲突。建议使用个人独特标识（如作者缩写或项目简称）。本教程使用`wiki`作为命名空间，更多命名空间信息请参考[此页面](/wiki/concepts/namespaces)。
 
-The namespace is unique to your addon and you will use it throughout the project. This is to reduce issues if someone adds two packs to your game which both add an ectoplasm item; the namespace reduces the chance of the identifier being the same.
-The namespace that Minecraft use is `minecraft`. Your namespace should be unique to you, for example the authors initials or an abbreviation of the pack name. We will use the namespace `wiki` in our example; for more information on making a namespace check out our page [here](/concepts/namespaces).
+物品ID是简短描述性名称，这里使用`ectoplasm`。最终标识符为`wiki:ectoplasm`（使用冒号分隔命名空间和ID），后续可通过`/give`命令引用。
 
-The id is an informative shorthand name for your item. Here we will use `ectoplasm`.
+### 物品文件
 
-Together our custom identifier becomes `wiki:ectoplasm`. Note that we use a colon, `:`, to spilt the namespace and id. When we want to reference our item we will use this identifier, for example using the `/give` command.
+在行为包中创建物品定义文件`BP/items/ectoplasm.json`，基本结构如下：
 
-### Item File
-
-Now that we have our components and identifier, we can now start defining our item. We define an item by creating an item definition file in our behavior pack. This is where all our information will go.
-
-All item definitions go in `BP/items/`. The name of your file doesn't affect anything, but for ease of navigation it's recommend to name it after your id.
-We will create a file `BP/items/ectoplasm.json`. Here is the the basic layout of the file:
-
-<CodeHeader>BP/items/ectoplasm.json</CodeHeader>
-
-```json
+::: code-group
+```json [物品文件结构]
 {
 	"format_version": "1.16.100",
 	"minecraft:item": {
@@ -101,42 +94,39 @@ We will create a file `BP/items/ectoplasm.json`. Here is the the basic layout of
 	}
 }
 ```
+:::
 
-Most files in your pack will have 2 top level definitions, `"format_version"` and `"minecraft:<file_type>"`.
-The format version defines which version of the Addon system Minecraft will use to read this file. For our item, we will be using `1.16.100` to allow us to use the experimental features. For more information on format version you can check [here](/guide/format-version).
+文件包含两个顶层字段：
+- `format_version`：定义使用的附加包系统版本（本教程使用1.16.100启用实验性功能）
+- `minecraft:item`：包含物品描述和组件
 
-The second definitions defines what kind of file this is. In our case, as this is an item definition, it is `minecraft:item`. Under this is where we will put all our information. This will always contain a `description` key.
+描述部分定义标识符和分类：
 
-Let us look closer at the `"description"`:
-
-<CodeHeader>ectoplasm.json/minecraft:item/</CodeHeader>
-
-```json
+::: code-group
+```json [描述部分]
 "description": {
 	"identifier": "wiki:ectoplasm",
 	"category": "Items"
 },
 ```
+:::
 
-The description key contains the `identifier` and any other information required. The `identifier` allows the file to know which item to apply the components to.
-The `category` key defines which tab of the creative inventory the item would show up in. There are four tabs to choose from: `"Nature"`, `"Equipment"`, `"Construction"` and `"Items"`. If this key is not included, then the item will not show in the creative inventory, but you can still get the item by using `/give`.
+分类决定物品在创造模式库存中的位置，可选值：`"Nature"`（自然）、`"Equipment"`（装备）、`"Construction"`（建筑）、`"Items"`（物品）。不设置则不会出现在创造菜单，但仍可通过命令获取。
 
-Now we can actually define the behavior of our item, under `components`. Here we simply place any components we want our item to have.
-This will be our `"minecraft:max_stack_size"` component. For other components you can use, check out our more in depth guide on Items [here](/items/item-components).
+组件部分定义行为特性：
 
-<CodeHeader>ectoplasm.json/minecraft:item/</CodeHeader>
-
-```json
+::: code-group
+```json [组件部分]
 "components": {
 	"minecraft:max_stack_size": 16
 }
 ```
+:::
 
-With that, we have now fully defined our item's behavior. This is what your file should currently look like.
+完整物品文件应如下所示：
 
-<CodeHeader>BP/items/ectoplasm.json</CodeHeader>
-
-```json
+::: code-group
+```json [完整物品文件]
 {
 	"format_version": "1.16.100",
 	"minecraft:item": {
@@ -150,30 +140,15 @@ With that, we have now fully defined our item's behavior. This is what your file
 	}
 }
 ```
+:::
 
-If you open a world with your addon, your item should be in the correct menu but invisible and have a strange name.
+此时物品已具备功能，但缺少纹理和名称。下一章节将完善视觉元素。
 
-This is because we haven't defined the visuals yet. However, you should see that it does stack as expected. In the next section, we will define the items texture and assign it to our item.
+## 物品视觉
 
-## Item Visuals
+### 纹理准备
 
-Now that we have an item that works, we want to add a texture and name to it.
-
-Textures are stored in the resource pack under `RP/textures` as images. In order for Minecraft to know which texture to use where, we need to assign a shortname to it, so we can access it.
-
-### Texture
-
-To start we need a texture for our item. For our ectoplasm, we will be using this image.
-
-![ectoplasm.png](https://raw.githubusercontent.com/Bedrock-OSS/wiki-addon/86b0380310d3d5748a43a4be1f93d4c59668e4bf/guide/guide_RP/textures/items/ectoplasm.png)
-
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/wiki-addon/86b0380310d3d5748a43a4be1f93d4c59668e4bf/guide/guide_RP/textures/items/ectoplasm.png">Download texture here</BButton>
-
-All item textures are stored in `RP/textures/items/`. From here, you can create any subdirectories you wish.
-It's best to name your texture image files with the items' _id_, in our case it will be `ectoplasm.png`.
-It is recommended to have your images in `.png` format and be of size `16x16`, though Minecraft will accept other formats such as `.jpg` or `.tga`.
-
-Your folder layout should look like this:
+将纹理图片保存至资源包`RP/textures/items/`目录，建议使用物品ID命名（如`ectoplasm.png`），推荐16x16像素PNG格式。
 
 <FolderView
 	:paths="[
@@ -181,46 +156,32 @@ Your folder layout should look like this:
 	]"
 />
 
-### Shortname
+### 纹理短名
 
-A shortname is essentially a name that is assigned to the folder path of the texture, so whenever we want to use a texture somewhere, we will use its shortname instead of its folder path.
+在`RP/textures/item_texture.json`中定义纹理短名：
 
-All item shortnames are stored in one file called `item_texture.json` which is in `RP/textures`. This contains a list of shortnames and its assigned textures.
-
-<CodeHeader>RP/textures/item_texture.json</CodeHeader>
-
-```json
+::: code-group
+```json [纹理定义]
 {
 	"resource_pack_name": "Ghostly Guide",
 	"texture_name": "atlas.items",
-	"texture_data": {...}
+	"texture_data": {
+		"wiki.ectoplasm": {
+			"textures": "textures/items/ectoplasm"
+		}
+	}
 }
 ```
+:::
 
-Here we have 3 top level definitions, `texture_data` is where we will define our shortnames, the other two define the type of file this is.
-The `resource_pack_name` is simply our resource pack's name and `texture_name` is what kind of texture file this is. Since this is for _items_, this will always be set to `atlas.items`.
+短名`wiki.ectoplasm`将关联到纹理路径（无需扩展名）。
 
-Under `texture_data` will our list of item shortname definitions. An example definition looks like this:
+### 应用纹理
 
-<CodeHeader>RP/textures/item_texture.json/texture_data</CodeHeader>
+在物品组件中添加`minecraft:icon`：
 
-```json
-"wiki.ectoplasm": {
-	"textures": "textures/items/ectoplasm"
-}
-```
-
-Here `wiki.ectoplasm` is our shortname and under `textures` we have the path to our item. Notice that this is relative to the resource pack, and does not include the file extension. Your shortname should be short and unique. We recommend setting it as the namespace and id for the item we are assigning it to.
-
-Now whenever we want to refer our image, we will use the shortname `wiki.ectoplasm`.
-
-### Icon
-
-To finally apply our texture to our item, we add the `minecraft:icon` component to our item definition and set its value to our shortname.
-
-<CodeHeader>ectoplasm.json/minecraft:item/</CodeHeader>
-
-```json
+::: code-group
+```json [图标组件]
 "components":{
 	"minecraft:max_stack_size": 16,
 	"minecraft:icon" : {
@@ -228,28 +189,21 @@ To finally apply our texture to our item, we add the `minecraft:icon` component 
 	}
 }
 ```
+:::
 
-Now your texture should appear on your item.
+### 本地化名称
 
-### Item Name
+在语言文件中添加翻译：
 
-The last thing to add is a nice name to your item. Currently it will look like `item.wiki:ectoplasm`. This is the translation key for your item name, and it is used to allow for [localization](/concepts/text-and-translations). To set it, we just have to define it in our language files.
-
-We already created these files when making our `RP` and `BP`, so we just need to add to them.
-
-<CodeHeader>RP/texts/en_US.lang</CodeHeader>
-
+::: code-group
+```text [语言文件]
+item.wiki:ectoplasm=灵质
 ```
-item.wiki:ectoplasm=Ectoplasm
-```
+:::
 
-Now when you enter your world, your item should have a name.
+## 最终成果
 
-## Overview
-
-Now your first custom item, Ectoplasm, is complete! If everything has been done correctly, the item should now be obtainable through the `/give` command in-game, as well as appearing in your creative inventory.
-
-Your folder structure should look like this:
+完成后的物品应可通过`/give`命令获取，并在创造菜单显示。完整文件结构：
 
 <FolderView :paths="[
 	'RP/textures/item_texture.json',
@@ -265,10 +219,9 @@ Your folder structure should look like this:
 	'BP/pack_icon.png',
 ]"></FolderView>
 
-<Spoiler title="Full ectoplasm.json">
-<CodeHeader>BP/items/ectoplasm.json</CodeHeader>
-
-```json
+<Spoiler title="完整ectoplasm.json">
+::: code-group
+```json [完整物品文件]
 {
 	"format_version": "1.16.100",
 	"minecraft:item": {
@@ -285,13 +238,12 @@ Your folder structure should look like this:
 	}
 }
 ```
-
+:::
 </Spoiler>
 
-<Spoiler title="Full item_texture.json">
-<CodeHeader>RP/textures/item_texture.json</CodeHeader>
-
-```json
+<Spoiler title="完整item_texture.json">
+::: code-group
+```json [完整纹理文件]
 {
 	"resource_pack_name": "Ghostly Guide",
 	"texture_name": "atlas.items",
@@ -302,21 +254,21 @@ Your folder structure should look like this:
 	}
 }
 ```
-
+:::
 </Spoiler>
 
-If you're having some trouble, check the [Troubleshooting page](/items/troubleshooting-items). If that doesn't help, compare your results with the [example files](https://github.com/Bedrock-OSS/wiki-addon/tree/main/guide).
+如遇问题，请参考[故障排除页面](/wiki/items/troubleshooting-items)或对比[示例文件](https://github.com/Bedrock-OSS/wiki-addon/tree/main/guide)。
 
-## Your progress so far
+## 进度追踪
 
 <Checklist>
 
--   [x] Setup your pack
--   [x] Create a custom item
--   [x] How to format the behavior and resource files for an item
--   [x] What components are and how to use them
--   [x] How to set an items texture
--   [ ] Create a custom entity
--   [ ] Create the entity's loot, spawn rules, and a custom recipe
+-   [x] 创建附加包框架
+-   [x] 创建自定义物品
+-   [x] 理解物品行为和资源文件格式
+-   [x] 掌握组件使用方法
+-   [x] 设置物品纹理
+-   [ ] 创建自定义实体
+-   [ ] 实现实体战利品、生成规则和合成配方
 
 </Checklist>

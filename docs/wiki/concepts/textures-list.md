@@ -8,21 +8,24 @@ mentions:
     - TheItsNameless
 ---
 
-## General Overview
+# textures_list.json
 
-The `textures_list` file is Minecraft's way of *caching* each texture so that it can retrieve it faster than looking through each image in your textures folder. This is especially important when you have an abundance of textures, where Minecraft could potentially mess up and swap textures or even not load them at all. Minecraft tends to throw a content log _warning_ if you don't have the textures listed in the file. You can ignore it if you have a small amount, but it is recommended that you list the textures anyway.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## What textures can be used in the file?
+## 概述
 
-Any texture! Any textures can and _should_ be used in the textures_list.json file for best practice and performance.
+`textures_list` 文件是 Minecraft 用来*缓存*所有纹理的机制，相比从纹理文件夹中逐张查找，这种方式能更快地检索纹理。当您拥有大量纹理时这一点尤为重要，因为 Minecraft 可能会因纹理过多而出现错误交换纹理甚至无法加载的情况。如果您未在文件中列出纹理，Minecraft 通常会在内容日志中抛出_警告_。纹理数量较少时可以忽略该警告，但仍建议您将所有纹理列入清单。
 
-## File Structure
+## 可使用的纹理类型
 
-The structure is simple. The file itself is in `RP/textures` and is named `textures_list.json`. The file includes the file path to every texture you want in the file:
+所有纹理！最佳实践表明，任何纹理都可以且_应该_被列入 textures_list.json 文件中以优化性能。
 
-<CodeHeader>RP/textures/textures_list.json</CodeHeader>
+## 文件结构
 
-```json
+结构非常简单。该文件位于 `RP/textures` 目录下，命名为 `textures_list.json`。文件包含您需要缓存的所有纹理文件路径：
+
+::: code-group
+```json [RP/textures/textures_list.json]
 [
 	"textures/blocks/foo",
 	"textures/blocks/bar",
@@ -37,7 +40,8 @@ The structure is simple. The file itself is in `RP/textures` and is named `textu
 	"textures/entity/bar"
 ]
 ```
+:::
 
-## Automating
+## 自动化处理
 
-If you have a lot of textures, this could obviously be tedious to go and list all the texture paths. In this case you can start to use [Regolith](https://bedrock-oss.github.io/regolith/) with its wonderful filters.
+当您需要处理大量纹理时，手动列出所有纹理路径显然非常繁琐。此时可以使用集成强大过滤器的 [Regolith](https://bedrock-oss.github.io/regolith/) 工具来实现自动化处理。

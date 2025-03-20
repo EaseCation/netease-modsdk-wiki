@@ -1,5 +1,5 @@
 ---
-title: Shaders
+title: 着色器（光影）
 mentions:
     - SirLich
     - Dreamedc2015
@@ -8,46 +8,42 @@ mentions:
     - SIsilicon
 ---
 
+# 着色器（光影）Shader
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::warning
-The shaders on this page are incompatible with [Render Dragon](https://help.minecraft.net/hc/en-us/articles/360052771272-About-the-1-16-200-Update-for-Windows-10-). That means that they will not work on Windows and Console devices past 1.16.200, nor other devices past 1.18.30!
+本页所述的着色器与[Render Dragon](https://help.minecraft.net/hc/en-us/articles/360052771272-About-the-1-16-200-Update-for-Windows-10-)渲染引擎不兼容。这意味着在1.16.200版本后的Windows和主机设备，以及1.18.30版本后的其他设备上无法使用！
 :::
 
-## Overview
+## 概述
 
-Shaders are divided into 2 folders: `glsl` and `hlsl`. For shaders to work on every device,
-you need to code shaders in both languages. For testing on Windows, `hlsl` is enough.
-When rewriting shaders from one language to another, there are few things to change,
-like HLSL `float3` is `vec3` in GLSL. Mapping between those languages can be found [here](https://anteru.net/blog/2016/mapping-between-HLSL-and-GLSL/)
+着色器分为`glsl`和`hlsl`两个文件夹。要使着色器在所有设备上生效，需要同时用两种语言编写代码。在Windows平台测试时，使用`hlsl`即可。在两种语言间转换时需要注意语法差异，例如HLSL中的`float3`对应GLSL中的`vec3`。[此处](https://anteru.net/blog/2016/mapping-between-HLSL-and-GLSL/)可查看两种语言的对照表。
 
-## Materials
+## 材质
 
-Vertex, fragments, and sometimes geometry shaders are combined with some options
-as materials and are required for custom shaders. To create new material,
-you need to create a file, which matches the name of the .material file in the vanilla resource pack.
-For example: `materials/particles.material`. Materials support inheritance by adding parent
-material after a colon. For example: `entity_alpha:entity_base`
+顶点着色器、片段着色器和几何着色器（可选）通过材质配置文件组合使用。创建新材质时，需要参照原版资源包中的`.material`文件命名。例如：`materials/particles.material`。材质支持继承机制，使用冒号语法：`entity_alpha:entity_base`
 
-### Common material definition fields
+### 通用材质定义字段
 
-| **Field name**   | **Description**                                                       | **Example value**                                        | **Notes**                                                                                                                                         |
-| ---------------- | --------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vertexShader`   | Path to the shader relative to hlsl/glsl folder                       |                                                          | For HLSL shader, `.hlsl` suffix is added.                                                                                                         |
-| `fragmentShader` | Path to the shader relative to hlsl/glsl folder                       |                                                          | For HLSL shader, `.hlsl` suffix is added.                                                                                                         |
-| `vertexFields`   | An array of fields passed to vertex shader                            |                                                          | It's better to copy this field from vanilla material.                                                                                             |
-| `variants`       | An array of objects, which define variants of the material            |                                                          | It's better to copy this field from vanilla material.                                                                                             |
-| `+defines`       | An array of `#define` directives to add to the shader source          |                                                          | Useful for reusing shader, but changing some minor setting.                                                                                       |
-| `+states`        | An array of states to enable                                          | `["Blending", "DisableAlphaWrite", "DisableDepthWrite"]` | For OpenGL implementation, this is equivalent to [glEnable](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml) call.      |
-| `-defines`       | An array of `#defines` directives to remove from inherited `+defines` |                                                          |                                                                                                                                                   |
-| `+samplerStates` | An array of objects, defining how texture at certain index is treated | `{ "samplerIndex": 0, "textureFilter": "Point" }`        | `textureFilter` specifies how to sample the texture and `textureWrap` specifies the behavior, when accessing outside of the texture dimensions.   |
-| `msaaSupport`    | Multisample anti-aliasing support                                     | `Both`                                                   |                                                                                                                                                   |
-| `blendSrc`       | Specifies how the color source blending factors are computed          | `One`                                                    | For OpenGL implementation, this is equivalent to [glBlendFunc](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml) call. |
-| `blendDst`       | Specifies how the color destination blending factors are computed     | `One`                                                    | For OpenGL implementation, this is equivalent to [glBlendFunc](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml) call. |
+| **字段名称**       | **描述**                                                                 | **示例值**                                        | **注意事项**                                                                                                               |
+| ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `vertexShader`     | 顶点着色器路径（相对于hlsl/glsl文件夹）                                   |                                                  | HLSL着色器会自动添加`.hlsl`后缀                                                                                           |
+| `fragmentShader`   | 片段着色器路径（相对于hlsl/glsl文件夹）                                   |                                                  | HLSL着色器会自动添加`.hlsl`后缀                                                                                           |
+| `vertexFields`     | 传递给顶点着色器的字段数组                                               |                                                  | 建议从原版材质中复制此字段                                                                                               |
+| `variants`         | 定义材质变体的对象数组                                                   |                                                  | 建议从原版材质中复制此字段                                                                                               |
+| `+defines`         | 添加到着色器源码的`#define`指令数组                                      |                                                  | 适用于复用着色器时调整细节参数                                                                                           |
+| `+states`          | 启用的渲染状态数组                                                       | `["Blending", "DisableAlphaWrite", "DisableDepthWrite"]` | OpenGL实现中对应[glEnable](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml)调用                |
+| `-defines`         | 从继承的`+defines`中移除的指令数组                                        |                                                  |                                                                                                                          |
+| `+samplerStates`   | 定义纹理采样方式的对象数组                                               | `{ "samplerIndex": 0, "textureFilter": "Point" }` | `textureFilter`指定采样方式，`textureWrap`定义纹理边界外访问行为                                                         |
+| `msaaSupport`      | 多重采样抗锯齿支持                                                       | `Both`                                           |                                                                                                                          |
+| `blendSrc`         | 颜色源混合因子计算方式                                                   | `One`                                            | OpenGL实现中对应[glBlendFunc](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml)调用            |
+| `blendDst`         | 颜色目标混合因子计算方式                                                 | `One`                                            | OpenGL实现中对应[glBlendFunc](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml)调用            |
 
-Example:
+示例：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [材质示例]
 {
 	"materials": {
 		"version": "1.0.0",
@@ -73,89 +69,80 @@ Example:
 	}
 }
 ```
+:::
 
-For all the details about material files and possible field values, check [material file JSON schema](https://github.com/stirante/bedrock-shader-schema/blob/master/materials.schema.json).
+完整材质文件规范请参考[材质文件JSON模式](https://github.com/stirante/bedrock-shader-schema/blob/master/materials.schema.json)。
 
-## Troubleshooting
+## 疑难解答
 
-### Shader doesn’t change
+### 着色器未生效
 
-Every time there is a change in the shader, you need to restart Minecraft to recompile the shader completely.
+每次修改着色器后，必须重启Minecraft才能完全重新编译着色器。
 
-### Compilation error
+### 编译错误
 
-When there is a shader compilation error, a line number is usually specified where the error occurred. You need to check a few lines above the one set in error because Minecraft adds `#define` directives before compilation.
+出现编译错误时，错误信息中的行号可能需要检查前几行的代码，因为Minecraft会在编译前自动添加`#define`指令。
 
-### Couldn’t find constant buffer named: $Globals
+### 找不到名为$Globals的常量缓冲区
 
-I couldn’t accurately find the actual cause of this error, but it seems to be somehow connected to global variables. Removing them (initializing them in the `main` function or changing them to `#define` directives) seems to fix the problem.
+此错误可能与全局变量相关。尝试通过以下方式解决：
+- 在`main`函数中初始化变量
+- 改用`#define`指令定义常量
 
-## Tips and tricks
+## 实用技巧
 
-### Passing variables to the shader
+### 向着色器传递变量
 
-You can pass variables to the shader from a particle or an entity by changing entity color.
-Input color is clamped to `<0.0, 1.0>`. To pass more significant values, you need to divide by max value (or at least some considerable number).
+通过修改实体颜色可将数据传入着色器。输入值会被限制在`<0.0, 1.0>`范围内。传递较大数值时建议先进行归一化处理。
 
-### Using time in shader
+### 使用时间变量
 
-`TIME` variable is a number of seconds as `float` and is global for all shaders. For time-based on particle lifetime, you need to pass this:
+全局`TIME`变量存储以秒为单位的浮点时间值。要获取基于粒子生命周期的计时器：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [粒子计时器配置]
 "minecraft:particle_appearance_tinting": {
     "color": ["variable.particle_age/variable.particle_lifetime", 0, 0, 1]
 }
 ```
+:::
 
-Then in the shader, use `PSInput.color.r` as time, where `0.0` is particle birth and `1.0` is particle death.
+在着色器中使用`PSInput.color.r`获取时间值，其中`0.0`表示粒子生成，`1.0`表示粒子消亡。
 
-### Camera direction towards the entity
+### 相机朝向控制
 
-For entity shaders, you can make the shader dependent on the camera direction towards the entity.
+在实体着色器中实现相机方向相关效果：
 
--   Add to `PS_Input` in vertex and fragment shader new field
-
-<CodeHeader></CodeHeader>
-
+1. 在顶点/片段着色器的`PS_Input`结构体添加：
 ```
 float3 viewDir: POSITION;
 ```
 
--   After that, add to vertex shader this line
-
-<CodeHeader></CodeHeader>
-
+2. 在顶点着色器中添加：
 ```
 PSInput.viewDir = normalize((mul(WORLD, mul(BONES[VSInput.boneId], float4(VSInput.position, 1)))).xyz);
 ```
 
--   In the fragment shader, use `PSInput.viewDir` to make changes depending on camera rotation
+3. 在片段着色器中使用`PSInput.viewDir`控制渲染逻辑
 
-### Debugging values
+### 调试技巧
 
-The easiest way to debug a value is to turn it into color and render it like this.
+将调试值转换为颜色输出是最直观的方式：
 
-<CodeHeader></CodeHeader>
-
-```
+::: code-group
+```hlsl [颜色调试]
 PSOutput.color = float4(PSInput.uv, 0., 1.);
 ```
+:::
 
-This should create a red-green gradient, showing that the values of `uv` are between `<0, 0>` and `<1, 1>`.
+这会生成红绿渐变，显示UV坐标范围。推荐使用[调试着色器](http://files.stirante.com/debugShader.zip)，修改HLSL第70行代码可显示不同变量：
 
-You can use the debug shader I wrote [based on this shader](http://mew.cx/drawtext/drawtext).
-Right now, this shader will display values of the color passed to the shader. To display another value, change line 70 in hlsl shader to
-
-<CodeHeader></CodeHeader>
-
+::: code-group
+```hlsl [调试代码]
+int ascii = getFloatCharacter( cellIndex, <需要显示的向量> );
 ```
-int ascii = getFloatCharacter( cellIndex, <float4 vector here> );
-```
+:::
 
-GLSL version of debugging shader may crash Minecraft, use only for debugging.
+注意：GLSL版调试着色器可能导致崩溃，建议仅用于调试。
 
-[Download debug shader](http://files.stirante.com/debugShader.zip)
-
-![](/assets/images/knowledge/shaders/debugShader.gif)
+![调试着色器演示](/assets/images/knowledge/shaders/debugShader.gif)

@@ -1,10 +1,10 @@
 ---
-title: Items
+title: 物品 Items
 categories:
-    - title: General
+    - title: 基础
       color: blue
-    - title: Tutorials
+    - title: 巧思案例
       color: green
-    - title: Documentation
+    - title: 文档
       color: red
 ---

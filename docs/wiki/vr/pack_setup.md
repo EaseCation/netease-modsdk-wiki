@@ -1,57 +1,61 @@
 ---
-title: Setting Up the Pack
-category: General
+title: 设置资源包
+category: 基础
 mentions:
     - TheDoctor15
     - MedicalJewel105
     - TheItsNameless
     - SmokeyStack
 tags:
-    - expert
+    - 专家
 ---
 
-To start making your addon you should download this template.
-This template contains all the required assets for a start on making the VR pack.
+# 设置资源包
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+开始制作附加包前，您需要下载这个模板文件。
+该模板包含了制作VR资源包所需的所有基础资源。
 
 <BButton
     link="https://github.com/Bedrock-OSS/wiki-addon/releases/download/download/vr_template.mcpack"
     color=blue
->Get the template!</BButton>
+>获取模板！</BButton>
 
 :::warning
-Dont delete `contents.json` and `textures_list.json` from the template.
+请勿删除模板中的 `contents.json` 和 `textures_list.json` 文件。
 :::
 
-## What does the template contain?
+## 模板包含哪些内容？
 
-The template contains 2 editable folders; `holograms` and `textures`,
-these folders contain the models and textures for the vr objects.
+模板包含两个可编辑文件夹：`holograms`（全息模型）和 `textures`（纹理），
+这些文件夹存放了VR物件的模型和纹理文件。
 
 ![](/assets/images/vr/setup/vr-template-contents.png)
 
-## Holograms
+## 全息模型
 
-This folder contains all the models the VR version of Minecraft uses, for example the VR hands.
+此文件夹包含Minecraft VR版使用的所有模型，例如VR手部模型。
 
 ![](/assets/images/vr/setup/vr-template-holograms.png)
 
-## Textures
+## 纹理
 
-This folder stores all textures for the models.
+此文件夹存储模型所需的所有纹理贴图。
 
 ![](/assets/images/vr/setup/vr-template-textures.png)
 
-## Merging the VR template with your own pack
+## 将VR模板与自有资源包合并
 
-This pack depends on the `contents.json` and `textures_list.json` to work. All assets from your pack, that the game will use, need to be defined in there.
-If you have 2 of the same files you are ought to combine them.
+本资源包依赖 `contents.json` 和 `textures_list.json` 文件运行。所有需要被游戏调用的资源都必须在其中定义。
+若存在同名文件，需要进行合并操作。
 
-## Your progress so far
+## 当前进度
 
 <Checklist>
 
--   [x] Setup Minecraft VR
--   [x] Setup the pack
--   [ ] Edit the models
+-   [x] 配置Minecraft VR环境
+-   [x] 设置资源包
+-   [ ] 编辑模型
 
 </Checklist>

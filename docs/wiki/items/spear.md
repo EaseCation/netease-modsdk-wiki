@@ -1,8 +1,8 @@
 ---
-title: Custom Spear
-category: Tutorials
+title: 自定义长矛
+category: 巧思案例
 tags:
-    - scripting
+    - 脚本
 mentions:
     - XxPoggyisLitxX
     - SirLich
@@ -12,15 +12,19 @@ mentions:
 hidden: true
 ---
 
+# 自定义长矛
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: tip
-It's highly recommended that you have a basic understanding of JavaScript and Script-API.
+强烈建议您对JavaScript和Script-API有基本的了解。
 :::
 
 ::: warning
-It's highly recommended that you have made the basic textures and models for this guide..
+请确保已为本教程准备好基础纹理和模型。
 :::
 
-Before we start, let's make sure you have your file structure set up:
+开始前，请确认文件结构已正确设置：
 
 <FolderView
 	:paths="[
@@ -39,45 +43,44 @@ Before we start, let's make sure you have your file structure set up:
     ]"
 ></FolderView>
 
-Making custom spears is a really simple task. It was not simple for Koala Boy though. There are some scripting involved, but it doesn't do the main behaviors.
+制作自定义长矛其实非常简单（不过对Koala Boy来说可不简单）。虽然涉及部分脚本，但核心行为并不依赖脚本实现。
 
-## Item
+## 物品
 
-It can go without saying that you'd obviously need an item to make a spear, however we don't use some "basic" behaviors. Let's get an item file and let's add the following components. Let's start with the main components:
+首先需要创建长矛物品，但这里不使用"基础"行为组件。我们通过以下组件实现特殊功能：
 
-<CodeHeader>BP/items/spear.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/spear.json]
 {
-    //Use duration is the max time we can use the item.
+    //使用持续时间是我们能使用物品的最长时间
     "minecraft:use_duration": 3600,
-    //This component is what gives our spear the ability to 'draw' it like a bow
+    //赋予长矛类似弓的拉弓能力
     "minecraft:throwable": {
         "min_draw_duration": 2,
         "max_draw_duration": 4,
         "scale_power_by_draw_duration": true
     },
-    //What projectile to shoot when draw is complete
+    //完成蓄力后发射的抛射物
     "minecraft:projectile": {
         "projectile_entity": "wiki:thrown_iron_spear",
         "minimum_critical_power": 1.0
     },
-    //Durability of the spear.
+    //长矛耐久度
     "minecraft:durability": {
         "max_durability": 125
     }
 }
 ```
+:::
 
-## Spear Projectile
+## 抛射物实体
 
-We can safely say that we got the important components for our spear. Next we move over to the projectile. This projectile will be a simple entity, with some added components and a runtime identifier to get the correct behaviors.
+接下来创建抛射物实体。该实体需要特殊组件和运行时标识符来实现正确行为：
 
-<Spoiler title="Projectile">
+<Spoiler title="抛射物实体">
 
-<CodeHeader>BP/entities/spear.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/spear.json]
 {
     "format_version": "1.12.0",
     "minecraft:entity": {
@@ -155,17 +158,17 @@ We can safely say that we got the important components for our spear. Next we mo
     }
 }
 ```
-
+:::
 </Spoiler>
-Here we got our simple projectile entity. We are missing one part to make this a useful projectile. There is no way for our player to pick it up from the ground. In order to do this, we need events and entity sensors:
 
-<CodeHeader>BP/entities/spear.json</CodeHeader>
+现在需要添加玩家拾取机制。通过实体传感器和事件实现：
 
-```json
+::: code-group
+```json [BP/entities/spear.json]
 {
     "components": {
-        //Entity sensor detects if the projectile is on the ground, and if the player is near the entity.
-        //This will run an event when it's true
+        //实体传感器检测抛射物是否在地面上，以及玩家是否靠近实体
+        //当条件满足时触发事件
         "minecraft:entity_sensor": {
             "event": "wiki:give",
             "event_filters": {
@@ -189,7 +192,7 @@ Here we got our simple projectile entity. We are missing one part to make this a
     },
     "events": {
         /*
-        This event will despawn our projectile, and give our player a tag, which we will use in our script.
+        该事件会立即销毁抛射物，并给玩家添加标签（将在脚本中使用）
         */
         "wiki:give": {
             "sequence": [
@@ -218,18 +221,16 @@ Here we got our simple projectile entity. We are missing one part to make this a
     }
 }
 ```
+:::
 
-Once we're done with out projectile entity, it's time to go to Resource Packs.
+## 客户端实体
 
-## Client Entity
+为抛射物创建客户端实体文件：
 
-We will be using a basic client entity file for our projectile with added code.
+<Spoiler title="客户端实体">
 
-<Spoiler title="Client Entity">
-
-<CodeHeader>RP/entities/spear.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entities/spear.json]
 {
     "format_version": "1.10.0",
     "minecraft:client_entity": {
@@ -259,23 +260,21 @@ We will be using a basic client entity file for our projectile with added code.
     }
 }
 ```
+:::
 </Spoiler>
 
-Inside our client entity file, you might have noticed that there is animations bound to it. This animation will make our projectile rotate as it flies.
-
 :::warning
-Make sure your entity model is modeled like the image bellow!
+请确保实体模型符合下图样式！
 :::
 
 ![](/assets/images/items/spears/spear_model.png)
 
-## Animation
+## 动画
 
-The animation we use for our projectile isn't you normal entity animation. This one uses [molang](https://bedrock.dev/docs/stable/Molang) to define rotations.
+使用[Molang](https://bedrock.dev/docs/stable/Molang)实现抛射物飞行时的旋转动画：
 
-<CodeHeader>BP/animations/spear.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/animations/spear.json]
 {
 	"format_version": "1.8.0",
 	"animations": {
@@ -283,7 +282,7 @@ The animation we use for our projectile isn't you normal entity animation. This 
 			"loop": true,
 			"bones": {
 				"body": {
-                    //This is some molang stuff. The animation uses this to rotate the model based on its current angle.
+                    //这是一些molang代码。动画根据当前角度旋转模型
 					"rotation": ["-q.target_x_rotation", "-q.body_y_rotation", 0]
 				}
 			}
@@ -291,14 +290,14 @@ The animation we use for our projectile isn't you normal entity animation. This 
     }
 }
 ```
+:::
 
-## Attachable
+## 附着物
 
-We will be using the Trident Attachable because it comes with item positions and use animations already. It should look like this:
+使用三叉戟的附着物模板，已包含持握动画：
 
-<CodeHeader>BP/attachables/spear.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/attachables/spear.json]
 {
     "format_version": "1.10.0",
     "minecraft:attachable": {
@@ -339,64 +338,59 @@ We will be using the Trident Attachable because it comes with item positions and
     }
 }
 ```
+:::
 
-## Script
+## 脚本
 
-Now that we've setup our spear, there is no way to damage the spear when it's thrown. To do this, we will make use of Script-API.
-
-The script is really simple, and wouldn't require much brain power.
+通过Script-API实现耐久度消耗：
 
 ```js
 import { world, ItemStack } from "@minecraft/server"
 import { system } from "@minecraft/server";
-//This prevents world crash
+//防止世界崩溃
 system.beforeEvents.watchdogTerminate.subscribe(data => {
   data.cancel = true;
 });
 
 world.afterEvents.itemReleaseUse.subscribe(ev => {
-    //This is for multiplayer support
+    //多人游戏支持
     for (const player of world.getPlayers()){
-    //Basic variables to get the player inventory and held item.
       let inv = player.getComponent( 'inventory' ).container
-      //Our itemStack to save our item. This also saves item data.
+      //保存物品数据
       const itemStack = inv.getItem(player.selectedSlot);
-    //If the item we're holding is our spear, we run code.
+      //检测是否持有长矛
       if (itemStack?.typeId === 'wiki:iron_spear') {
         var container = player.getComponent('inventory').container
-        //The new item to be given.
         var newItem =  new ItemStack("wiki:iron_spear");
         var oldItem = container?.getItem(player.selectedSlot)
-        //Here's that tag!
         player.removeTag("iron_spear")
         }
-        //We subscribe a tick event to detect when we have the tag and if the item has durability less than the max.
+        //Tick事件检测标签和耐久度
       let e = system.runInterval(() => {
       if(player.hasTag("iron_spear") && itemStack?.typeId === 'wiki:iron_spear' && itemStack?.getComponent("durability").damage <= 125) {
         player.removeTag("iron_spear")
-        //This gives our saved item (newItem) +1 durability each time we pick it up.
+        //拾取时增加耐久损耗
         newItem.getComponent("durability").damage = oldItem.getComponent("durability").damage + 1;
         container.setItem(player.selectedSlot, newItem);
-        //When we don't have the tag, we stop the tick event.
+        //清除Tick事件
         if(!player.hasTag("iron_spear")){
         system.clearRun(e);
       }}
     })}
     })
-
 ```
 
-## Final Product
+## 最终效果
 
-Once you've followed this guide, you should have your own working spear in-game.
+完成所有步骤后，即可在游戏中获得可正常使用的长矛：
 
 ![](/assets/images/items/spears/spear_first_person.png)
 
 ![](/assets/images/items/spears/spear_third_person.png)
 
-Example Pack Download:
+示例包下载：
 
 <BButton
     link="https://github.com/Bedrock-OSS/wiki-addon/releases/download/download/custom_spear.mcaddon"
     color=blue
->💾 Example Pack</BButton>
+>💾 示例包</BButton>

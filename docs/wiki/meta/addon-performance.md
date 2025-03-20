@@ -1,5 +1,5 @@
 ---
-title: Addon Performance
+title: 附加包性能优化
 mentions:
     - SirLich
     - Joelant05
@@ -8,211 +8,212 @@ mentions:
     - SmokeyStack
 ---
 
+# 附加包性能优化
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: warning
-This page was compiled primarily using community feedback from multiple sources. As a result, some information may be generalized, subjective, or conflicting. Always use your own best judgment when optimizing your addons. This page is not a substitute for testing your addon on a wide range of devices.
+本页内容主要基于多方社区反馈整理。因此部分信息可能存在概括性、主观性或矛盾性。优化附加包时请始终自行判断。本页面不能替代在多种设备上实际测试附加包性能。
 :::
 
-Performance in addons is crucial, as the most technically fantastic addon is mainly useless if the majority of the player base cannot experience it. When developing addons, it should always be considered that many Bedrock players will be experiencing your addon on a significantly lower power device than you are developing on. This is especially true for mobile users. Therefore, addons should be developed with performance in mind and tested for performance on lower-end devices when possible.
+附加包性能至关重要，因为即使技术上最出色的附加包，如果大多数玩家设备无法流畅运行也将失去意义。开发附加包时需时刻谨记，许多基岩版玩家使用性能远低于开发设备的终端进行游戏，移动端用户尤为明显。因此应从性能角度设计附加包，并尽可能在低端设备上进行测试。
 
-This guide is a non-exhaustive list of specific performance considerations separated by the various subsystems of Bedrock Edition. No single point should be taken as a hard and fast rule. Instead, these performance considerations should help you to recognize potential areas for improvement.
+本指南按基岩版各子系统分类，列出非详尽性能考量事项。各条目不应视为铁律，而应作为识别潜在优化领域的参考。
 
-## Biomes and Features
+## 生物群系与特征生成
 
-### Biomes
+### 生物群系
 
--   The biome system is generally efficient
--   Large values for heightmaps are usually handled gracefully
--   The component `climate` creates large particle storms
+- 生物群系系统整体效率较高
+- 通常能妥善处理高度图的大数值
+- `climate`组件会产生大量粒子风暴
 
-### Features
+### 特征生成
 
--   Biomes generally cause less lag than feature generation.
--   Hundreds of iterations per chunk of a multi-block feature have been achieved at a low-performance cost.
--   Thousands of iterations per chunk of multi-block features negatively impact gameplay.
--   Hundreds of thousands of iterations per chunk of a single-block feature have been achieved at a low-performance cost.
--   Thousands of instances of features *per chunk* comes at little cost.
--   Tens of thousands of feature instances *per chunk* yields a noticeable impact on chunk loading.
--   Hundreds of thousands of instances of features *per chunk* slows chunk loading to an unbearable crawl.
+- 生物群系生成通常比特征生成更少卡顿
+- 单个区块内执行数百次多方块特征迭代性能损耗较低
+- 单个区块内数千次多方块特征迭代将显著影响游戏体验
+- 单个区块内执行数十万次单方块特征迭代性能损耗较低
+- 单个区块内数千个特征实例性能成本较低
+- 单个区块内数万个特征实例会显著影响区块加载
+- 单个区块内数十万特征实例将导致区块加载极度缓慢
 
-## Blocks
+## 方块
 
-### Materials
+### 材质
 
--   The minimum needed material type with regards to rendering should always be utilized
-> `alpha_blend` performance is worse than `alpha_test`, which is worse than `opaque`
+- 应始终使用渲染需求最低的材质类型
+> `alpha_blend`性能差于`alpha_test`，后者又差于`opaque`
 
-### Quantity and Type
+### 数量与类型
 
--   Flowing liquids should be avoided and minimized
+- 应尽量避免并减少流动液体
 
-### Updates
+### 更新
 
--   Block updates should be minimized
+- 应尽量减少方块更新
 
-## Commands
+## 命令
 
-### Quantity and Type
+### 数量与类型
 
--   Minimize the number of commands run per tick
-> `/effect` and `/gamemode` run every tick are avoidable and have a significant performance impact
--   Large clones, fills and structure loads during runtime should be avoided
-> Breaking these more extensive operations into multiple commands distributed over multiple ticks will avoid lag spikes, consider using structure loading animations
+- 最小化每tick执行的命令数量
+> 每个tick执行`/effect`和`/gamemode`等命令应避免，这些操作对性能影响显著
+- 应避免在运行时进行大规模clone、fill和结构加载
+> 将大型操作拆分为多tick执行的多个命令可避免卡顿，建议使用结构加载动画
 
-### Selectors
+### 选择器
 
--   Care should be taken to ensure a function is not executed on too many entities, and therefore too many times
--   Executing a scoreboard command outweighs the cost of running an entity selector multiple times
--   Using c=1 to ensure the selector stops when it finds one entity may improve performance
--   When executing multiple commands with the same selector, use a function instead to avoid repeatedly resolving the same selector
+- 需注意避免对过多实体执行函数导致执行次数过多
+- 执行记分板命令的成本高于多次运行实体选择器
+- 使用c=1确保选择器在找到第一个实体后停止可提升性能
+- 使用相同选择器执行多个命令时，应改用函数避免重复解析
 
-### Tags vs. Scoreboards
+### 标签与记分板
 
--   Scoreboards perform better at a large scale than tags
+- 记分板在大规模使用时性能优于标签
 
-## Entities
+## 实体
 
--   Entities generally have one of the most significant performance impacts by subsystem and thus should be minimized where possible
+- 实体通常是各子系统中性能影响最大的要素，应尽可能减少
 
-### Components
+### 组件
 
--   Pathfinding on flying mobs has a significant performance cost
--   Flying mobs in general encounter performance problems
-> Faking flying mobs via animation should be considered if possible
+- 飞行生物寻路计算性能消耗显著
+- 飞行生物通常存在性能问题
+> 如有可能，建议通过动画模拟飞行生物
 
-### Dummy Entities
+### 虚拟实体
 
--   Dummy entities generally have equal performance impact to proper entities, except when excluding heavy components like pathfinding
+- 虚拟实体与常规实体性能影响相当（不含寻路等重型组件时）
 
-### Geometry
+### 几何结构
 
-#### Bones
+#### 骨骼
 
--   No performance impact has been observed regarding bone count
+- 骨骼数量未观测到明显性能影响
 
-#### Elements
+#### 元素
 
--   Element count is not generally an issue, except in extreme cases when thousands of elements are reached
+- 除极端情况（数千元素）外，元素数量通常不成问题
 
-### Materials
+### 材质
 
--   The minimum material required to achieve the desired effect should always be used
--   When in doubt, refer to the material definition files to get an idea of the costs of various materials, taking the material inheritance system into account
+- 应始终使用实现预期效果所需的最低材质
+- 不确定时可参考材质定义文件，同时考虑材质继承系统
 
-### Quantity
+### 数量
 
--   Loaded entities at any given time should be minimized
-> Below 30 is optimal
+- 应尽量减少任意时刻加载的实体数量
+> 保持30个以下为最佳
 
-## Lighting
+## 光照
 
-### Map Considerations
+### 地图设计
 
--   Hollow areas will cause lag due to lighting calculations even if you don't see them
-> Avoid this by filling in unused enclosed areas
--   Keeping the map set to day or night will avoid lighting recalculation
+- 空心区域即使不可见仍会导致光照计算卡顿
+> 填充未使用的封闭空间可避免此问题
+- 保持昼夜恒定可避免光照重新计算
 
-### Sources
+### 光源
 
--   Bedrock lighting is calculated dynamically, meaning different light sources have different performance costs
-> Light blocks are the most performant because they lack particles, rendering, and particular state logic
+- 基岩版动态计算光照，不同光源性能成本不同
+> 光源方块性能最佳（无粒子、渲染和特殊状态逻辑）
 
-> Torches are a minor performance issue because they emit particles, render, and have particular state logic dependent on what block they connect to
+> 火把因产生粒子、渲染和连接状态逻辑存在较小性能问题
 
-> Custom light blocks with minimal components are a reasonable compromise between performance and aesthetics
+> 含最少组件的自定义光源方块是性能与美观的合理折中
 
-#### Comparison Table
+#### 对比表格
 
-|     Light Source | Score | Redstone Updates | Animted Texture | Light Updates | Tick Updates | Particles | Renders |
-| ---------------: | :---: | :--------------: | :-------------: | :-----------: | :----------: | :-------: | :-----: |
-|     Light Blocks |   1   |      False       |      False      |     True      |    False     |   False   |  False  |
-|         Lanterns |   4   |      False       |      True       |     True      |     True     |   False   |  True   |
-|    Custom Blocks |   2   |      False       |      False      |     True      |    False     |   False   |  True   |
-|        Mushrooms |   3   |      False       |      False      |     True      |     True     |   False   |  True   |
-|   Redstone Lamps |   3   |       True       |      False      |     True      |    False     |   False   |  True   |
-|        Glowstone |   3   |       True       |      False      |     True      |     True     |   False   |  True   |
-|     Sea Lanterns |   4   |      False       |      True       |     True      |     True     |   False   |  True   |
-|          Torches |   4   |      False       |      False      |     True      |     True     |   True    |  True   |
-| Redstone Torches |   5   |       True       |      False      |     True      |     True     |   True    |  True   |
+|         光源类型 | 评分 | 红石更新 | 动画纹理 | 光照更新 | Tick更新 | 粒子效果 | 渲染 |
+| ---------------: | :--: | :------: | :------: | :------: | :------: | :------: | :--: |
+|     光源方块 |  1   |    否    |    否    |    是    |    否    |    否    |  否  |
+|        灯笼 |  4   |    否    |    是    |    是    |    是    |    否    |  是  |
+| 自定义方块 |  2   |    否    |    否    |    是    |    否    |    否    |  是  |
+|      蘑菇 |  3   |    否    |    否    |    是    |    是    |    否    |  是  |
+| 红石灯 |  3   |    是    |    否    |    是    |    否    |    否    |  是  |
+|    荧石 |  3   |    是    |    否    |    是    |    是    |    否    |  是  |
+| 海晶灯笼 |  4   |    否    |    是    |    是    |    是    |    否    |  是  |
+|      火把 |  4   |    否    |    否    |    是    |    是    |    是    |  是  |
+| 红石火把 |  5   |    是    |    否    |    是    |    是    |    是    |  是  |
 
 ## Molang
 
-### Recursion
+### 递归
 
--   Minimize use of recursion when possible
--   Intense nested loop structures will cause performance issues
--   Use break to escape loops when possible
+- 尽量减少递归使用
+- 深度嵌套循环结构会导致性能问题
+- 适时使用break跳出循环
 
-### Structs
+### 结构体
 
--   Avoid making structs too deep, as there is a performance cost with each layer
+- 避免结构体过深，每层嵌套均有性能损耗
 
-### Variables
+### 变量
 
--   Use temp variables when possible to minimize variables loaded in memory
--   Consider how often variables are calculated based on script type
+- 尽量使用临时变量减少内存占用
+- 根据脚本类型考虑变量计算频率
 
-## Textures
+## 纹理
 
 ### texture_list.json
 
--   Tons of textures badly affect game performance. Create a [`texture_list.json`](/concepts/textures-list) file.
+- 过多纹理严重影响性能，请创建[`texture_list.json`](/wiki/concepts/textures-list)文件
 
-### Quantity
+### 数量
 
--   No more than 3000 textures should be used
-> This is due to limits imposed by Render Dragon
+- 建议不超过3000个纹理
+> Render Dragon引擎限制为4096个纹理，1.16版本原版已有800个
 
-> Render Dragon has a 4096 texture quantity limit, and there are 800 vanilla textures as of 1.16
+### 分辨率
 
-### Resolution
+- 最大支持16384x16384
+- 推荐最大4096x4096以保证低端设备兼容性
+- 注意纹理图集化处理，大尺寸纹理可能影响低端设备图集生成
+- 根据可视距离需求确定必要纹理尺寸
 
--   The maximum texture resolution is 16384x16384
--   The recommended maximum texture resolution is 4096x4096 to maintain compatibility with low-end devices
--   Keep in mind that textures are atlased, and larger textures can mess with atlas generation on lower-end devices
--   Only make textures as significant as needed to convey the detail needed at the needed distance
+## 交易系统
 
-## Trades
+村民交易在达到60项以上时会导致性能问题甚至全设备崩溃。建议拆分交易至多个村民或自定义实体/NPC，测试表明30项交易是安全阈值。
+*可能与JSON界面系统有关*
 
-Villager trades cause performance issues and even crashes on all devices at 60 trades or greater. Avoid tons of trades for one entity.
-Your best bet to resolve this issue is to split your trades in half and move them to another villager or custom entity/npc, 30 trades is a good safe number from testing.
-*probably JSON UI issues*
+## 音效
 
-## Sounds
+### 数量
 
-### Count
+- 已注册音效总数会影响性能
 
--   Total registered sounds are reported to have an impact on performance
+### 压缩
 
-### Compression
+- 音效压缩显著减小包体积
+- 在Switch等老旧/低功耗设备上效果明显
+- 基岩版使用的FMod简单API会将所有音效解压为WAV格式后加载至内存，CPU性能无提升
+> 流式音频不在此列
 
--   Sound compression is exceptionally beneficial to pack size
--   This is especially noticeable on older and low power devices, such as the Switch
--   The FMod simple API utilized by Bedrock decompresses all sounds into WAV before loading into RAM, meaning no CPU performance improvement in this respect
-> If audio is streamed, this does not occur
+### 流式处理
 
-### Streaming
+- 体积超过500KB或时长超过1分钟的音效应采用流式处理
 
--   As general guidance, sounds over 500kb in size or 1 minute in length should be streamed
+## 红石
 
-## Redstone
+### 区块边界
 
-### Chunk Boundaries
+- 应避免红石电路跨越区块边界
 
--   Crossing chunk boundaries with Redstone should be avoided
+### 命令方块
 
-### Command Blocks
+- 构建大型命令链时应垂直堆叠于单个区块内
+- 尽可能用函数和行为包替代命令方块
 
--   When creating large command blockchains, stack vertically and in a single chunk
--   Minimize command block use in favor of functions and behaviors where possible
+## 常加载区域
 
-## Ticking Areas
+- 总区块数比常加载区域更需关注
+- 非必要时应避免动态区域
+- 最佳实践是将常加载区域限制在单个区块
+> 所有持续运行的红石装置应置于此区块
+- 通过/testforblock测试并及时卸载不再需要的常加载区域
 
--   Total chunks are of more significant concern than ticking areas
--   Dynamic areas should be avoided unless necessary
--   Best practice is to minimizing the ticking area to one chunk if possible
-> All always-on Redstone should fit in this ticking chunk
--   Unload ticking areas when they are no longer needed, testing via /testforblock
+## 文件管理
 
-## Files
-
--   Tons of files can badly affect game performance. Create a [`contents.json`](/concepts/contents) file.
+- 过多文件严重影响性能，请创建[`contents.json`](/wiki/concepts/contents)文件

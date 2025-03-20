@@ -1,10 +1,10 @@
 ---
-title: Loot, Recipes, and Trading
+title: 战利品、配方、交易
 categories:
-- title: General
+- title: 基础
   color: blue
-- title: Documentation
+- title: 文档
   color: red
-- title: Tutorials
+- title: 巧思案例
   color: green
 ---

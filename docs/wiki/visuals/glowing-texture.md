@@ -1,52 +1,55 @@
 ---
-title: Glowing Entity Texture
-category: Tutorials
+title: 发光实体纹理
+category: 巧思案例
 mentions:
     - LeGend077
     - MedicalJewel105
 ---
 
-In this tutorial, you will learn how to make a glowing texture, like enderman's eyes have for an entity by using materials and textures.
+# 发光实体纹理
 
-## Texture
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-To make your entity's texture glow, you need to open your texture in an advanced image editor (here, Blockbench) to half-erase the pixels alpha.
+在本教程中，你将学习如何通过材质和纹理为实体创建发光效果，类似末影人眼睛的发光特性。
 
-- Open your entity's texture file.
+## 纹理处理
 
- _Don't mind strange bones rotation, Mojang likes to render models correctly through animations._
+要让实体纹理发光，需要使用高级图像编辑器（这里以Blockbench为例）对像素透明度进行半擦除处理。
 
-- Find the __Eraser__ tool and set its opacity/alpha to something low like 71 or 23.
+- 打开实体纹理文件
+
+ _忽略奇怪的骨骼旋转，Mojang通过动画实现了正确的模型渲染。_
+
+- 找到 __橡皮擦工具__ 并将不透明度/alpha值设置为较低数值（如71或23）
 
 ![](/assets/images/visuals/glowing-texture/eraser.png)
 
 ![](/assets/images/visuals/glowing-texture/opacity.png)
 
-- Then, erase the part of the texture you want it to glow. The less visible a pixel is the more it glows, but be sure it is not 100% erased.
+- 擦除需要发光的纹理区域。像素可见度越低发光效果越强，但需确保不完全擦除（100%透明）
 
 ![](/assets/images/visuals/glowing-texture/erase-pixels.png)
 
-Example Pig texture:
+示例猪纹理：
 
 ![](/assets/images/visuals/glowing-texture/pig.png)
 
-## Material
+## 材质设置
 
-We need to modify the `RP/entity/my_entity.entity.json` file of the mob we want to glow. Now, find `"materials":{}` and set the values to `"entity_emissive_alpha"`. (Be sure to check if the textures are properly defined).
+修改目标生物的`RP/entity/my_entity.entity.json`文件。定位到`"materials":{}`并设置为`"entity_emissive_alpha"`（需确认纹理正确定义）。
 
-<CodeHeader>RP/entity/pig.entity.json#description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/pig.entity.json#description]
 "materials": {
     "default": "entity_emissive_alpha"
 }
 ```
+:::
 
-<Spoiler title="Example Pig Entity File">
+<Spoiler title="示例猪实体文件">
 
-<CodeHeader>RP/entity/pig.entity.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/pig.entity.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -54,7 +57,7 @@ We need to modify the `RP/entity/my_entity.entity.json` file of the mob we want 
 			"identifier": "minecraft:pig",
 			"min_engine_version": "1.8.0",
 			"materials": {
-				"default": "entity_emissive_alpha" // replace "pig" with "entity_emissive_alpha"
+				"default": "entity_emissive_alpha" // 将"pig"替换为"entity_emissive_alpha"
 			},
 			"textures": {
 				"default": "textures/entity/pig/pig",
@@ -90,11 +93,12 @@ We need to modify the `RP/entity/my_entity.entity.json` file of the mob we want 
 	}
 }
 ```
+:::
 
 </Spoiler>
 
-## Testing
+## 效果测试
 
-Now, load up Minecraft and open a word with this resource pack enabled. Set the time to _midnight_ or find a nearby cave and test it out. The entity should glow as expected.
+加载Minecraft并启用此资源包，将时间设为_午夜_或寻找洞穴环境进行测试。实体应呈现预期的发光效果。
 
 ![](/assets/images/visuals/glowing-texture/result.png)

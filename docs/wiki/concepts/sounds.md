@@ -1,7 +1,7 @@
 ---
-title: Sounds
+title: 声音系统
 tags:
-    - intermediate
+    - 中级
 mentions:
     - SirLich
     - solvedDev
@@ -14,17 +14,21 @@ mentions:
     - ThomasOrs
 ---
 
-In bedrock, we can add custom sounds without overwriting any vanilla sounds. This is done by adding files to the resource pack.
+# 声音系统
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+在基岩版中，我们可以通过资源包添加自定义声音而无需覆盖原版音效。以下是实现方法：
 
 :::tip
-The best way to learn about sounds is by downloading and playing around with the default resource pack.
+学习声音系统的最佳方式是下载并研究默认资源包的结构。
 :::
 
-### Folder Structure
+### 文件夹结构
 
-There are two main files that we edit when we want to add sounds. Note how `sound_definition` is nested inside `sounds`.
+添加声音时主要需要修改两个文件。注意`sound_definition`文件需要放置在`sounds`文件夹内。
 
-Sound files themselves are added inside of the `sounds` folder, and can be any of the following formats.
+声音文件本身存放在`sounds`文件夹中，支持以下格式：
 
 <FolderView :paths="[
 	'RP/sounds.json',
@@ -36,11 +40,10 @@ Sound files themselves are added inside of the `sounds` folder, and can be any o
 
 ## sound_definitions.json
 
-`sound_definitions.json` is where we define new sound short-names. This should be thought of as typing a `short-name` or `id` to a physical sound path. Here is an example, `sound_definitions.json`, that adds a new trumpet sound called `example.toot`:
+此文件用于定义声音的短名称（short-name），相当于为物理声音文件创建ID标识。以下示例添加了名为`example.toot`的小号音效：
 
-<CodeHeader>RP/sounds/sound_definitions.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/sounds/sound_definitions.json]
 {
 	"format_version": "1.14.0",
 	"sound_definitions": {
@@ -51,69 +54,68 @@ Sound files themselves are added inside of the `sounds` folder, and can be any o
 	}
 }
 ```
-
-Sounds added in this way can be triggered using `/playsound`. Please note that `playsound` does not auto-correct, so you will need to be careful in your typing.
-
-:::warning
-New files referenced by file path, such as sounds, DO need a complete client restart to load. This means that if sounds don't work, you should restart your entire MC client rather than just reloading the world.
 :::
 
-### /playsound volume notes
+通过此方式添加的声音可通过`/playsound`命令触发。注意命令输入需严格匹配名称。
 
-The game will clamp the sound volume to at most 1.0 before multiplying it with the sound definition's volume.
+:::warning
+新增声音文件需要完全重启客户端才能生效。若音效未正常加载，请重启整个游戏而非仅重载世界。
+:::
 
-For `/playsound`, the maximum hearable range of a sound is given by `min(max_distance, max(volume * 16, 16))`.
-If `"max_distance"`is not given in the sound's definition, it is equivalent to `playsound_volume * 16`.
+### /playsound 音量说明
 
-Approximate sound attenuation by distance. The actual graph might not be linear.
+游戏会将音量参数限制在1.0以内，再与声音定义中的音量相乘。
+
+声音的最大可听距离计算公式为：`min(max_distance, max(volume * 16, 16))`
+若未在定义中设置`max_distance`，则等效于`playsound_volume * 16`
+
+以下是声音随距离衰减的近似曲线（实际衰减可能非线性）：
 
 ![](/assets/images/concepts/sounds/sound_graph.png)
 
-Shown above is the approximate sound attenuation factor by distance **for playing sounds with a volume parameter greater than or equal to 1**. Notice how the playsound `<volume>` limits the sound's audible range.
-The axis `distance` is the distance of the sound listener (player) to the sound source. The corresponding `volume` axis' value is the factor for the playsound volume capped to 1, multiplied by the sound definition's volume to get the final volume of the sound you hear. As an expression this could be written as: `final_volume = min(playsound_volume, 1) * graph_volume * sound_definition_volume`.
+上图展示了**当playsound音量参数≥1时**的衰减曲线。注意`<volume>`参数会影响声音的可听范围。
 
-**Note:** Attenuation by distance of the hearable sound's volume is not affected by the volume parameter given in the command.
+公式表达为：`final_volume = min(playsound_volume, 1) * graph_volume * sound_definition_volume`
 
-For example, `mob.ghast.affectionate_scream` sets `"min_distance": 100.0`, but can only be heard from at most 16 blocks away when using `/playsound` with volume 1 to play it. Specifying a greater volume value increases the audible range. When using a large enough volume to hear the sound farther away, the sound will get quieter only after a distance of more than 100.0.
+**注意：** 距离衰减曲线不受命令中音量参数影响。
 
-To make a sound which can be heard far away but also drops in volume continuously over distance, one can add e.g. `"volume": 0.01`and use large `<volume>` values in the playsound command. The high value for the `/playsound` volume will produce a large audible range (e.g. a volume of 4 is 64 blocks as calculated above), while the low volume will prevent the played sound from capping at 1.0 too soon.
+例如：`mob.ghast.affectionate_scream`设置了`"min_distance": 100.0`，但使用`/playsound`音量1时最大可听距离仍为16格。若需增大范围，可通过设置更高的音量参数。
 
-### Top Level Keys
+要实现远距离可听且线性衰减的效果，可在定义中设置`"volume": 0.01`，并在命令中使用大音量值（如4对应64格范围）。
 
-In the example above, I showed two `top-level` fields: `category` and `sounds`. Sounds will be discussed in further detail below, but the other `top-level` keys will be discussed here:
+### 顶级参数
 
-#### Categories
+#### 类别（Categories）
 
-Categories are used internally by the engine to decide how each sound is played. We can utilize different channels to get other effects.
+控制声音播放方式的核心参数：
 
-| Category | Note                                            |
-| -------- | ----------------------------------------------- |
-| weather  |                                                 |
-| block    |                                                 |
-| bucket   |                                                 |
-| bottle   |                                                 |
-| ui       | Sounds in this category will ignore range limit |
-| player   |                                                 |
-| hostile  |                                                 |
-| music    |                                                 |
-| record   |                                                 |
-| neutral  |                                                 |
+| 类别     | 说明                     |
+|----------|--------------------------|
+| weather  | 天气音效                |
+| block    | 方块交互音效            |
+| bucket   | 桶类音效                |
+| bottle   | 玻璃瓶音效              |
+| ui       | 界面音效（无视距离限制）|
+| player   | 玩家相关音效            |
+| hostile  | 敌对生物音效            |
+| music    | 背景音乐                |
+| record   | 唱片机音效              |
+| neutral  | 中立生物音效            |
 
 #### min_distance
 
-The distance from the sound source after which sound volume is attenuated. Default value: 0.0. It must be a float (eg. 1.0), or the property will be ignored.
+声音开始衰减的最小距离（浮点数），默认0.0
 
 #### max_distance
 
-The distance from the sound source after which the sound volume is the quietest (if in range). It must be a float (eg. 1.0), or the property will be ignored.
+声音衰减至最弱的最大距离（浮点数）
 
-### Sound definitions
+### 声音定义进阶
 
-In the example above, I showed `sounds` as simply a list with a single path. This is good for simple sounds but does not have much power. For starts, I can add multiple sounds to the list. These sounds will be randomized when played:
+可通过数组定义多个随机音效：
 
-<CodeHeader>RP/sounds/sound_definitions.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/sounds/sound_definitions.json]
 {
 	"format_version": "1.14.0",
 	"sound_definitions": {
@@ -128,49 +130,25 @@ In the example above, I showed `sounds` as simply a list with a single path. Thi
 	}
 }
 ```
+:::
 
-Additionally, we can define each sound as an object instead of a string. This allows us finer control and unlocks some new settings. The string/object style can be mixed and matched.
+#### 对象式定义参数
 
-#### name
+| 参数              | 说明                                                                 |
+|-------------------|----------------------------------------------------------------------|
+| name              | 文件路径（例："sounds/music/game/creative/creative1"）               |
+| stream            | 启用流式加载（降低内存占用）                                        |
+| volume            | 音量（0.0-1.0，可超过1.0）                                         |
+| load_on_low_memory| 已弃用（1.16.0+）                                                  |
+| pitch             | 音高倍数（例：2.3=2.3倍速播放）                                    |
+| is3D              | 是否启用3D音效（音乐/UI类自动禁用）                                |
+| interruptible     | 是否可被中断（默认true）                                           |
+| weight            | 随机权重（例：权重10的选中概率是权重2的5倍）                       |
 
-The path to the file, such as: `"sounds/music/game/creative/creative1"`
+### 完整示例
 
-#### stream
-
-Limits the sound only to be played a limited number of instances at a time. Will cause the game to not load the entire sound data into memory while playing, but rather in smaller parts while playing, thus using less memory. Good for improving performance on sound heavy worlds.
-
-#### volume
-
-How loud the sound should play, from `0.0` to `1.0`. Sounds cannot be made more audible than initially encoded. Set to `1.0` by default.
-Sounds in custom resource packs can have working values greater than 1.0.
-
-#### load_on_low_memory
-
-Forces the loading of the sound even when nearing low memory. "load_on_low_memory" is now deprecated as of 1.16.0
-
-#### pitch
-
-The pitch of the sound (how low/high it sounds). Should be a positive value. For example, `2.3` will let the sound play 2.3 times as quickly and thus at higher pitch. Set to `1.0` by default.
-
-#### is3D
-
-`true` makes the sound directional. Set to `true` for all sounds by default. Ignored for `music` and `ui` sounds. Only sounds with `false` will play stereo sound.
-
-#### interruptible
-
-Set to `true` by default.
-
-### weight
-
-If there is more than one sound in the list, the sound to be played is chosen randomly. `"weight"` (integer value like 5) will give the relative chance that this sound is chosen from the list. For example, if there are two sounds in the list, one with `"weight": 10` and the other with `"weight": 2`, the first will be played approximately 5 times more likely than the second (accurately: `10 / (10 + 2) = 83.3%` chance vs. `2 / (10 + 2) = 16.7%` chance) . Set to `1` by default.
-
-### Example
-
-Here is a more realistic example containing these options:
-
-<CodeHeader>RP/sounds/sound_definitions.json#sound_definitions</CodeHeader>
-
-```json
+::: code-group
+```json [RP/sounds/sound_definitions.json#sound_definitions]
 "block.beehive.drip": {
     "category": "block",
     "max_distance": 8,
@@ -185,63 +163,39 @@ Here is a more realistic example containing these options:
     ]
 }
 ```
+:::
 
 ## sounds.json
 
-If we want our sounds to run automatically, we can add them into the `sounds.json` file. This will tie the sound definitions directly to game events and cause them to play without needing to trigger with `/playsound`.
+此文件用于绑定自动播放的音效：
 
-Sounds can be added into various categories:
+| 分类                   | 说明                 |
+|------------------------|----------------------|
+| individual_event_sounds| 独立事件音效（如信标激活）|
+| block_sounds          | 方块交互音效         |
+| entity_sounds         | 实体音效（含自定义实体）|
+| interactive_sounds    | 交互音效（开发中）   |
 
-| Category                | Note                                                                             |
-| ----------------------- | -------------------------------------------------------------------------------- |
-| individual_event_sounds | Contains sounds like beacon activation, chest-close, or explode                  |
-| block_sounds            | Contains hit, step, and break sounds for blocks                                  |
-| entity_sounds           | Contains death, ambient, hurt, etc. sounds for entities (Including custom ones!) |
-| interactive_sounds      | WIP                                                                              |
+### 实体音效事件
 
-### Adding Entity Sounds
+常见生命周期事件：
 
-I assume that sounds can be added in other categories, but I personally only have experience adding sounds into the `entities` category. Entity sounds are automatically played at various points in the entities life-cycle.
+| 事件          | 触发时机               |
+|---------------|------------------------|
+| ambient       | 随机播放（如生物低鸣）|
+| hurt          | 受伤时                |
+| death         | 死亡时                |
+| step          | 移动时                |
+| fall.big      | 高空坠落              |
+| fall.small    | 低处跌落              |
+| splash        | 溅水                  |
+| attack        | 近战攻击              |
+| shoot         | 远程射击              |
 
-Common events:
+### 实体音效示例
 
-| Events     | Note                                                     |
-| ---------- | -------------------------------------------------------- |
-| ambient    | Played randomly, such as grunts, clucks, or ghast noises |
-| hurt       | Played when damaged                                      |
-| death      | Played when it dies                                      |
-| step       | Played when the entity moves along the ground            |
-| fall.big   | For hitting the ground from a high height                |
-| fall.small | For hitting the ground from a low height                 |
-| splash     | For splashing in the water                               |
-| attack     | For melee attacking                                      |
-| shoot      | For shooting projectiles                                 |
-
-There are also many sound events, which _most likely_ trigger automatically, but which I don't have details for, such as:
-
-| Unknown Categories |
-| ------------------ |
-| breathe            |
-| splash             |
-| swim               |
-| ambient.in.water   |
-| death.in.water     |
-| jump               |
-| eat                |
-| hurt.in.water      |
-| mad                |
-| stare              |
-| sniff              |
-| sleep              |
-| spit               |
-| warn               |
-| scream             |
-
-### Example
-
-<CodeHeader>RP/sounds.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/sounds.json]
 {
 	"entity_sounds": {
 		"entities": {
@@ -265,48 +219,44 @@ There are also many sound events, which _most likely_ trigger automatically, but
 	}
 }
 ```
+:::
 
-## Adding sounds to Animations
+## 动画音效绑定
 
-Sounds played in animations function based off of `short-name` definitions in the RP entity file.
+通过RP实体文件中的`sound_effects`实现动画同步：
 
-This example shows playing a wing-flap sound, synced with an animation.
-
-<CodeHeader>RP/entities/dragon.json#minecraft:client_entity/description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entities/dragon.json#minecraft:client_entity/description]
 "sound_effects": {
-    "wing_flap": "wiki.dragon.wing_flap" //where wiki.dragon.roar is a sound defined in sound_definitions
+    "wing_flap": "wiki.dragon.wing_flap" // wiki.dragon.wing_flap需在sound_definitions中定义
 }
 ```
+:::
 
-<CodeHeader>RP/animations/dragon.json#animations/animation.dragon.flying</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animations/dragon.json#animations/animation.dragon.flying]
 "sound_effects": {
     "3.16": {
         "effect": "wing_flap"
     }
 }
 ```
+:::
 
-## Adding sounds to Animation Controllers
+## 动画控制器音效
 
-You can play sounds within animation controllers in a similar way that animations can be.
+动画控制器中的音效触发方式类似：
 
-This example shows playing an explosion sound, synced using an animation controller.
-
-<CodeHeader>RP/entities/custom_tnt.json#minecraft:client_entity/description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entities/custom_tnt.json#minecraft:client_entity/description]
 "sound_effects": {
-    "explosion": "wiki.custom_tnt.explosion" //where wiki.custom_tnt.explosion is a sound defined in sound_definitions just like animation sounds.
+    "explosion": "wiki.custom_tnt.explosion" // 需在sound_definitions中定义
 }
 ```
+:::
 
-<CodeHeader>RP/animation_controllers/custom_tnt.animation_controllers.json#controller.animation.custom_tnt</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animation_controllers/custom_tnt.animation_controllers.json#controller.animation.custom_tnt]
 "states":{
     "default":{
         "transitions":[
@@ -329,3 +279,4 @@ This example shows playing an explosion sound, synced using an animation control
     }
 }
 ```
+:::

@@ -1,24 +1,27 @@
 ---
-title: Item Components
-description: Item components are used to change how your item appears and functions in the world.
-category: General
+title: 物品组件
+description: 物品组件用于改变物品在游戏中的外观和功能。
+category: 基础
 nav_order: 2
 mentions:
     - SmokeyStack
     - QuazChick
 ---
 
-:::tip FORMAT & MIN ENGINE VERSION `1.20.50`
-Using the latest format version when creating custom items provides access to fresh features and improvements. The wiki aims to share up-to-date information about custom items, and currently targets format version `1.20.50`.
+# 物品组件
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+:::tip 格式版本 & 最低引擎版本 `1.20.50`
+创建自定义物品时使用最新格式版本可获得最新功能和改进。本wiki旨在分享自定义物品的最新信息，当前目标格式版本为`1.20.50`。
 :::
 
-## Applying Components
+## 应用组件
 
-Item components are used to change how your item appears and functions in the world. They are applied in the `components` child of `minecraft:item`.
+物品组件用于修改物品在游戏中的外观和功能。这些组件应添加在`minecraft:item`的`components`子项中。
 
-<CodeHeader>BP/items/custom_item.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/custom_item.json]
 {
     "format_version": "1.20.50",
     "minecraft:item": {
@@ -36,26 +39,26 @@ Item components are used to change how your item appears and functions in the wo
     }
 }
 ```
+:::
 
-## Allow Off Hand
+## 允许副手
 
-Determines whether an item can be placed in the off-hand slot of the inventory.
+决定物品是否可以放入物品栏的副手槽位。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:allow_off_hand": {
     "value": true
 }
 ```
+:::
 
-## Block Placer
+## 方块放置器
 
-Sets the item as a Planter item component for blocks. Items with this component will place a block when used.
+将物品设置为可放置方块的种植者组件。具有此组件的物品在使用时会放置指定方块。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:block_placer":{ 
     "block": "seeds",
     "use_on": [
@@ -64,95 +67,95 @@ Sets the item as a Planter item component for blocks. Items with this component 
     ]
 }
 ```
+:::
 
-## Can Destroy In Creative
+## 创造模式可破坏
 
-Determines if an item will break blocks in Creative Mode while swinging.
+决定在创造模式下挥动物品时是否会破坏方块。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:can_destroy_in_creative": {
     "value": true
 }
 ```
+:::
 
-## Cooldown
+## 冷却时间
 
-Sets an items "Cool down" time. After using an item, it becomes unusable for the duration specified by the 'duration' setting of this component.
+设置物品的冷却时间。使用物品后，在组件指定的'duration'持续时间内无法再次使用。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:cooldown":{
     "category" : "attack",
     "duration" : 0.2
 }
 ```
+:::
 
-## Damage
+## 伤害值
 
-Determines how much extra damage an item does on attack.
+决定物品攻击时造成的额外伤害量。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:damage": {
     "value": 10
 }
 ```
+:::
 
-## Digger
+## 挖掘工具
 
-Allows a creator to determine how quickly an item can dig specific blocks.
+允许创作者设定物品挖掘特定方块的速度。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:digger": {
 	"use_efficiency": true,
 	"destroy_speeds": [
 		{
 			"block": {
-				"tags": "q.any_tag('stone', 'metal')" // Note that not all blocks have tags; listing many blocks may be necessary
+				"tags": "q.any_tag('stone', 'metal')" // 注意并非所有方块都有标签，可能需要列举多个方块
 			},
 			"speed": 6
 		}
 	]
 }
 ```
+:::
 
-## Display Name
+## 显示名称
 
-Sets the item display name within Minecraft: Bedrock Edition. This component may also be used to pull from the localization file by referencing a key from it.
+设置物品在Minecraft基岩版中的显示名称。此组件也可通过引用本地化文件中的键值来获取名称。
 
-### Example
+### 示例
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:display_name":{
     "value": "secret_weapon"
 }
 ```
+:::
 
-### Example Using Localization Key
+### 使用本地化键示例
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:display_name":{
     "value": "item.snowball.name"
 }
 ```
+:::
 
-## Durability
+## 耐久度
 
-Sets how much damage the item can take before breaking, and allows the item to be combined at an anvil, grindstone, or crafting table.
+设置物品在损坏前可承受的伤害量，并允许物品在铁砧、砂轮或工作台进行修复。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:durability":{
     "damage_chance": {
         "min": 10,
@@ -161,24 +164,25 @@ Sets how much damage the item can take before breaking, and allows the item to b
     "max_durability": 36
 }
 ```
+:::
 
-## Enchantable
+## 可附魔
 
-Determines what enchantments can be applied to the item. Not all enchantments will have an effect on all item components.
+决定可应用于物品的附魔类型。并非所有附魔都会对所有物品组件生效。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:enchantable": {
 	"slot": "bow",
 	"value": 10
 }
 ```
+:::
 
-### Enchantable Slots
-Note: The "all" enchantable slot allows you to apply any enchantment that you want to the item, just like an enchanted book. 
+### 可附魔槽位
+注意："all"槽位允许像附魔书一样应用任何附魔
 
-| Slot Name     |
+| 槽位名称       |
 | ------------- |
 | armor_feet    |
 | armor_torso   |
@@ -199,32 +203,30 @@ Note: The "all" enchantable slot allows you to apply any enchantment that you wa
 | sword         |
 | all           |
 
+## 实体放置器
 
-## Entity Placer
+允许物品在世界中放置实体。在1.19.80及以上版本中，此组件还可设置刷怪笼生成的生物类型。
 
-Allows an item to place entities into the world. Additionally, in version 1.19.80 and above, the component allows the item to set the spawn type of a monster spawner.
-
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:entity_placer":{
     "entity": "minecraft:spider",
     "dispense_on": ["minecraft:web"],
     "use_on": ["minecraft:web"]
 }
 ```
-
-## Food
-
-Sets the item as a food component, allowing it to be edible to the player.
-
-:::tip
-The `minecraft:food` must have the `minecraft:use_modifiers` component in order to function properly.
 :::
 
-<CodeHeader>minecraft:item > components</CodeHeader>
+## 食物
 
-```json
+将物品设置为可食用组件，允许玩家食用。
+
+:::tip
+`minecraft:food`必须与`minecraft:use_modifiers`组件配合使用才能正常工作。
+:::
+
+::: code-group
+```json [minecraft:item > components]
 "minecraft:food":{
     "can_always_eat": false,
     "nutrition" : 3,
@@ -240,152 +242,152 @@ The `minecraft:food` must have the `minecraft:use_modifiers` component in order 
     "using_converts_to": "bowl"
 }
 ```
+:::
 
-## Fuel
+## 燃料
 
-Allows this item to be used as fuel in a furnace to 'cook' other items.
+允许此物品作为熔炉燃料用于"烹饪"其他物品。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:fuel":{
     "duration": 3.0
 }
 ```
+:::
 
-## Glint
+## 附魔光效
 
-Determines whether the item has the enchanted glint render effect on it.
+决定物品是否显示附魔光效。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:glint": false
 ```
+:::
 
-## Hand Equipped
+## 手持装备
 
-Determines if an item is rendered like a tool while in-hand.
+决定物品在手中是否像工具一样渲染。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:hand_equipped": {
     "value": true
 }
 ```
+:::
 
-## Hover Text Color
+## 悬停文本颜色
 
-Determines the color of the item name when hovering over it.
+决定鼠标悬停时物品名称的显示颜色。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:hover_text_color": "green"
 ```
+:::
 
-## Icon
+## 图标
 
-Sets the icon item component. Determines the icon to represent the item in the UI and elsewhere.
+设置物品图标组件。决定物品在UI和其他位置的显示图标。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:icon":{
     "texture": "oak_slab"
 }
 ```
+:::
 
-## Interact Button
+## 交互按钮
 
-Is a boolean or string that determines if the interact button is shown in touch controls, and what text is displayed on the button. When set to 'true', the default 'Use Item' text will be used.
+布尔值或字符串，决定是否在触控界面显示交互按钮及按钮文本。设为'true'时将使用默认"使用物品"文本。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
-"minecraft:interact_button": "Use This Custom Item" // Can be a string or a boolean value. 
+::: code-group
+```json [minecraft:item > components]
+"minecraft:interact_button": "使用这个自定义物品" // 可以是字符串或布尔值
 ```
+:::
 
-## Liquid Clipped
+## 液体剪切
 
-Determines whether an item interacts with liquid blocks on use.
+决定物品使用时是否与液体方块互动。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:liquid_clipped": {
     "value": true
 }
 ```
+:::
 
-## Max Stack Size
+## 最大堆叠数
 
-Determines how many of an item can be stacked together.
+决定物品的最大堆叠数量。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:max_stack_size": {
     "value": 64
 }
 ```
+:::
 
-## Projectile
+## 投射物
 
-Compels the item to shoot, similarly to an arrow. Items with `minecraft:projectile` can be shot from dispensers or used as ammunition for items with the `minecraft:shooter` item component. Additionally, this component sets the entity that is spawned for items that also contain the `minecraft:throwable` component.
+使物品可像箭矢一样发射。具有`minecraft:projectile`的物品可从发射器发射，或作为具有`minecraft:shooter`组件的物品的弹药。此组件也用于设置带有`minecraft:throwable`组件的物品生成的实体。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:projectile":{
     "minimum_critical_power": 1.25,
     "projectile_entity": "arrow"
 }
 ```
+:::
 
-## Record
+## 唱片
 
-Used by record items to play music.
+用于唱片物品播放音乐。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:record": {
     "comparator_signal": 1,
     "duration": 5,
     "sound_event": "ambient.tame"
 }
 ```
+:::
 
-### Sound Event
+### 可用音效
 
-Listed [here](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/itemreference/examples/itemcomponents/minecraft_record?view=minecraft-bedrock-stable) are the available sounds
+可用的音效列表请参考[此处](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/itemreference/examples/itemcomponents/minecraft_record?view=minecraft-bedrock-stable)
 
-## Repairable
+## 可修复
 
-Defines the items that can be used to repair a defined item, and the amount of durability each item restores upon repair. Each entry needs to define a list of strings for 'items' that can be used for the repair and an optional 'repair_amount' for how much durability is repaired.
+定义可用于修复该物品的材料及每次修复恢复的耐久度。每个条目需定义可修复材料列表(items)和可选修复量(repair_amount)。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:repairable":{
     "on_repaired": "minecraft:celebrate",
     "repair_items": ["anvil"]
 }
 ```
-
-## Shooter
-
-Compels an item to shoot projectiles, similarly to a bow or crossbow. Must have the `minecraft:use_modifiers` component in order to function properly.
-
-:::tip
-Ammunition used by `minecraft:shooter` must have the `minecraft:projectile` component in order to function properly.
 :::
 
-<CodeHeader>minecraft:item > components</CodeHeader>
+## 发射器
 
-```json
+使物品可像弓或弩一样发射投射物。必须与`minecraft:use_modifiers`组件配合使用。
+
+:::tip
+`minecraft:shooter`使用的弹药必须具有`minecraft:projectile`组件才能正常工作。
+:::
+
+::: code-group
+```json [minecraft:item > components]
 "minecraft:shooter": {
     "ammunition": [
         {
@@ -400,52 +402,52 @@ Ammunition used by `minecraft:shooter` must have the `minecraft:projectile` comp
     "charge_on_draw": false
 }
 ```
+:::
 
-## Should Despawn
+## 应消失
 
-Determines if an item should despawn while floating in the world.
+决定漂浮在世界的物品是否会自动消失。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:should_despawn": {
     "value": true
 }
 ```
+:::
 
-## Stacked By Data
+## 按数据堆叠
 
-Determines if the same item with different aux values can stack. Additionally, this component defines whether the item actors can merge while floating in the world.
+决定具有不同辅助值的相同物品是否可以堆叠。此组件也定义漂浮物品是否可以合并。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:stacked_by_data": {
     "value": true
 }
 ```
+:::
 
-## Tags
+## 标签
 
-Determines which tags are included on a given item.
+决定物品包含哪些标签。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:tags": {
     "tags": [
         "custom_tag"
     ]
 }
 ```
+:::
 
-## Throwable
+## 可投掷
 
-Sets the throwable item component.
+设置可投掷物品组件。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:throwable":{
     "do_swing_animation" : false,
     "launch_power_scale" : 1.0,
@@ -455,45 +457,46 @@ Sets the throwable item component.
     "scale_power_by_draw_duration" : false
 }
 ```
+:::
 
-## Use Animation
+## 使用动画
 
-Determines which animation plays when using an item.
+决定使用物品时播放的动画类型。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:use_animation": "eat"
 ```
+:::
 
-## Use Modifiers
+## 使用修饰符
 
-Determines how long an item takes to use in combination with components such as Shooter, Throwable, or Food.
+决定与Shooter、Throwable或Food等组件配合使用时的物品使用时长。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:use_modifiers": {
     "use_duration": 1.6,
     "movement_modifier": 0.35
 }
 ```
+:::
 
-## Wearable
+## 可穿戴
 
-Sets the wearable item component.
+设置可穿戴物品组件。
 
-<CodeHeader>minecraft:item > components</CodeHeader>
-
-```json
+::: code-group
+```json [minecraft:item > components]
 "minecraft:wearable":{
     "dispensable" : true,
     "slot": "slot.chest"
 }
 ```
+:::
 
-### Slots
-| Slot Name            |
+### 可用槽位
+| 槽位名称            |
 | -------------------- |
 | slot.weapon.mainhand |
 | slot.weapon.offhand  |

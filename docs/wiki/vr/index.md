@@ -1,9 +1,9 @@
 ---
-title: Virtual Reality
+title: 虚拟现实 VR
 categories:
-    - title: General
+    - title: 基础
       color: blue
-    - title: Tutorials
+    - title: 巧思案例
       color: green
 ---
 <!--

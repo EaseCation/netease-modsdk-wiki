@@ -1,21 +1,25 @@
 ---
-title: Vanilla Particles
-category: Documentation
+title: 原版粒子效果
+category: 文档
 ---
 
-Here is the complete list of Bedrock particles from the vanilla resources. Please be aware that not all of these particles function properly, as many require molang context from their host entity.
+# 原版粒子效果
 
-:::tip Playing via /particle:
-For some reason, Bedrock requires the leading `minecraft` namespace, and the coordinates in the `/particle` command.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-It doesn't have autocomplete for particles.
+以下是基岩版原版资源中所有粒子效果的完整列表。请注意并非所有粒子都能正常运作，许多粒子需要宿主实体提供的Molang上下文才能正确运行。
+
+:::tip 通过/particle命令使用：
+由于某些原因，基岩版需要在`/particle`命令中使用带有`minecraft:`命名空间的完整粒子名称，并且需要指定坐标参数。
+
+该命令不支持粒子的自动补全功能。
 :::
 
-### Working Particles
+### 正常工作的粒子效果
 
-These particles can be spawned directly in-world, without any issues.
+这些粒子可以直接在游戏中生成，不会出现异常问题。
 
-| Working Particles                           |
+| 正常工作的粒子效果                          |
 | ------------------------------------------- |
 | minecraft:basic_flame_particle              |
 | minecraft:basic_portal_particle             |
@@ -79,12 +83,12 @@ These particles can be spawned directly in-world, without any issues.
 | minecraft:water_evaporation_bucket_emitter  |
 | minecraft:water_splash_particle_manual      |
 
-### Particles with Issues
+### 存在问题的粒子效果
 
-The following particles can be spawned, but might spam you with content log errors because they rely on variables that `/particle` cannot set:
+以下粒子可以生成，但可能因依赖`/particle`命令无法设置的变量而导致内容日志报错：
 
-| Particles with issues                           |
-| ----------------------------------------------- |
+| 存在问题的粒子效果                          |
+| ------------------------------------------- |
 | minecraft:arrow_spell_emitter                   |
 | minecraft:balloon_gas_particle                  |
 | minecraft:basic_crit_particle                   |
@@ -118,12 +122,12 @@ The following particles can be spawned, but might spam you with content log erro
 | minecraft:wax_particle                          |
 | minecraft:wither_boss_invulnerable              |
 
-### Bubble Particles
+### 气泡类粒子效果
 
-The following particles are various bubbles that only show up underwater. Some of them spam content log errors:
+以下气泡类粒子仅在水下可见，部分会导致内容日志报错：
 
-| Bubble particles                       |
-| -------------------------------------- |
+| 气泡类粒子效果                        |
+| ------------------------------------- |
 | minecraft:basic_bubble_particle        |
 | minecraft:basic_bubble_particle_manual |
 | minecraft:bubble_column_bubble         |
@@ -144,23 +148,23 @@ The following particles are various bubbles that only show up underwater. Some o
 | minecraft:squid_move_particle          |
 | minecraft:underwater_torch_particle    |
 
-### Permanent Particles
+### 永久性粒子效果
 
-The following particles are permanent and will not be removed once spawned until you exit the game:
+以下粒子效果一旦生成将永久存在，除非退出游戏：
 
-| Permanent particles              |
-| -------------------------------- |
+| 永久性粒子效果                |
+| ----------------------------- |
 | minecraft:mobflame_emitter       |
 | minecraft:nectar_drip_particle   |
 | minecraft:phantom_trail_particle |
 | minecraft:stunned_emitter        |
 
-## Broken Particles
+## 无法正常使用的粒子效果
 
-The following particles exist in-game but cannot be spawned because they require context that cannot be provided by `/particle` or are simply bugged:
+以下粒子虽然存在于游戏中，但由于需要无法通过`/particle`提供的上下文或存在程序错误而无法生成：
 
-| Broken particles                 |
-| -------------------------------- |
+| 无法正常使用的粒子效果          |
+| ----------------------------- |
 | minecraft:block_destruct         |
 | minecraft:block_slide            |
 | minecraft:breaking_item_icon     |
@@ -174,52 +178,52 @@ The following particles exist in-game but cannot be spawned because they require
 
 ---
 
-[Original Credit](https://www.reddit.com/r/MinecraftCommands/comments/cbd56p/i_need_a_list_of_bedrock_particles/etg8rt7/)
+[原始作者致谢](https://www.reddit.com/r/MinecraftCommands/comments/cbd56p/i_need_a_list_of_bedrock_particles/etg8rt7/)
 
-## Component Particles
+## 组件专用粒子效果
 
-The following is a list of pre-defined short names for Vanilla particles that can be used in certain components.
-**These have all been proven to generally work. This may not be a full list.**
+以下是可在某些组件中使用的原版粒子效果预设简称列表。
+**已确认这些简称通常有效，可能未包含全部可用选项**
 
-| Short names           | Notes                                                      |
-| --------------------- | ---------------------------------------------------------- |
-| mobspellambient       | Color determined by any present potion ID in the component |
-| villagerangry         |                                                            |
-| bubble                | Only shows underwater                                      |
-| evaporation           |                                                            |
-| crit                  |                                                            |
-| dragonbreath          | Only seems to work for the AoE component for Projectiles   |
-| driplava              |                                                            |
-| dripwater             |                                                            |
-| reddust               |                                                            |
-| enchantingtable       |                                                            |
-| endrod                |                                                            |
-| mobspell              | Color determined by any present potion ID in the component |
-| largeexplode          |                                                            |
-| hugeexplosion         |                                                            |
-| fallingdust           | Color determined by any present potion ID in the component |
-| waterwake             |                                                            |
-| flame                 |                                                            |
-| villagerhappy         |                                                            |
-| heart                 |                                                            |
-| mobspellinstantaneous | Color determined by any present potion ID in the component |
-| iconcrack             |                                                            |
-| slime                 |                                                            |
-| snowballpoof          |                                                            |
-| largesmoke            |                                                            |
-| lava                  |                                                            |
-| mobflame              |                                                            |
-| townaura              |                                                            |
-| note                  |                                                            |
-| explode               |                                                            |
-| portal                |                                                            |
-| rainsplash            |                                                            |
-| smoke                 |                                                            |
-| watersplash           |                                                            |
-| ink                   |                                                            |
-| terrain               | Pulls texture from atlas.terrain                           |
-| totem                 |                                                            |
-| witchspell            |                                                            |
-| soul                  |                                                            |
-| spit                  |                                                            |
-| sneeze                |                                                            |
+| 简称                   | 备注                                 |
+| ---------------------- | ------------------------------------ |
+| mobspellambient       | 颜色由组件中存在的药水ID决定         |
+| villagerangry         |                                      |
+| bubble                | 仅在水下显示                         |
+| evaporation           |                                      |
+| crit                  |                                      |
+| dragonbreath          | 仅对投射物的AoE组件有效              |
+| driplava              |                                      |
+| dripwater             |                                      |
+| reddust               |                                      |
+| enchantingtable       |                                      |
+| endrod                |                                      |
+| mobspell              | 颜色由组件中存在的药水ID决定         |
+| largeexplode          |                                      |
+| hugeexplosion         |                                      |
+| fallingdust           | 颜色由组件中存在的药水ID决定         |
+| waterwake             |                                      |
+| flame                 |                                      |
+| villagerhappy         |                                      |
+| heart                 |                                      |
+| mobspellinstantaneous | 颜色由组件中存在的药水ID决定         |
+| iconcrack             |                                      |
+| slime                 |                                      |
+| snowballpoof          |                                      |
+| largesmoke            |                                      |
+| lava                  |                                      |
+| mobflame              |                                      |
+| townaura              |                                      |
+| note                  |                                      |
+| explode               |                                      |
+| portal                |                                      |
+| rainsplash            |                                      |
+| smoke                 |                                      |
+| watersplash           |                                      |
+| ink                   |                                      |
+| terrain               | 从atlas.terrain提取纹理              |
+| totem                 |                                      |
+| witchspell            |                                      |
+| soul                  |                                      |
+| spit                  |                                      |
+| sneeze                |                                      |

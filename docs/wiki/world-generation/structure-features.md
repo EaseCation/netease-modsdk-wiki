@@ -1,6 +1,6 @@
 ---
-title: Generating Custom Structures
-category: Tutorials
+title: 生成自定义结构
+category: 巧思案例
 mentions:
     - DerpMcaddon
     - SirLich
@@ -8,32 +8,35 @@ tags:
     - experimental
 ---
 
-Structure feature is one of the most basic feature. It places exported `.mcstructure` file in the world.
-This tutorial will show you how to make:
+# 生成自定义结构
 
--   Surface structure,
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
--   Underground structure,
+结构特征是游戏世界生成的基础功能之一，用于在游戏中放置导出的`.mcstructure`文件。
+本教程将教你如何生成：
 
--   Floating structure,
+- 地表结构
 
--   Underwater structure, and
+- 地下结构
 
--   Water surface structure
+- 浮空结构
+
+- 水下结构
+
+- 水面结构
 
 :::tip
-For exporting structure on android devices, use this [resource pack](https://mcpedl.com/export-structure-button-android-addon/)
+若要在安卓设备导出结构文件，可使用此[资源包](https://mcpedl.com/export-structure-button-android-addon/)
 :::
 
-Make sure you put the `.mcstructure` file inside of `BP/structures/`!
+请确保将`.mcstructure`文件放置在`BP/structures/`目录下！
 
-## Surface Structure
+## 地表结构
 
-### Feature File
+### 特征文件
 
-<CodeHeader>BP/features/house_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/house_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:structure_template_feature": {
@@ -48,19 +51,19 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 			"unburied": {},
 			"block_intersection": {
 				"block_allowlist": [
-					"minecraft:air" //The structure can only replace air
+					"minecraft:air" //结构只能替换空气方块
 				]
 			}
 		}
 	}
 }
 ```
+:::
 
-### Feature Rule
+### 特征规则
 
-<CodeHeader>BP/feature_rules/plains_house_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/plains_house_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
@@ -82,7 +85,7 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 				"extent": [0, 16],
 				"distribution": "uniform"
 			},
-			"y": "q.heightmap(v.worldx, v.worldz)", //Generates the feature on the highest block on the column
+			"y": "q.heightmap(v.worldx, v.worldz)", //在区块最高点生成结构
 			"z": {
 				"extent": [0, 16],
 				"distribution": "uniform"
@@ -95,16 +98,16 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 	}
 }
 ```
+:::
 
 ![](/assets/images/world-generation/structure-features/house.png)
 
-## Underground Structure
+## 地下结构
 
-### Feature File
+### 特征文件
 
-<CodeHeader>BP/features/bunker_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/bunker_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:structure_template_feature": {
@@ -117,7 +120,7 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 		"constraints": {
 			"block_intersection": {
 				"block_allowlist": [
-					"minecraft:air", //Makes the feature only replace air and stone
+					"minecraft:air", //结构只能替换空气和石头
 					"minecraft:stone"
 				]
 			}
@@ -125,12 +128,12 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 	}
 }
 ```
+:::
 
-### Feature Rule
+### 特征规则
 
-<CodeHeader>BP/feature_rules/overworld_bunker_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/overworld_bunker_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
@@ -154,8 +157,8 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 			},
 			"y": {
 				"extent": [
-					11,
-					50 //Makes the structure generate between y11 and y50
+					11, //结构将在y11至y50之间生成
+					50
 				],
 				"distribution": "uniform"
 			},
@@ -171,16 +174,16 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 	}
 }
 ```
+:::
 
 ![](/assets/images/world-generation/structure-features/bunker.png)
 
-## Floating Feature
+## 浮空结构
 
-### Feature File
+### 特征文件
 
-<CodeHeader>BP/features/balloon_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/balloon_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:structure_template_feature": {
@@ -193,19 +196,19 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 		"constraints": {
 			"block_intersection": {
 				"block_allowlist": [
-					"minecraft:air" //Makes the structure only replace air
+					"minecraft:air" //结构只能替换空气
 				]
 			}
 		}
 	}
 }
 ```
+:::
 
-### Feature Rule
+### 特征规则
 
-<CodeHeader>BP/feature_rules/overworld_balloon_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/overworld_balloon_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
@@ -229,7 +232,7 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 			},
 			"y": {
 				"extent": [
-					100, //Makes the structure generate from y100 to y200
+					100, //结构将在y100至y200之间生成
 					200
 				],
 				"distribution": "uniform"
@@ -246,20 +249,20 @@ Make sure you put the `.mcstructure` file inside of `BP/structures/`!
 	}
 }
 ```
+:::
 
 ![](/assets/images/world-generation/structure-features/balloon.png)
 
-## Underwater Structure
+## 水下结构
 
-::: tip
-For underwater structures, make sure you waterlogged the structure, because Minecraft won't waterlog them automatically!
+:::tip
+对于水下结构，请确保对结构进行水淹处理，因为Minecraft不会自动进行水淹操作！
 :::
 
-### Feature File
+### 特征文件
 
-<CodeHeader>BP/features/aqua_temple_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/aqua_temple_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:structure_template_feature": {
@@ -272,19 +275,19 @@ For underwater structures, make sure you waterlogged the structure, because Mine
 		"constraints": {
 			"block_intersection": {
 				"block_allowlist": [
-					"minecraft:water" //Makes the structure only replace water
+					"minecraft:water" //结构只能替换水方块
 				]
 			}
 		}
 	}
 }
 ```
+:::
 
-### Feature Rule
+### 特征规则
 
-<CodeHeader>BP/feature_rules/ocean_aqua_temple_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/ocean_aqua_temple_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
@@ -306,7 +309,7 @@ For underwater structures, make sure you waterlogged the structure, because Mine
 				"extent": [0, 16],
 				"distribution": "uniform"
 			},
-			"y": "q.above_top_solid(v.worldx, v.worldz)", //Places the feature on top of the highest solid block on the column, so it won't place it on the surface of the water
+			"y": "q.above_top_solid(v.worldx, v.worldz)", //将结构放置在最高固体方块顶部，避免生成在水面
 			"z": {
 				"extent": [0, 16],
 				"distribution": "uniform"
@@ -319,16 +322,16 @@ For underwater structures, make sure you waterlogged the structure, because Mine
 	}
 }
 ```
+:::
 
 ![](/assets/images/world-generation/structure-features/aqua_temple.png)
 
-## Water Surface Structure
+## 水面结构
 
-### Feature File
+### 特征文件
 
-<CodeHeader>BP/features/raft_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/raft_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:structure_template_feature": {
@@ -341,7 +344,7 @@ For underwater structures, make sure you waterlogged the structure, because Mine
 		"constraints": {
 			"block_intersection": {
 				"block_allowlist": [
-					"minecraft:water", //Makes the structure only replace air and water
+					"minecraft:water", //结构只能替换水和空气
 					"minecraft:air"
 				]
 			}
@@ -349,12 +352,12 @@ For underwater structures, make sure you waterlogged the structure, because Mine
 	}
 }
 ```
+:::
 
-### Feature Rule
+### 特征规则
 
-<CodeHeader>BP/feature_rules/ocean_raft_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/ocean_raft_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
@@ -376,7 +379,7 @@ For underwater structures, make sure you waterlogged the structure, because Mine
 				"extent": [0, 16],
 				"distribution": "uniform"
 			},
-			"y": 62, //Makes the feature generate only on y62, which is Minecraft water level
+			"y": 62, //结构将在y62（默认水位高度）生成
 			"z": {
 				"extent": [0, 16],
 				"distribution": "uniform"
@@ -389,5 +392,6 @@ For underwater structures, make sure you waterlogged the structure, because Mine
 	}
 }
 ```
+:::
 
 ![](/assets/images/world-generation/structure-features/raft.png)

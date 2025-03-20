@@ -1,126 +1,123 @@
 ---
-title: RakNet and MCPE
+title: RakNet与MCPE协议解析
 mentions:
     - ZestiiSpaghett
-    - MedicalJewel105
     - SmokeyStack
     - ThomasOrs
     - Adrian8115
+    - MedicalJewel105
 ---
 
-Minecraft Bedrock uses a protocol known as [RakNet](http://www.jenkinssoftware.com/)
-Unlike Minecraft Java edition, Bedrock uses UDP on the port 19132
+# RakNet与MCPE协议解析
 
-You can find a list of Minecraft Bedrock server softwares [here](/servers/server-software#active-software).
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## RakNet Notes
+Minecraft基岩版使用名为[RakNet](http://www.jenkinssoftware.com/)的通信协议。与Java版不同，基岩版通过UDP协议在19132端口进行通信。
 
--   All strings are prefixed with an unsigned short depicting their length.
--   The offline message id will always be: 00ffff00fefefefefdfdfdfd12345678 (hex) - this series of bytes will be referred to as *Magic*
--   The offline message id is sent with unconnected messages such as unconnected pings and pongs.
--   The GUIDS used by RakNet are 8 bytes long.
--   The first byte is used to identify the type of message.
+您可以在此处查看[Minecraft基岩版服务器软件列表](/wiki/servers/server-software#active-software)。
 
-## Data Types
+## RakNet协议要点
 
-| Type           | Size | Range           | Notes                                                          |
-| -------------- | ---- | --------------- | -------------------------------------------------------------- |
-| Byte           | 1    | 0-255           | An unsigned integer                                            |
-| Long           | 8    | -2^63 to 2^63-1 | Signed 64 bit integer                                          |
-| Magic          | 16   |                 | 00ffff00fefefefefdfdfdfd12345678 - Will always be those bytes  |
-| Short          | 2    | -32768 to 32767 |                                                                |
-| Unsigned Short | 2    | 0 to 65535      |                                                                |
-| String         | N/A  | N/A             | A string prefixed by a short which depicts the length.         |
-| Boolean        | 1    | 0-1             | 0x00 is False while 0x01 is True                               |
-| Address        | 7    |                 | 1 byte for the ip version 4/6, 4 for the IP and 2 for the port |
-| uint24le       | 3    |                 | 3-byte little-endian unsigned integer                          |
+- 所有字符串均以表示长度的无符号短整型（unsigned short）作为前缀
+- 离线消息ID固定为：00ffff00fefefefefdfdfdfd12345678（十六进制） - 后续统称为*Magic*
+- 离线消息ID随未连接消息（如未连接Ping/Pong）一起发送
+- RakNet使用的GUID为8字节长度
+- 首字节用于标识消息类型
 
-## Contents
+## 数据类型对照表
 
-<Checklist>
+| 类型            | 大小 | 数值范围         | 说明                                                         |
+| --------------- | ---- | ---------------- | ------------------------------------------------------------ |
+| Byte            | 1    | 0-255            | 无符号整型                                                   |
+| Long            | 8    | -2^63 至 2^63-1  | 有符号64位整型                                               |
+| Magic           | 16   |                  | 固定字节序列：00ffff00fefefefefdfdfdfd12345678               |
+| Short           | 2    | -32768 至 32767  | 有符号短整型                                                 |
+| Unsigned Short  | 2    | 0 至 65535       | 无符号短整型                                                 |
+| String          | 不定 |                  | 以短整型长度前缀开头的字符串                                 |
+| Boolean         | 1    | 0-1              | 0x00表示False，0x01表示True                                  |
+| Address         | 7    |                  | 地址结构：1字节IP版本（4/6）+4字节IP+2字节端口               |
+| uint24le        | 3    |                  | 小端序3字节无符号整型                                        |
 
--   [x] Unconnected Pings
--   [x] Unconnected Pongs
--   [x] Open Connection Request 1
--   [x] Open Connection Reply 1
--   [x] Open Connection Request 2
--   [x] Open Connection Reply 2
-- **From here on, the RakNet connection is established and all RakNet messages are contained in a [Frame Set Packet](https://wiki.vg/Raknet_Protocol#Frame_Set_Packet).**
--   [x] Connection Request
--   [x] Connection Request Accepted
+## 协议流程目录
 
-</Checklist>
+- [x] 未连接Ping请求
+- [x] 未连接Pong响应
+- [x] 开放连接请求1
+- [x] 开放连接响应1
+- [x] 开放连接请求2
+- [x] 开放连接响应2
+- **从以下开始，RakNet连接已建立，所有消息均通过[帧集合数据包](https://wiki.vg/Raknet_Protocol#Frame_Set_Packet)传输**
+- [x] 连接请求
+- [x] 连接请求已接受
 
-### Unconnected Pings
+### 未连接Ping请求
 
-Minecraft Bedrock will send out a message to all listed servers (and the local network) to check if any games are available and retrieve the MOTD from the game. These messages are known as unconnected pings and are structured in this format:
+客户端会向所有服务器列表（包括局域网）发送广播消息以检测可用游戏并获取MOTD信息。该消息结构如下：
 
-`0x01 | client alive time in ms (unsigned long long) | magic | client GUID`
+`0x01 | 客户端存活时间（毫秒，无符号长整型） | Magic | 客户端GUID`
 
-### Unconnected Pongs
+### 未连接Pong响应
 
-After this message, the server will respond with something called an unconnected pong. The reason these messages are unconnected is because the client has not established a connection to the server. This is the format of an unconnected pong:
+服务器收到Ping请求后会返回以下结构的响应数据包：
 
-`0x1c | client alive time in ms (recorded from previous ping) | server GUID | string length | Edition (MCPE or MCEE for Education Edition);MOTD line 1;Protocol Version;Version Name;Player Count;Max Player Count;Server Unique ID;MOTD line 2;Game mode;Game mode (numeric);Port (IPv4);Port (IPv6);`
+`0x1c | 客户端存活时间（取自Ping请求） | 服务器GUID | 字符串长度 | 格式字符串（包含版本信息）`
 
-Example:
+格式字符串示例：
 
 `MCPE;Dedicated Server;527;1.19.1;0;10;13253860892328930865;Bedrock level;Survival;1;19132;19133;`
 
-The client doesn't seem to use the gamemode or the numeric value for the gamemode.
+客户端实际不会使用游戏模式及其对应的数值字段。
 
-### Open Connection Request 1
+### 开放连接请求1
 
-The client sends this when attempting to join the server
+客户端在尝试加入服务器时发送此数据包：
 
-`0x05 | Magic | Protocol version	(currently 10 or 0x0a) | RakNet Null Padding`
+`0x05 | Magic | 协议版本（当前为10或0x0a） | RakNet空填充`
 
-The null padding seems to be used to discover the maximum packet size the network can handle.
+空填充用于探测网络最大可传输数据包大小。客户端会逐步减少填充量直至收到服务器响应。
 
-The client will send this to the server with decreasing null padding until the server responds with a
+## 开放连接响应1
 
-## Open Connection Reply 1
+服务器收到连接请求1后的响应结构：
 
-The server responds with this once the client attempts to join
+`0x06 | Magic | 服务器GUID | 加密标识（通常为False） | 空填充大小（无符号短整型，建议1400）`
 
-`0x06 | magic | server GUID | use encryption boolean (normally false) | RakNet Null Padding Size (Unsigned short, I use 1400)`
+这是客户端与服务器握手过程的第一阶段。
 
-This is the first half of the handshake between the client and the server.
+### 开放连接请求2
 
-### Open Connection Request 2
+客户端收到响应1后发送的确认数据包：
 
-The client responds with this after they receive the open connection reply 1 packet.
+`0x07 | Magic | 服务器地址 | 空填充大小 | 客户端GUID`
 
-`0x07 | magic | server address | RakNet Null Padding Size | client GUID`
+### 开放连接响应2
 
-### Open Connection Reply 2
+握手过程的最终确认数据包：
 
-This is the last part of the handshake between the client and the server.
+`0x08 | Magic | 服务器GUID | 客户端地址 | 空填充大小 | 加密标识`
 
-`0x08 | magic | server GUID | client address | Null Padding Size | use encryption`
+### 连接请求
 
-### Connection Request
+客户端发送的正式连接请求：
 
-This is the part where the client sends the connection request.
+`0x09 | 客户端GUID | 请求时间戳（长整型） | 安全标识（建议使用0x00）`
 
-`0x09 | client GUID | Request timestamp (Long) | Secure (Boolean, I use 0x00)`
+### 连接请求已接受
 
-### Connection Request Accepted
+服务器对连接请求的最终确认响应：
 
-The server sends this packet in response to the incoming connection request.
- 
- `0x10 | client Address | System index (Short, unknown what this does. 0 works as a value) | System adresses ([]Address) | Request timestamp (Long) | Accepted timestamp (Long)`
+`0x10 | 客户端地址 | 系统索引（短整型，0值可用） | 系统地址列表 | 请求时间戳 | 接受时间戳`
 
-## Sources
+## 扩展阅读
 ::: tip
-If you are interested and want to read more about it here is the documentation for the Bedrock Protocol and RakNet:
+如需深入了解Bedrock协议和RakNet实现，推荐以下文档：
 
-[RakNet Protocol Documentation](https://wiki.vg/Raknet_Protocol)
+[RakNet协议文档](https://wiki.vg/Raknet_Protocol)
 
-[Newer Bedrock Protocol Documentation for 1.20.50](https://prismarinejs.github.io/minecraft-data/?d=protocol&v=bedrock_1.20.50) [(by PrismarineJS)](https://prismarinejs.github.io) :::
+[基岩版1.20.50协议文档](https://prismarinejs.github.io/minecraft-data/?d=protocol&v=bedrock_1.20.50) [由PrismarineJS维护](https://prismarinejs.github.io) :::
 
 ::: warning
-There is also the old Bedrock Protocol Wiki which might possibly be outdated!
-[Bedrock Protocol Documentation](https://wiki.vg/Bedrock_Protocol) :::
+注意旧版协议文档可能已过时：
+[基岩版协议历史文档](https://wiki.vg/Bedrock_Protocol) :::
 
-This page is a WIP, feel free to contribute as it is still being worked on.
+本文档仍在持续完善中，欢迎贡献内容。

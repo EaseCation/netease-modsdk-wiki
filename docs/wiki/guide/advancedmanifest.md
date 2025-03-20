@@ -1,7 +1,7 @@
 ---
-title: Advanced Manifest
-category: Extra
-description: How to work with manifests - a more detailed guide [UNDER CONSTRUCTION]
+title: 进阶manifest配置
+category: 扩展内容
+description: 如何操作清单文件 - 更详细的指南 [施工中]
 nav_order: 4
 prefix: 'd.'
 mentions:
@@ -13,35 +13,39 @@ mentions:
     - QuazChick
 ---
 
+# 进阶 manifest 配置
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: tip
-This is an appendix page. You can start the guide from the beginning [here](/guide/index).
+本页为附录章节。您可以从[这里](/wiki/guide/index)开始完整阅读指南。
 :::
 
-This page is desgined to go into more detail about the manifest.json file, here we will cover what UUIDs are in more detail and how to add them. We will explain the use of dependencies, the different format versions, and how to include meta-data.
+本文旨在深入解析 manifest.json 文件，我们将详细讲解UUID的定义及添加方式，阐述依赖项的使用方法，不同格式版本的区别，以及如何包含元数据。
 
-We will also go over the version differences between Behaviour packs, Resource packs, and Skin packs.
+同时我们也会比较行为包、资源包和皮肤包之间的版本差异。
 
-## UUIDs
+## UUID详解
 
-UUID is an abbreviation for Universal Unique Identifier, there are 5 UUID versions plus one common unofficial version, A UUID is a 36 character string containing numbers, letters, and dashes.
+UUID是通用唯一识别码（Universal Unique Identifier）的缩写，共有5个官方版本和1个常见非官方版本。UUID是由数字、字母和连字符组成的36位字符串。
 
-Minecraft uses Version 4: Variant 1, which is completely random. This is what creates your pack's unique identity in Minecraft.
+Minecraft使用完全随机生成的版本4变体1。这是构成您资源包在游戏中唯一身份标识的核心要素。
 
-### How to Generate the correct UUID
+### 如何生成正确的UUID
 
-You can use online sites such as [UUID Generator](https://www.uuidgenerator.net/version4/) and [UUID Tools](https://www.uuidtools.com/generate/v4) to generate the correct version required for Minecraft.
+您可以使用在线工具如[UUID生成器](https://www.uuidgenerator.net/version4/)和[UUID工具](https://www.uuidtools.com/generate/v4)来生成符合Minecraft要求的正确版本。
 
 ##
 
-### UUID FAQ
+### UUID常见问题
 
--   **Are UUIDs Case-sensitive?**
+-   **UUID是否区分大小写？**
 
-    -   _No, UUIDs are written in base 16 which uses numbers 0-9 and characters a-f. There is no distinction between upper and lowercase letters._
+    -   _不区分，UUID使用16进制表示（包含数字0-9和字母a-f），大小写字母在系统中被视为等同。_
 
--   **Can I use the same UUID for the header and the modules UUID?**
-    -   _No, the UUID for the header and the module needs to be different._
+-   **能否在文件头和模块中使用相同UUID？**
+    -   _不可行，文件头UUID与模块UUID必须使用不同标识符。_
 
 :::warning
-This page is under construction!
+本页面内容尚在完善中！
 :::

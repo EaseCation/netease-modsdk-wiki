@@ -1,51 +1,48 @@
 ---
-title: Namespaces
+title: 命名空间
 mentions:
     - SirLich
     - MedicalJewel105
 ---
 
-Namespaces are identifiers that mark content ownership. You can think of them as folders. Namespaces are helpful because they keep naming conflicts from happening.
+# 命名空间
 
-Namespaces in addon creation can essentially be thought of as "the part to the left of the colon". For example, `minecraft` is the namespace of `minecraft:zombie`. The general form is `namespace:name`.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-As a concrete example of why namespaces are helpful, let's imagine you create a new Mob. You name it `minecraft:shark`, not aware that you should create your own namespace for custom content. Next year, Mojang decides to add sharks into the game! Now there is a naming conflict since there are two definitions of `minecraft:shark`. Your addon will break.
+命名空间是用于标识内容归属的标识符。你可以将它们理解为文件夹。命名空间有助于避免命名冲突的产生。
 
-If you had instead used `your_namespace:shark`, the naming conflict wouldn't have happened.
+在附加包创作中，命名空间本质上可以看作是"冒号左侧的部分"。例如在`minecraft:zombie`中，`minecraft`就是命名空间。其通用格式为`命名空间:名称`。
 
-## Picking a namespace
+举个具体例子说明命名空间的重要性：假设你创建了一个新生物并命名为`minecraft:shark`，却不知道应该为自定义内容使用自己的命名空间。一年后Mojang决定在游戏中加入鲨鱼！此时就会出现两个`minecraft:shark`的定义，导致命名冲突，你的附加包将无法正常运行。
 
-A suitable namespace is unique to you. Something like `mob` or `cars` or `content` or `custom` would be a **bad** namespace since another developer might come up with the same namespace as you.
+如果你当初使用`你的命名空间:shark`，就不会发生这种冲突。
 
-A suitable namespace is short. You will be writing your namespace a **LOT**, so the shorter, the better. `george_carlin_the_comedian` would be a lousy namespace for this reason.
+## 如何选择命名空间
 
-For personal projects, I recommend a convenient version of your player name, and for commercial projects, I recommend a suitable version of the company name.
+合适的命名空间应当具有个人独特性。类似`mob`、`cars`、`content`或`custom`这样的通用词是**糟糕的**命名空间选择，因为其他开发者可能会使用相同的名称。
 
-Some good examples:
+合适的命名空间应当简短。你将会**频繁使用**你的命名空间，因此越简短越好。类似`george_carlin_the_comedian`这样的长命名空间就不太合适。
 
--   `gcarlin`
--   `sirlich`
--   `cubeworld`
--   `bworks`
+对于个人项目，建议使用玩家ID的简化版本；商业项目则建议使用公司名称的合适变体。
 
-**DO NOT USE** `minecraft` or `minecon` as a namespace unless editing a vanilla file. Not only is it a terrible idea, but Minecraft reserves these, and it won't even work.
+优秀示例：
+- `gcarlin`
+- `sirlich`
+- `cubeworld`
+- `bworks`
 
-## Where to use namespaces?
+**切勿使用**`minecraft`或`minecon`作为命名空间（除非修改原版文件）。这不仅是个糟糕的主意，而且Minecraft保留了这些命名空间的使用权，实际也无法生效。
 
-In short, you should use namespaces as often as you can.
+## 命名空间的使用场景
 
-For starters, you should use a namespace when adding custom entities to the game.
+简而言之，应当尽可能多地使用命名空间。
 
-`sirlich:shark` is much better than `shark`.
+基础原则：为游戏添加自定义实体时必须使用命名空间。`sirlich:shark`的命名方式远优于`shark`。
 
-It would be best if you also used namespaces for components and events. Just like Mojang uses `minecraft:pig_saddled` you should use `namespace:my_mob_event`, and `namespace:my_component_group`.
+在组件和事件的命名中也应使用命名空间。就像Mojang使用`minecraft:pig_saddled`那样，你应该使用`命名空间:我的生物事件`和`命名空间:我的组件组`的格式。
 
-It would be best if you also used namespaces in animation controllers, render controllers, and animations.
+在动画控制器、渲染控制器和动画的命名中也推荐使用命名空间。例如：`controller.animation.命名空间.实体名称.动作`的格式优于`controller.animation.我的动作`。
 
-For example: `controller.animation.namespace.entity_name.action` is better than `controller.animation.my_action`.
+## 无需使用命名空间的场景
 
-## Where NOT to use namespaces.
-
-The actual file structure does not need namespaces.
-
-`animations/namespace/my_entity/animation` is more confusing than `animations/my_entity/animation`.
+实际文件结构不需要包含命名空间。`animations/命名空间/我的实体/animation`的路径结构反而会比`animations/我的实体/animation`更易造成混淆。

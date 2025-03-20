@@ -1,10 +1,10 @@
 ---
-title: Beginners Guide
+title: 新手指南
 nav_order: 1
 categories:
-    - title: Guide
+    - title: 指南
       color: green
-    - title: Extra
+    - title: 扩展内容
       color: blue
 ---
 

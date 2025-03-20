@@ -1,14 +1,14 @@
 ---
-title: Commands
+title: 命令 Commands
 categories:
-    - title: General
+    - title: 基础
       color: green
-    - title: Commands
+    - title: 命令
       color: green
-    - title: On Event Systems
+    - title: 事件系统
       color: blue
-    - title: Scoreboard Systems
+    - title: 计分板系统
       color: blue
-    - title: Techniques
+    - title: 技术
       color: orange
 ---

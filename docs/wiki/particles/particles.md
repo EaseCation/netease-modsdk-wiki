@@ -1,43 +1,47 @@
 ---
-title: 'Intro to Particles'
-category: General
+title: '粒子系统入门'
+category: 基础
 tags:
-    - guide
+    - 指南
 mentions:
     - SirLich
     - MedicalJewel105
     - TheItsNameless
 ---
 
-## Particle Systems
+# 粒子系统入门
 
-A [particle system](https://www.wikiwand.com/en/Particle_system) is a technique in game physics, motion graphics, and computer graphics that uses many small sprites to create convincing effects such as smoke, fire, or swarms of insects. You can create new particle systems in the Bedrock Edition of Minecraft by using your own custom textures, and your own movement logic. This makes particles extremely fun and powerful!
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-The Molang integration in particles is also extremely well developed, which allows you to pass data between different particles, or between an entity and a particle.
+## 粒子系统
 
-### Particles
+[粒子系统](https://www.wikiwand.com/en/Particle_system)是游戏物理、动态图形和计算机图形学中的一种技术，通过大量小精灵图（sprite）来创建逼真的效果，如烟雾、火焰或昆虫群。在《我的世界》基岩版中，你可以使用自定义贴图和运动逻辑来创建新的粒子系统，这使得粒子效果既有趣又强大！
 
-A 'particle', or a 'particle instance' is a single sprite (texture) which is placed in 3D space, and has its own logic for how to move about and change its appearance. Some examples of a particle could include:
+粒子系统中Molang的集成非常完善，允许你在不同粒子之间，或在实体与粒子之间传递数据。
 
--   A single snowflake
--   A single raindrop
--   A single wisp of smoke
+### 粒子
 
-### Emitters
+"粒子"或"粒子实例"是放置在3D空间中的单个精灵图（纹理），具有独立的运动逻辑和外观变化规则。常见的粒子示例包括：
 
-An 'emitter' or 'particle emitter' is a system that can spawn many particles, either all at once (explosion), or over time (steady). Emitters have their own logic for how to move, how many particles to spawn, and where. Some examples of emitters could include:
+-   一片雪花
+-   一滴雨水
+-   一缕烟雾
 
--   A snowstorm (creates snowflakes)
--   A rainstorm (creates raindrops)
--   A smokey chimney (creates smoke wisps)
+### 发射器
 
-## Creating your First Particle
+"发射器"或"粒子发射器"是能够生成多个粒子的系统，可以瞬间生成（爆炸效果）或持续生成（稳定效果）。发射器拥有独立的移动逻辑、粒子生成数量和位置控制机制。常见的发射器示例包括：
 
-To create a particle, you need a resource pack, a texture, and a particle definition file:
+-   暴风雪（生成雪花）
+-   暴雨（生成雨滴）
+-   冒烟的烟囱（生成烟缕）
 
-<FolderView
-:paths="[
-    'RP/particles/snowflake.json',
-    'RP/textures/particles/snowflake.png'
-]"
-> </FolderView>
+## 创建第一个粒子
+
+创建粒子需要准备资源包、纹理贴图和粒子定义文件：
+
+::: code-group
+```txt [文件结构]
+RP/particles/snowflake.json
+RP/textures/particles/snowflake.png
+```
+:::

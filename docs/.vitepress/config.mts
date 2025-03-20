@@ -6,7 +6,7 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
   lang: 'zh-CN',
-  title: "我的世界中国版 ModSDK",
+  title: "我的世界中国版 Wiki",
   description: "ModSDK 开发者文档 镜像，但提供更优质的搜索",
   ignoreDeadLinks: true,
   // 替换原生搜索组件，自定义展示的搜索结果内容
@@ -59,7 +59,7 @@ export default withMermaid({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: 'Wiki', link: '/wiki/0-欢迎' },
+      { text: 'Wiki', link: '/wiki' },
       { text: 'API文档', link: '/mcdocs/0-欢迎' },
       { text: '开发指南', link: '/mcguide/0-欢迎' },
       { text: '教学课程', link: '/mconline/0-欢迎' },

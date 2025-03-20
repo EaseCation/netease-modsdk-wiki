@@ -1,6 +1,6 @@
 ---
-title: Randomized Structure Loot
-category: Tutorials
+title: 随机化结构战利品
+category: 巧思案例
 mentions:
     - MedicalJewel105
     - SirLich
@@ -8,21 +8,24 @@ mentions:
     - Ciosciaa
     - rebrainertv
 tags:
-    - easy
+    - 简单
 ---
 
-Adding loot tables to containers in structure is easy, you need to have a PC and your choice of either [NBT Studio](https://github.com/tryashtar/nbt-studio/releases/download/v1.14.1/NbtStudio.exe) (executable) or [Loot Tabler](https://mcbe-essentials.github.io/structure-editor/loot-tabler) (browser application).
+# 随机化结构战利品
 
-## Setup
-### Creating the Loot Table
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-To start, create the directory `BP/loot_tables/chests` and create your loot table file here.
+为结构中的容器添加战利品表非常简单，您需要准备一台电脑，并选择使用[NBT Studio](https://github.com/tryashtar/nbt-studio/releases/download/v1.14.1/NbtStudio.exe)（可执行程序）或[Loot Tabler](https://mcbe-essentials.github.io/structure-editor/loot-tabler)（浏览器应用）。
 
-You can learn how to make loot tables in [Beginners Guide](/guide/loot-table)
+## 准备工作
+### 创建战利品表
 
-<CodeHeader>BP/loot_tables/chests/my_structure_loot.json</CodeHeader>
+首先创建目录`BP/loot_tables/chests`，并在此处创建战利品表文件。
 
-```json
+您可以通过[新手指南](/wiki/guide/loot-table)学习如何制作战利品表。
+
+::: code-group
+```json [BP/loot_tables/chests/my_structure_loot.json]
 {
 	"pools": [
 		{
@@ -64,62 +67,63 @@ You can learn how to make loot tables in [Beginners Guide](/guide/loot-table)
 	]
 }
 ```
+:::
 
-### Exporting Structure
+### 导出结构
 
-Once you have created your loot table, export your structure into `BP/structures`. Then follow the steps for either NBT Studio or Loot Tabler
+创建好战利品表后，将结构导出到`BP/structures`目录。然后根据您选择的工具（NBT Studio或Loot Tabler）继续操作。
 
 ![](/assets/images/tutorials/randomised-structure-loot/export_structure.png)
 
-## NBT Studio (Executable)
-### Software Preparation
+## NBT Studio（可执行程序）
+### 软件准备
 
-Download and launch [NBT Studio](https://github.com/tryashtar/nbt-studio/releases/download/v1.14.1/NbtStudio.exe)
+下载并启动[NBT Studio](https://github.com/tryashtar/nbt-studio/releases/download/v1.14.1/NbtStudio.exe)
 
-### Adding the Loot Table
+### 添加战利品表
 
-Launch NBT Studio and open file `(Ctrl + O)`
+打开NBT Studio并通过快捷键`Ctrl + O`打开文件
 
 ![](/assets/images/tutorials/randomised-structure-loot/open_file.png)
 
-Find your container (Ctrl + F)
+使用`Ctrl + F`搜索容器
 
 ![](/assets/images/tutorials/randomised-structure-loot/find_container.png)
 
-Navigate to your container, `block_position_data` > `block_entity_data`. Add a string tag
+定位到容器所在位置：`block_position_data` > `block_entity_data`。添加字符串标签
 
 ![](/assets/images/tutorials/randomised-structure-loot/add_string_tag1.png)
 
-Add `LootTable` and the file path to your loot table
+设置标签名为`LootTable`，并输入战利品表文件路径
 
 ![](/assets/images/tutorials/randomised-structure-loot/add_string_tag2.png)
 
-Save changes (Ctrl + S)
+按`Ctrl + S`保存修改
 
-## Loot Tabler (Browser Application)
+## Loot Tabler（浏览器应用）
 
 :::tip
-To export a structure on mobile devices, [Download this pack.](https://mcpedl.com/export-structure-button-android-addon/)
+如需在移动设备导出结构，请[下载此资源包](https://mcpedl.com/export-structure-button-android-addon/)
 :::
 
-### Adding the Loot Table
+### 添加战利品表
 
-Open the website and click "Upload". Choose your structure file.
+访问网站并点击"Upload"按钮上传结构文件
 
 ![](/assets/images/tutorials/randomised-structure-loot/LootTable-step1.png)
 
-Find your container in the containers list, making use of the information displayed under "Container Options"
+在容器列表中通过"Container Options"下方的信息定位目标容器
 
 ![](/assets/images/tutorials/randomised-structure-loot/LootTable-step2.png)
 
-Under "Loot Table", enter the path to your loot table. Set "Loot Table Seed" to blank or `0` if you want the loot to generate randomly. If you want the loot table to generate consistently, enter a specific value.
+在"Loot Table"字段输入战利品表路径。"Loot Table Seed"留空或设为`0`可实现随机生成。如需固定战利品生成，请设置特定数值
 
 ![](/assets/images/tutorials/randomised-structure-loot/LootTable-step3.png)
 
-Download your structure file and place it in `BP/structures`.
+下载修改后的结构文件并放入`BP/structures`目录
 
-## Testing
+## 测试验证
 
-Load your structure and open the container
+加载结构并打开容器查看效果
 
 ![](/assets/images/tutorials/randomised-structure-loot/test.png)

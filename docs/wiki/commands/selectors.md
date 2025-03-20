@@ -1,6 +1,6 @@
 ---
-title: Understanding Selectors
-category: General
+title: 选择器详解
+category: 基础
 mentions:
     - Science-geek42
     - Brougud
@@ -10,208 +10,286 @@ mentions:
     - Hatchibombotar
 ---
 
-Target selectors are used in commands to target who you want to execute a command on without explicitly setting a target, such as a player's name. A target selector is comprised of a selector variable, and optionally a list of selector arguments.
+# 选择器详解
 
-## Selector Variables
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-The selector variable defines the broad list of entities to select. There are six selector variables to choose from:
--   `@a` - Target all players
--   `@p` - Target the nearest player
--   `@r` - Target a random player
--   `@e` - Target all entities
--   `@s` - Target the executor
--   `@initiator` - Target the player interacting with an NPC
+目标选择器用于在命令中动态指定执行对象，无需明确设置目标（例如玩家名称）。选择器由选择器变量和可选的选择器参数组成。
 
-## Selector Arguments
+## 选择器变量
 
-Selector arguments can narrow down a list of target candidates to those who meet certain conditions. In order to use selector arguments, you must first have a selector variable. To start with selector arguments you must add square brackets `[]` to the end of the chosen target selector like this: `kill @e[]`. Multiple selector arguments can be used by separating them with commas.
+选择器变量定义了基本的实体筛选范围。共有六种选择器变量可选：
+-   `@a` - 选择所有玩家
+-   `@p` - 选择最近的玩家
+-   `@r` - 随机选择玩家
+-   `@e` - 选择所有实体
+-   `@s` - 选择命令执行者自身
+-   `@initiator` - 选择与NPC交互的玩家
 
-### Type
-Limits the selection of targets by their identifier. Negating the argument selects entities without that identifier. This argument cannot be repeated unless negated, since a given entity can only have one identifier. This argument can be used with the selector `@r` to select entities randomly.
+## 选择器参数
 
--   `type=<identifier>`—Include only entities with the given identifier.
--   `type=!<identifier>`—Exclude any entities with the given identifier.
+选择器参数可进一步缩小候选目标范围。使用参数时需先指定选择器变量，并在其后添加方括号`[]`，例如：`kill @e[]`。多个参数之间用逗号分隔。
 
-Examples:
+### Type（类型）
+根据实体标识符筛选目标。否定参数将排除指定类型的实体。由于每个实体只能有一个标识符，除非使用否定参数，否则该参数不可重复。可与`@r`选择器配合进行随机筛选。
 
-Affect all pigs with levitation:
--   `/effect @e[type=pig] levitation`
+-   `type=<标识符>`——仅包含指定类型的实体
+-   `type=!<标识符>`——排除指定类型的实体
 
-Kill all entities that are not arrows and snowballs:
--   `/kill @e[type=!arrow,type=!snowball]`
+示例：
 
-### Count
-Limits the number of selected entities, following selector sorting rules.
+对所有猪施加漂浮效果：
+::: code-group
+```json [pig]
+/effect @e[type=pig] levitation
+```
 
-The selectors `@a`, `@p`, and `@e` sort by increasing distance, while `@r` sorts randomly. For the variables `@p` and `@r`, this argument defaults to 1. Negating this argument reverses the sorting order; random sorting cannot be negated.
+清除所有非箭矢和非雪球的实体：
+```json [non-arrow/snowball]
+/kill @e[type=!arrow,type=!snowball]
+```
+:::
 
--   `c=<count>`—Select up to `<count>` entities.
+### Count（数量）
+根据排序规则限制选中实体数量。
 
-Examples:
+`@a`、`@p`和`@e`按距离升序排列，`@r`随机排列。`@p`和`@r`默认值为1。否定参数将反转排序方向（随机排序不可否定）。
 
-Clear stone from the closest five players:
--   `/clear @a[c=5] stone`
+-   `c=<数量>`——选择最多`<数量>`个实体
 
-Damage the furthest two skeletons:
--   `/damage @e[type=skeleton,c=-2] 2`
+示例：
 
-### Position
-Changes the position a selector starts its search at. It also modifies where the distance and volume arguments are positioned. Leaving any undefined defaults to the command's current position.
+清除最近五名玩家背包中的石头：
+::: code-group
+```json [5 players]
+/clear @a[c=5] stone
+```
 
-[Relative coordinates](/commands/relative-coordinates#relative-coordinates) can be used to define a relative offset from the command's position.
+对最远的两只骷髅造成伤害：
+```json [skeletons]
+/damage @e[type=skeleton,c=-2] 2
+```
+:::
 
--   `x=<value>`, `y=<value>`, and `z=<value>`—Defines a position for the target selector.
+### Position（位置）
+设定选择器的搜索起点，同时影响距离和体积参数的判定基准。未定义时默认使用命令执行位置。
 
-Examples:
+可使用[相对坐标](/wiki/commands/relative-coordinates#相对坐标)来设置偏移量。
 
-Teleport the closest player to (140, 64, -200) ten blocks up:
--   `/teleport @p[x=140, y=64, z=-200] ~ ~10 ~`
+-   `x=<值>`, `y=<值>`, `z=<值>`——定义选择器的基准坐标
 
-### Distance
-Limits the selection of targets by their spherical distance from the selector. This selects entities by their feet.
+示例：
 
--   `rm=<value>` and `r=<value>`—Selects entities between the minimum and maximum number of blocks away, inclusive and respectively.
+将(140,64,-200)处最近的玩家向上传送10格：
+::: code-group
+```json [teleport]
+/teleport @p[x=140, y=64, z=-200] ~ ~10 ~
+```
+:::
 
-Examples:
+### Distance（距离）
+根据实体脚部的球面距离筛选目标。
 
-Kill all chickens between two and six blocks away:
--   `/kill @e[type=chicken, rm=2, r=6]`
+-   `rm=<值>`和`r=<值>`——分别设置最小和最大距离（包含边界值）
 
-Enchant the held item with Sharpness for all players within one block of (0, 100, 0):
--   `/enchant @a[x=0, y=100, z=0, r=1] sharpness`
+示例：
 
-### Volume
-Limits the selection of targets to those inside of a cuboid volume aligned to the block grid. There are three arguments, each determining the size of the box along their respective axes. If at least one argument is defined, any remaining arguments left undefined are assumed to be 0. This selects entities by their feet.
+清除2到6格范围内的所有鸡：
+::: code-group
+```json [chicken]
+/kill @e[type=chicken, rm=2, r=6]
+```
 
-The general formula for calculating the volume between two positions can be viewed as: `dx = x2 - x1; dy = y2 - y1; dz = z2 - z1`.
+在(0,100,0)1格范围内所有玩家的手持物品附魔锋利：
+```json [enchant]
+/enchant @a[x=0, y=100, z=0, r=1] sharpness
+```
+:::
 
--   `dx=<value>`, `dy=<value>`, and `dz=<value>`—Selects entities inside the given bounding box.
+### Volume（体积）
+筛选位于方块坐标系对齐的立方体内的实体。三个参数分别定义各轴长度，未定义参数默认为0。以实体脚部为判定点。
 
-Examples:
+体积计算公式：`dx = x2 - x1; dy = y2 - y1; dz = z2 - z1`
 
-List all entities within a 12x30x2 box:
--   `/say @e[dx=12, dz=30, dy=2]`
+-   `dx=<值>`, `dy=<值>`, `dz=<值>`——定义立方体区域
 
-Add the "lobby" tag to all players between (-400, 0, -350) and (-150, 256, 50):
--   `/tag @a[x=-400, y=0, z=-350, dx=250, dy=256, dz=400] add lobby`
+示例：
 
-### Scores
-Limits the selection of targets by their score value. This argument is represented as an object, with key-value pairs for a scoreboard objective and a value. The value can represent a range of numbers, using the range syntax. The value of a score can be negated to test if the entity does not have a score value within that range.
+列出12x30x2区域内的所有实体：
+::: code-group
+```json [say]
+/say @e[dx=12, dz=30, dy=2]
+```
 
--   `scores={<objective>=<value>}`—Selects entities whose score under the given objective matches the given value.
+为(-400,0,-350)到(-150,256,50)区域内的玩家添加"lobby"标签：
+```json [tag]
+/tag @a[x=-400, y=0, z=-350, dx=250, dy=256, dz=400] add lobby
+```
+:::
 
-The range syntax works as follows:
--   `N..` is any number greater than or equal to N.
--   `..N` is any number less than or equal to N.
--   `N..M` is any number between N and M, inclusive.
+### Scores（计分板）
+根据计分板分数筛选目标。参数格式为对象，包含计分项与数值的键值对。数值可使用范围语法。否定参数将排除分数范围内的实体。
 
-Examples:
+-   `scores={<计分项>=<数值>}`——筛选符合分数条件的实体
 
-Set the "points" score for all players with a "points" score of ten to 0:
--   `/scoreboard players set @p[scores={points=10}] points 0`
+范围语法说明：
+-   `N..`：大于等于N的数值
+-   `..N`：小于等于N的数值
+-   `N..M`：介于N到M之间的数值（包含边界）
 
-Add the "start" tag to armor stands with both a "started" score of one, and a "timer" score of 20 or less:
--   `/tag @e[type=armor_stand, scores={started=1, timer=..20}] add start`
+示例：
 
-### Name
-Limits the selection of targets by name. Negating the argument selects entities whose name does not match.
+将"points"分数为10的玩家分数重置为0：
+::: code-group
+```json [points]
+/scoreboard players set @p[scores={points=10}] points 0
+```
 
--   `name=<name>`—Include only entities with the given name.
--   `name=!<name>`—Exclude any entities with the given name.
+为同时满足"started=1"且"timer≤20"的盔甲架添加"start"标签：
+```json [armor_stand]
+/tag @e[type=armor_stand, scores={started=1, timer=..20}] add start
+```
+:::
 
-Examples:
+### Name（名称）
+根据实体名称筛选目标。否定参数将排除指定名称的实体。
 
-List all zombies named Shadow:
--   `/say @e[type=zombie, name=Shadow]`
+-   `name=<名称>`——仅包含指定名称的实体
+-   `name=!<名称>`——排除指定名称的实体
 
-Give one level to players both not named Steve and not named Alex:
--   `/xp 1L @a[name=!Steve, name=!Alex]`
+示例：
 
-### Tag
-Limits the selection of targets by their tags. This argument can be repeated to test for multiple tags, and all filters must pass for an entity to be selected. Negating this argument selects entities without that tag.
+列出所有名为Shadow的僵尸：
+::: code-group
+```json [zombie]
+/say @e[type=zombie, name=Shadow]
+```
 
--   `tag=<tag>`—Include only entities with the given tag.
--   `tag=!<tag>`—Exclude any entities with the given tag.
+给非Steve和非Alex的玩家提升1级：
+```json [xp]
+/xp 1L @a[name=!Steve, name=!Alex]
+```
+:::
 
-Examples:
+### Tag（标签）
+根据实体标签筛选目标。可重复使用多个标签参数，所有条件需同时满足。否定参数将排除具有指定标签的实体。
 
-Kill all mobs with the tag "marked", and without the tag "exempt":
--   `/kill @e[tag=marked, tag=!exempt]`
+-   `tag=<标签>`——仅包含具有指定标签的实体
+-   `tag=!<标签>`——排除具有指定标签的实体
 
-### Family
-Limits the selection of targets by type family. This argument can be repeated to test for multiple families, and all filters must pass for an entity to be selected. Negating this argument selects entities whose type family does not match.
+示例：
 
--   `family=<family>`—Include only entities with the given type family.
--   `family=!<family>`—Exclude any entities with the given type family.
+清除所有带"marked"标签且无"exempt"标签的生物：
+::: code-group
+```json [marked]
+/kill @e[tag=marked, tag=!exempt]
+```
+:::
 
-Examples:
+### Family（族群）
+根据实体族群类型筛选目标。可重复使用多个族群参数，所有条件需同时满足。否定参数将排除指定族群的实体。
 
-Affect all entities in the "monster" family with Regeneration:
--   `/effect @e[family=monster] regeneration`
-
-### Rotation
-Limits the selection of targets by their rotation. There are two types of rotation: x-rotation, which is vertical rotation around the x-axis; and y-rotation, which is horizontal rotation around the y-axis. X-rotation ranges between -90 and 90 (180° total), going from looking up to down; and y-rotation ranges between -180 and 180 (360° total), starting and ending at North, wrapping around clockwise.
-
--   `rxm=<value>` and `rx=<value>`—Selects entities whose x-rotation is between the minimum and maximum values, inclusive and respectively.
--   `rym=<value>` and `ry=<value>`—Selects entities whose y-rotation is between the minimum and maximum values, inclusive and respectively.
-
-Examples:
-
-Affect all players looking at or above the horizon with Blindness for one second:
--   `/effect @a[rx=0] blindness 1` (0 or less)
-
-Damage all players facing generally south:
--   `/damage @a[rym=-45, ry=45] 1`
-
-### Level
-Limits the selection of targets by experience levels. Only players can have EXP, so this filters out non-player targets.
-
--   `lm=<amount>` and `l=<amount>`—Selects players whose EXP levels are between the minimum and maximum values specified, inclusive and respectively.
-
-Examples:
-
-Give all players who have between three and eight levels a diamond:
--   `/give @a[lm=3, l=8] diamond`
-
-### Game mode
-Limits the selection of targets by game mode. Only players can use game mode, so this filters out non-player targets. Negating the argument selects targets whose game mode does not match.
-
--   `m=<gamemode>`—Selects players by their game mode.
-
-Possible values include:
-*   `0`, `s`, or `survival` for Survival mode
-*   `1`, `c`, or `creative` for Creative mode
-*   `2`, `a`, or `adventure` for Adventure mode
-*   `spectator` for Spectator mode
-*   `d` or `default` for the default game mode
-
-Examples:
-
-List all players in Creative mode:
--   `/say @a[m=creative]`
-
-Set the game mode to Creative mode for players both not in Survival mode, and not in Adventure mode:
--   `/gamemode creative @a[m=!survival, m=!adventure]`
-
-### Items
-Limits the selection of targets by what items they have in their inventory. This argument is represented as an object, or an array of objects, with up to one each of the following parameters:
-
--   `item=<string>`—The identifier of the item to test for, and the only required argument. This can accept custom identifiers too.
--   `quantity=<int>`—The amount of the item to test for. Accepts a [range](/commands/selectors#scores) for a value. This argument can also be negated.
--   `data=<int>`—The data value of the item to test for. Defaults to -1. **Currently not functional:** [MCPE-151920](https://bugs.mojang.com/browse/MCPE-151920)
--   `location=<string>`—The slot the item should be located in. Accepts the same arguments as the slotType argument in the `/replaceitem` command.
--   `slot=<int>`—The index of the slot used in the "location" argument, and can only be used with "location". Accepts a range for a value. This argument can be negated.
-
-Examples:
-
-Checks for players who have a netherite sword in their inventory:
--   `/testfor @a[hasitem={item=netherite_sword}]`
-
-Clears 2 apples for players that have four or more apples:
--   `/clear @a[hasitem={item=apple,quantity=4..}] apple 2`
-
-Checks for players who have two sticks and two diamonds:
--   `/testfor @a[hasitem=[{item=diamond,quantity=2},{item=stick,quantity=2}]]`
-
-Checks for players who doesn't have a stick:
--   `/testfor @a[hasitem=[{item=stick,quantity=0}]`
+-   `family=<族群>`——仅包含指定族群的实体
+-   `family=!<族群>`——排除指定族群的实体
+
+示例：
+
+对"monster"族群的所有实体施加再生效果：
+::: code-group
+```json [monster]
+/effect @e[family=monster] regeneration
+```
+:::
+
+### Rotation（旋转角度）
+根据实体视角筛选目标。分为垂直视角（x轴旋转，范围-90~90）和水平视角（y轴旋转，范围-180~180）。
+
+-   `rxm=<值>`和`rx=<值>`——垂直视角范围
+-   `rym=<值>`和`ry=<值>`——水平视角范围
+
+示例：
+
+对仰角≥0度（平视或俯视）的玩家施加1秒失明：
+::: code-group
+```json [blindness]
+/effect @a[rx=0] blindness 1
+```
+
+对朝南方向（-45°~45°）的玩家造成伤害：
+```json [damage]
+/damage @a[rym=-45, ry=45] 1
+```
+:::
+
+### Level（经验等级）
+根据玩家经验等级筛选目标（仅限玩家）。
+
+-   `lm=<数值>`和`l=<数值>`——分别设置最低和最高等级（包含边界）
+
+示例：
+
+给3-8级的玩家发放钻石：
+::: code-group
+```json [diamond]
+/give @a[lm=3, l=8] diamond
+```
+:::
+
+### Game mode（游戏模式）
+根据游戏模式筛选玩家目标。否定参数将排除指定模式的玩家。
+
+-   `m=<模式>`——筛选指定游戏模式
+
+可用模式值：
+*   `0`、`s`或`survival`：生存模式
+*   `1`、`c`或`creative`：创造模式
+*   `2`、`a`或`adventure`：冒险模式
+*   `spectator`：旁观模式
+*   `d`或`default`：默认模式
+
+示例：
+
+列出所有创造模式玩家：
+::: code-group
+```json [creative]
+/say @a[m=creative]
+```
+
+将非生存和非冒险模式的玩家设为创造模式：
+```json [gamemode]
+/gamemode creative @a[m=!survival, m=!adventure]
+```
+:::
+
+### Items（物品）
+根据物品栏内容筛选目标。参数格式为对象或对象数组，支持以下参数：
+
+-   `item=<字符串>`——物品标识符（必填）
+-   `quantity=<整数>`——物品数量（支持范围语法，可否定）
+-   `data=<整数>`——物品数据值（默认-1，**当前不可用**：[MCPE-151920](https://bugs.mojang.com/browse/MCPE-151920))
+-   `location=<字符串>`——物品所在栏位（与`/replaceitem`的slotType参数一致）
+-   `slot=<整数>`——栏位索引（需配合location使用，支持范围语法，可否定）
+
+示例：
+
+检测携带下界合金剑的玩家：
+::: code-group
+```json [netherite_sword]
+/testfor @a[hasitem={item=netherite_sword}]
+```
+
+清除拥有≥4个苹果的玩家2个苹果：
+```json [apple]
+/clear @a[hasitem={item=apple,quantity=4..}] apple 2
+```
+
+检测携带2钻石+2木棍的玩家：
+```json [multiple]
+/testfor @a[hasitem=[{item=diamond,quantity=2},{item=stick,quantity=2}]]
+```
+
+检测未携带木棍的玩家：
+```json [negation]
+/testfor @a[hasitem=[{item=stick,quantity=0}]
+```
+:::

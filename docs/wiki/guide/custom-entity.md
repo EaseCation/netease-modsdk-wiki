@@ -44,7 +44,7 @@ First, we will cover how to create an entity & define its behavior. Next, we wil
 
 Like with items, we need a file to tell our entity how to behave which points an identifier to certain components which define behavior. This file will be very similar to our item behavior file except with a lot more components.
 
-We define our server file in our BP, under the `BP/entities/` folder. We will call this file `ghost.se.json`. Here the `.se` stands for _server entity_. This is for clarity and is recommend in the [Style Guide](/meta/style-guide).
+We define our server file in our BP, under the `BP/entities/` folder. We will call this file `ghost.se.json`. Here the `.se` stands for _server entity_. This is for clarity and is recommend in the [Style Guide](/wiki/meta/style-guide).
 
 This is a basic overview of the file:
 
@@ -88,7 +88,7 @@ We recommend leaving the settings as they are here as any changes will make it h
 
 An entity has a lot more behaviors than just an item, so we need to define more components for it.
 We will break down the types of components will use into categories and then look at them closer.
-For more information on components in entities, you can check out our page [here](/entities/entity-intro-bp).
+For more information on components in entities, you can check out our page [here](/wiki/entities/entity-intro-bp).
 
 ### Stat Components
 
@@ -347,7 +347,7 @@ In general, important behaviors will have a priority of `0` or `1`.
 
 With that we have completed our entity behavior file.
 
-More complex entities can also have different _states_, where they will behave differently depending on what state they are in. For example, a wild wolf will walk around freely, but once it is tamed it will follow the player. An _event_ (being tamed) caused the wolf to change _states_. This feature allows us to create dynamic entities which can perform different actions when different events occurs. You can learn more about this in our guide [here](/entities/entity-intro-bp).
+More complex entities can also have different _states_, where they will behave differently depending on what state they are in. For example, a wild wolf will walk around freely, but once it is tamed it will follow the player. An _event_ (being tamed) caused the wolf to change _states_. This feature allows us to create dynamic entities which can perform different actions when different events occurs. You can learn more about this in our guide [here](/wiki/entities/entity-intro-bp).
 
 If you open your world and try to summon in your entity using `/summon wiki:ghost`, it should behave like we expect but there will only be a shadow on the ground. You might also see its name as a translation key, similar to how it happened with our item.
 
@@ -772,7 +772,7 @@ To begin, we need to define the visuals of our entity in our file so we know whi
 
 In order to display our entity it needs to be _rendered_. For this to happen, it needs a material, texture and geometry. We have already made a texture and geometry. A material defines how our texture will be displayed. For example, a skeleton uses a material to allow for transparency and an enderman uses a material to allow its eyes to glow.
 
-Since our ghost has some transparency, we need a material which will render this correctly. Luckily, Minecraft has many pre-built materials for us to use such as `entity_alphatest` which will allow us to do this. You can create your own materials but be warned it is very advanced. If you are interested though, you can begin [here](/documentation/materials).
+Since our ghost has some transparency, we need a material which will render this correctly. Luckily, Minecraft has many pre-built materials for us to use such as `entity_alphatest` which will allow us to do this. You can create your own materials but be warned it is very advanced. If you are interested though, you can begin [here](/wiki/documentation/materials).
 
 For us to now use these resources, we need to define a reference to them with a shortname. This is similar to how we did for items within the `item_texture.json` file, except here we do it in the entity client file. Here is the layout.
 
@@ -825,7 +825,7 @@ The file is called `ghost.rc.json` and is under `RP/render_controllers/`:
 ```
 
 This follows a similar structure to the animation controller and animation file, with our render controller identifier being `controller.render.ghost`.
-This tells the game that the resource rendered should be the resource with shortname `default`. Render controllers can also allow you to display different textures or apply different materials to different parts of our model. Under `materials`, we use `"*"` to mean that we apply this material to all _bones_ in our model (i.e. each cube in our model.) For more information on render controllers, you can check our page [here](/entities/render-controllers).
+This tells the game that the resource rendered should be the resource with shortname `default`. Render controllers can also allow you to display different textures or apply different materials to different parts of our model. Under `materials`, we use `"*"` to mean that we apply this material to all _bones_ in our model (i.e. each cube in our model.) For more information on render controllers, you can check our page [here](/wiki/entities/render-controllers).
 
 :::tip
 If you keep your shortnames consistent, you can actually reference the same render controller for multiple entities.

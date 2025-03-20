@@ -1,6 +1,6 @@
 ---
-title: Troubleshooting Items
-category: General
+title: 物品问题排查
+category: 基础
 nav_order: 4
 tags:
     - help
@@ -13,74 +13,78 @@ mentions:
     - ThomasOrs
 ---
 
+# 物品问题排查
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::tip
-This page contains troubleshooting information about _items_. You should read our [global troubleshooting](/guide/troubleshooting) document before continuing here.
+本文包含关于_物品_的故障排查信息。在继续阅读前，建议先查看[全局故障排查指南](/wiki/guide/troubleshooting)。
 :::
 
-## Start Here
+## 从这里开始
 
-I followed a tutorial or tried to make my own item and something is wrong! Calm down. This page will help debug common issues. Follow the buttons and prompts to learn about possible issues with your item, and tips for fixing.
+我按照教程制作了自定义物品，但出现了问题！请保持冷静。本指南将帮助您排查常见问题。根据按钮提示了解可能的问题原因及修复方法。
 
-<BButton color="blue" link="#_1-10-vs-1-16-items">Continue</BButton>
+<BButton color="blue" link="#_1-10-vs-1-16-items">继续</BButton>
 
 ---
 
-## 1.10 vs 1.16 Items?
+## 1.10 与 1.16 格式物品的区别？
 
-Before starting, you need to determine whether you creating an experimental item, or a stable item.
+首先需要确认您使用的是实验性物品格式还是稳定版物品格式。
 
 :::tip
-Versions `1.16.0` and prior are currently **stable** (Includes versions `1.16`, `1.14`, `1.13`, `1.12`, `1.10`). These **do not** require `Holiday Creator Features` to be enabled.
+`1.16.0` 及更早版本属于**稳定版**（包含 `1.16`, `1.14`, `1.13`, `1.12`, `1.10`）。这些格式**无需**启用 `Holiday Creator Features` 实验性玩法。
 
-🔗 Tutorial on [stable items](/guide/custom-item).
-🔗 Documentation for [stable items](https://bedrock.dev/docs/1.16.0.0/1.16.20.54/Item)
-
+🔗 [稳定版物品教程](/wiki/guide/custom-item)
+🔗 [稳定版物品文档](https://bedrock.dev/docs/1.16.0.0/1.16.20.54/Item)
 :::
 
 :::tip
-Versions `1.16.100` and onward are **experimental**. These items **will not work unless** `Holiday Creator Features` **is enabled in the world**.
+`1.16.100` 及更高版本属于**实验性格式**。这些物品**必须**在世界设置中启用 `Holiday Creator Features` 才能正常使用。
 
-🔗 Our tutorial on [experimental items](/items/item-components).
-🔗 Documentation for [experimental items](https://bedrock.dev/docs/stable/Item)
+🔗 [实验性物品教程](/wiki/items/item-components)
+🔗 [实验性物品文档](https://bedrock.dev/docs/stable/Item)
 :::
 
-### Continue
+### 继续选择
 
-<BButton color="blue" link="#stable-items">1.10 format (stable)</BButton> <BButton color="blue" link="#experimental-items">1.16.100 format (experimental)</BButton>
+<BButton color="blue" link="#stable-items">1.10 格式（稳定版）</BButton> <BButton color="blue" link="#experimental-items">1.16.100 格式（实验性）</BButton>
 
 ---
 
-## Stable Items
+## 稳定版物品
 
-This section contains troubleshooting information for stable items. Remember, you are using the `1.10` format, so you need both an RP file and a BP file for your item! If you only have a BP file, you have become confused between format versions. Please start again [here](#_1-10-vs-1-16-items).
+本部分针对稳定版物品的故障排查。请注意：使用 `1.10` 格式时，您需要同时存在 RP 和 BP 文件！如果只有 BP 文件，说明混淆了格式版本。请返回[此处](#_1-10-vs-1-16-items)重新确认。
 
-Find the issue you have, then read the prompts.
+根据问题现象选择对应排查步骤：
 
--   [I cannot /give myself my custom item!](#i-cannot-give-myself-my-custom-item)
--   [My textures are missing!](#my-textures-are-missing)
+-   [无法通过 /give 获取物品](#无法通过-give-获取物品)
+-   [物品贴图丢失](#物品贴图丢失)
 
-### I cannot /give myself my custom item!
+### 无法通过 /give 获取物品
 
-An issue here will be caused by the item file in the BP.
+此问题通常由 BP 文件配置错误引起：
 
--   Confirm that your pack is actually applied to your world
--   Confirm that your item is in the folder `BP/items/`
--   Confirm that your item is valid, according to [jsonlint](https://jsonlint.com/).
--   Confirm that your identifier is all lowercase, and looks similar to this: `wiki:my_item`
+-   确认资源包已正确加载至世界
+-   确认物品文件存放在 `BP/items/` 目录
+-   使用 [jsonlint](https://jsonlint.com/) 验证 JSON 格式正确
+-   确保物品标识符全小写，格式如：`wiki:my_item`
 
-### My textures are missing!
+### 物品贴图丢失
 
-Navigate to your `item_texture.json` file. Ensure that it is properly named, and in the correct folder. Some examples of wrong names:
+首先检查 `item_texture.json` 文件：
 
--   ⚠️ `texture/item_texture.json`
--   ⚠️ `textures/Item_texture.json`
--   ⚠️ `textures/item_textures.json`
+-   正确路径应为：`RP/textures/item_texture.json`
+-   常见错误路径示例：
+    -   ⚠️ `texture/item_texture.json`
+    -   ⚠️ `textures/Item_texture.json`
+    -   ⚠️ `textures/item_textures.json`
 
-Here is an example file to compare against:
+参考示例文件结构：
 
-<CodeHeader>RP/textures/item_texture.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/textures/item_texture.json]
 {
 	"resource_pack_name": "wiki",
 	"texture_name": "atlas.items",
@@ -91,16 +95,18 @@ Here is an example file to compare against:
 	}
 }
 ```
+:::
 
-Next, navigate to your items RP file. Ensure that it is in the correct folder. Example of incorrect path:
+接着检查 RP 物品文件：
 
--   ⚠️ `item/gem.json`
+-   正确路径应为：`RP/items/物品名称.json`
+-   错误示例路径：
+    -   ⚠️ `item/gem.json`
 
-An example file, to compare against:
+参考示例配置（注意注释说明）：
 
-<CodeHeader>RP/items/gem.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/items/gem.json]
 {
 	"format_version": "1.10",
 	"minecraft:item": {
@@ -109,55 +115,57 @@ An example file, to compare against:
 			"category": "Nature"
 		},
 		"components": {
-			"minecraft:icon": "gem", //make sure this string matches the string you put in item_texture.json!
+			"minecraft:icon": "gem", // 确保此字符串与 item_texture.json 中的键名一致！
 			"minecraft:render_offsets": "tools"
 		}
 	}
 }
 ```
+:::
 
-If you followed this properly, your item should now have a texture.
+正确配置后物品将正常显示贴图。
 
 ---
 
-## Experimental Items
+## 实验性物品
 
-This section contains troubleshooting information for experimental items. Remember, you are using the `1.16` format, so there shouldn't be an RP file for your item! If you have both an RP file and a BP file, you have become confused between format versions. Please start again [here](#_1-10-vs-1-16-items).
+本部分针对实验性物品格式的故障排查。请注意：使用 `1.16` 格式时**不应存在 RP 物品文件**！如果同时存在 RP 和 BP 文件，说明混淆了格式版本。请返回[此处](#_1-10-vs-1-16-items)重新确认。
 
-Find the issue you have, then read the prompts.
+根据问题现象选择对应排查步骤：
 
-- [Start Here](#start-here)
-- [1.10 vs 1.16 Items?](#110-vs-116-items)
-    - [Continue](#continue)
-- [Stable Items](#stable-items)
-    - [I cannot /give myself my custom item!](#i-cannot-give-myself-my-custom-item)
-    - [My textures are missing!](#my-textures-are-missing)
-- [Experimental Items](#experimental-items)
-    - [I cannot /give myself my custom item!](#i-cannot-give-myself-my-custom-item-1)
-    - [My Textures Are Missing!](#my-textures-are-missing-1)
-    - [My item is Huge](#my-item-is-huge)
-- [What now?](#what-now)
+- [从这里开始](#从这里开始)
+- [1.10 与 1.16 格式物品的区别？](#110-与-116-格式物品的区别)
+    - [继续选择](#继续选择)
+- [稳定版物品](#稳定版物品)
+    - [无法通过 /give 获取物品](#无法通过-give-获取物品)
+    - [物品贴图丢失](#物品贴图丢失)
+- [实验性物品](#实验性物品)
+    - [无法通过 /give 获取物品](#无法通过-give-获取物品-1)
+    - [物品贴图丢失！](#物品贴图丢失-1)
+    - [物品模型过大](#物品模型过大)
+- [后续步骤](#后续步骤)
 
-### I cannot /give myself my custom item!
+### 无法通过 /give 获取物品
 
--   Confirm that your pack is actually applied to your world
--   Confirm that your item is in the folder `BP/items/`
--   Confirm that your item is valid, according to [jsonlint](https://jsonlint.com/).
--   Confirm that your identifier is all lowercase, and looks similar to this: `wiki:my_item`
+-   确认资源包已正确加载至世界
+-   确认物品文件存放在 `BP/items/` 目录
+-   使用 [jsonlint](https://jsonlint.com/) 验证 JSON 格式正确
+-   确保物品标识符全小写，格式如：`wiki:my_item`
 
-### My Textures Are Missing!
+### 物品贴图丢失！
 
-Navigate to your `item_texture.json` file. Ensure that it is properly named, and in the correct folder. Some examples of wrong names:
+检查 `item_texture.json` 文件：
 
--   ⚠️ `texture/item_texture.json`
--   ⚠️ `textures/Item_texture.json`
--   ⚠️ `textures/item_textures.json`
+-   正确路径应为：`RP/textures/item_texture.json`
+-   常见错误路径示例：
+    -   ⚠️ `texture/item_texture.json`
+    -   ⚠️ `textures/Item_texture.json`
+    -   ⚠️ `textures/item_textures.json`
 
-Here is an example file to compare against:
+参考示例文件：
 
-<CodeHeader>RP/textures/item_texture.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/textures/item_texture.json]
 {
 	"resource_pack_name": "wiki",
 	"texture_name": "atlas.items",
@@ -168,40 +176,40 @@ Here is an example file to compare against:
 	}
 }
 ```
+:::
 
-Next, navigate to your items BP file. Place the `minecraft:icon` component in your item file under the components section. Ensure that it is properly named.
+接着在 BP 文件中确认 `minecraft:icon` 组件配置：
 
-<CodeHeader>BP/items/your_item.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/your_item.json]
 {
   "format_version": "1.16.100",
   "minecraft:item": {
       "description": {
           "identifier": "namespace:your_item",
-          "category" : "items" // This line is required
+          "category" : "items" // 此字段必须存在
       },
       "components": {
         "minecraft:icon": {
-          "texture": "your_item_name" // Make sure this string matches the string you put in item_texture.json
+          "texture": "your_item_name" // 确保此字符串与 item_texture.json 中的键名一致
         }
       },
       "events": {...}
   }
 }
 ```
+:::
 
-If you followed this properly, your item should now have a texture.
+正确配置后物品将正常显示贴图。
 
-### My item is Huge
+### 物品模型过大
 
-To turn it to back into a normal size item (`16x16`), use render offsets and the following formula: `base value/(res/16)`
+如需恢复标准物品尺寸（`16x16`），使用以下公式计算渲染缩放：`基准值/(分辨率/16)`
 
-The base values, `[0.075, 0.125, 0.075]`, seems to be the about the same scale value as normal items.
+推荐使用基准值 `[0.075, 0.125, 0.075]` 可获得近似原版物品的缩放比例。
 
-<CodeHeader>BP/items/your_item.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/your_item.json#components]
 "minecraft:render_offsets":{
     "main_hand":{
         "first_person":{
@@ -237,7 +245,8 @@ The base values, `[0.075, 0.125, 0.075]`, seems to be the about the same scale v
     }
 }
 ```
+:::
 
-## What now?
+## 后续步骤
 
-You've reached the end of the guide. If you still have any problems, feel free to [join the discord server](/discord) and ask your question there.
+如果您的问题仍未解决，欢迎[加入 Discord 社区](/discord)进行咨询。

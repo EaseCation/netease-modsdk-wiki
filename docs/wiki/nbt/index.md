@@ -1,10 +1,10 @@
 ---
 title: NBT
 categories:
-    - title: General
+    - title: 基础
       color: blue
-    - title: Tutorials
+    - title: 巧思案例
       color: green
-    - title: NBT in Depth
+    - title: NBT深度解析
       color: red
 ---

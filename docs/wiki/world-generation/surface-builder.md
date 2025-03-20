@@ -1,6 +1,6 @@
 ---
-title: Generating Patches
-category: Tutorials
+title: 地表补丁生成教程
+category: 巧思案例
 mentions:
     - DerpMcaddon
     - SirLich
@@ -8,19 +8,22 @@ tags:
     - experimental
 ---
 
-Feature based surface builder is a feature that puts together a collection of blocks that serve to add variety and decoration to the Overworld surface. This tutorial will explain what is needed to create this feature, including size, frequency, generation location, and more!
+# 地表补丁生成教程
 
-## Single Block Features
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-Single block features are going to be the base of our surface builder. They will define which blocks we are going to use. For this tutorial I'll be using Coarse Dirt, Podzol and Cobblestone.
+基于特征的地表构建器是一种将多种方块组合生成的功能，用于为主世界地表增添多样性和装饰效果。本教程将详细讲解如何创建这种地表特征，包括尺寸、生成频率、生成位置等参数设置！
 
-Learn more about single block features [here](/world-generation/feature-types#single-block-features)
+## 单方块特征
 
-Coarse Dirt File
+单方块特征将作为我们地表构建的基础。它们定义了我们将要使用的具体方块类型。本教程将使用粗泥、灰化土和圆石作为示例。
 
-<CodeHeader>BP/features/coarse_dirt_feature.json</CodeHeader>
+了解更多单方块特征知识[请点击此处](/wiki/world-generation/feature-types#single-block-features)
 
-```json
+粗泥特征文件
+
+::: code-group
+```json [BP/features/coarse_dirt_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:single_block_feature": {
@@ -28,7 +31,7 @@ Coarse Dirt File
 			"identifier": "wiki:coarse_dirt_feature"
 		},
 		"places_block": {
-			//Coarse dirt shares same identifier as dirt, set it using name and states
+			// 粗泥与普通泥土共享相同标识符，需通过名称和状态值指定
 			"name": "minecraft:dirt",
 			"states": {
 				"dirt_type": "coarse"
@@ -37,63 +40,63 @@ Coarse Dirt File
 		"enforce_survivability_rules": false,
 		"enforce_placement_rules": false,
 		"may_replace": [
-			"minecraft:grass" //The block can only replace grass
+			"minecraft:grass" // 该方块仅可替换草方块
 		]
 	}
 }
 ```
+:::
 
-Podzol File
+灰化土特征文件
 
-<CodeHeader>BP/features/podzol_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/podzol_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:single_block_feature": {
 		"description": {
 			"identifier": "wiki:podzol_feature"
 		},
-		"places_block": "minecraft:podzol", //Podzol can be defined using direct identifier
+		"places_block": "minecraft:podzol", // 灰化土可直接通过标识符定义
 		"enforce_survivability_rules": false,
 		"enforce_placement_rules": false,
 		"may_replace": [
-			"minecraft:grass" //The block can only replace grass
+			"minecraft:grass" // 该方块仅可替换草方块
 		]
 	}
 }
 ```
+:::
 
-Cobblestone File
+圆石特征文件
 
-<CodeHeader>BP/features/cobblestone_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/cobblestone_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:single_block_feature": {
 		"description": {
 			"identifier": "wiki:cobblestone_feature"
 		},
-		"places_block": "minecraft:cobblestone", //Cobblestone can be defined using direct identifier
+		"places_block": "minecraft:cobblestone", // 圆石可直接通过标识符定义
 		"enforce_survivability_rules": false,
 		"enforce_placement_rules": false,
 		"may_replace": [
-			"minecraft:grass" //The block can only replace grass
+			"minecraft:grass" // 该方块仅可替换草方块
 		]
 	}
 }
 ```
+:::
 
-## Weighted Random Features
+## 权重随机特征
 
-Weighted random features are going to be our _randomizer_ to select between each type of blocks.
+权重随机特征将作为我们的_随机选择器_，用于在不同方块类型之间进行概率选择。
 
-Learn more about weighted random features [here](/world-generation/feature-types#weighted-random-features)
+了解更多权重随机特征知识[请点击此处](/wiki/world-generation/feature-types#weighted-random-features)
 
-<CodeHeader>BP/features/select_surface_block_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/select_surface_block_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:weighted_random_feature": {
@@ -102,31 +105,31 @@ Learn more about weighted random features [here](/world-generation/feature-types
 		},
 		"features": [
 			[
-				"wiki:coarse_dirt_feature", //Coarse dirt weighs 5
+				"wiki:coarse_dirt_feature", // 粗泥权重为5
 				5
 			],
 			[
-				"wiki:podzol_feature", //Podzol dirt weighs 3
+				"wiki:podzol_feature", // 灰化土权重为3
 				3
 			],
 			[
-				"wiki:cobblestone_feature", //Cobblestone weighs 2
+				"wiki:cobblestone_feature", // 圆石权重为2
 				2
 			]
 		]
 	}
 }
 ```
+:::
 
-## Scatter Features
+## 散点特征
 
-Scatter features are an important part of our surface builder. It will determine the size, shape and number of blocks in one blob.
+散点特征是我们地表构建的重要部分。它将决定单个斑块中方块的数量、形状和分布范围。
 
-Learn more about scatter features [here](/world-generation/feature-types#scatter-features)
+了解更多散点特征知识[请点击此处](/wiki/world-generation/feature-types#scatter-features)
 
-<CodeHeader>BP/features/scatter_surface_block_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/scatter_surface_block_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:scatter_feature": {
@@ -143,26 +146,26 @@ Learn more about scatter features [here](/world-generation/feature-types#scatter
 			"distribution": "gaussian"
 		},
 		"y": "q.heightmap(v.worldx, v.worldz) -1",
-		"places_feature": "wiki:select_surface_block_feature" //Weighted random feature identifier
+		"places_feature": "wiki:select_surface_block_feature" // 权重随机特征的标识符
 	}
 }
 ```
+:::
 
--   `iterations` determine how many blocks will be placed. I'm going to use the Molang `math.random_integer` function to randomize the number of blocks. In this case, it'll be 20 to 25 blocks.
+-   `iterations` 决定将放置的方块数量。使用Molang的 `math.random_integer` 函数可实现数量随机化。本示例中将在20到25个方块之间随机
 
--   `extent` use an array to determine the size of the blob. `[0, 8]` means the size is extended from 0 to 8 blocks. So, our blob would be 8 blocks long both on X and Z axis. **Only use this for X and Z distribution**.
+-   `extent` 使用数组决定斑块尺寸。`[0, 8]` 表示斑块从0到8格扩展。因此，我们的斑块在X和Z轴上将延伸8格。**该参数仅适用于X和Z轴分布**
 
--   `"y": "q.heightmap(v.worldx, v.worldz) -1` means it will put the block on the highest block on the y coordinate -1. So it'll always put the feature on the surface.
+-   `"y": "q.heightmap(v.worldx, v.worldz) -1` 表示方块将放置于当前地表最高点的Y坐标-1处，即始终在地表生成
 
--   `distribution` specifies the type of distribution to use. Available include `Gaussian`, `Inverse Gaussian`, `Uniform`,`Fixed Grid` and `Jittered Grid`
+-   `distribution` 指定分布类型。可用选项包括：`Gaussian`（高斯分布）、`Inverse Gaussian`（逆高斯分布）、`Uniform`（均匀分布）、`Fixed Grid`（固定网格）和`Jittered Grid`（抖动网格）
 
-## Feature Rule
+## 特征规则
 
-This is the final step for our surface builder. The feature rules for our surface builders are slightly different.
+这是地表构建的最后一步。地表构建器的特征规则设置略有不同。
 
-<CodeHeader>BP/feature_rules/overworld_surface_blocks_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/overworld_surface_blocks_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
@@ -175,7 +178,7 @@ This is the final step for our surface builder. The feature rules for our surfac
 			"minecraft:biome_filter": {
 				"test": "has_biome_tag",
 				"operator": "==",
-				"value": "overworld" //You can change this to whatever biometag you want
+				"value": "overworld" // 可更改为任意生物群系标签
 			}
 		},
 		"distribution": {
@@ -190,7 +193,7 @@ This is the final step for our surface builder. The feature rules for our surfac
 				"distribution": "uniform"
 			},
 			"scatter_chance": {
-				//Chance of the blob generating each chunk
+				// 每个区块生成斑块的概率
 				"numerator": 1,
 				"denominator": 5
 			}
@@ -198,5 +201,6 @@ This is the final step for our surface builder. The feature rules for our surfac
 	}
 }
 ```
+:::
 
-And our surface builder is done! Feel free to modify and mess around with it!
+至此我们的地表构建器就完成了！欢迎自由调整参数并探索更多可能性！

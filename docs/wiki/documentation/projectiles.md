@@ -1,5 +1,5 @@
 ---
-title: Projectiles
+title: 投射物
 mentions:
     - SirLich
     - stirante
@@ -9,248 +9,250 @@ mentions:
     - ThomasOrs
 ---
 
-## Overview
+# 投射物
 
-This page intends to document all different fields you can use inside `minecraft:projectile` entity behavior component.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+## 概述
+
+本文档旨在记录`minecraft:projectile`实体行为组件中可使用的所有字段。
 
 :::warning
-_Disclaimer: this component has been mostly documented based on projectiles found in the game or reverse engineering the game._
-_This information was last tested on **1.18.2**._
+_免责声明：该组件的文档主要基于游戏中存在的投射物或通过逆向工程获得。_
+_最后测试版本为 **1.18.2**。_
 :::
 
-| Name                      | Type             | Default Value | Description                                                                                                                                       |
-| ------------------------- | ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| anchor                    | Integer          |               |                                                                                                                                                   |
-| angle_offset              | Decimal          | 0             | Determines the angle at which the projectile is thrown                                                                                            |
-| catch_fire                | Boolean          | false         | If true, the entity hit will be set on fire                                                                                                       |
-| crit_particle_on_hurt     | Boolean          | false         | If true, the projectile will produce critical hit particles when it happens                                                                       |
-| destroy_on_hurt           | Boolean          | false         | If true, this entity will be destroyed when hit                                                                                                   |
-| filter                    | String           |               | Entity Definitions defined here can't be hurt by the projectile                                                                                   |
-| fire_affected_by_griefing | Boolean          | false         | If true, whether the projectile causes fire is affected by the mob griefing game rule                                                             |
-| gravity                   | Decimal          | 0.05          | The gravity applied to this entity when thrown. The higher the value, the faster the entity falls                                                 |
-| hit_ground_sound          | String           |               | The sound that plays when the projectile hits ground                                                                                              |
-| hit_sound                 | String           |               | The sound that plays when the projectile hits an entity                                                                                           |
-| homing                    | Boolean          | false         | If true, the projectile homes in to the nearest. **Does not work on 1.18.2** entity                                                               |
-| inertia                   | Decimal          | 0.99          | The fraction of the projectile's speed maintained every frame while traveling in air                                                              |
-| is_dangerous              | Boolean          | false         | If true, the projectile will be treated as dangerous to the players                                                                               |
-| knockback                 | Boolean          | true          | If true, the projectile will knock back the entity it hits                                                                                        |
-| lightning                 | Boolean          | false         | If true, the entity hit will be struck by lightning                                                                                               |
-| liquid_inertia            | Decimal          | 0.6           | The fraction of the projectile's speed maintained every frame while traveling in water                                                            |
-| multiple_targets          | Boolean          | true          | If true, the projectile can hit multiple entities per flight                                                                                      |
-| offset                    | Vector [a, b, c] | [0, 0.5, 0]   | The offset from the entity's anchor where the projectile will spawn                                                                               |
-| on_fire_time              | Decimal          | 5             | Time in seconds that the entity hit will be on fire for                                                                                           |
-| on_hit                    | Object           |               | Projectile's behavior on hit. More info [below](#on_hit)                                                                                          |
-| particle                  | String           | iconcrack     | Particle to use upon collision                                                                                                                    |
-| potion_effect             | Integer          | -1            | Defines the effect the arrow will apply to the entity it hits                                                                                     |
-| power                     | Decimal          | 1.3           | Determines the velocity of the projectile                                                                                                         |
-| reflect_on_hurt           | Boolean          | false         | If true, this entity will be reflected back when hit                                                                                              |
-| semi_random_diff_damage   | Boolean          | false         | If true, damage will be randomized based on damage and speed                                                                                      |
-| shoot_sound               | String           |               | The sound that plays when the projectile is shot                                                                                                  |
-| shoot_target              | Boolean          | true          | If true, the projectile will be shot towards the target of the entity firing it                                                                   |
-| should_bounce             | Boolean          | false         | If true, the projectile will bounce upon hit                                                                                                      |
-| splash_potion             | Boolean          | false         | If true, the projectile will be treated like a splash potion                                                                                      |
-| splash_range              | Decimal          | 4             | Radius in blocks of the 'splash' effect                                                                                                           |
-| stop_on_hurt              | Boolean          |               |                                                                                                                                                   |
-| uncertainty_base          | Decimal          | 0             | The base accuracy. Accuracy is determined by the formula uncertaintyBase - difficultyLevel \* uncertaintyMultiplier                               |
-| uncertainty_multiplier    | Decimal          | 0             | Determines how much difficulty affects accuracy. Accuracy is determined by the formula uncertaintyBase - difficultyLevel \* uncertaintyMultiplier |
-| hit_water                 | Boolean          | false         | If true, liquid blocks will be treated as solid. **Requires "Education Edition" toggle active**                                                   |
+| 字段名称                   | 类型              | 默认值        | 描述                                                                                                                                    |
+| ------------------------- | ----------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| anchor                    | 整数              |               |                                                                                                                                        |
+| angle_offset              | 小数              | 0             | 决定投射物被抛射时的角度                                                                                                               |
+| catch_fire                | 布尔值            | false         | 若为true，被击中的实体将被点燃                                                                                                         |
+| crit_particle_on_hurt     | 布尔值            | false         | 若为true，投射物在造成暴击时会产生特殊粒子效果                                                                                         |
+| destroy_on_hurt           | 布尔值            | false         | 若为true，投射物在击中时会被销毁                                                                                                       |
+| filter                    | 字符串            |               | 此处定义的实体类型不会被投射物伤害                                                                                                     |
+| fire_affected_by_griefing | 布尔值            | false         | 若为true，投射物的引燃效果受游戏规则"mobGriefing"影响                                                                                 |
+| gravity                   | 小数              | 0.05          | 投射物抛射时应用的引力值。数值越大下坠越快                                                                                             |
+| hit_ground_sound          | 字符串            |               | 投射物击中地面时播放的音效                                                                                                             |
+| hit_sound                 | 字符串            |               | 投射物击中实体时播放的音效                                                                                                             |
+| homing                    | 布尔值            | false         | 若为true，投射物会自动追踪最近目标。**在1.18.2版本中不可用**                                                                          |
+| inertia                   | 小数              | 0.99          | 投射物在空气中飞行时每帧保留的速度比例                                                                                                 |
+| is_dangerous              | 布尔值            | false         | 若为true，投射物将被视为对玩家具有威胁性                                                                                               |
+| knockback                 | 布尔值            | true          | 若为true，投射物会击退被击中的实体                                                                                                     |
+| lightning                 | 布尔值            | false         | 若为true，被击中的实体将遭受雷击                                                                                                       |
+| liquid_inertia            | 小数              | 0.6           | 投射物在水中飞行时每帧保留的速度比例                                                                                                   |
+| multiple_targets          | 布尔值            | true          | 若为true，投射物在飞行过程中可以击中多个实体                                                                                           |
+| offset                    | 三维向量 [a,b,c]  | [0, 0.5, 0]   | 投射物生成时相对于实体锚点的偏移量                                                                                                     |
+| on_fire_time              | 小数              | 5             | 被击中实体持续燃烧的时间（秒）                                                                                                         |
+| on_hit                    | 对象              |               | 投射物击中时的行为。详见[下方说明](#on_hit)                                                                                            |
+| particle                  | 字符串            | iconcrack     | 碰撞时使用的粒子效果                                                                                                                   |
+| potion_effect             | 整数              | -1            | 定义箭矢击中实体时施加的药水效果                                                                                                       |
+| power                     | 小数              | 1.3           | 决定投射物的初速度                                                                                                                     |
+| reflect_on_hurt           | 布尔值            | false         | 若为true，投射物被击中时会反弹                                                                                                         |
+| semi_random_diff_damage   | 布尔值            | false         | 若为true，伤害值将基于基础伤害和速度进行随机计算                                                                                       |
+| shoot_sound               | 字符串            |               | 投射物发射时播放的音效                                                                                                                 |
+| shoot_target              | 布尔值            | true          | 若为true，投射物将朝向发射者的目标方向射出                                                                                             |
+| should_bounce             | 布尔值            | false         | 若为true，投射物击中时会反弹                                                                                                           |
+| splash_potion             | 布尔值            | false         | 若为true，投射物将被视为喷溅药水                                                                                                       |
+| splash_range              | 小数              | 4             | '溅射'效果的半径（方块）                                                                                                               |
+| stop_on_hurt              | 布尔值            |               |                                                                                                                                        |
+| uncertainty_base          | 小数              | 0             | 基础精准度。实际精准度计算公式为：uncertaintyBase - difficultyLevel \* uncertaintyMultiplier                                           |
+| uncertainty_multiplier    | 小数              | 0             | 难度对精准度的影响系数。实际精准度计算公式为：uncertaintyBase - difficultyLevel \* uncertaintyMultiplier                               |
+| hit_water                 | 布尔值            | false         | 若为true，液态方块将被视为固体。**需要启用"教育版"功能**                                                                               |
 
 ## on_hit
 
-This object contains all behaviors, that can be executed, when projectile hits something.
+该对象包含投射物击中目标时可执行的所有行为。
 
 ### arrow_effect
 
-_Exact behavior unknown_
+_具体作用未知_
 
 ### teleport_owner
 
-Teleports shooter to the hit location.
+将发射者传送到击中位置。
 
 ### catch_fire
 
-_Exact behavior unknown_
-
-Sets target on fire
+_具体作用未知_
+点燃目标
 
 ### ignite
 
-_Exact behavior unknown_
-
-Sets target on fire
+_具体作用未知_
+点燃目标
 
 ### remove_on_hit
 
-Removes the projectile when it hits something.
+击中目标后移除投射物。
 
 ### douse_fire
 
-_Exact behavior unknown_
+_具体作用未知_
 
 ### impact_damage
 
-Deals damage on hit.
+造成碰撞伤害。
 
-| Name                           | Type                             | Description                                                                                                                  |
-| ------------------------------ | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| damage                         | Integer/Integer Array [min, max] | Damage dealt to entity on hit                                                                                                |
-| semi_random_diff_damage        | Boolean                          |                                                                                                                              |
-| max_critical_damage            | Decimal                          |                                                                                                                              |
-| min_critical_damage            | Decimal                          |                                                                                                                              |
-| power_multiplier               | Decimal                          |                                                                                                                              |
-| channeling                     | Boolean                          |                                                                                                                              |
-| set_last_hurt_requires_damage  | Boolean                          |                                                                                                                              |
-| destroy_on_hit_requires_damage | Boolean                          |                                                                                                                              |
-| filter                         | String                           | Entity to affect. Much more primitive than filters used elsewhere, as it cannot "test" for anything other than an identifier |
-| destroy_on_hit                 | Boolean                          |                                                                                                                              |
-| knockback                      | Boolean                          |                                                                                                                              |
-| catch_fire                     | Boolean                          | Dictates wether or not targets will be engulfed in flames                                                                    |
+| 字段名称                        | 类型                              | 描述                                                                                                                   |
+| ------------------------------ | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| damage                         | 整数/整数数组 [min, max]          | 对实体造成的伤害值                                                                                                    |
+| semi_random_diff_damage        | 布尔值                           |                                                                                                                       |
+| max_critical_damage            | 小数                             |                                                                                                                       |
+| min_critical_damage            | 小数                             |                                                                                                                       |
+| power_multiplier               | 小数                             |                                                                                                                       |
+| channeling                     | 布尔值                           |                                                                                                                       |
+| set_last_hurt_requires_damage  | 布尔值                           |                                                                                                                       |
+| destroy_on_hit_requires_damage | 布尔值                           |                                                                                                                       |
+| filter                         | 字符串                           | 受影响的实体类型。此过滤器较为基础，只能通过标识符进行匹配                                                            |
+| destroy_on_hit                 | 布尔值                           |                                                                                                                       |
+| knockback                      | 布尔值                           |                                                                                                                       |
+| catch_fire                     | 布尔值                           | 控制是否点燃目标                                                                                                      |
 
 ### definition_event
 
-Calls an event on hit.
+触发击中事件。
 
-| Name               | Type    | Description                                         |
-| ------------------ | ------- | --------------------------------------------------- |
-| affect_projectile  | Boolean | Event will be triggered for projectile entity       |
-| affect_shooter     | Boolean | Event will be triggered for shooter entity          |
-| affect_target      | Boolean | Event will be triggered for hit entity              |
-| affect_splash_area | Boolean | Event will be triggered for all entities in an area |
-| splash_area        | Decimal | Area of entities                                    |
-| event_trigger      | Object  | Event to trigger. Structure below.                  |
+| 字段名称               | 类型     | 描述                                         |
+| ---------------------- | -------- | ------------------------------------------- |
+| affect_projectile      | 布尔值   | 为投射物实体触发事件                        |
+| affect_shooter         | 布尔值   | 为发射者实体触发事件                        |
+| affect_target          | 布尔值   | 为被击中实体触发事件                        |
+| affect_splash_area     | 布尔值   | 为区域内所有实体触发事件                    |
+| splash_area            | 小数     | 实体作用范围半径                            |
+| event_trigger          | 对象     | 要触发的事件。结构如下：                    |
 
-| Name    | Type   | Description                           |
-| ------- | ------ | ------------------------------------- |
-| event   | String | Event to trigger                      |
-| target  | String | Target of the event                   |
-| filters | Object | Criteria required in order to trigger |
+| 字段名称    | 类型     | 描述                           |
+| ----------- | -------- | ----------------------------- |
+| event       | 字符串   | 要触发的事件名称              |
+| target      | 字符串   | 事件目标                      |
+| filters     | 对象     | 触发事件所需的过滤条件        |
 
 ### stick_in_ground
 
-Sticks the projectile into the ground.
+将投射物插入地面。
 
-| Name       | Type    | Description |
-| ---------- | ------- | ----------- |
-| shake_time | Decimal |             |
+| 字段名称       | 类型     | 描述 |
+| -------------- | -------- | ---- |
+| shake_time     | 小数     |      |
 
 ### spawn_aoe_cloud
 
-Spawns an area of effect cloud of potion effect.
+生成药水效果的区域云。
 
-| Name                | Type                    | Description                                                                                                                                                                      |
-| ------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| radius              | Decimal                 | Radius of the cloud                                                                                                                                                              |
-| radius_on_use       | Decimal                 |                                                                                                                                                                                  |
-| potion              | Integer                 | Lingering Potion ID                                                                                                                                                              |
-| particle            | String                  | [Vanilla Particles](/particles/vanilla-particles) emitter of the cloud. Only accepts Vanilla Particles. **dragonbreath** enables the usage of Bottles to obtain Dragon's Breath. |
-| duration            | Integer                 | Duration of the cloud in seconds                                                                                                                                                 |
-| color               | Integer array [r, g, b] | Color of the particles                                                                                                                                                           |
-| affect_owner        | Boolean                 | Is potion effect affecting the shooter. Does not appear to apply to the player                                                                                                   |
-| reapplication_delay | Integer                 | Delay in ticks between application of the potion effect                                                                                                                          |
+| 字段名称                | 类型                      | 描述                                                                                                                                       |
+| ----------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| radius                  | 小数                      | 云效果半径                                                                                                                                |
+| radius_on_use           | 小数                      |                                                                                                                                           |
+| potion                  | 整数                      | 滞留药水ID                                                                                                                                |
+| particle                | 字符串                    | 区域云的[原版粒子效果](/wiki/particles/vanilla-particles)。仅接受原版粒子。**dragonbreath**允许使用瓶子收集龙息                                  |
+| duration                | 整数                      | 云效果持续时间（秒）                                                                                                                      |
+| color                   | 整数数组 [r, g, b]        | 粒子颜色                                                                                                                                  |
+| affect_owner            | 布尔值                    | 药水效果是否影响发射者（对玩家无效）                                                                                                      |
+| reapplication_delay     | 整数                      | 药水效果重复施加的时间间隔（刻）                                                                                                          |
 
-#### Potion IDs
+#### 药水ID
 
-| Potion                    | Regular | Extended | Enhanced (Level II) |
-| ------------------------- | ------- | -------- | ------------------- |
-| Water Bottle              | 0       |          |                     |
-| Mundane Potion            | 1       | 2        |                     |
-| Thick Potion              | 3       |          |                     |
-| Awkward Potion            | 4       |          |                     |
-| Potion of Night Vision    | 5       | 6        |                     |
-| Potion of Invisibility    | 7       | 8        |                     |
-| Potion of Leaping         | 9       | 10       | 11                  |
-| Potion of Fire Resistance | 12      | 13       |                     |
-| Potion of Swiftness       | 14      | 15       | 16                  |
-| Potion of Slowness        | 17      | 18       |                     |
-| Potion of Water Breathing | 19      | 20       |                     |
-| Potion of Healing         | 21      |          | 22                  |
-| Potion of Harming         | 23      |          | 24                  |
-| Potion of Poison          | 25      | 26       | 27                  |
-| Potion of Regeneration    | 28      | 29       | 30                  |
-| Potion of Strength        | 31      | 32       | 33                  |
-| Potion of Weakness        | 34      | 35       |                     |
-| Potion of Decay           | 36      |          |                     |
-| Potion of Turtle Master   | 37      | 38       | 39                  |
-| Potion of Slow Falling    | 40      | 41       |                     |
-| Potion of Slowness IV     | 42      |          |                     |
-| Potion of Crashing        | 43+     |          |                     |
+| 药水名称                 | 普通    | 延长版  | 强化版（II级） |
+| ------------------------ | ------- | ------- | ------------- |
+| 水瓶                     | 0       |         |               |
+| 平凡药水                 | 1       | 2       |               |
+| 浓稠药水                 | 3       |         |               |
+| 粗制药水                 | 4       |         |               |
+| 夜视药水                 | 5       | 6       |               |
+| 隐身药水                 | 7       | 8       |               |
+| 跳跃药水                 | 9       | 10      | 11            |
+| 抗火药水                 | 12      | 13      |               |
+| 迅捷药水                 | 14      | 15      | 16            |
+| 迟缓药水                 | 17      | 18      |               |
+| 水肺药水                 | 19      | 20      |               |
+| 治疗药水                 | 21      |         | 22            |
+| 伤害药水                 | 23      |         | 24            |
+| 剧毒药水                 | 25      | 26      | 27            |
+| 再生药水                 | 28      | 29      | 30            |
+| 力量药水                 | 31      | 32      | 33            |
+| 虚弱药水                 | 34      | 35      |               |
+| 衰变药水                 | 36      |         |               |
+| 神龟药水                 | 37      | 38      | 39            |
+| 缓降药水                 | 40      | 41      |               |
+| 迟缓IV药水               | 42      |         |               |
+| 跳跃提升IV药水           | 43+     |         |               |
 
 ### spawn_chance
 
-Spawns an entity on hit.
+击中时生成实体。
 
-| Name                        | Type    | Description                                 |
-| --------------------------- | ------- | ------------------------------------------- |
-| first_spawn_percent_chance  | Decimal |                                             |
-| second_spawn_percent_chance | Decimal |                                             |
-| first_spawn_count           | Integer |                                             |
-| second_spawn_count          | Integer |                                             |
-| spawn_definition            | String  | ID of the entity to spawn                   |
-| spawn_baby                  | Boolean | Whether the spawned entity should be a baby |
+| 字段名称                        | 类型     | 描述                             |
+| ------------------------------- | -------- | ------------------------------- |
+| first_spawn_percent_chance      | 小数     |                                 |
+| second_spawn_percent_chance     | 小数     |                                 |
+| first_spawn_count               | 整数     |                                 |
+| second_spawn_count              | 整数     |                                 |
+| spawn_definition               | 字符串   | 要生成的实体ID                  |
+| spawn_baby                     | 布尔值   | 生成的实体是否为幼体            |
 
 ### particle_on_hit
 
-Spawns particles on hit.
+击中时生成粒子效果。
 
-| Name          | Type    | Description                                              |
-| ------------- | ------- | -------------------------------------------------------- |
-| particle_type | String  | [Vanilla Particles](/particles/vanilla-particles) to use |
-| num_particles | Integer | Number of particles                                      |
-| on_entity_hit | Boolean | Whether it should spawn particles on entity hit          |
-| on_other_hit  | Boolean | Whether it should spawn particles on other hit           |
-
+| 字段名称          | 类型     | 描述                                             |
+| ----------------- | -------- | ----------------------------------------------- |
+| particle_type     | 字符串   | 使用的[原版粒子效果](/wiki/particles/vanilla-particles) |
+| num_particles     | 整数     | 粒子数量                                        |
+| on_entity_hit     | 布尔值   | 是否在击中实体时生成粒子                        |
+| on_other_hit      | 布尔值   | 是否在其他碰撞时生成粒子                        |
 
 ### mob_effect
 
-Applies a mob effect to the target.
+对目标施加生物状态效果。
 
-| Name           | Type    | Description                                 |
-| -------------- | ------- | ------------------------------------------- |
-| effect         | String  | Effect                                      |
-| duration       | Integer | Duration of the effect                      |
-| durationeasy   | Integer | Duration of the effect on easy difficulty   |
-| durationnormal | Integer | Duration of the effect on normal difficulty |
-| durationhard   | Integer | Duration of the effect on hard difficulty   |
-| amplifier      | Integer | Effect amplifier                            |
-| ambient        | Boolean |                                             |
-| visible        | Boolean |                                             |
+| 字段名称           | 类型     | 描述                             |
+| ------------------ | -------- | ------------------------------- |
+| effect            | 字符串   | 效果类型                        |
+| duration          | 整数     | 效果持续时间                    |
+| durationeasy      | 整数     | 简单难度下的持续时间            |
+| durationnormal    | 整数     | 普通难度下的持续时间            |
+| durationhard      | 整数     | 困难难度下的持续时间            |
+| amplifier         | 整数     | 效果等级                        |
+| ambient           | 布尔值   |                                 |
+| visible           | 布尔值   |                                 |
 
 ### grant_xp
 
-Despite the name, this actually spawns a number of experience orbs, being worth the amount stated.
+尽管名称如此，该行为实际上是生成指定数量的经验球。
 
-| Name  | Type    | Description                                                                                     |
-| ----- | ------- | ----------------------------------------------------------------------------------------------- |
-| minXP | Integer | Minimum amount of experience to give                                                            |
-| maxXP | Integer | Maximum amount of experience to give                                                            |
-| xp    | Integer | Constant amount of experience to give. When set, it will be used instead of min and max values. |
+| 字段名称  | 类型     | 描述                                         |
+| --------- | -------- | ------------------------------------------- |
+| minXP     | 整数     | 给予的最小经验值                            |
+| maxXP     | 整数     | 给予的最大经验值                            |
+| xp        | 整数     | 固定经验值。设置后将覆盖min和max值          |
 
 ### freeze_on_hit
 
-_Exact behavior unknown_
+_具体作用未知_
 
-_Requires Education Edition toggle to be enabled._
-Freezes water on hit.
+_需要启用教育版功能_
+冻结命中点周围的水。
 
-| Name          | Type    | Description                   |
-| ------------- | ------- | ----------------------------- |
-| shape         | String  | "sphere" or "cube"            |
-| snap_to_block | Boolean |                               |
-| size          | Integer | The size of the freeze effect |
+| 字段名称          | 类型     | 描述                   |
+| ----------------- | -------- | --------------------- |
+| shape             | 字符串   | "sphere" 或 "cube"    |
+| snap_to_block     | 布尔值   |                       |
+| size              | 整数     | 冻结效果的范围大小    |
 
 ### hurt_owner
 
-_Exact behavior unknown. Right now it crashes minecraft probably because of wrong parameters_
+_具体作用未知。当前版本可能导致游戏崩溃（可能参数错误）_
 
-| Name         | Type    | Description |
-| ------------ | ------- | ----------- |
-| owner_damage | Integer |             |
-| knockback    | Boolean |             |
-| ignite       | Boolean |             |
+| 字段名称         | 类型     | 描述 |
+| ---------------- | -------- | ---- |
+| owner_damage     | 整数     |      |
+| knockback        | 布尔值   |      |
+| ignite           | 布尔值   |      |
 
 ### thrown_potion_effect
 
-_Exact behavior unknown. Right now it crashes minecraft probably because it's only valid for thrown potions_
+_具体作用未知。当前版本可能导致游戏崩溃（可能仅适用于投掷药水）_
 
-## Additional Information
-When it comes to creating a custom projectile, such as an arrow or trident variant, or something entirely your own, you may want to consider defining a [runtime identifier](/entities/runtime-identifier) to ensure that it acts as intended. Not doing so may result in unintended behaviour, from odd visuals to incorrect knockback direction and arrows that you can kill with your bare hands.
+## 补充说明
+
+在创建自定义投射物（如箭矢变体或全新物品）时，建议定义[运行时标识符](/wiki/entities/runtime-identifier)来确保预期行为。未正确设置可能导致异常表现，包括显示错误、击退方向异常，甚至出现可用徒手摧毁的箭矢等问题。

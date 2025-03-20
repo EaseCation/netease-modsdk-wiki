@@ -1,8 +1,8 @@
 ---
-title: Damage
-category: Commands
+title: 伤害指令
+category: 命令
 tags:
-    - info
+    - 信息
 mentions:
     - BedrockCommands
     - cda94581
@@ -10,87 +10,100 @@ mentions:
     - zheaEvyline
 ---
 
-## Introduction
+# 伤害指令
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-Introduced in Minecraft Release `1.18.10`, the /damage command deals precise damage to specified entities. With this change, the clunky methods like using `/effect` command to damage entities are rendered obsolete, making maps and other creations more powerful.
+## 概述
 
-## Syntax
+[源自Bedrock Commands社区Discord](https://discord.gg/SYstTYx5G5)
 
-- There are two ways the damage command can be used:
-    - `/damage <Target> <Amount> [Cause]`
-    - `/damage <Target> <Amount> <Cause> entity <Damager>`
+`/damage` 指令于Minecraft基岩版 `1.18.10` 版本加入，可对指定实体造成精确伤害。这一改进使得原先使用 `/effect` 指令等笨拙的伤害方式成为历史，为地图制作和其他创作提供了更强大的工具。
 
-## Arguments
+## 语法结构
 
-- Phrases not contained in angle  <>  or square  []  brackets instruct you to type it as-is.
-- Phrases contained within brackets are variables, these need to be replaced:
-    - **` <> `** Angle brackets mean the variable is required.
-    - **` [] `** Square brackets mean the variable is optional.
+- 该指令有两种使用方式：
+    - `/damage <目标> <伤害值> [伤害原因]`
+    - `/damage <目标> <伤害值> <伤害原因> entity <伤害源实体>`
 
-## Variables
+## 参数说明
 
-- **` Target `** This is your typical entity selector, such as `@s` , `@e` , or `"cda94581"` . Multiple entities may be selected at a time to deal the damage to multiple targets.
+- 未包含在尖括号 `<>` 或方括号 `[]` 中的短语需按原样输入
+- 括号内内容为可变参数，需要替换为实际值：
+    - **` <> `** 尖括号表示必填参数
+    - **` [] `** 方括号表示可选参数
 
-- **` Amount `** This is a whole number, which specifies the amount of damage to deal to the targets. The minimum value is  `0`  and the maximum value is `2147483647`, or the signed 32-bit integer limit.
+## 参数详解
 
-- **` Cause `** This specifies the "reason" the damage was dealt. This cause will appear in death messages (`X hit the ground too hard for cause: fall`) be used in damage calculation with armor (`the value dealt in Amount may be different depending on the worn armor`), and used in a large variety of other things, such as in Behavior Pack/Add-ons. A full list of all the damage causes can be found [below](/commands/damage#damage-cause-list)
+- **` 目标 `**  
+  常规实体选择器，如 `@s`、`@e` 或 `"cda94581"`。支持同时选择多个实体进行群体伤害。
 
-- **` Damager `** If Cause was something to do with entities `(such as entity_attack)`, this specifies where the damage came from `(the entity that dealt the attack)`. This is limited to only 1 target. An error will be thrown if multiple targets are found from the selector.
+- **` 伤害值 `**  
+  整数类型，指定造成的伤害数值。最小值为 `0`，最大值为32位有符号整数上限 `2147483647`。
 
-> Note: the  `<Cause>  entity  <Damager>`  is only required when the Cause has to do with another entity `(entity_attack)`. Otherwise, follow the first syntax.
+- **` 伤害原因 `**  
+  决定伤害来源类型。该参数将影响：
+    - 死亡提示信息（如 `X因坠落伤害而亡`）
+    - 护甲减伤计算（实际伤害值会根据护甲属性变化）
+    - 行为包/附加包中的伤害处理逻辑  
+  完整伤害原因列表详见[下方章节](/wiki/commands/damage#damage-cause-list)
 
-## Examples
+- **` 伤害源实体 `**  
+  当伤害原因与实体相关时（如 `entity_attack`），此参数指定伤害来源实体。该选择器仅支持单个目标，若返回多个实体会报错。
 
-<CodeHeader>mcfunction</CodeHeader>
-```yaml
-#Deal 4 damage to all players
+> 注意：`<伤害原因> entity <伤害源实体>` 语法仅在伤害原因涉及其他实体时使用（如实体攻击）。其他情况请使用基础语法。
+
+## 使用示例
+
+::: code-group
+```yaml [mcfunction]
+# 对所有玩家造成4点伤害
 /damage @a 4
 
-#Deal 3 'fire' damage to all entities of type 'sheep'
-/damage @e [type=sheep] 3 fire
+# 对所有绵羊造成3点火焰伤害
+/damage @e[type=sheep] 3 fire
 
-#Deal 40 'entity attack' damage from a random player to all entities of type 'sheep'
-/damage @a 40 entity_attack entity @r [type=sheep]
+# 让随机玩家对所有绵羊造成40点实体攻击伤害
+/damage @e[type=sheep] 40 entity_attack entity @r
 ```
+:::
 
-## Damage Cause List
+## 伤害原因列表
 
-Listed below are all the 'damage sources' in MCBE for the `/damage` command currently available:
+以下是MCBE中 `/damage` 指令当前支持的所有伤害原因：
 ```
-anvil
-attack
-block_explosion
-charging
-contact
-drowning
-entity_attack
-entity_explosion
-fall
-falling_block
-fatal
-fire
-fire_tick
-fireworks
-fly_into_wall
-freezing
-lava
-lightning
-magic
-magma
-none
-override
-piston
-projectile
-sonic_boom
-stalactite
-stalagmite
-starve
-suffocation
-suicide
-temperature
-thorns
-void
-wither
+anvil             # 铁砧
+attack            # 普通攻击
+block_explosion   # 方块爆炸
+charging          # 冲锋（如幻翼）
+contact           # 接触伤害（如仙人掌）
+drowning          # 溺水
+entity_attack     # 实体攻击
+entity_explosion  # 实体爆炸
+fall              # 坠落
+falling_block     # 下坠方块
+fatal             # 致命伤害
+fire              # 火焰
+fire_tick         # 燃烧伤害
+fireworks         # 烟花
+fly_into_wall     # 飞行撞墙（鞘翅）
+freezing          # 冰冻
+lava              # 岩浆
+lightning         # 闪电
+magic             # 魔法
+magma             # 岩浆块
+none              # 无来源
+override          # 强制覆盖
+piston            # 活塞
+projectile        # 弹射物
+sonic_boom        # 监守者音波
+stalactite        # 钟乳石
+stalagmite        # 石笋
+starve            # 饥饿
+suffocation       # 窒息
+suicide           # 自杀
+temperature       # 温度伤害
+thorns            # 荆棘
+void              # 虚空
+wither            # 凋零
 ```

@@ -1,52 +1,52 @@
 ---
-title: Entity Texture Animations
+title: 实体纹理动画
 mentions:
     - MedicalJewel105
     - IlkinQafarov
     - TheItsNameless
     - SmokeyStack
 tags:
-    - intermediate
-category:
-    - Tutorials
+    - 中级
+category: 巧思案例
 ---
 
-## Whats on this page?
+# 实体纹理动画
 
-From this page you will learn how to make an animated texture for an entity. Animated, like a flipbook texture for blocks.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## Source
+## 本页内容
 
-This page is based on content by [AgentMindStorm](https://www.youtube.com/channel/UC-ljddYkFdTQl-MVEaVvbuQ).
+通过本教程你将学会如何为实体制作动态纹理。这种动画效果类似于方块的翻书动画纹理（Flipbook）。
+
+## 来源说明
+
+本教程内容基于 [AgentMindStorm](https://www.youtube.com/channel/UC-ljddYkFdTQl-MVEaVvbuQ) 的原创作品。
 
 <YouTubeEmbed
     id="F6e-w1rCEi4"
 />
 
-## Textures
+## 纹理制作
 
-First let's draw some new texture frames for our entity. In this tutorial it will be a cow, which is looking around.
+首先我们需要为实体绘制若干关键帧纹理。本教程将以四处张望的牛作为示例。
 
 <WikiImage
 	src="/assets/images/visuals/animated-entity-texture/cow.png"
-	alt="cow"
+	alt="牛的动画帧示例"
 	pixelated="false"
 	width=180
 />
 
-We need to place our textures vertically, like for blocks in flipbook textures.
-In this case we have 4 frames.
+与方块的翻书动画类似，我们需要将纹理帧进行纵向排列。本示例共使用4帧动画。
 
-## Materials
+## 材质配置
 
-We will need to modify materials in this guide. However due to render dragon materials became outdated, so **use it at your own risk**.
+在本指南中我们需要修改材质文件。但由于Render Dragon渲染引擎的更新，传统材质系统已过时，**请自行评估使用风险**。
 
-To use animated texture, we need to change the entity material to one, that has `USE_UV_ANIM` property.
-Let's simply add a new material:
+要实现动态纹理，需要将实体材质更改为具有`USE_UV_ANIM`属性的类型。我们可以通过添加新材质实现：
 
-<CodeHeader>RP/materials/entity.material</CodeHeader>
-
-```json
+::: code-group
+```json [RP/materials/entity.material]
 {
     "materials":{
         "version":"1.0.0",
@@ -58,66 +58,70 @@ Let's simply add a new material:
     }
 }
 ```
+:::
 
-Or you can add this to existing ones, check default material file.
+或者可以将该属性添加到现有材质中（参考默认材质文件）：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json []
 "+defines":[
     "USE_UV_ANIM"
 ]
 ```
+:::
 
 <BButton
     link="/assets/packs/visuals/animated-entity-texture/entity.material" download
     color=default
->Download default entity.material file</BButton>
+>下载默认entity.material文件</BButton>
 
 :::warning
-It is not that easy for every entity!
-Some entities have multiple materials and if you want to make its texture animated, you will need to add this property to all materials of this entity.
+注意：并非所有实体都适用简单修改！
+部分实体包含多种材质类型，若需要实现全身纹理动画，必须为实体使用的所有材质添加此属性。
 :::
 
-## Client Entity File
+## 客户端实体配置
 
-Before we go next, we need to define a new material in our client entity file.
+在继续之前，我们需要在客户端实体文件中指定新材质：
 
-<CodeHeader>RP/entity/cow.json#description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/cow.json#description]
 "materials": {
 	"default": "custom_animated"
 }
 ```
+:::
 
-## Render Controllers
+## 渲染控制器设置
 
-After that all, we need to edit a render controller.
+完成上述步骤后，需要编辑渲染控制器：
 
-Here we will add `uv_anim` component with offset and scale properties:
+在此我们将添加带有偏移量和缩放属性的`uv_anim`组件：
 
-<CodeHeader>RP/render_controllers/cow.render_controllers.json#controller.render.cow</CodeHeader>
-
-```json
+::: code-group
+```json [RP/render_controllers/cow.render_controllers.json#controller.render.cow]
 "uv_anim": {
     "offset": [ 0.0, "math.mod(math.floor(q.life_time * frames_per_second),frame_count) / frame_count" ],
     "scale": [ 1.0, "1 / frame_count" ]
 }
 ```
+:::
 
-Where `frames_per_second` is a count of frames you want to change in one second and `frame_count` is a total frame count.
-This formula calculates the offset and the size of the texture depending on life time.
+其中：
+- `frames_per_second`表示每秒播放的帧数
+- `frame_count`表示总帧数
 
-## Testing
+该公式会根据实体的存活时间自动计算纹理偏移量和缩放比例。
 
-Now, it is time to test your creation!
+## 效果测试
+
+现在可以测试你的动画效果了！
 
 ![](/assets/images/visuals/animated-entity-texture/result.gif)
 
-## Download Example
+## 示例下载
 
 <BButton
     link="https://github.com/Bedrock-OSS/wiki-addon/releases/download/download/animated_entity_texture.mcpack"
     color=blue
->Download</BButton>
+>下载示例包</BButton>

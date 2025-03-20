@@ -1,7 +1,7 @@
 ---
-title: Understanding JSON
-category: Extra
-description: A first peek into JSON
+title: 理解JSON
+category: 指南
+description: 初探JSON世界
 nav_order: 1
 prefix: 'a. '
 mentions:
@@ -13,92 +13,86 @@ mentions:
     - cda94581
 ---
 
+# 理解JSON
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: tip
-This is an appendix page. You can start the guide from the beginning [here](/guide/index).
+这是一个附录页面。您可以从[这里](/wiki/guide/index)开始完整阅读教程。
 :::
 
-JSON is a simple format for writing text files, in a way that is understandable to both Humans and Computers. Bedrock uses .json files as the "language" of Add-Ons, so you will need a solid understand of how to read and write json! If you have never heard of JSON before, you are encouraged to read through [this tutorial](https://www.digitalocean.com/community/tutorials/an-introduction-to-json). It will teach you everything you need to know about writing valid JSON files.
+JSON是一种简单的文本文件格式，既方便人类阅读又便于计算机解析。基岩版使用.json文件作为附加包的"编程语言"，因此您需要扎实掌握JSON的读写能力！如果您从未接触过JSON，强烈建议先阅读[这篇教程](https://www.digitalocean.com/community/tutorials/an-introduction-to-json)，它将教会您编写有效JSON文件所需的所有知识。
 
-## Valid JSON
+## 有效JSON
 
-The important thing to remember when writing JSON is that it must be _completely error free_, or it won't work at all. Even one wrong character, or one extra comma will cause the entire file to fail. For this reason, it's super important you write valid JSON.
+编写JSON时最关键的是必须确保文件_完全无错误_，否则整个文件将无法正常工作。即使一个错误的字符或多余逗号都会导致解析失败。因此，编写有效JSON至关重要。
 
-We can use an online tool called [json lint](https://jsonlint.com/) to tell us whether our JSON is valid. Simply paste your code into the website, and press `Validate JSON`. You will get a response indicating whether your code is correct or not, as well as the location and type of any errors.
+我们可以使用在线工具[json lint](https://jsonlint.com/)来验证JSON格式。只需将代码粘贴到网站中，点击`Validate JSON`即可获得验证结果，包括错误位置和类型。
 
-## Data Structures
+## 数据结构
 
-In JSON, data can be written in a number of formats. Each format is specialized for the kind of data it wants to represent. Here are the structures we have available:
+JSON中使用多种格式表示数据，每种格式对应特定数据类型：
 
-| Name   | Example  | Explanation                            |
-| ------ | -------- | -------------------------------------- |
-| String | "hello!" | Words, or characters. Requires quotes. |
-| Int    | 15       | A number. No quotes.                   |
-| Float  | 1.2      | A fractional number. No quotes.        |
-| Bool   | true     | Either true or false. No quotes.       |
+| 名称    | 示例      | 说明                           |
+| ------- | -------- | ----------------------------- |
+| 字符串  | "Hello!" | 文本字符。必须用引号包裹       |
+| 整型    | 15       | 整数。无需引号                 |
+| 浮点型  | 1.2      | 小数。无需引号                 |
+| 布尔值  | true     | 只能是true或false。无需引号    |
 
-And now, in .json format:
-
+JSON格式示例：
 ```json
 {
-  "my_string": "hello!",
+  "my_string": "你好！",
   "my_int": 15,
   "my_float": 1.2,
   "my_bool": true
 }
 ```
 
-In addition to these simple structures, we also have access to two special structures. Special structures are used to *nest* other data together.
+除了基础类型，还有两种特殊数据结构用于_嵌套_数据：
 
-### Arrays
+### 数组
 
-Arrays are written as two square brackets `[]`. They represent a _list_. We can put _other data structures_ inside of the list. Each _element_ of the list should be separated by a comma.
+数组使用方括号`[]`表示，本质是_有序列表_。列表元素可以是任意数据类型，元素间用逗号分隔。
 
-Some examples:
+示例：
+| 结构          | 说明                     |
+| ------------- | ----------------------- |
+| [1, 2, 3]     | 整型数组                |
+| ["红", "蓝"]  | 字符串数组（注意引号！）|
 
-| Structure       | Comment                               |
-| --------------- | ------------------------------------- |
-| [1, 2, 3]       | A list of integers.                   |
-| ["Red", "blue"] | A list of strings. Notice the quotes! |
-
-And now, in .json format:
-
+JSON格式：
 ```json
 {
    "my_ints": [1, 2, 3],
-   "my_strings": ["Red", "blue"]
+   "my_strings": ["红", "蓝"]
 }
 ```
 
-### Objects
+### 对象
 
-Objects are written as two curly-brackets `{}`. Objects are a special syntax which contains _named_ data structures. The name is called a `key`, and the structure is called a `value`. The examples earlier in this page was a *dictionary* containing examples of the other data types.
+对象使用花括号`{}`表示，包含_键值对_集合。键名称为`key`，对应数据称为`value`。键值对的格式为`"<key>": <value>`，注意键名必须用引号包裹且后接冒号。
 
-This key-value syntax looks like this: `"<key>": <any structure>`. Notice the quotes around the key, and the colon.
-
-Here is an example of an object, which contains a few _key-value-pairs_.
-
-<CodeHeader></CodeHeader>
-
-```json
+对象示例：
+::: code-group
+```json [示例对象]
 {
 	"a_list_of_integers": [1, 2, 3],
 	"is_json_cool": true
 }
 ```
+:::
 
-We need to separate each key-value pair with a comma.
+键值对之间需要用逗号分隔。我们称对象内的键值对为它的_子元素_或_内部元素_。
 
-We call the key-value pairs of an object as its _child_ or as being _inside_ the object.
+## JSON结构规范
 
-## JSON Structure
+在Minecraft中，JSON文件总是以_对象_（即`{}`）开头，称为_顶层对象_。所有代码都以键值对形式编写在这个对象内部。
 
-In Minecraft, JSON files always begin with an _object_, which you can remember is two curly brackets:`{}`. We call this the _top level object_. We write our code _inside_ of this object, in the form of key-value pairs.
-
-Here is an example of a simple json file, used for Minecraft addons:
-
-<CodeHeader></CodeHeader>
-
-```json
+以下是一个典型的Minecraft附加包JSON文件示例：
+::: code-group
+```json [动画文件示例]
 {
 	"format_version": "1.12.0",
 	"animations": {
@@ -117,35 +111,36 @@ Here is an example of a simple json file, used for Minecraft addons:
 	}
 }
 ```
+:::
 
-Take a careful look at the format. You will see that the entire structure is built out the data-structures that we have already learned. If you want to practice your json skills, try to answer these questions:
+仔细观察这个结构，可以发现它完全由我们已学过的数据类型构成。试着回答以下问题来检验理解：
 
--   How many keys are there in the _top level object_. Can you name them?
--   What is the value of `format_version`?
--   What kind of data is stored in the `"loop"` key? (string, boolean, etc)
+- 顶层对象中有多少个键？分别是什么？
+- `format_version`的值是什么类型？
+- `"loop"`键存储的是哪种数据类型？（字符串、布尔值等）
 
-## Troubleshooting Examples
+## 常见问题排查
 
-Here are a few examples, to help you understand feedback you might recieve on the discord or online. We tend to use technical jargon when talking about errors in JSON, so hopefully this section helps familizrize you with the terms: 
-
----
-
-You wrote: `"format_version": 1.12`
-
-They said: "_The value for format_version is the wrong type. It should be a string._
-
-Remember that `type` means one of the structures: `String`, `Int`, `Float`, `Array` or `Object`. If we examine our code, we will see that we put `format_version` to a `Float`, instead of a `String`. We can fix this problem by adding quotes around the `"1.12"`.
+以下是几个典型错误案例，帮助您理解社区讨论中常用的技术术语：
 
 ---
 
-You wrote: `[1 2 5 6]`
+**错误写法**：`"format_version": 1.12`
 
-They said: "_Your array is missing commas._"
+**反馈**："_format_version的值类型错误，应为字符串_"
 
-Remember that array elements need to be separated by commas. Your array should look like this: `[1, 2, 5, 6]`
+**解析**：此处将`format_version`设为浮点型而非字符串型。应添加引号改为`"1.12"`
 
 ---
 
-They said: _"You accidentally put the format version inside your description. It should go outside at the top level_".
+**错误写法**：`[1 2 5 6]`
 
-This means that the key-value pair for `"format_version"` as a _child_ of the description. You should copy/paste the key-value pair out from the description object, and place it at the top level.
+**反馈**："_数组缺少逗号分隔_"
+
+**解析**：数组元素必须用逗号分隔，正确写法应为`[1, 2, 5, 6]`
+
+---
+
+**反馈**："_format_version被错误地放在description内部，应置于顶层_"
+
+**解析**：说明`"format_version"`键值对被错误嵌套在description对象内。需要将其移至顶层对象中。

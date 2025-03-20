@@ -1,8 +1,8 @@
 ---
-title: 'Particles and Sounds'
-category: General
+title: '粒子与音效'
+category: 基础
 tags:
-    - outdated
+    - 已过时
 mentions:
     - SirLich
     - Joelant05
@@ -12,69 +12,71 @@ mentions:
     - solvedDev
 ---
 
+# 粒子与音效
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::danger
-Some information from this page was copied [here](/visuals/animation-effects)
+本页部分信息已迁移至[动画效果文档](/wiki/visuals/animation-effects)
 :::
 
-## Particles in Animation
+## 动画中的粒子效果
 
-Minecraft Particles can be used in entity animations. For example, the phantom has an animation which emits the minecraft:phantom_trail particle constantly. Let's try to add a particle to our entity's attack animation.
+Minecraft粒子效果可以应用于实体动画。例如，幻翼拥有持续释放minecraft:phantom_trail粒子的动画。让我们尝试在实体的攻击动画中添加粒子效果。
 
-`part of RP/entity/description/`
+`资源包/entity/description/ 目录下`
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [实体描述文件示例]
   "particle_effects": {
     "l_explosion": "minecraft:large_explosion"
   },
 ```
+:::
 
-This piece of code is located in our resource entity file. Here we defined the shortname ("l_explosion") for the particle we are going to use, "minecraft:large_explosion".
+这段代码位于资源包实体文件中。这里我们为将要使用的粒子"minecraft:large_explosion"定义了一个简称"l_explosion"。
 
-You can test a particle in-game with the `/particle <namespace:particle_id> ~ ~2 ~` command. You can view the full list of Vanilla Particles [here](https://minecraft.wiki/w/Particles).
+可以通过指令`/particle <命名空间:粒子ID> ~ ~2 ~`在游戏中测试粒子效果。完整原版粒子列表可参考[Minecraft Wiki](https://minecraft.wiki/w/Particles)。
 
-Now for the Blockbench part.
+现在进行Blockbench操作：
 
--   Right click the bone were your particle will be emitted from, and choose 'Add Locator' with the anchor icon. Name it something distinct, like 'l_expl_emitter'. Now move the emitter to the desired location.
+1. 右键点击要发射粒子的骨骼，选择锚点图标添加定位器，命名如"l_expl_emitter"，并移动到目标位置
 
 ![](/assets/images/guide/custom_particles_1.png)
 
-_Note: you can also use locators to define where a lead will leash to, if you name your locator 'lead'._
+_注：命名为'lead'的定位器可定义栓绳连接点_
 
--   In the 'Animate' section, choose 'Animate Effects' on your timeline, then click on the '+' icon near the 'Particle' object.
+2. 在动画时间轴中选择"Animate Effects"，点击粒子对象旁的+号
 
 ![](/assets/images/guide/custom_particles_2.png)
 
--   You will see this menu on your left. 'Effect' asks for your particle's shortname, and 'Locator' asks for the name of your Locator/Emitter object.
+3. 左侧面板中填写粒子简称和定位器名称
 
 ![](/assets/images/guide/custom_particles_3.png)
 
-_Note: you can add sounds to animations in a similar way._
+_注：音效添加方式类似_
 
 ![](/assets/images/guide/custom_particles_4.jpg)
 
-Now you're good to go! Save the model and the animations. If you did everything correctly, the defined particle will spawn whenever the entity attacks. _Of course you could put another particle on the walking animation's timeline (for example, hooves making dust) in the same way._
+完成保存后，实体攻击时将生成指定粒子效果。_同理可在行走动画中添加蹄印扬尘效果_
 
-## Custom Particles
+## 自定义粒子
 
-Custom particles are defined in the `RP/particles` folder. As mentioned earlier on this page, you can summon particles using the '/particle' command (e.g in Behavior Animations) or using Resource Animation emitters. The best way to learn custom particles is to play around with the example files from the [Vanilla Example resource pack](https://www.minecraft.net/en-us/addons) and the Particle Example Pack, and of course, from the documentation on [bedrock.dev](http://bedrock.dev/r/Particles).
+自定义粒子定义于`RP/particles`目录。可通过指令或动画发射器调用。建议通过[原版示例资源包](https://www.minecraft.net/en-us/addons)和[bedrock.dev粒子文档](http://bedrock.dev/r/Particles)学习。
 
-_Note: Skip to the end of this section for a tool to generate particle files visually._
+_提示：文末提供可视化粒子生成工具_
 
-File structure:
-
--   "identifier" is exactly what you'd expect: I'll use "wiki:curvy_particle" and "wiki_pink_hit" for the tutorial. File names do not matter.
--   "texture" defines the texture file. Not that a single image file can hold textures for many particles.
--   "material" is usually set to "particles_alpha" for particles.
+文件结构说明：
+- "identifier"：粒子标识符（示例使用"wiki:curvy_particle"）
+- "texture"：支持多粒子共用纹理图集
+- "material"：通常设为"particles_alpha"
 
 ![](/assets/images/guide/custom_particles_5.png)
 
-That is the texture I'm going to use, it's size is `16x16`. (`RP/particles/wiki_particles.png`). As you can see, it has 4 different textures in it, each of them being a `8x8`. The upper row (_starting/top left corner at at 0, 0_) is the flipbook texture for "wiki:curvy*particle" and the bottom row (\_top left corner at/starting at 0, 8*). We'll define this in the "billboard_texture" component.
+使用16x16纹理图集（路径：`RP/particles/wiki_particles.png`），包含4个8x8子纹理。上排（0,0起始）用于"wiki:curvy_particle"，下排（0,8起始）用于其他粒子。
 
-<CodeHeader>RP/particles/curvy_particle.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/particles/curvy_particle.json]
 {
 	"format_version": "1.10.0",
 	"particle_effect": {
@@ -131,22 +133,17 @@ That is the texture I'm going to use, it's size is `16x16`. (`RP/particles/wiki_
 	}
 }
 ```
+:::
 
-Here's the code for our first particle, "wiki:curvy_particle". Our texture file is defined.
+参数解析：
+- "texture_width/height"：纹理图尺寸
+- "base_UV"：粒子起始坐标（示例下个粒子为[0,8]）
+- "size_UV"：粒子纹理尺寸
+- "step_UV"：帧切换步长
+- "frames_per_second"：帧速率
 
-The components are quite complicated here, but they're explained well on the [Particle doc](http://bedrock.dev/r/Particles). Let's move forward to the `"minecraft:particle_appearance_billboard"` component for now.
-
--   "texture_width" and "texture_height" defines the size of the image file itself.
--   "base_UV" in "flipbook" defines the top-left corner of the particle texture. For this particle it's at 0, 0, which is the upper left corner of the image itself. For the second particle, "wiki:pink_hit", "base_UV" will be at 0, 8, which is 8 pixels lower then the first location.
--   "size_UV" defines the size of the particle's texture(8*8) on the image file(which is 16*16).
--   "step_UV" is how far the flipbook needs to step in order to get the next particle texture. In this case it's 8, 0, which is 8 pixels to the right.
--   "frames_per_second" is quite self-explainable. "max_frame" is the total number of frames for the particle.
-
-The second particle, "wiki:pink_hit".
-
-<CodeHeader>RP/particles/pink_hit.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/particles/pink_hit.json]
 {
 	"format_version": "1.10.0",
 	"particle_effect": {
@@ -220,10 +217,9 @@ The second particle, "wiki:pink_hit".
 	}
 }
 ```
+:::
 
-Done! Now you have two custom particles that can be used in animations!
-
-It's rather tiresome to create particles that way, comparable to creating models without Blockbench. Luckily, you can use [Snowstorm](https://jannisx11.github.io/snowstorm/), a Visual Particle Generator. It's especially convenient to download the [VSC Snowstorm Extension](https://marketplace.visualstudio.com/items?itemName=JannisX11.snowstorm), which is going to create an interactive UI in Visual Studio Code itself for `.particle.json` files.
+建议使用可视化工具[Snowstorm](https://jannisx11.github.io/snowstorm/)或[VSC扩展](https://marketplace.visualstudio.com/items?itemName=JannisX11.snowstorm)简化粒子创建。
 
 ![](/assets/images/guide/custom_particles_6.jpg)
 `/particle wiki:pink_hit ~ ~2 ~`
@@ -233,21 +229,19 @@ It's rather tiresome to create particles that way, comparable to creating models
 
 ---
 
-## Defining Custom Sounds
+## 自定义音效
 
-_You can find a more in-depth tutorial on custom sounds on [wiki.bedrock.dev](/concepts/sounds)._
+详细教程参见[Bedrock开发Wiki](/wiki/concepts/sounds)
 
-Minecraft can read sound files in the `.ogg` (recommended) or `.wav` format. (You can look up an .mp3 to .ogg converter online). Personally, I usually get my sound effects from ZapSplat.com.
+### 文件规范
+- 格式：推荐.ogg，支持.wav
+- 路径：`RP/sounds/`子目录（示例使用`RP/sounds/mob/`）
 
-Sound files are located in subfolders of the `RP/sounds/` folder. My skele_yaklin sound files are located under `RP/sounds/mob/yaklin_moo.ogg` and `RP/sounds/mob/yaklin_moo_2.ogg`. (I don't have more sound effects currently, thus I will be using same ones over and over, but ideally one would need more of those).
+### 音效定义
+在`RP/sounds/sound_definitions.json`中注册：
 
-### Sound Definition
-
-Now to define the sound's shortnames! This process is similar to defining block texture shortnames. It's done in `RP/sounds/sound_definitions.json`.
-
-<CodeHeader>RP/sounds/sound_definitions.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/sounds/sound_definitions.json]
 {
 	"format_version": "1.14.0",
 	"sound_definitions": {
@@ -269,30 +263,16 @@ Now to define the sound's shortnames! This process is similar to defining block 
 	}
 }
 ```
+:::
 
-We have 3 sound shortnames in total:
+### 音效绑定
+通过`RP/sounds.json`关联实体事件：
 
-1. `mob.yaklin.idle`, which refers to a random sound file from the "sounds": [] array.
-1. `mob.yaklin.death` can be heard from the distance of 12 blocks: `max_distance": 12.0`.
-1. And, lastly, `mob.yaklin.hurt`.
-
-### sounds.json
-
-Now we are about to call our sounds. We can do it either through the `/playsound <>` slash command or automatically in `RP/sounds.json`. Once again, this resembles block resource definition.
-
-![](/assets/images/guide/custom_particles_8.png)
-
-^ the file's structure. I recommend checking out the same file in the Example Resource Pack.
-
-<CodeHeader>RP/sounds.json/"entities": {}/"wiki:skele_yaklin": {}</CodeHeader>
-
-```json
+::: code-group
+```json [实体音效配置示例]
   "wiki:skele_yaklin": {
     "volume": 1.0,
-    "pitch": [
-      1.0,
-      1.0
-    ],
+    "pitch": [1.0, 1.0],
     "events": {
       "ambient": "mob.yaklin.idle",
       "hurt": "mob.yaklin.hurt",
@@ -305,32 +285,24 @@ Now we are about to call our sounds. We can do it either through the `/playsound
     }
   }
 ```
+:::
 
-Let's see how the sounds of the skele_yaklin are called in the entity's object.
-
--   The first "volume" and "pitch" are global, they are the starting point for every other of the entity's sounds. If you want the sounds to play exactly how they are, set both of them to 1;
--   "events" include the automatic sounds to be played. There are a couple Vanilla events that will trigger automatically(you can see the whole list on the wiki.bedrock.dev page linked bove). All of the events call a sound's shortname.
--   "ambient" plays occasionally, for example the sheep "baah" sound.
--   "hurt" plays when the entity is hurt.
--   "death" plays on death.
--   "step" is the sound of the mob walking. I used the cow step sound, already included in the base game.
-
-That's it! Turn up your Sound volume in Settings>Audio, spawn in your mobs, and listen to the melodic cacophony of their new voices!
+事件类型说明：
+- ambient：环境音（如生物呼吸声）
+- hurt：受伤音效
+- death：死亡音效
+- step：移动音效
 
 ---
 
----
+## 进度总结
 
-## Your progress so far
+**已完成：**
+- 掌握动画粒子效果实现
+- 创建两种自定义粒子
+- 配置实体自定义音效
 
-**What you've done:**
-
--   Learned to include Particles in Animations
--   Created two Custom Particles and learned to create more
--   Defined custom Sounds for your custom entity;
-
-**What are you to do next:**
-
--   Create custom biomes
--   Create custom generated Structures
--   Be introduced to Scripting
+**后续方向：**
+- 自定义生物群系
+- 创建生成结构
+- 脚本系统入门

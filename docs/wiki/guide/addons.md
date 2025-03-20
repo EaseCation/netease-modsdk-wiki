@@ -1,7 +1,7 @@
 ---
-title: Addons Explained
-category: Guide
-description: The basics of Addons
+title: Addons详解
+category: 指南
+description: 附加包的基础知识
 nav_order: 2
 prefix: '2. '
 mentions:
@@ -18,55 +18,86 @@ mentions:
     - SmokeyStack
 ---
 
-## What are addons?
+# Addons 详解
 
-Addons allow us to modify the contents of our Minecraft Experience by _modifying_ or _removing_ existing content and _adding_ our own. Addons are very powerful and allow us to create custom entities, items, and blocks, as well as things like custom loot tables and crafting recipes. Your imagination is the limit!
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-Addons are primarily written in [json](/guide/understanding-json), which is a structured data-format. An addon is essentially a collection of json files, images, and sounds, which modify or add to the game in some way.
+## 什么是附加包(Adddons)？
 
-## What's the difference between a Behavior Pack & a Resource Pack?
+附加包允许我们通过 _修改_ 或 _移除_ 现有内容以及_添加_自定义内容来改变Minecraft的游戏体验。它们功能强大，可以创建自定义实体、物品、方块，以及自定义战利品表和合成配方等。你的想象力就是唯一的限制！
 
-Addons are split into two pack types: Resource Packs, and Behavior Packs. Both can function independently, but they are most commonly used together. When you have both a Resource Pack and Behavior Pack, this is referred to as an _addon_.
+附加包主要使用结构化数据格式[JSON](/wiki/guide/understanding-json)编写。本质上，附加包是一系列JSON文件、图像和声音文件的集合，通过这些文件以某种方式修改或增强游戏内容。
 
-### Resource Pack
+## 行为包与资源包的区别？
 
-The Resource Pack, also known as the _client_, or RP, is responsible for the _visuals_ and _sounds_ in your addon. This includes things like:
+附加包分为两种类型：资源包（Resource Pack）和行为包（Behavior Pack）。两者可以独立运行，但通常配合使用。当同时使用资源包和行为包时，就组成了一个_附加包_。
 
--   Textures
--   Sounds
--   Geometry
--   Animations
--   Particles
+### 资源包
 
-### Behavior Pack
+资源包（Resource Pack），也称为 _客户端_ 或RP，负责附加包的 _视觉效果_ 和 _声音_ 。主要包括：
 
-The Behavior Pack, also known as the _server_, or BP, is responsible for the _logic_ of your addon. This can include things like:
+-   材质贴图
+-   音效
+-   几何模型
+-   动画
+-   粒子效果
 
--   How your entity acts
--   Crafting recipes
--   Loot tables
--   Custom functions
+### 行为包
 
-### Communication between packs
+行为包（Behavior Pack），也称为 _服务端_ 或BP，负责附加包的 _逻辑功能_ 。主要包括：
 
-In most cases, you will have both a RP and a BP together. These packs can communicate with or will require each other for them to function properly, in the sense that assets defined in one can be accessed in the other. For example, when creating a custom entity, you need two files:
+-   实体行为
+-   合成配方
+-   战利品表
+-   自定义函数
 
--   An RP entity definition, which describes how your entity will _look_
--   A BP entity definition, which describes how your entity will _act_
+### 包间通信
 
-## What you have learned
+大多数情况下需要同时使用RP和BP。这两个包之间会进行通信或相互依赖才能正常运行，即在一个包中定义的资源可以被另一个包访问。例如创建自定义实体时需要两个文件：
+
+-   RP实体定义文件（描述实体 _外观_）
+-   BP实体定义文件（描述实体 _行为_）
+
+## 知识总结
 
 :::tip
 
--   Addons modify Minecraft content or add their own
--   Addons are written in json
--   An addon is split into the **Resource Pack** and the **Behavior Pack**: - Resource Packs contain Textures, Sounds, ... and control how the game looks - Behavior Packs contain entity-files, crafting recipes, ... and control the logic of your game
+-   附加包可以修改Minecraft内容或添加新内容
+-   附加包使用JSON语言编写
+-   附加包分为**资源包**和**行为包**：
+    -   资源包包含材质、音效等内容，控制游戏外观
+    -   行为包包含实体文件、合成配方等内容，控制游戏逻辑
 :::
 
-## What to do now?
+## 下一步建议
 
 <BButton
     link="/guide/software-preparation"
     color=blue
->Check out software and preparation page!</BButton>
+>查看软件准备指南！</BButton>
 
+::: code-group
+```json [示例RP实体定义]
+// 自定义苦力怕的材质路径
+"minecraft:client_entity": {
+    "description": {
+        "textures": {
+            "default": "textures/entity/custom_creeper"
+        }
+    }
+}
+```
+:::
+
+::: code-group
+```json [示例BP实体定义]
+// 设置自定义苦力怕的爆炸行为
+"minecraft:entity": {
+    "components": {
+        "minecraft:explode": {
+            "fuseLength": 2.5
+        }
+    }
+}
+```
+:::

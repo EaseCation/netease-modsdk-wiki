@@ -1,11 +1,11 @@
 ---
-title: Troubleshooting
-category: Extra
-description: A simple troubleshooting guide
+title: 故障排除
+category: 指南
+description: 简明故障排查指南
 prefix: 'c. '
 nav_order: 3
 tags:
-    - help
+    - 帮助
 mentions:
     - SirLich
     - Joelant05
@@ -16,66 +16,68 @@ mentions:
     - SmokeyStack
 ---
 
-Creating Addons for Bedrock Minecraft is a relatively straightforward process _once you get the hang of it_. The first time is usually a frustrating, bug-prone process. This document contains some tips and tricks for fixing those dastardly bugs, as well as best practice information.
+# 故障排除
 
-Please read the whole page, before jumping into troubleshooting tips for a specific domain.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## Reload
+为 Minecraft 基岩版创建附加包是一个相对直接的过程——_一旦掌握窍门后_。但初次尝试通常充满挫折，极易出现各种错误。本文档包含修复这些棘手问题的技巧与最佳实践建议。
 
-First, you should always reload Minecraft. That means fully closing the game and then reopening it. This can catch many errors, especially those related to assets that are accessed via a filepath, such as textures or loot tables.
+在深入特定领域的故障排除之前，请完整阅读本页内容。
 
-## The Environment
+## 重新加载游戏
 
-The best way to prevent nasty bugs is by working in the right environment. You should review the [software preparation document](/guide/software-preparation) for editor recommendations. The most important part is getting a JSON-linter, ([or using an online json-linter](https://jsonlint.com/)), and storing your packs in `development_behavior_packs` and `development_resource_packs`.
+首先，你应当始终尝试完全重载 Minecraft。这意味着彻底关闭游戏后重新启动。这可以解决许多错误，特别是那些与通过文件路径访问的资产相关的问题（如纹理材质或战利品表）。
 
-If you have your addons in the normal folders, you can run into "pack caching" issues, where you edit the files in one location, but the game is still using the old files.
+## 开发环境配置
 
-## Content Log
+避免棘手错误的最佳方式是配置正确的开发环境。建议回顾[软件准备文档](/wiki/guide/software-preparation)获取编辑器推荐。最重要的是配置 JSON 语法检查器（[或使用在线 JSON 校验工具](https://jsonlint.com/)），并将资源包存放在 `development_behavior_packs` 和 `development_resource_packs` 目录。
 
-:::warning Use the Content Log!
-Content log is the best tool you have for debugging your addons. Please don't skip this step!
+如果将附加包存放在常规文件夹中，可能会遇到"包缓存"问题——即你编辑了某处的文件，但游戏仍在读取旧文件。
+
+## 内容日志
+
+:::warning 善用内容日志！
+内容日志是你调试附加包的最佳工具。请勿跳过此步骤！
 :::
 
 ::: tip
-Errors are not cleared between runs, so the errors you see in the content log may be _old_ errors from prior runs.
+错误信息不会在多次运行间自动清除，因此内容日志中显示的错误可能是_之前运行_遗留的旧错误。
 :::
 
-The 'Content Log' is a list of issues found in your pack. Minecraft will generate this list every time your load your world. It can catch issues such as:
-    - Wrong texture path
-    - Wrong spelled component
-    - Incorrect json structure
+'内容日志'是游戏检测到的附加包问题清单。Minecraft 会在每次加载世界时生成该列表。它可以捕获以下类型的问题：
+    - 错误的纹理路径
+    - 拼写错误的组件名称
+    - 不正确的 JSON 结构
 
-Content log can be turned on in in `Settings > Creator`. The content log will show in-game on load up, and if more errors occur during gameplay.
+内容日志可在 `设置 > 创作者` 中启用。游戏加载时会显示初始日志，游戏过程中新出现的错误也会实时更新。
 
 ![](/assets/images/guide/content_log.png)
 
+### 日志文件位置
 
-### Content Log File
+内容日志以 `.txt` 格式保存在以下路径：
 
-The content log is saved in `.txt` format inside your files:
+- *Windows*: `C:\Users\用户名\AppData\Local\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\logs`
+- *Android:* `/storage/emulated/0/Android/data/com.mojang.minecraftpe/files/games/com.mojang/logs`
 
-    - *Windows*: `C:\Users\USERNAME\AppData\Local\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\logs`
-    - *Android:* `/storage/emulated/0/Android/data/com.mojang.minecraftpe/files/games/com.mojang/logs`
+## 使用原版资源
 
+建议下载原版资源包和行为包。你可以在[官方附加包页面](https://www.minecraft.net/en-us/addons/)找到这些资源。遇到问题时可以与原版文件进行对比！
 
-## Using Vanilla Resources
+## JSON 模式校验
 
-You should download the vanilla resource and behavior pack. You can find the vanilla resource and behavior pack [here](https://www.minecraft.net/en-us/addons/). You can compare against the vanilla files if you have any issues!
+JSON 模式是验证文件有效性的重要工具。了解更多关于 JSON 模式的使用方法，请参阅[模式校验文档](/wiki/meta/using-schemas)。
 
-## JSON-Schemas
+# 附加包故障排查
 
-JSON-Schemas are a valuable tool for file validation. You can learn more about JSON-Schemas [here](/meta/using-schemas).
+## 实体
 
-# Troubleshooting your addon!
+<BButton link="/entities/troubleshooting-entities"> 实体问题排查</BButton>
 
-## Entities
+## 物品
 
-<BButton link="/entities/troubleshooting-entities"> Troubleshoot your entities.</BButton>
+<BButton link="/items/troubleshooting-items"> 物品问题排查</BButton>
 
-## Items
+## 方块
 
-<BButton link="/items/troubleshooting-items"> Troubleshoot your items.</BButton>
-
-## Blocks
-
-<BButton link="/blocks/troubleshooting-blocks"> Troubleshoot your blocks.</BButton>
+<BButton link="/blocks/troubleshooting-blocks"> 方块问题排查</BButton>

@@ -1,49 +1,53 @@
 ---
-title: Enabling VR
-category: General
+title: 启用VR模式
+category: 基础
 nav_order: 1
 mentions:
     - TheDoctor15
     - MedicalJewel105
 tags:
-    - guide
+    - 指南
 ---
 
-Minecraft VR was formerly available for download via the Oculus store, but that version hasn't been updated in a long time. This article will show you how to enable VR in the most recent version of Minecraft on your Windows PC.
+# 启用VR模式
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+Minecraft VR 版本此前可通过Oculus商店下载，但该版本已长期未更新。本文将指导您在Windows PC上最新版本的Minecraft中启用VR模式。
 
 :::warning
-If you are on Playstation you don't need to follow this guide.
+PlayStation用户无需遵循本指南。
 :::
 
-## Creating the desktop shortcut
+## 创建桌面快捷方式
 
-Right-click on your desktop and create a new shortcut:
+在桌面右键点击并新建快捷方式：
 
 ![](/assets/images/vr/install/vr_desktop.png)
 
-As location you fill in `minecraft://Mode/?OpenXR=true`.
+在目标位置输入 `minecraft://Mode/?OpenXR=true`：
 
 ![](/assets/images/vr/install/vr_shortcut_path.png)
 
-You can name it how ever you want, in the end you should have a shortcut looking like this:
+可自定义快捷方式名称，最终应获得如下样式的快捷方式：
 
 ![](/assets/images/vr/install/vr_shortcut_icon.png)
 
-## Opening Minecraft in VR
+## 启动VR版Minecraft
 
-First make sure you connected your headset properly:
+请确保已正确连接头戴设备：
 
 ![](/assets/images/vr/install/vr_headset.png)
 
-When your headset is all setup it is time to open the shortcut.
+完成设备配置后，即可通过快捷方式启动游戏。
 
-## Your progress so far
+## 当前进度
 
 <Checklist>
 
--   [x] Setup Minecraft VR
--   [ ] Setup your VR resource pack
--   [ ] Create custom hands
--   [ ] Create a custom living room
+-   [x] 配置Minecraft VR
+-   [ ] 配置VR材质包
+-   [ ] 创建自定义手势
+-   [ ] 创建个性化虚拟空间
 
 </Checklist>

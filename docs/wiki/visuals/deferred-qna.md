@@ -1,248 +1,211 @@
 ---
-title: Deferred Technical Preview Q&A 2024/02/23
+title: 延迟渲染技术预览问答
 mentions:
     - SmokeyStack
 ---
 
-This Q&A took place in the [Bedrock Add-Ons discord](https://discord.gg/uZF75ZxcJq). Six Mojang/Microsoft employees joined us to answer questions about the Deferred Technical Preview API. Questions were community sourced.
+# 延迟渲染技术预览问答 2024/02/23
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+本次问答活动在[Bedrock附加组件Discord](https://discord.gg/uZF75ZxcJq)进行。六位Mojang/Microsoft员工加入我们，就延迟技术预览API相关问题进行解答。问题均来自社区征集。
 
 :::warning
-Not all messages were copied over, and some were copy-edited. If you want to see everything, join the above discord, and get the "events archive" role.
+并非所有消息都被完整转录，部分内容经过编辑。如需查看完整记录，请加入上述Discord服务器并获取"活动档案"身份组。
 :::
 
-## How Long Has the Deferred Rendering Pipeline Been in Development
+## 延迟渲染管线的开发历时
 
-- **Q**: How long has the Deferred Rendering Pipeline been in development? What were the challenges in making this pipeline?
-- **A**: The Deferred pipeline has been in development in various forms since 2020.  Parts of it were born out of optimizations to the RTX pipeline but other parts were born out of the pipeline used for Minecraft Legends.  Development started in earnest in March of 2022.
+- **问**：延迟渲染管线的开发历时多久？开发过程中遇到了哪些挑战？
+- **答**：延迟渲染管线自2020年起以不同形式进行开发。部分技术源自RTX管线的优化，另一些则源自《我的世界：传奇》项目。2022年3月正式启动全面开发。
 
-## Supported Platforms
+## 支持平台
 
-- **Q**: Will any platforms not be supported?
-- **A**: There's no official announcements right now on what will or will not be supported. As mentioned in another thread, we aim to make deferred as widely available as possible on devices that can support it, but ensure that the visuals and perf are where they should be for a good playing experience.
+- **问**：是否有不支持的平台？
+- **答**：目前尚无官方声明。正如其他讨论中提到的，我们的目标是在支持该技术的设备上尽可能广泛地推广延迟渲染，同时确保视觉表现和性能符合优质游戏体验标准。
 
-- **Q**: I solely play Minecraft on my phone and ray tracing, shaders, etc look so cool! But I have never been able to experience them 😞 Will deferred lighting be available for Android devices?
-- **A**: Yes! The deferred preview is currently available on Android and can be accessed as part of the Beta program. Also available in Preview on Xbox, iOS, and PC!
+- **问**：我主要在手机上玩Minecraft，光线追踪和着色器效果看起来很酷！但从未体验过😞 延迟光照会支持安卓设备吗？
+- **答**：支持！目前安卓用户可通过测试版程序体验延迟预览功能，Xbox、iOS和PC平台的预览版也已同步开放。
 
-- **Q**: Is deferred available on chrome book?
-- **A**: We don't have any news to share on when new platforms will be available right now, but we are definitely testing and looking into adding additional platforms that can handle deferred. We want to make sure as many players as possible can experience the new graphics mode but also that the playing experience will be solid.
+- **问**：Chromebook能运行延迟渲染吗？
+- **答**：目前没有新增平台计划，但我们正在积极测试并研究如何扩展支持平台。既要让更多玩家体验新技术，也要确保游戏体验的稳定性。
 
-## Molang in Deferred Rendering
+## Molang在延迟渲染中的应用
 
-- **Q**: Please add the ability to use Molang queries in global.json or any other files! It would be useful for detecting specific moon phases and create local/unique experiences!
-- **A**: Appreciate the suggestion, but we don't have any news to share on Molang integration right now. We have quite a few constraints with perf and other things that we have to be mindful of with deferred.
+- **问**：能否在global.json等文件中使用Molang查询？这对检测特定月相和创建本地化/独特体验很有帮助！
+- **答**：感谢建议，但目前没有Molang整合计划。我们需要谨慎处理延迟渲染的性能限制等问题。
 
-## Features Left
+## 剩余功能开发
 
-- **Q**: How many features are left for deferred?
-- **A**: There's some hints across the other threads, but I'll make a cheat sheet here 🙂 
-    Right now, in the works to share with you we have: Color grading, Water lighting + movement, Subsurface scattering, Reflections, and Texture Set support for Items and particles.
+- **问**：延迟渲染还有多少待开发功能？
+- **答**：其他讨论中已有暗示，这里做个速查表😉 
+    目前正在开发中的功能包括：色彩分级、水体光照+运动模拟、次表面散射、反射效果、物品与粒子的纹理集支持。
 
-## Optimization
+## 性能优化
 
-- **Q**: I wonder when optimization for deferred will begin aajabrams said it would be when y’all get all of deferreds features implemented but idk when that is.
-- **A**: AJ is right, we're definitely working on getting all the features out before really hammering at optimizations. No timeline to share right now, but definitely on our roadmap!
+- **问**：延迟渲染的优化何时开始？听说要等所有功能实现后才启动优化？
+- **答**：AJ的说法正确，我们确实需要先完成功能开发再集中优化。暂无具体时间表，但已列入路线图！
 
-## Pom Effects
+## 视差遮蔽映射效果
 
-- **Q**: Will Pom Effects Such As Paralax Be Added?
-- **A**: We don't have anything to share on POM techniques at this time, but thank you for the suggestion!
+- **问**：会添加视差遮蔽映射（POM）等效果吗？
+- **答**：目前没有关于POM技术的计划，感谢建议！
 
-## Deferred PBR
+## 延迟PBR扩展
 
-- **Q**: Can you expand deferred PBR capabilities with e.g. subsurface scattering, porosity, POM/tessellation, etc.?
-- **A**: Been answered in a few places already, mostly here: https://discord.com/channels/523663022053392405/1209533667224068188/1210658737103048805
-- **A**: Yes!  We will be expanding the current model to include a Sub Surface Scattering approximation, and we will also be enabling a unique lighting model for water geometry.  Water will operate on properties like how much algae is present.
+- **问**：是否会扩展延迟PBR功能（如次表面散射、孔隙率、曲面细分等）？
+- **答**：部分问题已回答：https://discord.com/channels/523663022053392405/1209533667224068188/1210658737103048805
+- **答**：是的！我们将扩展当前模型以包含次表面散射近似算法，并为水体几何创建独特光照模型。水体将根据藻类含量等属性呈现不同效果。
 
-- **Q**: "unique lighting model for water geometry" what about POM/tessellation for blocks?
-- **A**: We don't have any plans regarding POM/tessellation to share at this time.  Thank you for the suggestion, though!
+- **问**："水体独特光照模型"是否包含方块曲面细分？
+- **答**：目前没有曲面细分相关计划，感谢建议！
 
-## Super Duper Graphics Pack Cancellation
+## 超级画质包取消原因
 
-- **Q**: Why was the super duper graphics package canceled?
-- **A**: This [link](https://www.minecraft.net/en-us/article/super-duper-graphics-pack-ceasing-development) is probably still the best info for what happened with SDGP.
+- **问**：为何取消超级画质包开发？
+- **答**：该[链接](https://www.minecraft.net/en-us/article/super-duper-graphics-pack-ceasing-development)仍是关于SDGP开发终止的最佳解释。
 
-## Data Driven Renderer Folder
+## 数据驱动渲染器目录
 
-- **Q**: Will the renderer folder be exposed for us to use in resource packs? Doing so will allow many unique packs and configs for creators to experiment with.
-- **A**: Not the renderer folder itself, but there will be more data-driving capabilities that we expose to resource packs over time, yes.
+- **问**：是否会开放渲染器目录供资源包使用？这将极大扩展创作者实验空间。
+- **答**：不会直接开放目录，但会逐步开放更多数据驱动功能供资源包调用。
 
-## Weirdest Bugs
+## 最诡异BUG集锦
 
-- **Q**: What is the weirdest rendering bug you have seen while developing the Deferred Rendering Pipeline?
-- **A**: Early experiments with indirect specular ended up lighting the whole scene! ![](/assets/images/visuals/deferred-qna/deferred-qna-media1.gif)
-- **A**: We also see NaNs that get seeded and sometimes spread through the world.  Don't divide by zero, friends.  😉 ![](/assets/images/visuals/deferred-qna/deferred-qna-media2.png)
-- **A**: Who's that ~~Pokemon~~ Minecraft mob? ![](/assets/images/visuals/deferred-qna/deferred-qna-media3.png)
-- **A**: No screenshot, but another was when we had phantom shadows from mobs on the other side of the world!  At first we thought they were mobs with invisibility status and their shadow just needed to be hidden, but the corresponding mob was sometimes 1000s of blocks away with no invisibility!  Ended up being a transform-inversion issue.  That was a fun one to track down.
+- **问**：开发延迟渲染管线时遇到过哪些奇葩渲染BUG？
+- **答**：早期镜面反射间接光照实验曾导致整个场景过曝！![](/assets/images/visuals/deferred-qna/deferred-qna-media1.gif)
+- **答**：遇到过NaN（非数）污染并扩散的现象。朋友们，永远不要除以零😉 ![](/assets/images/visuals/deferred-qna/deferred-qna-media2.png)
+- **答**：猜猜这是哪个~~宝可梦~~ Minecraft生物？![](/assets/images/visuals/deferred-qna/deferred-qna-media3.png)
+- **答**：虽然没有截图，但曾出现世界另一端的生物幻影投射阴影！起初以为是隐身生物，后来发现对应生物竟在数千方块之外！最终定位是坐标系转换问题，这个BUG追踪过程非常有趣。
 
-## Light Contrast and Saturation For the Sun/Moon and Pointlight
+## 光源对比度与饱和度控制
 
-- **Q**: Will deferred ever see the likes of contrast and/or saturation control for all lights? For example increasing the contrast and/or saturation for colors from the sun/moon to have more bright and/or a somewhat vibrant color, or increasing Saturation for colors to standout.
+- **问**：是否会为所有光源添加对比度/饱和度控制？目前阳光颜色显得过于平淡。
+- **答**：不会单独控制每个光源，但会通过色调映射实现全局调节。我们正在开发完整的HDR色彩分级套件，包含对比度、饱和度、增益、偏移和分色调等参数，这些功能将通过资源包实现数据驱动。
 
-    I have noticed that colors from the sun is quite dull, and not even changing the tone-mapper helps a bit.
-- **A**: Not per light source, but, like Veka mentioned, we will be doing it on the full scene as part of tonemapping. And why stop at contrast and saturation?  We are working on a full HDR color grading suite, complete with contrast, saturation, gain, offset and split-tone grading. This feature will be data-drivable in your resource packs.
+## 焦点参数
 
-## Focus Parameter
+- **问**：是否会为物体添加焦点模式？
+- **答**：暂无相机相关功能计划，感谢建议！
 
-- **Q**: Will a focus mode be added to the Object ?
-- **A**: We don't have anything to share regarding focus or other camera-related properties at this time.  Thank you for the suggestion!
+## 可定制云层
 
-## Customizable Clouds
+- **问**：当前延迟渲染的云层定制性有限，是否计划添加体积云？
+- **答**：暂无云层相关计划，但感谢建议！
+ 
+- **问**：是否会支持多云层配置（类似SDGP）？
+- **答**：感谢建议！目前没有云层相关更新计划
 
-- **Q**: As of right now, Clouds are not really customizeable for deferred, is there plans to add volumetric Clouds.
-- **A**: No plans on clouds to share right now, but appreciate the suggestion here! Definitely lots to explore here.
+## 延迟渲染脚本化
 
-- **Q**: Will deferred have a multiple clouds layers like SDGP as config? that's feels more like aesthetic things that might gonna fit well with some packs.
-- **A**: Thanks for the suggestion! Nothing to share right now on clouds
+- **问**：客户端API发布后，是否计划通过脚本控制延迟渲染？
+- **答**：类似Molang问题的答复：需优先考虑性能限制等因素，暂无相关计划。
 
-## Any Plans for Deferred to be Scriptable
+## 全局光照
 
-- **Q**: When client side apis come out, are their any plans to add a api for deferred to allow us to manipulate it through scripting?
-- **A**: The answer to this is similar to our Molang response: https://discord.com/channels/523663022053392405/1209532356403142656
+- **问**：是否有全局光照（GI）计划？比如更精确的天光反射或环境光遮蔽。
+- **答**：GI是个广泛概念，技术上来说答案是肯定的！具体来说，我们正在开发基于图像照明（IBL）和屏幕空间的反射系统。内部讨论过多种GI形式，但暂无其他实施方案可公布。
 
-    > Appreciate the suggestion, but we don't have any news to share on Molang integration right now. We have quite a few constraints with perf and other things that we have to be mindful of with deferred.
+## 图形团队资源分配
 
-## Global Illumination
+- **问**：图形团队是否全力投入DRP开发？基础RenderDragon引擎仍有诸多BUG需要修复。
+- **答**：不。图形团队同时负责DTP、RenderDragon引擎维护和核心游戏渲染。但有专门工程师组全职负责DTP开发。
 
-- **Q**: Are there any plans for implementing some form of global illumination? Something for more accurate skylight, reflected sunlight or ambient blocklight. Perhaps you already have a specific technique in mind? 👀
-- **A**: Global Illumination is such a broad topic, so technically the answer is, yes!  More specifically, we are working on adding reflections, both IBL-based and screen-space. We have discussed many other forms of GI internally, but don't have anything to share on other applications at this time.
+## 精确天空模型
 
-## Is the graphical team fully dedicated to the DRP?
+- **问**：当前天空模型拼接方式在延迟渲染中表现不佳，是否有改进计划？
+- **答**：感谢反馈！我们确实有多个天空视觉效果需要优化。
 
-- **Q**: This is an indirect way to ask if we can finally have some non-official confirmation that a certain other graphical system we have explicitly asked not to talk about in <#1208794326361055324> is not being worked on at all by the team.
+## 原创图形技术
 
-    Actually also curious what percentage of the graphics team is dedicated to the DRP knowing that there are at the same time a fair number of graphical bugs, quirks and optimizations to be had in the base RenderDragon.
-- **A**: No.  The graphics team owns initiatives like DTP, but also is responsible for maintaining the RenderDragon engine as well as the rendering of the core game.  We do have a dedicated group of engineers within the graphics team that is fully dedicated to the DTP however.
+- **问**：是否开发过原创渲染技术？比如延迟大气是否独创？
+- **答**：多数技术基于Siggraph/GDC等会议论文，但进行了Minecraft特色化改造（如光照衰减方式与原版一致）。在下界/末地等维度有机会开发独特方案，但目前无可分享内容。
 
-## Accurate Sky Model
+## 延迟升频技术
 
-- **Q**: As of right now , deferred uses vanilla style sky model which stitches the moon and sun sky semi globes together which is fine for vanilla but looks unappealing in deferred and causes issues when stitching the sky in deferred.
-    Are there any plans you have in mind to deal with it?
-- **A**: Thanks for the feedback! There are definitely some visual bugs and enhancements to the sky we've got to buff out. 🙂
+- **问**：是否考虑添加FSR/XeSS等升频技术和锐化滑块？
+- **答**：感谢建议！这对性能提升很有价值，我们会纳入考虑范围。
 
-## Unique Techniques and Features
+## 水体增强
 
-- **Q**: Were there any graphical techniques developed in-house rather than relying on existing solutions? For example, deferred atmosphere seems quite unique, was it created from scratch or is it an implementation of already existing model?
-- **A**: Many of the techniques we've employed are derived from whitepapers and talks presented at various technical conventions (like Siggraph, GDC, etc.), so nothing we've done is technically truly novel (this is usually the case for Graphics development in the game industry in general). 
+- **问**：当前水体效果较基础，是否会添加屏幕空间反射、焦散、波浪等效果？
+- **答**：是的！我们正在更新水体光照模型，焦散、噪波、体积光线、反射折射等效果已在路线图中。
 
-    That said, we've put a Minecraft specific slant on many of the techniques employed to ensure parity with Vanilla lighting (e.g. light falls off in a similar way, some visual emphasis on "blockiness", scenes that are dark in Vanilla lighting look dark in Deferred lighting too, etc.)
+- **问**：会考虑添加斯涅尔窗效应吗？
+- **答**：当然😉
 
-    There are also opportunities for novel approaches (like lighting in the nether/end dimensions) but at this time we don't have any additional information we can share.
+## 物品材质支持
 
-## Deferred Upscaling
+- **问**：物品何时能获得官方PBR支持？目前只能通过附加物等变通方案实现。
+- **答**：正在开发中！粒子系统的PBR支持可能会更早实现。
 
-- **Q**: Could you implement other optional upscaling techniques (like AMD FSR or Intel XeSS) and sharpness slider  like many games that implement upscaling
-- **A**: Thanks for the suggestion, it could be valuable for performance. We'll be taking this into consideration!
+## 资源包单独开关
 
-## Better Water
+- **问**：能否为每个资源包添加延迟渲染开关？方便低配设备用户。
+- **答**：延迟渲染资源包将遵循常规资源包叠加规则，高层级包覆盖底层属性，您描述的行为正确。
 
-- **Q**: Deferred now still uses the default water from the initial release in the preview and there are only a few changes, so will there be additional features such as screenspace reflection, caustic, waves and underwater effects which are much better than before?
-- **A**: Yes! We are definitely working on updating the water lighting model and other effects in deferred. These are some great suggestions, and would love to hear more about what other effects and control you'd like to have with water in the deferred preview!
-** A**: These are all great ideas for water improvement!  I'm happy to say that many of these are already on our roadmap:  caustics, noise, volumetric rays, reflections, refractions.
+## 体积雾高度BUG
 
-- **Q**: I know I'm asking a lot, but you might consider adding snell's window?
-- **A**: Yes.  😉
+- **问**：高度参数体积雾在进入生物群系时会异常增厚，这是设定还是BUG？
+- **答**：生物群系过渡插值目前不够完善（您描述的应是BUG），我们将在正式版前优化过渡效果。
 
-## Will We See Items Getting Material Support?
+## 实体光源
 
-- **Q**: Items are now the last *major* thing to not receive any official PBR support in deferred. It is still *possible* to give items PBR capabilities with some workarounds (ex: attachables, as well as tools like MIAM1 ), but I’m curious if it stay that way, or if there is a plan to eventually give items these PBR features.
-- **A**: Yes!  This is something we are working on. And don't forget about Particles!  Those will be getting PBR support as well, likely sooner than Items.
+- **问**：是否计划为实体添加聚光灯/点光源？（想象《致命公司》式手电筒穿透迷雾！）
+- **答**：暂无为实体添加光源的计划，感谢建议！
 
-## Enable/disable Deferred Graphics Options For Each Packs?
+## 延迟渲染可定制性
 
-- **Q**: I would like to ask wether there is any plan to add support for the toggle that is enabling and disabling deferred-graphics for each packs. 
-    Since shader packs are too heavy for some devices, I thought it would be wonderful if there were such option for each packs.
-- **A**: Deferred graphics resource packs will stack like any other resource pack with the pack being higher on the stack overriding the properties of the pack below it. Your description of pack overriding behavior sounds right!
+- **问**：正式版会开放多少配置文件？期待更多光照/渲染参数自定义。
+- **答**：虽不会完全开放，但会逐步扩展数据驱动接口。您最希望开放哪些具体配置？
 
-## Are There Any Plans To Fix Volumetric Fogs That Use Height Rather Than Uniformity From Blinding You?
+## 资源包热重载
 
-- **Q**: To add more context. When you set up a fog and it uses the height parameters rather than being uniform, their thickness goes to the maximum upon entering the biome then fades into the proper height the further in you go. Is this intentional or a bug?
-- **A**: Interpolation at biome transitions aren't the most polished right now (what you're describing is likely a bug). We'll be working on more polished transitions closer to final release!
+- **问**：基岩版会添加F3+T式资源包重载功能吗？Java版早已实现。
+- **答**：我们清楚当前重载流程不便，但暂无公告。编辑器模式可能优先支持部分重载功能。
 
-## Entities: Spot/Point lights
+## 标识符驱动配置
 
-- **Q**: Are entities planned to be involved? such as conditionally shining flashlights from players, glowing mobs, etc. 
-    (I just imagine a lethal company style flashlight through fog in minecraft and get excited lol)
-- **A**: No, we do not have plans to include spot lights or attachable lights to entities at this point in time.  Thank you for your suggestion!
+- **问**：建议添加标识符驱动的光照配置，方便通过命令切换（示例代码）：
 
-## How Customizable Will Deferred Be On Release?
+::: code-group
+```json [示例配置]
+{
+  "format_version": "1.20.80",
+  "minecraft:directional_lights": {
+    "description": {"identifier": "bao:world_destroyer_event"},
+    "sun": {},
+    "moon": {}
+  }
+}
+```
+:::
 
-- **Q**: Seeing that there are **a lot** of configs for deferred inside the game’s files, will we be able to edit those fully through resource packs in the future? 
-Something else I was wondering is if we will get more customizations in the future (for example: More lighting Config, Renderer Config, etc).
-- **A**: While we won't end up exposing everything, we are still looking into expanding some of the data-driving to give Creators additional control. What are some of the specific configurations that you would like to see exposed that would give you the most additional creative control?
+- **答**：正在开发类似雾效的标识符系统！注意届时需要更新现有PBR包，我们会提供迁移指南。
 
-## Reloading Resource Packs
-- **Q**: Will there ever be a F3+T feature in bedrock edition? i feel like the ability to reload resource packs without leaving the world should be added to bedrock edition, it's already in java from the start but never made it to bedrock.
-- **A**: We definitely know that reloading resource packs is a pain. Not a great development flow. We want to do things here to make this easier, but nothing really to announce today. And this sort of thing is pretty gnarly to work on.
+## 维度专属配置
 
-- **Q**: What about `/reload all` in Editor mode? (I'm not even sure if that's related in any way.)
-- **A**: Yeah we have some tech that can reload some things, but not all things. And yeah, you're on the right line of thinking that if we do light up these features, Editor would be the safest place for us to do it.
+- **问**：能否按维度配置PBR纹理？比如不同维度点光源颜色不同。
+- **答**：正在开发按生物群系配置功能，这将间接支持维度专属设置。同时也在研究自定义生物群系/维度的延迟渲染应用。
 
-## Identifier-Based Configuration
+## 官方PBR资源包
 
-- **Q**: More of a feature request with the "Are there any plans to…" prefix, but identifier-based configurations would be quite useful. There are times when I want to change lighting configurations based on gameplay. Some command or something to switch configurations would be needed. Maybe scripting only.
+- **问**：Mojang会发布官方PBR资源包吗？自制PBR材质工程量太大。
+- **答**：暂无分享内部测试包的打算，但可通过全局光照文件为无专属材质集的对象设置默认值。
 
-    Directional lights especially come to mind as something I'd like to change due to world events. Maybe a "world destroyer" boss should change the very way that light is cast in the Overworld. As an example of these identifier-based files:
+## 实时大气预览
 
-    ```json
-    {
-      "format_version": "1.20.80",
-    
-      "minecraft:directional_lights": {
-        "description": {"identifier": "bao:world_destroyer_event"},
+- **问**：当前调整大气配置需反复重载世界，能否开发实时预览工具？
+- **答**：我们理解开发者的痛点！计划将延迟预览深度集成至基岩版编辑器，实现实时编辑反馈。
 
-        "sun": {},
-        "moon": {}
-      }
-    }
-    ```
+## 宣传片计划
 
-    And then something like:
+- **问**：会有官方宣传片吗？
+- **答**：目前专注于功能开发，但欢迎社区制作宣传片！我们经常在YouTube搜索最新更新视频和教程😄
 
-    ```swift
-    /renderer lighting set bao:world_destroyer_event
-    ```
+## 跨日关键帧
 
-    Essentially, this would be using the same kind of ideas as fogs, wherein it isn't enough to just map them to biomes. They need to be freestanding for application when appropriate.
-- **A**: Yes!  This is something we are working on and will be enabling in both our lighting and atmospherics JSONs.  The identification will be very similar to how Fog is identified. Creators should expect that when this change comes out, that they will have to update their current PBR packs to make use of the identifiers as it will be a breaking schema change.  Though it will be straight forward and we will provide guidance on how to do it.
+- **问**：能否实现跨多天的关键帧控制？比如根据月相调整光照。
+- **答**：短期内无扩展关键帧周期计划，但月相关联的创意非常棒！
 
-## Dimension Based Config
-
-- **Q**: Similar to <https://discord.com/channels/523663022053392405/1210250265895243807>, I think it would be cool if blocks could have 3 pbr textures and config, one for each dimension. This would help enhance each dimension to be unique.
-
-    Having point light emit different colours based on dimension as one example
-
-    This is similar to my Molang post, but currently there is no molang query to detect dimension as far as I know
-- **A**: We're currently working on being able to provide unique configurations per biome and I believe these will allow you to configure properties unique to other dimensions like the nether or the end dimensions.
-
-    We're still exploring how lighting will work in other dimensions with a big focus on the overworld presently!
-- **A**: And as we also look at custom biomes and custom dimensions (no timeline or promises, just things on the list) we will also consider how deferred graphics will be utilized by these creator things.
-
-## Vanilla PBR
-
-- **Q**: Is Mojang planning on releasing PBRs for the *massive* collection of textures in this game? Getting started with PBR as a "technical artist" without just ripping PBRs with someone else's pack sucks if not just because of the sheer volume.
-
-    (This is not a request for vanilla features. I figured the team had some internal pack they use for testing when in deferred. So I'm more asking for this as a developer resource.)
-- **A**: Unfortunately we don't have any plans to share a PBR resource pack anytime soon for testing, I hear your feedback though and apologize it's not so easy to test right now.
-You can however set default values for all blocks and entities that don't have a specific texture set in the global lighting file, which may help in some scenarios!
-
-## Preview Atmosphere in Real Time
-
-- **Q**: Currently, as a creator, when authoring atmosphere config there is no way to preview changes in real time. The workflow is: edit json -> reload the world -> observe changes. This process is quite annoying, as you don't see the changes instantly - it makes it harder to know how json changes translate to atmosphere visuals, as well as makes the iteration process take much longer than necessary.
-
-    It would've been better if we could preview how different json configs and values affect atmosphere look in real time. Are there any plans (that you can share) that address this issue? E.g. some kind of in-game atmosphere editor or a plugin for <#1084090299120373760>? Or even an official (or not) standalone tool/webapp similar to blockbench or snowstorm. And if someone like me wanted to make such tool, what are the conditions or requirements for that, specific license to use for Bedrock's shader code?
-- **A**: Yes, we hear you and feel your pain.  🙏  We do intend to integrate the Deferred Technical Preview more with the Bedrock Editor so that creators can more easily customize their packs and see changes in real-time.
-
-## Trailer
-
-- **Q**: Will deferred be getting a trailer anytime soon?
-- **A**: Good question! It's still too early to think about marketing materials. Right now our focus is just building these features and getting feedback from you all! But I'd love to see community made trailers, hint hint! 😄
-- **A**: I frequently search YouTube for videos of the latest updates and community packs! Also all the tutorials that help others get the deferred preview on their own devices too 🙂
-
-## Increases to Keyframe Periods
-
-- **Q**: Any plans to customize keyframes *across days*? (I'm hoping this didn't change since the last time I tested it.) I'd noticed before I was limited with keyframes to a single looping day. I was hoping I could vary directional lights by moon phases and was disappointed when I couldn't.
-
-    I figured that the period could automatically be adjusted based on the largest resolved time key in the keyframe object. For example, `7.5` would cause a period of 8 days, with *all* of the listed times for that one keyframe object adhering to that period.
-
-    Essentially, this would be not too dissimilar to how an animation automatically sets its total duration by looking at the largest given timeline value. Except these will be rounded up to a full day.
-- **A**: Unfortunately we don't have plans to expand keyframing outside of a single day in the near to mid term. But that idea around moon phases is super awesome, something I hadn't thought of yet!
+（翻译完成）

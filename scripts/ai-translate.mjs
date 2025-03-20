@@ -58,11 +58,17 @@ async function findMarkdownFiles(dir) {
       
       if (entry.isDirectory()) {
         await traverse(fullPath);
-      } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      } else if (entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'index.md') {
         try {
           // 读取文件内容
           const content = await fs.readFile(fullPath, 'utf-8');
-          
+          // 如果超过600行，跳过
+          const lines = content.split('\n').length;
+          if (lines > 600) {
+            console.log(`⏭️  跳过超过600行的文件: ${path.relative(targetDir, fullPath)}`);
+            continue;
+          }
+        
           // 如果文件不包含中文，则添加到待翻译列表
           if (!containsChinese(content)) {
             files.push(fullPath);

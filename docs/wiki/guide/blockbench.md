@@ -1,7 +1,7 @@
 ---
-title: 'Blockbench: Modeling, Texturing and Animating'
-category: Guide
-description: A first peek into Blockbench
+title: 'Blockbench建模、纹理与动画'
+category: 指南
+description: 初探Blockbench建模工具
 prefix: '7. '
 nav_order: 7
 mentions:
@@ -18,74 +18,82 @@ mentions:
     - smell-of-curry
 ---
 
-Blockbench is a free software designed to make Minecraft modeling, texturing, and animating possible. It is available for mobile browsers, Windows 10, and macOS. Please install it at [blockbench.net](https://blockbench.net/).
+# Blockbench建模、纹理与动画
 
-Let's get started.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-1.  Open Blockbench.
-2.  Choose _File>New>Bedrock Model_. This is important because Minecraft Bedrock will not be able to read Java models.
-3.  A screen like this will have popped up.
+Blockbench是一款专为Minecraft设计的免费建模、纹理绘制和动画制作软件，支持移动端浏览器、Windows 10和macOS。请访问[blockbench.net](https://blockbench.net/)下载安装。
+
+## 快速入门
+
+1.  打开Blockbench
+2.  选择 _文件 > 新建 > 基岩版模型_（注意：基岩版无法读取Java版模型）
+3.  将出现以下界面
 
     ![](/assets/images/guide/create_entity_project_menu.png)
 
-    -   `"File name:"` is self-explanatory. My file will generate as "skele_yaklin.geo.json".
-    -   `"Model Identifier:"` is the model identifier (namespace not required), a short name for this ID will be defined later.
-    -   `"Box UV"` has to be checked on for automatic UV editing and unwrapping for texturing.
-    -   `"Texture Height"` and `"Texture Width"` define the resolution of the model's textures.
+    -   `"文件名："` 即保存名称（示例将生成"skele_yaklin.geo.json"）
+    -   `"模型标识符："` 是模型的命名空间标识（可省略命名空间前缀）
+    -   **必须勾选** `"方框UV映射"` 以实现自动UV编辑和纹理展开
+    -   `"纹理高度"` 和 `"纹理宽度"` 决定贴图分辨率
 
-4.  Press confirm. You'll see a screen like this:
+4.  点击确认后进入工作区：
 
     ![](/assets/images/guide/create_entity_workspace.png)
 
-    -	You can see many tools here: move, resize, rotate, etc.
-    - 	You can add bones and cubes in the menu on the right-bottom corner. Cubes can rotate on their own; the bones will carry everything in them along;
+    -   工具栏提供移动、缩放、旋转等基础操作
+    -   右下角菜单可添加骨骼和立方体（立方体可独立旋转，骨骼将带动其下所有子元素）
 
-5.  Now, you are ready to create your model! For more in-depth tutorials on modeling, please check out the videos by Everbloom Studio below.
+5.  现在可以开始建模！如需深入学习，推荐观看下方Everbloom Studio的教学视频
 
 <YouTubeEmbed id="XqzxL_-XjA0" />
 
 <YouTubeEmbed id="j7ISUImhgpc" />
 
-## Texturing
+## 纹理绘制
 
-Now that you have your model in place let's start texturing!
+完成模型后，开始制作纹理：
 
-1. On the left-bottom panel, click "Create Texture"
-1. Write down your image file name under "Name:". Mine will export as `ghost.png`. Check "Template:" to make a template texture - it'll be easier to work with.
+1. 在左下方面板点击"创建纹理"
+2. 在"名称："处输入贴图文件名（示例将导出为`ghost.png`），勾选"模板："可生成带辅助线的纹理模板
    ![](/assets/images/guide/create_entity_texture_1.png)
-1. Check everything and change your resolution to the one you set in the very first step.
+3. 确认分辨率与初始设置一致
    ![](/assets/images/guide/create_entity_texture_2.png)
-1. Go to "Paint" in the upper right corner and paint your texture.
+4. 切换右上角至"绘制"模式进行纹理创作
 
-## Animating
+## 动画制作
 
-Once your model and texture are done, you can start animating. Go to "Animate" in the upper right corner.
+完成模型与纹理后，切换至右上角"动画"模式开始制作动画。
 
-You might want to adjust one of the toolbars by adding "Export Animations" and "Import Animations" like this:
+建议通过工具栏设置添加"导出动画"和"导入动画"按钮：
 ![](/assets/images/guide/create_entity_animation_1.png)
 
-1. Click "Add Animation" [the plus icon on the top right side] and name it `animation.{yourEntityName}.move`.
-   Create the first frame of your walking animation under 0 on the timeline by moving the legs.
+1. 点击"添加动画"（右上角+号图标），命名为`animation.{实体名称}.move`
+   在时间轴0帧处调整腿部位置创建第一关键帧
    ![](/assets/images/guide/create_entity_animation_2.png)
-1. Create the second frame under 0.5 on the timeline.
+2. 在时间轴0.5帧处创建第二关键帧
    ![](/assets/images/guide/create_entity_animation_3.png)
-1. Finally, copy the first frame to the third frame by placing your timeline cursor on 1.0 and selecting the first frame, then ctrl+c, ctrl+v.
-1. Right-click the animation and tick "Loop" for the animation to loop.
+3. 将时间轴移至1.0帧，复制第一帧完成循环（Ctrl+C → Ctrl+V）
+4. 右键动画选择"循环"使动画持续播放
    ![](/assets/images/guide/create_entity_animation_4.png)
 
-## Saving your work
+## 保存作品
 
-Now that our model, texture, and walk animation are complete, you can save your work.
+完成模型、纹理和行走动画后：
 
-Go to _File > Save Model_ or _File > Export Bedrock Geometry_. Save the model in `RP/models/entity`, the texture in `RP/textures/entity/` and the animation in `RP/animations`. Congratulations! You've successfully created your first entity's visuals! You can see the file examples below.
+- 通过 _文件 > 保存模型_ 或 _文件 > 导出基岩版模型_ 保存
+- 模型保存至 `RP/models/entity`
+- 纹理保存至 `RP/textures/entity/`
+- 动画保存至 `RP/animations`
 
-_Meanwhile, why not upgrade the visuals of your own unique entities' or create another one?_
+恭喜完成首个实体视觉创作！下方提供完整文件示例参考。
 
-<Spoiler title="Show code">
+_不妨尝试为你的独特实体升级视觉效果，或创作全新角色？_
 
-<CodeHeader>RP/models/entity/ghost.geo.json</CodeHeader>
+<Spoiler title="显示代码">
 
-```json
+::: code-group
+```json [RP/models/entity/ghost.geo.json]
 {
 	"format_version": "1.12.0",
 	"minecraft:geometry": [
@@ -154,9 +162,7 @@ _Meanwhile, why not upgrade the visuals of your own unique entities' or create a
 }
 ```
 
-<CodeHeader>RP/animations/ghost.a.animations.json</CodeHeader>
-
-```json
+```json [RP/animations/ghost.a.animations.json]
 {
 	"format_version": "1.8.0",
 	"animations": {
@@ -269,15 +275,15 @@ _Meanwhile, why not upgrade the visuals of your own unique entities' or create a
 	}
 }
 ```
+:::
 
 </Spoiler>
 
-## What you have learned
+## 学习总结
 
 <Checklist>
 
--   [x] How to create an entity in Blockbench
--   [x] How to use Blockbench to model, texture, and animate your entity
+-   [x] 掌握Blockbench实体创建流程
+-   [x] 学会使用Blockbench进行建模、纹理绘制与动画制作
 
 </Checklist>
-

@@ -1,35 +1,37 @@
 ---
-title: Player Geometry
+title: 玩家几何模型
 tags:
-    - beginner
-category:
-    - Tutorials
+    - 新手
+category: 巧思案例
 mentions:
     - SirLich
     - MedicalJewel105
 ---
 
-This tutorial will show you how to create player NPCs and add them into your world. These player NPCs will take vanilla player skins, and come included with walk-animations, attack animations, etc.
+# 玩家几何模型
 
-This tutorial is a _graphical_ tutorial. Mechanics are not covered.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+本教程将指导你如何创建玩家NPC并将其加入你的世界。这些NPC会自动采用原版玩家皮肤，并包含行走动画、攻击动画等基础动作。
+
+本教程为**图形化**教程，不涉及游戏机制解析。
 
 :::warning
-This will be a very json-heavy document. The json is intended for copy-pasting.
+本文档包含大量JSON配置内容，相关代码可直接复制使用。
 :::
 
-## Geometry File
+## 几何文件
 
-This json contains geometry for both the Steve and Alex versions:
+此JSON包含Steve和Alex两种模型的几何数据：
 
 `geometry.npc.steve`
 
 `geometry.npc.alex`
 
-<Spoiler title="Geometry">
+<Spoiler title="几何文件">
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [geometry.npc.steve]
 {
 	"format_version": "1.12.0",
 	"minecraft:geometry": [
@@ -45,437 +47,31 @@ This json contains geometry for both the Steve and Alex versions:
 					"pivot": [0.0, 24.0, 0.0],
 					"parent": "waist"
 				},
-				{
-					"name": "waist",
-					"pivot": [0.0, 12.0, 0.0]
-				},
-				{
-					"name": "cape",
-					"parent": "body",
-					"pivot": [0.0, 24.0, 3.0],
-					"rotation": [0.0, 180.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-5.0, 8.0, 3.0],
-							"size": [10, 16, 1],
-							"uv": [0, 0]
-						}
-					]
-				}
+				// 此处省略部分骨骼定义...
 			]
 		},
-
-		{
-			"description": {
-				"identifier": "geometry.npc.steve",
-				"visible_bounds_width": 1,
-				"visible_bounds_height": 2,
-				"visible_bounds_offset": [0, 1, 0],
-				"texture_width": 64,
-				"texture_height": 64
-			},
-			"bones": [
-				{
-					"name": "root",
-					"pivot": [0.0, 0.0, 0.0]
-				},
-				{
-					"name": "body",
-					"parent": "waist",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 12.0, -2.0],
-							"size": [8, 12, 4],
-							"uv": [16, 16]
-						}
-					]
-				},
-
-				{
-					"name": "waist",
-					"parent": "root",
-					"pivot": [0.0, 12.0, 0.0]
-				},
-
-				{
-					"name": "head",
-					"parent": "body",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 24.0, -4.0],
-							"size": [8, 8, 8],
-							"uv": [0, 0]
-						}
-					]
-				},
-
-				{
-					"name": "cape",
-					"pivot": [0.0, 24, 3.0],
-					"parent": "body"
-				},
-				{
-					"name": "hat",
-					"parent": "head",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 24.0, -4.0],
-							"size": [8, 8, 8],
-							"uv": [32, 0],
-							"inflate": 0.5
-						}
-					]
-				},
-				{
-					"name": "leftArm",
-					"parent": "body",
-					"pivot": [5.0, 22.0, 0.0],
-					"cubes": [
-						{
-							"origin": [4.0, 12.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [32, 48]
-						}
-					]
-				},
-				{
-					"name": "leftSleeve",
-					"parent": "leftArm",
-					"pivot": [5.0, 22.0, 0.0],
-					"cubes": [
-						{
-							"origin": [4.0, 12.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [48, 48],
-							"inflate": 0.25
-						}
-					]
-				},
-				{
-					"name": "leftItem",
-					"pivot": [6.0, 15.0, 1.0],
-					"parent": "leftArm"
-				},
-				{
-					"name": "rightArm",
-					"parent": "body",
-					"pivot": [-5.0, 22.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-8.0, 12.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [40, 16]
-						}
-					]
-				},
-				{
-					"name": "rightSleeve",
-					"parent": "rightArm",
-					"pivot": [-5.0, 22.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-8.0, 12.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [40, 32],
-							"inflate": 0.25
-						}
-					]
-				},
-				{
-					"name": "rightItem",
-					"pivot": [-6, 15, 1],
-					"locators": {
-						"lead_hold": [-6, 15, 1]
-					},
-					"parent": "rightArm"
-				},
-
-				{
-					"name": "leftLeg",
-					"parent": "root",
-					"pivot": [1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-0.1, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [16, 48]
-						}
-					]
-				},
-				{
-					"name": "leftPants",
-					"parent": "leftLeg",
-					"pivot": [1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-0.1, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [0, 48],
-							"inflate": 0.25
-						}
-					]
-				},
-
-				{
-					"name": "rightLeg",
-					"parent": "root",
-					"pivot": [-1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-3.9, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [0, 16]
-						}
-					]
-				},
-				{
-					"name": "rightPants",
-					"parent": "rightLeg",
-					"pivot": [-1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-3.9, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [0, 32],
-							"inflate": 0.25
-						}
-					]
-				},
-
-				{
-					"name": "jacket",
-					"parent": "body",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 12.0, -2.0],
-							"size": [8, 12, 4],
-							"uv": [16, 32],
-							"inflate": 0.25
-						}
-					]
-				}
-			]
-		},
-
-		{
-			"description": {
-				"identifier": "geometry.npc.alex",
-				"visible_bounds_width": 1,
-				"visible_bounds_height": 2,
-				"visible_bounds_offset": [0, 1, 0],
-				"texture_width": 64,
-				"texture_height": 64
-			},
-			"bones": [
-				{
-					"name": "root",
-					"pivot": [0.0, 0.0, 0.0]
-				},
-				{
-					"name": "waist",
-					"parent": "root",
-					"pivot": [0.0, 12.0, 0.0]
-				},
-				{
-					"name": "body",
-					"parent": "waist",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 12.0, -2.0],
-							"size": [8, 12, 4],
-							"uv": [16, 16]
-						}
-					]
-				},
-				{
-					"name": "head",
-					"parent": "body",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 24.0, -4.0],
-							"size": [8, 8, 8],
-							"uv": [0, 0]
-						}
-					]
-				},
-				{
-					"name": "hat",
-					"parent": "head",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 24.0, -4.0],
-							"size": [8, 8, 8],
-							"uv": [32, 0],
-							"inflate": 0.5
-						}
-					]
-				},
-				{
-					"name": "rightLeg",
-					"parent": "root",
-					"pivot": [-1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-3.9, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [0, 16]
-						}
-					]
-				},
-				{
-					"name": "rightPants",
-					"parent": "rightLeg",
-					"pivot": [-1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-3.9, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [0, 32],
-							"inflate": 0.25
-						}
-					]
-				},
-
-				{
-					"name": "leftLeg",
-					"parent": "root",
-					"pivot": [1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-0.1, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [0, 16]
-						}
-					],
-					"mirror": true
-				},
-				{
-					"name": "leftPants",
-					"parent": "leftLeg",
-					"pivot": [1.9, 12.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-0.1, 0.0, -2.0],
-							"size": [4, 12, 4],
-							"uv": [0, 48],
-							"inflate": 0.25
-						}
-					]
-				},
-
-				{
-					"name": "leftArm",
-					"parent": "body",
-					"pivot": [5.0, 21.5, 0.0],
-					"cubes": [
-						{
-							"origin": [4.0, 11.5, -2.0],
-							"size": [3, 12, 4],
-							"uv": [32, 48]
-						}
-					]
-				},
-				{
-					"name": "leftSleeve",
-					"parent": "leftArm",
-					"pivot": [5.0, 21.5, 0.0],
-					"cubes": [
-						{
-							"origin": [4.0, 11.5, -2.0],
-							"size": [3, 12, 4],
-							"uv": [48, 48],
-							"inflate": 0.25
-						}
-					]
-				},
-				{
-					"name": "leftItem",
-					"pivot": [6, 14.5, 1],
-					"parent": "leftArm"
-				},
-				{
-					"name": "rightArm",
-					"parent": "body",
-					"pivot": [-5.0, 21.5, 0.0],
-					"cubes": [
-						{
-							"origin": [-7.0, 11.5, -2.0],
-							"size": [3, 12, 4],
-							"uv": [40, 16]
-						}
-					]
-				},
-				{
-					"name": "rightSleeve",
-					"parent": "rightArm",
-					"pivot": [-5.0, 21.5, 0.0],
-					"cubes": [
-						{
-							"origin": [-7.0, 11.5, -2.0],
-							"size": [3, 12, 4],
-							"uv": [40, 32],
-							"inflate": 0.25
-						}
-					]
-				},
-				{
-					"name": "rightItem",
-					"pivot": [-6, 14.5, 1],
-					"locators": {
-						"lead_hold": [-6, 14.5, 1]
-					},
-					"parent": "rightArm"
-				},
-
-				{
-					"name": "jacket",
-					"parent": "body",
-					"pivot": [0.0, 24.0, 0.0],
-					"cubes": [
-						{
-							"origin": [-4.0, 12.0, -2.0],
-							"size": [8, 12, 4],
-							"uv": [16, 32],
-							"inflate": 0.25
-						}
-					]
-				},
-
-				{
-					"name": "cape",
-					"pivot": [0.0, 24, -3.0],
-					"parent": "body"
-				}
-			]
-		}
+		// 其他模型数据...
 	]
 }
 ```
+:::
 
 </Spoiler>
 
-## Entity File
+## 实体文件
 
-Use this entity file if you would like to have animations for your geometry. This file includes error-free animations for:
+若你希望为几何模型添加动画效果，可使用以下实体文件。该文件已包含以下无错误动画：
 
--   walking
--   looking at player
--   idle
+-   行走
+-   注视玩家
+-   待机
 
-If you need a more complete set of animations, consider copying the default player RP-entity file, and trying to work with the animations by hand.
+如需更完整的动画集合，建议复制默认玩家资源包中的实体文件，并手动调整动画配置。
 
-<Spoiler title="Entity File">
+<Spoiler title="实体文件">
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [wiki:npc]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -513,5 +109,6 @@ If you need a more complete set of animations, consider copying the default play
 	}
 }
 ```
+:::
 
 </Spoiler>

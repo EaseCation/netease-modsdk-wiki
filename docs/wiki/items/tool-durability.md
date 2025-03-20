@@ -1,47 +1,48 @@
 ---
-title: Tool Durability
-category: Tutorials
+title: 工具耐久度
+category: 巧思案例
 tags:
-    - experimental
-    - intermediate
-    - scripting
+    - 实验性
+    - 中级
+    - 脚本
 mentions:
     - MedicalJewel105
     - TheDoctor15
     - napstaa967
 ---
 
-## Introduction
+# 工具耐久度
 
-1.16.100+ items have different durability mechanic than 1.10 and 1.16 items.
-Now you need to define when will the item get durability damage and also an event that does it.
-What will be discussed on this page:
-- Durability component
-- Event that updates durability
-- Damaging entities
-- Block breaking
-- `repair_amount` value
-- `on_tool_used` event
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-### Components
+## 简介
 
-<CodeHeader>BP/items/my_item.json#components</CodeHeader>
+1.16.100+版本的物品耐久机制与1.10和1.16版本存在差异。现在需要明确定义物品何时会受到耐久损耗，并通过事件触发损耗行为。本教程将涵盖以下内容：
+- 耐久度组件
+- 更新耐久度的事件
+- 实体伤害机制
+- 方块破坏机制
+- `repair_amount` 参数
+- `on_tool_used` 事件
 
-```json
+### 组件
+
+::: code-group
+```json [BP/items/my_item.json#components]
 "minecraft:durability": {
     "max_durability": 200
 }
 ```
+:::
 
-`minecraft:durability` will give your item a set max durability
+`minecraft:durability`组件用于定义物品的最大耐久值
 
-## Event
+## 事件机制
 
-### Item event
+### 物品事件
 
-<CodeHeader>BP/items/my_item.json#events</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_item.json#events]
 "durability_update": {
     "damage": {
         "type": "none",
@@ -50,24 +51,23 @@ What will be discussed on this page:
     }
 }
 ```
+:::
 
-When this event is called the item (`self` target) will receive durability damage.
-Looks simple, doesn't it?
+当该事件被触发时，物品（`self`目标）将承受耐久损耗。看似简单，不是吗？
 
-### Script event
+### 脚本事件
 
-For the script methods, we'll be using a function to damage our item
+对于脚本实现，我们将使用自定义函数处理耐久损耗
 
-This function supports unbreaking on items
+该函数支持物品的"耐久"附魔效果
 
-<CodeHeader>BP/scripts/main.js</CodeHeader>
-
-```js
+::: code-group
+```js [BP/scripts/main.js]
 function damage_item(item) {
-    // Get durability
+    // 获取耐久度组件
     const durabilityComponent = item.getComponent("durability")
     var unbreaking = 0
-    // Get unbreaking level
+    // 获取耐久附魔等级
     if (item.hasComponent("enchantments")) {
         unbreaking = item.getComponent("enchantments").enchantments.getEnchantment("unbreaking")
         if (!unbreaking) {
@@ -76,7 +76,7 @@ function damage_item(item) {
             unbreaking = unbreaking.level
         }
     }
-    // Apply damage
+    // 应用损耗
     if (durabilityComponent.damage == durabilityComponent.maxDurability) {
 
         return
@@ -85,39 +85,39 @@ function damage_item(item) {
     return item
 }
 ```
-
-## Damaging entities
-
-### Using scripts
-
-:::warning Experimental Script
-
-This script uses `@minecraft/server 1.9.0-beta`, which will change in the next minecraft update.
 :::
 
-For format versions 1.20.40 and onward, `on_hurt_entity` no longer works.
+## 实体伤害
 
-This provides a way to damage weapons using scripts
+### 脚本实现
 
-<CodeHeader>BP/scripts/main.js</CodeHeader>
+:::warning 实验性脚本
 
-```js
-// Add your item IDs into this array
+本脚本使用`@minecraft/server 1.9.0-beta`，该版本将在后续游戏更新中变更。
+:::
+
+对于1.20.40及更高格式版本，`on_hurt_entity`已失效。
+
+以下脚本实现了武器耐久损耗机制：
+
+::: code-group
+```js [BP/scripts/main.js]
+// 在此数组中添加你的物品ID
 const my_items = ["wiki:silver_dagger"]
 
 world.afterEvents.entityHurt.subscribe(event => {
-    // If there's no source entity, skip
+    // 无伤害来源实体则跳过
     if (!event.damageSource.damagingEntity) return
 
-    // Get equipped weapon
+    // 获取装备的武器
     const equipment = event.damageSource.damagingEntity.getComponent("minecraft:equippable")
     if (!equipment) return
     const weapon = equipment.getEquipment(EquipmentSlot.Mainhand)
 
-    // If there's no weapon, skip
+    // 无武器则跳过
     if (!weapon) return
 
-    // If the item is not in our item IDs, skip
+    // 物品不在列表则跳过
     if (!my_items.includes(weapon.typeId)) return
     let newItem = damage_item(weapon)
     equipment.setEquipment(EquipmentSlot.Mainhand, newItem)
@@ -128,52 +128,52 @@ world.afterEvents.entityHurt.subscribe(event => {
     }
 })
 ```
+:::
 
-### on_hurt_entity
+### on_hurt_entity事件
 
 :::warning
 
-`on_hurt_entity` was removed in format version 1.20.40
+`on_hurt_entity`在格式版本1.20.40后已移除
 :::
 
-`on_hurt_entity` can be defined in "minecraft:weapon" component. It tells the game what event should happen when player hurts entity using this item.
+在`minecraft:weapon`组件中定义`on_hurt_entity`，用于指定玩家使用该物品攻击实体时触发的事件
 
-<CodeHeader>BP/items/my_item.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_item.json#components]
 "minecraft:weapon": {
     "on_hurt_entity": {
         "event": "durability_update"
     }
 }
 ```
-
-## Block breaking
-
-### Using scripts
-
-:::warning Experimental Script
-
-This script uses `@minecraft/server 1.9.0-beta`, which will change in the next minecraft update.
 :::
 
-For format versions 1.20.20 and onward, `on_dig` no longer works.
+## 方块破坏
 
-This provides a way to damage digger items by using scripts
+### 脚本实现
 
-<CodeHeader>BP/scripts/main.js</CodeHeader>
+:::warning 实验性脚本
 
-```js
-// Add your item IDs into this array
+本脚本使用`@minecraft/server 1.9.0-beta`，该版本将在后续游戏更新中变更。
+:::
+
+对于1.20.20及更高格式版本，`on_dig`已失效。
+
+以下脚本实现了工具耐久损耗机制：
+
+::: code-group
+```js [BP/scripts/main.js]
+// 在此数组中添加你的物品ID
 const my_items = ["wiki:obsidian_pickaxe"]
 
 world.afterEvents.playerBreakBlock.subscribe(event => {
-    // If there's no item, skip
+    // 无物品则跳过
     if (!event.itemStackAfterBreak) return
-    // If the item is not in our item IDs, skip
+    // 物品不在列表则跳过
     if (!my_items.includes(event.itemStackAfterBreak.typeId)) return
 
-    // If player is in creative, skip
+    // 创造模式玩家跳过
     if (world.getPlayers({
         gameMode: GameMode.creative
     }).includes(event.player)) return
@@ -184,19 +184,19 @@ world.afterEvents.playerBreakBlock.subscribe(event => {
     }
 })
 ```
+:::
 
-### on_dig
+### on_dig事件
 
 :::warning
 
-`on_dig` was removed in format version 1.20.20
+`on_dig`在格式版本1.20.20后已移除
 :::
 
-`on_dig` can be defined in "minecraft:digger" component. It tells the game what event should happen when player dug a block using this item.
+在`minecraft:digger`组件中定义`on_dig`，用于指定玩家使用该物品破坏方块时触发的事件
 
-<CodeHeader>BP/items/my_item.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_item.json#components]
 "minecraft:digger": {
     "use_efficiency": true,
     "destroy_speeds": [
@@ -206,25 +206,25 @@ world.afterEvents.playerBreakBlock.subscribe(event => {
             },
             "speed": 8,
             "on_dig": {
-                // Defines event that should happen when block with tag wood was dug.
+                // 定义破坏带有wood标签的方块时触发的事件
                 "event": "durability_update"
             }
         }
     ],
     "on_dig": {
-        // Defines event that should happen when any block was destroyed.
+        // 定义破坏任意方块时触发的事件
         "event": "durability_update"
     }
 }
 ```
+:::
 
-## repair_amount
+## repair_amount参数
 
-`repair_amount` can be defined in "minecraft:repairable" component. It tells the game how much of the item's durability should be back when it was repaired.
+在`minecraft:repairable`组件中定义`repair_amount`，用于指定物品修复时的耐久恢复量
 
-<CodeHeader>BP/items/my_item.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_item.json#components]
 "minecraft:repairable": {
     "repair_items": [
         {
@@ -237,31 +237,30 @@ world.afterEvents.playerBreakBlock.subscribe(event => {
     ]
 }
 ```
+:::
 
-Formula explanation:
+公式解析：
 
 `"context.other->q.remaining_durability + 0.05 * context.other->q.max_durability"`
 
-The _final_ durability will be durability of the first axe + durability of the second axe + 5% of 2nd axe MAX durability.
+最终耐久 = 第一把斧的剩余耐久 + 第二把斧的剩余耐久 + 第二把斧最大耐久的5%
 
-## on_tool_used
+## on_tool_used事件
 
-(This might not work now)
-`on_tool_used` is special event that can be called using tags.
-Tags work kinda like runtime identifiers for entities.
-Known tags:
+（当前可能不可用）
+`on_tool_used`是通过标签系统触发的特殊事件。标签类似于实体的运行时标识符。已知标签：
 
-| Tag                  | Effects        | How can be called                                  |
-| -------------------- | -------------- | -------------------------------------------------- |
-| minecraft:is_axe     | Strips logs    | By interacting with blocks that axe interacts with |
-| minecraft:is_hoe     | Makes farmland | By interacting with blocks that hoe interacts with |
-| minecraft:is_pickaxe | Unknown        | Unknown                                            |
-| minecraft:is_sword   | Unknown        | Unknown                                            |
+| 标签                  | 效果          | 触发方式                          |
+| -------------------- | ------------- | -------------------------------- |
+| minecraft:is_axe     | 剥离原木       | 与斧头可交互的方块互动时触发        |
+| minecraft:is_hoe     | 制作耕地       | 与锄头可交互的方块互动时触发        |
+| minecraft:is_pickaxe | 未知          | 未知                             |
+| minecraft:is_sword   | 未知          | 未知                             |
 
-You can apply these tags this way:
+可通过以下方式应用标签：
 
-<CodeHeader>BP/items/my_item.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/my_item.json#components]
 "tag:minecraft:is_axe": {}
 ```
+:::

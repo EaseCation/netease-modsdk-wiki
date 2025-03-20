@@ -1,9 +1,8 @@
 ---
-title: Math-based Animations
+title: 基于数学的动画（Molang）
 tags:
-    - intermediate
-category:
-    - General
+    - 中级
+category: 基础
 mentions:
     - SirLich
     - solvedDev
@@ -16,63 +15,63 @@ mentions:
     - ThomasOrs
 ---
 
-Math animations are a powerful alternative to keyframe animations. Generally speaking, `math-based animations` is the concept of using Molang expressions to animate entity geometry. All vanilla animations are math-based, here is an example:
+# 基于数学的动画
 
-<CodeHeader></CodeHeader>
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-```json
+数学动画是关键帧动画的强大替代方案。简而言之，"基于数学的动画"是指使用Molang表达式驱动实体几何变形的概念。所有原版动画都采用数学动画实现，这里有一个示例：
+
+::: code-group
+```json [原版动画示例]
 "leftarm" : {
     "rotation" : [ "((-0.2 + 1.5 * (math.abs(math.mod(q.modified_distance_moved, 13) - 6.5) - 3.25) / 3.25) * q.modified_move_speed) * 57.3 - v.agent.armxrotationfactor", 0.0, "-v.agent.armzrotation" ]
 },
 ```
+:::
 
-As you can see, math-based animations can be quite complicated and difficult to understand. Thus, they should be treated as a _specialized-alternative_ to using key-frames - not a *total* replacement.
+如你所见，数学动画的表达式可能非常复杂且难以理解。因此，它们应被视为关键帧动画的_专业替代方案_，而非*完全*取代。
 
-This is the cost of the smooth and ideal loop of the animation.
+这是为了实现动画流畅且理想循环所必须付出的代价。
 
 ![](/assets/images/visuals/math-based-animations/animation-1.gif)
 
-## Writing Math-Animations
+## 编写数学动画
 
-### By Hand
+### 手动编写
 
-To write such an animation by hand, simply create an animation file and substitute keyframes for singular arrays of values; strings values are accepted, and it is in a string that one may place a math expression. The Vanilla files can prove an invaluable reference for these types of animations, and it is **strongly** recommended you download and preview them!
+要手动编写此类动画，只需创建一个动画文件，并将关键帧替换为包含数学表达式的值数组。字符串值可以直接包含数学表达式。原版动画文件是学习此类动画的宝贵参考，**强烈建议**下载并研究它们！
 
-As an important tip for those who wish to *visualise* their processes, the tool, [Molang Grapher](https://jannisx11.github.io/molang-grapher/) from [Jannis](https://twitter.com/jannisx11) may simulate expressions on a proper graph!
+对于希望可视化表达式过程的开发者，推荐使用[Jannis](https://twitter.com/jannisx11)开发的[Molang图形化工具](https://jannisx11.github.io/molang-grapher/)，它可以将表达式转换为直观的数学图表！
 
-### In Blockbench
+### 在Blockbench中创建
 
-Blockbench allows - to a degree - for the creation and live-previewing of most math-based animations.
-To begin, first create a new keyframe at frame 0 in your timeline. You may then add and edit Molang expressions in the keyframe panel on the left sidebar. Mixing keyframes and math is supported.
-**Remember**, you should always omit quotation marks around expressions; they are only required in raw JSON-editing!
+Blockbench支持创建并实时预览大部分基于数学的动画。首先在时间轴的第0帧新建关键帧，然后在左侧边栏的关键帧面板中编辑Molang表达式。注意需要省略表达式两边的引号（引号仅在直接编辑JSON时需要）。
 
-Do mind that not all Molang queries are supported in Blockbench in part due to missing game-context. If you wish to preview an animation that uses a context-specific query, you may add it to the Variable Placeholders section, just underneath the keyframe panel, to simulate a value.
-For example, adding `q.modified_distance_moved = time*8` simulates the `modified_distance_moved` query with a speed of 8 blocks per second.
+由于缺少游戏上下文，Blockbench可能无法支持所有Molang查询。如需预览使用特定上下文查询的动画，可以在"变量占位符"区域（位于关键帧面板下方）添加模拟值。例如，添加`q.modified_distance_moved = time*8`即可模拟以每秒8格速度移动时的`modified_distance_moved`查询。
 
-## Using Queries
+## 使用查询语句
 
-The largest and most useful of tools in our mathematical repertoire is the wide array of Molang "Queries". Queries can be used to add outside information into your math expression.
+Molang的各类"查询(Queries)"是我们数学工具库中最强大的功能之一。查询可以将游戏中的实时数据注入数学表达式。
 
-Common Queries include:
+常用查询包括：
 
--   `q.modified_distance_moved`
--   `q.modified_move_speed`
--   `q.anim_time`
--   `q.life_time`
+-   `q.modified_distance_moved`（修正移动距离）
+-   `q.modified_move_speed`（修正移动速度）
+-   `q.anim_time`（动画时间）
+-   `q.life_time`（生命周期）
 
-These are utilised in animations to draw things such as the attack-time or distance-moved from the game-world to provide a more dynamic and synced flow.
+这些查询常用于动画中提取攻击时间、移动距离等游戏世界数据，以实现更动态且同步的动画效果。
 
-### Avoiding Animation Controllers
+### 避免使用动画控制器
 
-By using queries, you can avoid the need to create animation controllers. If the entity's speed is directly related to the speed of the walk animation, then by default, an entity that isn't moving won't be animated.
+通过合理运用查询语句，可以避免创建复杂的动画控制器。例如当行走动画速度直接关联实体移动速度时，静止的实体将自动停止动画播放。
 
-## Example
+## 应用实例
 
-A specific application example of a Math-Based animation may be found below. The example utilises the Molang Query, `"q.modified_distance_moved"`:
+以下是一个基于数学动画的具体实现案例，使用了`q.modified_distance_moved`查询：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [车辆轮胎旋转动画]
 {
 	"format_version": "1.12.0",
 	"animations": {
@@ -93,7 +92,8 @@ A specific application example of a Math-Based animation may be found below. The
 	}
 }
 ```
+:::
 
-In this example, the model's bones, `front_wheels` and `back_wheels`, are rotated on the X-axis based on information passed from `q.modified_distance_moved`, then multiplied by -30.
+在这个案例中，模型骨骼`front_wheels`和`back_wheels`的X轴旋转角度由`q.modified_distance_moved`查询结果乘以-30决定。
 
-This means that a car at *rest* **will not** spin, and a car that is *driving* **will spin** - doing so at a rate proportional to the car's movement speed.
+这意味着：处于*静止*状态的车辆**不会**转动轮胎，而*行驶中*的车辆会根据移动速度按比例旋转轮胎。

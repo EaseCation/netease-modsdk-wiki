@@ -19,7 +19,7 @@ Recipes are the means of handling several item transactions, namely those occurr
 ![](/assets/images/loot/recipes/recipe.png)
 
 ::: tip
-Anvil interactions are handled within an [item definition](/items/item-components), not via recipe files. Loom transactions are currently unavailable.
+Anvil interactions are handled within an [item definition](/wiki/items/item-components), not via recipe files. Loom transactions are currently unavailable.
 :::
 
 No experimental toggles are required to use recipes or any of their features.
@@ -82,7 +82,7 @@ As an example, a "cold steel sword" might be crafted using the following [shaped
 
 ### Format Version
 
-The [format version](/guide/format-version) is intended to version the schema used for the body of a recipe. It is provided with the top-level `"format_version"` property.
+The [format version](/wiki/guide/format-version) is intended to version the schema used for the body of a recipe. It is provided with the top-level `"format_version"` property.
 
 <CodeHeader>#/</CodeHeader>
 ```json
@@ -150,7 +150,7 @@ Education:
 -   `material_reducer`
 
 ::: tip 
-Additionally, [custom crafting tables](/blocks/block-components#crafting-table) can declare a custom tag for crafting recipes to use. Custom cooking and smelting blocks and custom brewing stands are not currently available.
+Additionally, [custom crafting tables](/wiki/blocks/block-components#crafting-table) can declare a custom tag for crafting recipes to use. Custom cooking and smelting blocks and custom brewing stands are not currently available.
 :::
 
 ::: tip
@@ -225,7 +225,7 @@ If a count greater than `1` is provided for an item that does not stack, an erro
 :::
 
 ::: warning
-Despite having similarities to trade [table item descriptors](/loot/trade-tables#items), recipe item descriptors cannot use functions.
+Despite having similarities to trade [table item descriptors](/wiki/loot/trade-tables#items), recipe item descriptors cannot use functions.
 :::
 
 #### Identifier Additions
@@ -272,7 +272,7 @@ Crafting recipes support both crafting tables and stonecutters:
 "tags": ["crafting_table", "stonecutter"]
 ```
 
-`"crafting_table"` applies to both vanilla crafting tables and the player 2 × 2 crafting grid in their inventory. There is currently no way to opt into one but not the other. Crafting recipes additionally support custom tags, linking recipes to a [crafting grid provided by a custom block](/blocks/block-components#crafting-table).
+`"crafting_table"` applies to both vanilla crafting tables and the player 2 × 2 crafting grid in their inventory. There is currently no way to opt into one but not the other. Crafting recipes additionally support custom tags, linking recipes to a [crafting grid provided by a custom block](/wiki/blocks/block-components#crafting-table).
 
 ### Shapeless Recipes
 

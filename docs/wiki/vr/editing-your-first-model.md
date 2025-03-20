@@ -1,145 +1,154 @@
 ---
-title: Editing Your First Model
-category: Tutorials
+title: 编辑你的第一个模型
+category: 巧思案例
 mentions:
     - TheDoctor15
     - MedicalJewel105
     - TheItsNameless
     - SmokeyStack
 tags:
-    - expert
+    - 专家
 ---
 
-This tutorial will show you how to make your first VR model.
-For the sake of this tutorial we will be editing the right hand model.
+# 编辑你的第一个模型
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+本教程将指导你如何制作第一个VR模型。  
+为方便演示，我们将以右手模型为例进行编辑。
 
 :::tip
-This tutorial makes use of the program [Blender](https://www.blender.org/download/), make sure you have it before following this tutorial.
+本教程需要使用 [Blender](https://www.blender.org/download/) 软件，请提前安装。
 :::
 
-## Viewing the model in Blender
+## 在Blender中查看模型
 
-First you need to import the model into Blender:
+首先需要将模型导入Blender：
 
 ![](/assets/images/vr/tutorial-hand-right/import-1.png)
 ![](/assets/images/vr/tutorial-hand-right/import-2.png)
 ![](/assets/images/vr/tutorial-hand-right/import-3.png)
 
-Your model is now imported but it misses a texture.
-To add a texture you will go to the Shading tab in blender.
-There you are going to add a texture element like this:
+模型导入后会发现缺少材质贴图。  
+进入着色器（Shading）选项卡添加纹理元素：
 
 ![](/assets/images/vr/tutorial-hand-right/shading-add-texture-element.png)
 ![](/assets/images/vr/tutorial-hand-right/texture-element.png)
 
-In that element you press open and select your texture in our case it is `something\VRpackTemplate\textures\hologram_hands.png`.
-Make sure you change linear to closest, otherwise your texture will look blurry.
-In the end it will look like this:
+点击"Open"选择材质贴图（示例路径：`something\VRpackTemplate\textures\hologram_hands.png`）。  
+**重要提示**：将过滤模式从线性（Linear）改为最近邻（Closest），否则贴图会模糊。  
+最终效果如下：
 
 ![](/assets/images/vr/tutorial-hand-right/texture-element-complete.png)
 
-Now its time to add the texture to the models material.
-You hold the yellow dot and connect it to the other yellow dot like this:
+将材质连接到模型上：  
+拖动黄色连接点完成材质关联：
 
 ![](/assets/images/vr/tutorial-hand-right/texture-base-connect.png)
 
-If everything went good your model should now look like this:
+成功关联后模型应显示正确贴图：
 
 ![](/assets/images/vr/tutorial-hand-right/texture-on-model.png)
 
-## Editing the model
+## 模型编辑指南
 
-With editing the model you have almost total freedom, the only requirement is that the model only uses 1 texture.
+在编辑模型时需注意：  
+- 只能使用单张贴图
+- 保持模型结构合理性
 
-### Editing the model (easy)
+### 基础编辑（手臂改造）
 
-Since this is the easy tutorial, we will show you how to make the hand into an arm.
-
-First we need to figure out the dimensions of this object.
+我们将把手部模型改造成前臂模型。  
+首先分析原始尺寸关系：
 
 ![](/assets/images/vr/tutorial-hand-right/model-dimensions.png)
 
-This image shows us that 3 pixels is equivalent to 18.75 meters in Blender, an arm is 12 pixels long so this means an arm is `4 * 18.75 = 75 meters` in Blender.
-When editing the dimensions it will look like this:
+图中显示：  
+- 3像素对应Blender中的18.75米
+- 前臂长度为12像素 → 换算为`4 * 18.75 = 75米`
+
+调整尺寸后：
 
 ![](/assets/images/vr/tutorial-hand-right/edited-dimensions-1.png)
 
-If we import it into minecraft the arm will be to far away. This is because the original model is made for a hand not an arm. So we need to move it `3 * 18.75 = 56.25 meters` down.
+由于原始模型为手部设计，需下移`3 * 18.75 = 56.25米`以适配手臂位置：
 
 ![](/assets/images/vr/tutorial-hand-right/edited-dimensions-2.png)
 
-#### Texturing
+#### 材质处理
 
-Since this is an arm we will use the steve arm model, you import it the same way like we did above.
+使用Steve角色手臂贴图：
 
 ![](/assets/images/vr/tutorial-hand-right/hologram-hands-steve.png)
 
+若出现拉伸现象：
+
 ![](/assets/images/vr/tutorial-hand-right/steve-texture-stretched.png)
 
-Now you might notice your texture is stretched out. to fix this we will go to UV-editing and edit the uv map.
-UV-editing looks almost the same to blockbench.
+进入UV编辑模式调整贴图坐标：
 
 ![](/assets/images/vr/tutorial-hand-right/uv-map.png)
 
 :::tip
-Its handy to turn on this magnet looking icon so its more precise.
+启用磁吸工具可提高编辑精度：  
 ![](/assets/images/vr/tutorial-hand-right/magnet-icon.png)
 :::
 
-We start with selecting the top and the bottom of the hand.
+1. 选择顶部和底部面片：
 
 ![](/assets/images/vr/tutorial-hand-right/uv-map-top-selected.png)
 
-Next we select the move tool.
+2. 使用移动工具调整位置：
 
 ![](/assets/images/vr/tutorial-hand-right/uv-map-pos.png)
 
-Now we move the top face and bottom face to the top of the texture.
+3. 将面片对齐至贴图顶部：
 
 ![](/assets/images/vr/tutorial-hand-right/uv-map-top-move-up.png)
 
-The same for the sides of the arm.
-
-Your new uv map should look something like this:
+4. 重复操作处理侧面：
 
 ![](/assets/images/vr/tutorial-hand-right/uv-map-side-up.png)
 
-If we look how the arm look we see all is now fixed.
+最终效果：
 
 ![](/assets/images/vr/tutorial-hand-right/uv-map-done.png)
 
-#### Export it!
+#### 模型导出
 
-It is time to now export your model first put the steve arm texture inside `VRpackTemplateRP\textures`.
-Call it `hologram_hands.png`.
+1. 将Steve手臂贴图放入`VRpackTemplateRP\textures`目录，命名为`hologram_hands.png`
 
 ![](/assets/images/vr/tutorial-hand-right/export-texture.png)
 
-Now lets export the model.
+2. 导出模型文件：
 
 ![](/assets/images/vr/tutorial-hand-right/export-model-1.png)
 
-Call the model `hologram_hand_right.obj`.
+命名模型为`hologram_hand_right.obj`：
 
 ![](/assets/images/vr/tutorial-hand-right/export-model-2.png)
 
-#### Testing it in game
+#### 游戏测试
 
-Load the pack into minecraft and try it out if it looks like this you succeeded in this tutorial!
+导入资源包后效果应如下所示：
 
 ![](/assets/images/vr/tutorial-hand-right/export-done.png)
 
+::: code-group
+```json [下载示例]
 <BButton
     link="https://github.com/Bedrock-OSS/wiki-addon/releases/download/download/vr_edit_model.mcpack"
     color=blue
->Get guide end results!</BButton>
+>获取教程最终成果！</BButton>
+```
 
-## Your progress so far
+## 当前进度
 
 <Checklist>
 
--   [x] Setup Minecraft VR
--   [x] Setup the pack
--   [x] Edit the models
+-   [x] 配置Minecraft VR环境
+-   [x] 创建资源包
+-   [x] 完成模型编辑
 
 </Checklist>
+```

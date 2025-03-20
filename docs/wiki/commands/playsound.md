@@ -1,79 +1,84 @@
 ---
-title: Playsound
-category: Commands
+title: 播放音效
+category: 命令
 mentions:
     - BedrockCommands
     - zheaEvyline
     - jordanparki7
 tags:
-    - info
+    - 信息
 ---
 
-## Introduction
+# 播放音效
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-You can use the `/playsound` command to play sound effects to players present anywhere in the world whenever you like.
+## 简介
 
-## Syntax
+[由 Bedrock Commands 社区 Discord 提供](https://discord.gg/SYstTYx5G5)
+
+你可以使用`/playsound`命令在世界任意位置为玩家播放音效。
+
+## 语法
 
 `/playsound <sound> [player] [position] [volume] [pitch] [minimumVolume]`
 
-## Definitions
+## 参数定义
 
-### Sound
+### sound
 
-- It is the sound effect you wish to play.
-- You can find the list of sound IDs currently available at:
+- 需要播放的音效ID
+- 当前可用音效列表可参考：
     - https://www.digminecraft.com/lists/sound_list_pe.php
 
-### Player
+### player
 
-- This is an optional argument.
-- It refers to your typical target selectors (whom you want to play the sound to) ` @a `, ` @r `, ` @p `, ` Technoblade `, etc..
+- 可选参数
+- 目标选择器参数（接收音效的玩家）` @a `, ` @r `, ` @p `, ` Technoblade ` 等
 
-### Position
+### position
 
-- This is an optional argument.
-- It refers to the  `x y z` position from where the sound will be played, ie. the center of the playsound radius.
+- 可选参数
+- 音效播放的坐标 `x y z`，即音效可听范围的圆心坐标
 
-### Volume
+### volume
 
-- This is an optional argument.
-- It determines the size of the sphere in which the sound effect can be heard.
-    - ` 0.0 ` is the minimum size.
-- Sound & audible sphere size increases as `volume` value is increased.
-    - Playaound volume of `1` is equal to an audible sphere of radius 16 blocks.
-    - Similarly; volume of `4` would be equal to 64 blocks.
+- 可选参数
+- 决定音效可听范围的半径
+    - 最小值是 `0.0`
+- 该值越大，音效传播范围越广
+    - 音量 `1` 对应半径16方块的球形范围
+    - 音量 `4` 对应半径64方块的球形范围
 
-### Pitch
+### pitch
 
-- This is an optional aegument.
-- It determines the pitch for the sound effect.
-- It can be a value between ` 0.0 ` and ` 256.0 `
-    - The higher the value, the higher the pitch.
-    - Values less than or equal to  `0.0`  makes the sound inaudible.
+- 可选参数
+- 控制音效的音调高低
+- 取值范围 `0.0` 至 `256.0`
+    - 数值越高音调越尖锐
+    - 数值小于等于 `0.0` 时音效不可闻
 
-> Note: pitch affects the speed at which the audio is played. For example, a pitch of `0.5` would mean the audio is played at ` 0.5× ` speed.
+> 注意：音调参数会影响音频播放速度。例如音调 `0.5` 表示以 0.5 倍速播放音频
 
-### Minimum Volume
+### minimumVolume
 
-- This is an optional argument.
-- It determines the minimum volume at which the sound will be heard outside of the audible sphere.
-- It can be a value between ` 0.0 ` and ` 1.0 `
+- 可选参数
+- 设置可听范围外的最小音量
+- 取值范围 `0.0` 至 `1.0`
 
-## Examples
+## 使用示例
 
-<CodeHeader>mcfunction</CodeHeader>
-```yaml
-#Play a random explosion sound effect to closest player.
+::: code-group
+```yaml [mcfunction]
+# 对最近的玩家播放随机爆炸音效
 /playsound random.explode @p
 
-#Play a random orb sound effect to all players at their relative position with a volume of 10000
+# 为所有玩家在其当前位置播放随机经验球音效（音量范围10000）
 /execute as @a at @s playsound random.orb @s ~ ~ ~ 10000
 ```
+:::
 
-Note: since the playsound command is positonal, it is helpful to use an execute command structure as shown in the second example to prevent the sound effect from cutting off in special cases such as playing a sound effect following a `/tp` command. You may increase volume when covering large distances to reduce failures.
+注意：由于播放音效命令具有位置依赖性，在特殊场景（如使用`/tp`传送后）建议采用第二个示例中的`execute`命令结构来避免音效中断。当需要覆盖远距离时，可以适当增大音量参数来确保播放效果。
 
 
-**(Recommended) Read Next: [Sounds](/concepts/sounds)**
+**（推荐）延伸阅读：[声音系统](/wiki/concepts/sounds)**

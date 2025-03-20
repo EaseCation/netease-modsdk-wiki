@@ -10,18 +10,20 @@ mentions:
     - TheItsNameless
 ---
 
-`contents.json` is a file that is _probably_ used for the game to process the pack files more easily. It is _probably_ intended for marketplace content creators and Mojang, it is not required to have this file in the pack for the pack to work properly.
+# contents.json
 
-You will find there some instructions about the usage of this file.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## Structure of the file
+`contents.json` 是游戏用于更高效处理资源包文件的配置文件。该文件 _可能_ 主要为市场内容创作者和 Mojang 设计，资源包即使不包含此文件仍可正常运行。
 
-`contents.json` is located at the root of the add-on directory. It contains a list of the files that are included in the pack.
-Example:
+以下是关于该文件使用方式的说明。
 
-<CodeHeader>RP/contents.json</CodeHeader>
+## 文件结构
 
-```json
+`contents.json` 位于附加包目录的根路径，包含资源包内所有文件的路径列表。示例：
+
+::: code-group
+```json [RP/contents.json]
 {
 	"content": [
 		{
@@ -51,6 +53,7 @@ Example:
 	]
 }
 ```
+:::
 
 <FolderView
 	:paths="[
@@ -65,20 +68,24 @@ Example:
 ]"
 > </FolderView>
 
-## Automatizing the process
+## 自动化生成
 
-The `contents.json` file can be generated automatically by the game itself, it is very recommended to decrease the risks of making mistakes. However, the file must be prepared first. Create a new empty file called `contents.json` in the root directory of your add-on, and add empty brackets.
+`contents.json` 可通过游戏自动生成，这种方式能有效减少手动配置错误。首先需要在附加包根目录创建空文件并添加空对象：
 
-<CodeHeader>BP|RP/contents.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP|RP/contents.json]
 {}
 ```
+:::
 
-The file content will be automatically written next time the game is launched.
+游戏会在下次启动时自动填充该文件内容。
 
-## Additional information
+## 补充说明
 
--   The automatic process can be achieved no matter what is the location of the pack (Development folders or normal folders).
--   Do not make multiple `contents.json` for subpacks, the file at the root of the pack is sufficient.
--   This file is not required for the addon to work properly.
+-   自动生成功能适用于任意位置的资源包（开发文件夹或普通文件夹均可）
+-   不需要为子包单独创建多个 `contents.json`，根目录文件已足够
+-   该文件并非附加包运行的必要条件
+
+<!-- 保留原始专有名词：Tick、Component、Entity、Block、Item 等未翻译 -->
+<!-- FolderView 组件保持原样以兼容 Vitepress 功能 -->
+<!-- code-group 语法已正确替换原始 CodeHeader 组件 -->

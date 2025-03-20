@@ -1,5 +1,5 @@
 ---
-title: Subpacks
+title: 子Packs
 mentions:
     - SirLich
     - solvedDev
@@ -10,32 +10,36 @@ mentions:
     - TheItsNameless
 ---
 
-## What are Subpacks?
+# 子Packs
 
-Subpacks allow you to select between different addon 'configurations'.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-They are intended for texture resolutions to load on different memory capacities, but can also be used to create file variations in behavior and resource packs. These variations can be selected by clicking the gear icon and adjusting the slider.
+## 什么是子包？
 
-## How do Subpacks work?
+子包功能允许玩家在不同的附加包"配置"之间进行选择。
 
-Files placed in you subpack folder will override files placed in your main addon folder, if the subpack is selected. For example, if your addon contains both `RP/textures/entities/ghost.png` and `RP/subpacks/pack_1/textures/ghost.png`, the second image file will replace the first, if subpack `pack_1` is selected.
+该功能最初设计用于根据设备内存容量加载不同分辨率的材质包，但也可用于创建行为包和资源包的多种文件变体。玩家可以通过点击齿轮图标并调整滑块来选择不同的子包配置。
 
-For more information about how files override each other, please see our page on [overriding vanilla assets](/concepts/overwriting-assets).
+## 子包工作原理
 
-## Creating Subpacks
+当子包被选中时，放置在子包文件夹中的文件将覆盖主附加包文件夹中的同名文件。例如，若附加包同时包含 `RP/textures/entities/ghost.png` 和 `RP/subpacks/pack_1/textures/ghost.png`，当选择 `pack_1` 子包时，第二个图片文件将取代第一个文件。
 
--   To start adding a subpack you need to create a `subpacks` folder inside the root of your `BP`/`RP`.
--   Then inside the `subpacks` folder add a folder for each subpack you want to have
-    e.g.
+关于文件覆盖机制的更多信息，请参阅我们的[覆盖原版资源](/wiki/concepts/overwriting-assets)说明文档。
+
+## 创建子包
+
+- 首先需要在行为包或资源包的根目录下创建 `subpacks` 文件夹
+- 在 `subpacks` 文件夹内为每个子包创建独立文件夹
+  例如：
 
 <FolderView :paths="[
 	'RP/subpacks/subpack_1',
 	'RP/subpacks/subpack_2'
 ]"></FolderView>
 
--   Inside each of these folders you can add the content of each subpack.
-    This can be anything that normally goes in your behavior or resource pack.
-    e.g.
+- 在每个子包文件夹中添加该子包的特定内容
+  这些内容可以是常规附加包中的任意资源
+  例如：
 
 <FolderView :paths="[
 	'RP/subpacks/subpack_1/textures/blocks/dirt.png',
@@ -44,20 +48,19 @@ For more information about how files override each other, please see our page on
 	'RP/subpacks/subpack_2/textures/items/example_item.png'
 ]"></FolderView>
 
-## Manifest Part
+## 清单文件配置
 
-To register the subpacks in the manifest you need to add `subpacks` and this contains an array of subpacks.
+需要在清单文件(manifest.json)中注册子包信息，在 `subpacks` 字段下以数组形式声明各个子包。
 
-Example:
+示例配置：
 
-<CodeHeader>RP/manifest.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/manifest.json]
 {
 	"format_version": 2,
 	"header": {
-		"name": "Pack Name",
-		"description": "Pack Description",
+		"name": "资源包名称",
+		"description": "资源包描述",
 		"uuid": "2fc2dd6f-86cb-4370-af70-21490a1ae471",
 		"version": [1, 0, 0],
 		"min_engine_version": [1, 13, 0]
@@ -72,24 +75,23 @@ Example:
 	"subpacks": [
 		{
 			"folder_name": "subpack_1",
-			"name": "First Subpack",
+			"name": "初级材质",
 			"memory_tier": 0
 		},
 		{
 			"folder_name": "subpack_2",
-			"name": "Second Subpack",
+			"name": "高清材质",
 			"memory_tier": 1
 		}
 	]
 }
 ```
+:::
 
--   `name` - name that will show when selecting subpacks.
+-   `name` - 在子包选择界面显示的名称
+-   `memory_tier`- 设备运行所需内存配置（1个内存等级 = 0.25 GB）
+-   `folder_name` - 对应子包文件夹名称，例如示例中的 `subpack_1` 或 `subpack_2`
 
--   `memory_tier`- amount of RAM that device must have to enable this subpack. 1 memory tier = 0.25 GB.
+## 注意事项
 
--   `folder_name` - name of the folder to be used for this subpack, for example in the examples above this would be `subpack_1` or `subpack_2`.
-
-## Known Things
-
-If you add only one subpack, there will be 2 options at the subpacks selection section, however second resolution (no subpack actually) does **not** make content in the root folder override subpacks.
+当仅添加一个子包时，选择界面会显示两个选项，但第二个"无子包"选项实际上**不会**用根目录内容覆盖子包内容。

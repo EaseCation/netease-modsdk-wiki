@@ -1,9 +1,9 @@
 ---
-title: Visuals
+title: 视觉效果
 categories:
-    - title: General
+    - title: 基础
       color: blue
-    - title: Tutorials
+    - title: 巧思案例
       color: green
     - title: Ideas
       color: orange

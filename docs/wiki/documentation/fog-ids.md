@@ -1,92 +1,95 @@
 ---
-title: Fog IDs
+title: 雾效ID
 mentions:
     - SirLich
     - MedicalJewel105
     - TheItsNameless
 ---
 
-## By Element X
+# 雾效ID
 
-| ID                                             | Note                                                                             |
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+## 按元素X分类
+
+| ID                                             | 说明                                                                             |
 | ---------------------------------------------- | -------------------------------------------------------------------------------- |
-| minecraft:fog_bamboo_jungle                    | Fog used in the bamboo jungle.                                                   |
-| minecraft:fog_bamboo_jungle_hills              | Fog used in the bamboo jungle hills.                                             |
-| minecraft:fog_basalt_deltas                    | Fog used in the basalt deltas. Adds a gray-red tint to the edge of the sky       |
-| minecraft:fog_beach                            | Fog used in the beach biome.                                                     |
-| minecraft:fog_birch_forest                     | Fog used in the birch forest                                                     |
-| minecraft:fog_birch_forest_hills               | Fog used in the birch forest hills biome.                                        |
-| minecraft:fog_cold_beach                       | Fog used in the cold beach biome.                                                |
-| minecraft:fog_cold_ocean                       | Fog used in the cold ocean biome.                                                |
-| minecraft:fog_cold_taiga                       | Fog used in the cold taiga biome.                                                |
-| minecraft:fog_cold_taiga_hills                 | Fog used in the cold taiga hills biome.                                          |
-| minecraft:fog_cold_taiga_mutated               | Fog used in the mutated cold taiga biome.                                        |
-| minecraft:fog_crimson_forest                   | Fog used in the crimson forest biome. Adds a red tint to the edge of the sky     |
-| minecraft:fog_deep_cold_ocean                  | Fog used in the deep cold ocean biome.                                           |
-| minecraft:fog_deep_frozen_ocean                | Fog used in the deep frozen ocean biome.                                         |
-| minecraft:fog_deep_lukewarm_ocean              | Fog used in the deep lukewarm ocean biome.                                       |
-| minecraft:fog_deep_ocean                       | Fog used in the deep ocean biome.                                                |
-| minecraft:fog_deep_warm_ocean                  | Fog used in the deep warm ocean biome.                                           |
-| minecraft:fog_default                          | Default fog used in the game.                                                    |
-| minecraft:fog_desert                           | Fog used in the desert biome.                                                    |
-| minecraft:fog_desert_hills                     | Fog used in the desert hills biome.                                              |
-| minecraft:fog_extreme_hills                    | Fog used in the extreme hills biome.                                             |
-| minecraft:fog_extreme_hills_edge               | Fog used in the extreme hills edge biome.                                        |
-| minecraft:fog_extreme_hills_mutated            | Fog used in the mutated extreme hills biome.                                     |
-| minecraft:fog_extreme_hills_plus_trees         | Fog used in the extreme hills with trees biome.                                  |
-| minecraft:fog_extreme_hills_plus_trees_mutated | Fog used in the mutated extreme hills with trees biome.                          |
-| minecraft:fog_flower_forest                    | Fog used in the flower forest biome.                                             |
-| minecraft:fog_forest                           | Fog used in the forest biome.                                                    |
-| minecraft:fog_forest_hills                     | Fog used in the forest hills biome.                                              |
-| minecraft:fog_frozen_ocean                     | Fog used in the frozen ocean biome.                                              |
-| minecraft:fog_frozen_river                     | Fog used in the frozen river biome.                                              |
-| minecraft:fog_hell                             | Fog used in the nether wastes biome. Adds a red tint to the edge of the sky      |
-| minecraft:fog_ice_mountains                    | Fog used in the ice mountains biome.                                             |
-| minecraft:fog_ice_plains                       | Fog used in the ice plains biome.                                                |
-| minecraft:fog_ice_plains_spikes                | Fog used in the ice spikes biome.                                                |
-| minecraft:fog_jungle                           | Fog used in the jungle biome.                                                    |
-| minecraft:fog_jungle_edge                      | Fog used in the jungle edge biome.                                               |
-| minecraft:fog_jungle_hills                     | Fog used in the jungle hills biome.                                              |
-| minecraft:fog_jungle_mutated                   | Fog used in the mutated jungle biome.                                            |
-| minecraft:fog_lukewarm_ocean                   | Fog used in the lukewarm ocean biome.                                            |
-| minecraft:fog_mega_spruce_taiga                | Fog used in the mega spruce taiga biome.                                         |
-| minecraft:fog_mega_spruce_taiga_mutated        | Fog used in the mega spruce mutated taiga biome.                                 |
-| minecraft:fog_mega_taiga                       | Fog used in the mega taiga biome.                                                |
-| minecraft:fog_mega_taiga_hills                 | Fog used in the mega taiga hills biome.                                          |
-| minecraft:fog_mega_taiga_mutated               | Fog used in the mega mutated taiga biome.                                        |
-| minecraft:fog_mesa                             | Fog used in the mesa biome.                                                      |
-| minecraft:fog_mesa_bryce                       | Fog used in the mesa bryce biome.                                                |
-| minecraft:fog_mesa_mutated                     | Fog used in the mutated mesa biome.                                              |
-| minecraft:fog_mesa_plateau                     | Fog used in the mesa plateau biome.                                              |
-| minecraft:fog_mesa_plateau_stone               | Fog used in the stone mesa plateau biome.                                        |
-| minecraft:fog_mushroom_island                  | Fog used in the mushroom island biome.                                           |
-| minecraft:fog_mushroom_island_shore            | Fog used in the mushroom island shore biome.                                     |
-| minecraft:fog_ocean                            | Fog used in the ocean biome.                                                     |
-| minecraft:fog_plains                           | Fog used in the plains biome.                                                    |
-| minecraft:fog_river                            | Fog used in the river biome.                                                     |
-| minecraft:fog_roofed_forest                    | Fog used in the roofed forest biome.                                             |
-| minecraft:fog_savanna                          | Fog used in the savanna biome.                                                   |
-| minecraft:fog_savanna_mutated                  | Fog used in the mutated savanna biome.                                           |
-| minecraft:fog_savanna_plateau                  | Fog used in the savanna plateau biome.                                           |
-| minecraft:fog_soulsand_valley                  | Fog used in the soulsand valley biome. Adds a dark green tint to the sky         |
-| minecraft:fog_stone_beach                      | Fog used in the stone beach biome.                                               |
-| minecraft:fog_sunflower_plains                 | Fog used in the sunflower plains biome.                                          |
-| minecraft:fog_swampland                        | Fog used in the swamp biome.                                                     |
-| minecraft:fog_swampland_mutated                | Fog used in the mutated swamp biome.                                             |
-| minecraft:fog_taiga                            | Fog used in the taiga biome.                                                     |
-| minecraft:fog_taiga_hills                      | Fog used in the taiga hills biome.                                               |
-| minecraft:fog_taiga_mutated                    | Fog used in the mutated taiga hills biome.                                       |
-| minecraft:fog_the_end                          | Fog used in the end biome. Adds a black tint to the edge of the sky              |
-| minecraft:fog_warm_ocean                       | Fog used in the warm ocean biome.                                                |
-| minecraft:fog_warped_forest                    | Fog used in the warped forest biome. Adds a dark red tint to the edge of the sky |
+| minecraft:fog_bamboo_jungle                    | 竹林生物群系使用的雾效                                                           |
+| minecraft:fog_bamboo_jungle_hills              | 竹林丘陵生物群系使用的雾效                                                       |
+| minecraft:fog_basalt_deltas                    | 玄武岩三角洲生物群系使用的雾效，为天空边缘添加灰红色调                           |
+| minecraft:fog_beach                            | 沙滩生物群系使用的雾效                                                           |
+| minecraft:fog_birch_forest                     | 桦木林生物群系使用的雾效                                                         |
+| minecraft:fog_birch_forest_hills               | 桦木林丘陵生物群系使用的雾效                                                     |
+| minecraft:fog_cold_beach                       | 寒冷沙滩生物群系使用的雾效                                                       |
+| minecraft:fog_cold_ocean                       | 寒冷海洋生物群系使用的雾效                                                       |
+| minecraft:fog_cold_taiga                       | 寒冷针叶林生物群系使用的雾效                                                     |
+| minecraft:fog_cold_taiga_hills                 | 寒冷针叶林丘陵生物群系使用的雾效                                                 |
+| minecraft:fog_cold_taiga_mutated               | 突变寒冷针叶林生物群系使用的雾效                                                 |
+| minecraft:fog_crimson_forest                   | 绯红森林生物群系使用的雾效，为天空边缘添加红色调                                 |
+| minecraft:fog_deep_cold_ocean                  | 深层寒冷海洋生物群系使用的雾效                                                   |
+| minecraft:fog_deep_frozen_ocean                | 深层冰冻海洋生物群系使用的雾效                                                   |
+| minecraft:fog_deep_lukewarm_ocean              | 深层温水海洋生物群系使用的雾效                                                   |
+| minecraft:fog_deep_ocean                       | 深层海洋生物群系使用的雾效                                                       |
+| minecraft:fog_deep_warm_ocean                  | 深层温暖海洋生物群系使用的雾效                                                   |
+| minecraft:fog_default                          | 游戏默认雾效                                                                     |
+| minecraft:fog_desert                           | 沙漠生物群系使用的雾效                                                           |
+| minecraft:fog_desert_hills                     | 沙漠丘陵生物群系使用的雾效                                                       |
+| minecraft:fog_extreme_hills                    | 峭壁生物群系使用的雾效                                                           |
+| minecraft:fog_extreme_hills_edge               | 峭壁边缘生物群系使用的雾效                                                       |
+| minecraft:fog_extreme_hills_mutated            | 突变峭壁生物群系使用的雾效                                                       |
+| minecraft:fog_extreme_hills_plus_trees         | 带树林的峭壁生物群系使用的雾效                                                   |
+| minecraft:fog_extreme_hills_plus_trees_mutated | 突变带树林的峭壁生物群系使用的雾效                                               |
+| minecraft:fog_flower_forest                    | 繁花森林生物群系使用的雾效                                                       |
+| minecraft:fog_forest                           | 森林生物群系使用的雾效                                                           |
+| minecraft:fog_forest_hills                     | 森林丘陵生物群系使用的雾效                                                       |
+| minecraft:fog_frozen_ocean                     | 冰冻海洋生物群系使用的雾效                                                       |
+| minecraft:fog_frozen_river                     | 冰冻河流生物群系使用的雾效                                                       |
+| minecraft:fog_hell                             | 下界荒地生物群系使用的雾效，为天空边缘添加红色调                                 |
+| minecraft:fog_ice_mountains                    | 冰封山脉生物群系使用的雾效                                                       |
+| minecraft:fog_ice_plains                       | 冰原生物群系使用的雾效                                                           |
+| minecraft:fog_ice_plains_spikes                | 冰刺平原生物群系使用的雾效                                                       |
+| minecraft:fog_jungle                           | 丛林生物群系使用的雾效                                                           |
+| minecraft:fog_jungle_edge                      | 丛林边缘生物群系使用的雾效                                                       |
+| minecraft:fog_jungle_hills                     | 丛林丘陵生物群系使用的雾效                                                       |
+| minecraft:fog_jungle_mutated                   | 突变丛林生物群系使用的雾效                                                       |
+| minecraft:fog_lukewarm_ocean                   | 温水海洋生物群系使用的雾效                                                       |
+| minecraft:fog_mega_spruce_taiga                | 巨型云杉针叶林生物群系使用的雾效                                                 |
+| minecraft:fog_mega_spruce_taiga_mutated        | 突变巨型云杉针叶林生物群系使用的雾效                                             |
+| minecraft:fog_mega_taiga                       | 巨型针叶林生物群系使用的雾效                                                     |
+| minecraft:fog_mega_taiga_hills                 | 巨型针叶林丘陵生物群系使用的雾效                                                 |
+| minecraft:fog_mega_taiga_mutated               | 突变巨型针叶林生物群系使用的雾效                                                 |
+| minecraft:fog_mesa                             | 平顶山生物群系使用的雾效                                                         |
+| minecraft:fog_mesa_bryce                       | 布莱斯平顶山生物群系使用的雾效                                                   |
+| minecraft:fog_mesa_mutated                     | 突变平顶山生物群系使用的雾效                                                     |
+| minecraft:fog_mesa_plateau                     | 平顶山高原生物群系使用的雾效                                                     |
+| minecraft:fog_mesa_plateau_stone               | 石质平顶山高原生物群系使用的雾效                                                 |
+| minecraft:fog_mushroom_island                  | 蘑菇岛生物群系使用的雾效                                                         |
+| minecraft:fog_mushroom_island_shore            | 蘑菇岛海岸生物群系使用的雾效                                                     |
+| minecraft:fog_ocean                            | 海洋生物群系使用的雾效                                                           |
+| minecraft:fog_plains                           | 平原生物群系使用的雾效                                                           |
+| minecraft:fog_river                            | 河流生物群系使用的雾效                                                           |
+| minecraft:fog_roofed_forest                    | 黑森林生物群系使用的雾效                                                         |
+| minecraft:fog_savanna                          | 热带草原生物群系使用的雾效                                                       |
+| minecraft:fog_savanna_mutated                  | 突变热带草原生物群系使用的雾效                                                   |
+| minecraft:fog_savanna_plateau                  | 热带高原生物群系使用的雾效                                                       |
+| minecraft:fog_soulsand_valley                  | 灵魂沙峡谷生物群系使用的雾效，为天空边缘添加深绿色调                             |
+| minecraft:fog_stone_beach                      | 石滩生物群系使用的雾效                                                           |
+| minecraft:fog_sunflower_plains                 | 向日葵平原生物群系使用的雾效                                                     |
+| minecraft:fog_swampland                        | 沼泽生物群系使用的雾效                                                           |
+| minecraft:fog_swampland_mutated                | 突变沼泽生物群系使用的雾效                                                       |
+| minecraft:fog_taiga                            | 针叶林生物群系使用的雾效                                                         |
+| minecraft:fog_taiga_hills                      | 针叶林丘陵生物群系使用的雾效                                                     |
+| minecraft:fog_taiga_mutated                    | 突变针叶林丘陵生物群系使用的雾效                                                 |
+| minecraft:fog_the_end                          | 末地生物群系使用的雾效，为天空边缘添加黑色调                                     |
+| minecraft:fog_warm_ocean                       | 温暖海洋生物群系使用的雾效                                                       |
+| minecraft:fog_warped_forest                    | 诡异森林生物群系使用的雾效，为天空边缘添加深红色调                               |
 
-[Original Credit](https://www.youtube.com/watch?time_continue=52&v=SA79ulIgypg&feature=emb_logo)
+[原始来源](https://www.youtube.com/watch?time_continue=52&v=SA79ulIgypg&feature=emb_logo)
 
-
-## Auto-generated
+## 自动生成列表
 
 <!-- page_dumper_start -->
-| ID                                             | Biome used in                    | 
+| ID                                             | 适用的生物群系                    | 
 | ---------------------------------------------- | -------------------------------- | 
 | minecraft:fog_bamboo_jungle                    | bamboo_jungle                    | 
 | minecraft:fog_bamboo_jungle_hills              | bamboo_jungle_hills              | 
@@ -159,5 +162,5 @@ mentions:
 | minecraft:fog_the_end                          | the_end                          | 
 | minecraft:fog_warm_ocean                       | warm_ocean                       | 
 | minecraft:fog_warped_forest                    | warped_forest                    | 
-*Last updated for 1.20.10*
+*最后更新于1.20.10版本*
 <!-- page_dumper_end -->

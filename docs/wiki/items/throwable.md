@@ -1,8 +1,8 @@
 ---
-title: Throwable Items
-category: Tutorials
+title: 投掷物
+category: 巧思案例
 tags:
-    - intermediate
+    - 中级
 mentions:
     - Fabrimat
     - MedicalJewel105
@@ -14,23 +14,26 @@ mentions:
     - ThomasOrs
 ---
 
+# 投掷物
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: tip
-This tutorial assumes you have a basic understanding of Molang, animation controllers and entity definitions.
+本教程假定您已掌握 Molang、动画控制器和实体定义的基础知识。
 :::
 
-Items like the Splash Potion or the Trident are special items that can be thrown. Currently, there are two ways to accomplish something similar in your add-on, one that can be done in the stable release and one that needs the `Holiday Creator Features` experimental toggle to be enabled.
+类似喷溅药水或三叉戟这样的物品属于可投掷的特殊物品。目前有两种方式可以在附加包中实现类似效果，一种适用于稳定版，另一种需要开启 `Holiday Creator Features` 实验性功能。
 
-## Stable method
+## 稳定版实现方案
 
-This method lets you detect the usage of an item through the `minecraft:food` component from an animation controller, and modifying the `player.json` you can then spawn an entity when that happens.
+此方案通过动画控制器检测 `minecraft:food` 组件的使用情况，并通过修改 `player.json` 在投掷时生成实体。
 
-### The Item
+### 物品定义
 
-First, you'll want to make the actual item:
+首先创建可投掷物品：
 
-<CodeHeader>BP/items/throwable_item.item.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/throwable_item.item.json]
 {
   "format_version": "1.16.0",
   "minecraft:item": {
@@ -47,18 +50,18 @@ First, you'll want to make the actual item:
   }
 }
 ```
+:::
 
-We can notice several things here:
+关键点解析：
 
-- `format_version` must be `1.16.0`
-- `minecraft:use_duration` should be a high number, in order to stop the eating sound to play and to prevent the player from eating the item
-- `minecraft:food` is used to allow player to actually "use" the item, so we can detect it
+- `format_version` 必须为 `1.16.0`
+- `minecraft:use_duration` 需设置较大值以防止播放进食音效
+- `minecraft:food` 组件用于启用物品使用检测
 
-Because the format version is `1.16.0`, your item needs an RP definition too:
+由于格式版本为 `1.16.0`，需添加资源包定义：
 
-<CodeHeader>RP/items/throwable_item.item.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/items/throwable_item.item.json]
 {
   "format_version": "1.16.0",
   "minecraft:item": {
@@ -72,15 +75,14 @@ Because the format version is `1.16.0`, your item needs an RP definition too:
   }
 }
 ```
+:::
 
-### The Entity
+### 实体定义
 
-The entity will be the actual thrown item, and it will behave like a projectile.
-Make sure to add snowball runtime identifier to make your projectile to actually be shoot, not spawned. You can also experiment with other projectile runtime id's.
+该实体将作为实际投掷物，具有弹射物特性。注意添加雪球运行时标识使实体具有投射行为，也可尝试其他投射物标识。
 
-<CodeHeader>BP/entities/throwable_item_entity.se.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/throwable_item_entity.se.json]
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -128,33 +130,31 @@ Make sure to add snowball runtime identifier to make your projectile to actually
 	}
 }
 ```
+:::
 
-This entity is based on the Vanilla splash potion.
+此实体基于原版喷溅药水设计，可通过修改 `minecraft:projectile` 组件调整行为（示例中投掷物将造成伤害并给予经验）。
 
-You can then customize its behavior by editing the `minecraft:projectile` component, in this case the thrown item will grant some exp and will damage any entity it will hit.
+### 动画控制器
 
-### The Animation Controller
+动画控制器负责检测物品使用并触发投掷事件：
 
-The animation controller is responsible for detecting the usage of the item and for telling the player entity to spawn a throwable entity.
-
-<CodeHeader>BP/animation_controllers/throwables.ac.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/animation_controllers/throwables.ac.json]
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.player.throwables": { // The ID we will reference in the player's entity description
+    "controller.animation.player.throwables": { // 将在玩家实体描述中引用的ID
       "states": {
         "default": {
           "transitions": [
             {
-              // Current "q.is_item_name_any" takes 3 arguments, first is slot name, second is slot id, third is the item we want to check for
+              // "q.is_item_name_any" 接受三个参数：槽位名称、槽位ID、检测物品
               "throw_item": "q.is_item_name_any('slot.weapon.mainhand', 0, 'wiki:throwable_item') && q.is_using_item"
-	      // "q.is_using_item" returns 'true' or 'false', in our case if player uses item it is going to return 'true'
+	      // "q.is_using_item" 返回布尔值表示物品使用状态
             }
           ],
           "on_entry": [
-            // Resets the player entity in order to be able to throw another item
+            // 重置玩家状态以支持连续投掷
             "@s wiki:reset_player"
           ]
         },
@@ -165,9 +165,9 @@ The animation controller is responsible for detecting the usage of the item and 
             }
           ],
           "on_entry": [
-            // Call the event in the player entity responsible of throwing the item
+            // 触发投掷事件
             "@s wiki:throw_item",
-            // Remove the item from player's inventory
+            // 移除玩家物品
             "/clear @s wiki:throwable_item -1 1"
           ]
         }
@@ -176,23 +176,22 @@ The animation controller is responsible for detecting the usage of the item and 
   }
 }
 ```
+:::
 
-#### player.json
+#### player.json 配置
 
 :::tip
-Always make sure that your `player.json` file is updated to the latest version available, depending on the game version you are working on.
-You can do that [here](https://bedrock.dev/packs).
+请确保您的 `player.json` 文件与当前游戏版本保持同步，可在此处获取最新版本：[bedrock.dev](https://bedrock.dev/packs)
 :::
 
 :::warning
-Do not edit/remove existing parts of the `player.json` file unless you know what you are doing, as it could (and probably will) break the game.
+请勿随意修改或删除 `player.json` 原有内容，否则可能导致游戏异常
 :::
 
-Now, you have to register the animation controller to the `player.json` file:
+注册动画控制器至玩家实体：
 
-<CodeHeader>BP/entities/player.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/player.json]
 {
   "format_version": "1.18.20",
   "minecraft:entity": {
@@ -203,15 +202,15 @@ Now, you have to register the animation controller to the `player.json` file:
       "is_experimental": false,
       "scripts": {
         "animate": [
-          "throwables_controller" // This should exactly match the same as the one below
+          "throwables_controller" // 需与下方定义保持一致
         ]
       },
       "animations": {
-        "throwables_controller": "controller.animation.player.throwables" // ID as referenced in animation controller file
+        "throwables_controller": "controller.animation.player.throwables" // 动画控制器ID
       }
     },
     "components": {
-        "minecraft:breathable": { // keeps breath timer bubbles from appearing
+        "minecraft:breathable": { // 防止显示呼吸气泡
           "total_supply": 15,
           "suffocate_time": -1,
           "inhale_time": 3.75,
@@ -221,14 +220,14 @@ Now, you have to register the animation controller to the `player.json` file:
     ...
   }
 ```
+:::
 
-Then, you need to add all the events and component groups to the `player.json` file:
+添加组件组和事件：
 
-<CodeHeader>BP/entities/player.json#minecraft:entity</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/player.json#minecraft:entity]
 "component_groups": {
-  "wiki:throw_entity": { // Contains a component that will spawn the entity
+  "wiki:throw_entity": { // 包含实体生成组件
     "minecraft:spawn_entity": {
       "entities": {
         "min_wait_time": 0,
@@ -257,16 +256,16 @@ Then, you need to add all the events and component groups to the `player.json` f
   }
 }
 ```
+:::
 
-## Experimental method
+## 实验版实现方案
 
-This method requires the `Holiday Creator Features` experimental toggle to be enabled.
+此方案需启用 `Holiday Creator Features` 实验性功能。
 
-### The Item
+### 物品定义
 
-<CodeHeader>BP/items/throwable_item.item.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/throwable_item.item.json]
 {
     "format_version": "1.16.100",
     "minecraft:item": {
@@ -304,29 +303,28 @@ This method requires the `Holiday Creator Features` experimental toggle to be en
     }
 }
 ```
+:::
 
-We can notice several things here:
+关键点说明：
 
-- `format_version` must be `1.16.100`
-- `minecraft:on_use` will call an event every time the item is used (right-clicked)
+- `format_version` 必须为 `1.16.100`
+- `minecraft:on_use` 用于响应右键事件
 
-In the event:
+事件参数：
 
-- `shoot` will shoot our entity
-- `swing` will run the swing animation on the player
-- `decrement_stack` will remove one item from the player's inventory
-- `run_command` will execute commands when the item is shot, like playing sounds
+- `shoot` 投射实体
+- `swing` 播放挥动动画
+- `decrement_stack` 减少物品堆叠
+- `run_command` 执行音效指令
 
+### 实体定义
 
-### The Entity
-
-The entity file is the same as the Stable version.
+实体文件与稳定版相同。
 
 <Spoiler title="BP/entities/throwable_item_entity.se.json">
 
-<CodeHeader>BP/entities/throwable_item_entity.se.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/throwable_item_entity.se.json]
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -374,9 +372,17 @@ The entity file is the same as the Stable version.
 	}
 }
 ```
+:::
 
 </Spoiler>
 
-## Conclusion
+## 扩展应用
 
-Once you have your throwable item you can start trying several things, like playing with its power, effects, animations or combining it with an [AOE Cloud](/entities/introduction-to-aec). The only limit is your imagination.
+完成基础投掷物后，您可以尝试以下扩展：
+
+- 调整投射力度和弹道参数
+- 添加粒子效果和高级动画
+- 组合使用[区域效果云](/wiki/entities/introduction-to-aec)
+- 实现不同命中效果（燃烧、中毒等）
+
+通过灵活运用组件和事件系统，可以创造出丰富的投掷物玩法。

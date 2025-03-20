@@ -1,3 +1,3 @@
 ---
-title: Documentation
+title: 文档
 ---

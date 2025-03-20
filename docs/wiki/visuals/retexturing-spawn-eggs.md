@@ -1,9 +1,8 @@
 ---
-title: Retexturing Spawn Eggs
+title: 重绘生成蛋纹理
 tags:
-    - beginner
-category:
-    - Tutorials
+    - 新手入门
+category: 巧思案例
 mentions:
     - SirLich
     - Joelant05
@@ -11,49 +10,53 @@ mentions:
     - aexer0e
 ---
 
-Custom entities will automatically be given a spawn egg. This spawn egg can be found inside of the creative menu, with a name like `item.spawn_egg.entity.wiki:my_entity.name`. If you want to rename your spawn egg as well as set a texture, you can do so in the lang files.
+# 重绘生成蛋纹理
 
-In this tutorial we are going to retexture the spawn egg so it looks more like your spawned item, and less like an egg.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## Creating the Texture
+自定义实体将自动获得生成蛋。该生成蛋可在创造模式物品栏中找到，名称格式为`item.spawn_egg.entity.wiki:my_entity.name`。若需重命名生成蛋并设置纹理，可通过语言文件实现。
 
-You can easily take a screenshot of your entity using the Blockbench software. Load the mode, and select export screenshot from the drop-down.
+本教程将指导如何为生成蛋重绘纹理，使其更符合你的实体造型，而非传统蛋形外观。
 
-If you don't want an image like this, you can also create your own pixel art, or use any image you like.
+## 创建纹理
 
-## Adding the Texture
+使用Blockbench软件可轻松截取实体屏幕截图。加载模型后，从下拉菜单中选择"导出截图"。
 
-Add the texture file under `textures/items/`. I personally suggest creating an `eggs` folder to contain all the spawn egg textures. For example, `textures/items/eggs/my_entity.png`. The file itself should be square.
+若需其他样式，也可自行创作像素画或使用任意图片素材。
 
-## Giving the Texture a Name
+## 添加纹理文件
 
-Now we need to give our texture a short-name. This can be done in item_texture file:
+将纹理文件置于`textures/items/`目录下。建议新建`eggs`文件夹统一管理生成蛋纹理，例如`textures/items/eggs/my_entity.png`。文件尺寸应为正方形。
 
-<CodeHeader>RP/textures/item_texture.json</CodeHeader>
+## 命名纹理
 
-```json
+在物品纹理文件中定义简短标识符：
+
+::: code-group
+```json [RP/textures/item_texture.json]
 {
-	"resource_pack_name": "My Map Name", //I don't actually know if this field does anything.
+	"resource_pack_name": "我的地图名称", //不确定此字段的实际作用
 	"texture_name": "atlas.items",
 	"texture_data": {
-		"my_entity": { //"my_entity" is the short-name of the texture, which we can reference later
+		"my_entity": { //"my_entity"作为纹理标识符，后续可引用
 			"textures": "textures/items/egg/my_entity"
 		}
-        //Add more spawn egg textures here
+        //在此添加更多生成蛋纹理
     }
 ```
+:::
 
-## Using the new texture:
+## 应用新纹理
 
-Now we can use our new texture inside of the Resource Pack entity file:
+在资源包实体文件中调用新纹理：
 
-<CodeHeader>RP/entity/my_entity.json#description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/my_entity.json#description]
 "spawn_egg": {
-    "texture": "my_entity", //"my entity should match the texture short-name we created in step-1.
+    "texture": "my_entity", //需与步骤1创建的纹理标识符一致
     "texture_index": 0
 }
 ```
+:::
 
-Go and test it now!
+立即进入游戏测试效果吧！

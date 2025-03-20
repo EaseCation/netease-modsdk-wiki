@@ -1,70 +1,74 @@
 ---
-title: Advanced Molang
+title: 进阶Molang
 toc_max_level: 2
 mentions:
     - Ciosciaa
     - TheItsNameless
 ---
 
-## Values
+# 进阶Molang
 
-- All expressions in Molang return a value for the sake of checks against equality. Most expressions return `0`. Notably, assignments return the value assigned and loops return the resolved value of the looping statements, if one would exist.
-- All values in Molang are effectively single-precision floats.
-- `this` is used to refer to the field's current value as it accumulated during evaluation. It is only observed to be usable in animations, but it may be usable elsewhere. As an example, if the accumulated transformations on the `x` `scale` of a bone would yield `62`, a final animation with a `x` `scale` of `-this` would resolve to `-62`, unsetting the prior transformations. This is used in vanilla animations in a number of places. Outside of animation contexts, `this` appears to always resolve to `0`.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-### Booleans
+## 值类型
 
-- Booleans are usable in Molang. `true` resolves to `1`, and `false` resolves to `0`.
+- 所有Molang表达式都会返回一个值以便进行相等性检查。大多数表达式返回`0`。特别地，赋值表达式会返回被赋予的值，循环语句会返回循环体内最后一个解析的值（如果存在）。
+- Molang中的所有值本质上都是单精度浮点数。
+- `this`用于指代当前字段在运算过程中累积的当前值。目前仅在动画系统中被观察到可用，但可能在其他场景也有用途。例如，如果骨骼在`x`轴上的缩放变换累积结果为`62`，那么最终动画中`x`轴的`scale`设置为`-this`时，结果将为`-62`，这会抵消之前的变换效果。这一特性在大量原版动画中都有应用。在非动画上下文中，`this`似乎始终解析为`0`。
 
-### Numbers
+### 布尔值
 
-- You can use leading `0`s in front of numbers, for example, to line them up better in your code.
-- Numbers can use exponential notation, such as `2.5e2`, which would be equal to 250. `e` can be suffixed with `+` or `-` to direct the power.
-- Numbers may be suffixed with a single `f`, often used to denote a floating point value. This can be found across vanilla code, but it is not believed to have any functionality.
+- 布尔值可在Molang中使用。`true`解析为`1`，`false`解析为`0`。
 
-### Strings
+### 数值
 
-- Strings use `\` (`\\` in escaped JSON) as some sort of escape or perhaps something else. It is unknown what functionality this has. It is known that the subsequent 2 characters are handed off to their own sub-parser, which does not exit correctly on a closing `'`; this means the Molang string `"v.type = '\\x';"` is invalid. `'`, which is normally disallowed on its own as it would represent the end of the string, is allowed in the 2 characters following a `\`.
-- String values are (mostly) incremental as they are represented against floats. It is possible to compare 2 individual character strings using equality or comparison operators or even to effectively "adjust" the contents of a single-character string. Multi-character behavior of such is unknown.
+- 可以在数值前添加前导零（例如`0012`），以便在代码中对齐。
+- 数值支持科学计数法（如`2.5e2`等价于250）。指数部分可使用`+`或`-`符号。
+- 数值可以后缀单个`f`（常见于原版代码中用于标记浮点数），但目前未发现该符号具有实际功能影响。
 
-## Operators
+### 字符串
 
-The complete precedence list, from first to last evaluated:
+- 字符串使用`\`（JSON转义后为`\\`）作为某种转义符或其他功能。其具体功能尚不明确。已知后续两个字符会被传递给独立子解析器，但该子解析器遇到结束单引号`'`时无法正确退出。例如Molang字符串`"v.type = '\\x';"`是无效的。而单独存在的`'`通常会被视为字符串结束符，但在`\`后的两个字符中出现时会被允许。
+- 字符串值（多数情况下）以浮点数形式进行增量表示。可以通过等式或比较运算符对单字符字符串进行比较，甚至可对单字符字符串内容进行"调整"。多字符字符串在此类操作中的行为尚不明确。
 
-1. `()` and `[]`
+## 运算符
+
+运算符优先级列表（从高到低）：
+
+1. `()` 和 `[]`
 2. `->`
-3. `!` and `-` (unary negation)
-4. `*` and `/`
-5. `+` and `-` (binary subtraction)
-6. `<`, `<=`, `>`, and `>=`
-7. `==` and `!=`
+3. `!` 和 `-`（一元取反）
+4. `*` 和 `/`
+5. `+` 和 `-`（二元减法）
+6. `<`, `<=`, `>` 和 `>=`
+7. `==` 和 `!=`
 8. `&&`
 9. `||`
-10. `?` and `? :`
+10. `?` 和 `? :`
 11. `??`
 12. `=`
 13. `return`
 
-- Operators are considered from left to right for all operators except the conditionals.
-- Multiple `->` cannot be used in the same statement.
-- Logical operators short-circuit.
+- 除条件运算符外，所有运算符均按从左到右顺序执行。
+- 同一语句中不可重复使用`->`运算符。
+- 逻辑运算符具有短路特性。
 
-## Statements
+## 语句
 
-- Assignments return the value assigned. You can therefore chain assignments if you need separate variables to work with from a single value, such as with `v.iterator_x = (v.iterator_z = math.random_integer(16, 32));`.
-- The last statement inside a brace scope does not need to end with a `;`.
-- Brace scopes can be used anywhere an expression can be used. `v.spawn_point ?? {v.target = false;};`, for example, would set `v.target` to `false` if `v.spawn_point` were not defined.
+- 赋值语句会返回被赋予的值。因此可以进行链式赋值（例如`v.iterator_x = (v.iterator_z = math.random_integer(16, 32));`）。
+- 大括号作用域内的最后一条语句无需以`;`结尾。
+- 大括号作用域可以在任何表达式可用的位置使用。例如`v.spawn_point ?? {v.target = false;};`会在`v.spawn_point`未定义时将`v.target`设为`false`。
 
-## Collections
+## 集合类型
 
-- Entity iterables (such as the result of `q.get_nearby_entities`) are their own "type". They are not compatible with subscripts.
-- Arrays, likewise, are not compatible with entity iterable operations, such as `q.count`.
-- The result of array subscripts cannot directly be an argument to `+`, `-`, `*`, or `/` but may still be used directly as function parameters (even math functions) or with other operators.
+- 实体可迭代对象（如`q.get_nearby_entities`的结果）属于独立"类型"，不可与下标运算符兼容使用。
+- 数组类型同样无法与实体可迭代操作（如`q.count`）兼容使用。
+- 数组下标结果不可直接作为`+`, `-`, `*`, `/`的操作数，但可作为函数参数（包括数学函数）或与其他运算符配合使用。
 
-## Evaluation
+## 表达式求值
 
-- `initialize` and `pre_animation` are lazily concatenated. Molang strings in these arrays must be syntactically valid independently, but the basic concatenation of all independent strings must also be a valid Molang input.
+- `initialize`和`pre_animation`数组中的语句采用延迟连接方式。这些数组中的每个Molang字符串必须独立语法有效，同时所有字符串连接后也需构成有效的Molang输入。
 
-## Limits
+## 限制条件
 
-- Molang showed no reasonable limits to any language functionality, aside from numeric size. Loop counts, string lengths, Molang input length, collection size, etc., were observed to hold in very unreasonable situations.
+- 除数值大小外，未发现Molang存在合理的功能限制。在极端场景下仍可观察到循环计数、字符串长度、输入长度、集合大小等参数的正常运行。

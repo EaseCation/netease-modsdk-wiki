@@ -1,6 +1,6 @@
 ---
-title: Tellraw
-category: Commands
+title: tellraw命令
+category: 命令
 mentions:
     - SirLich
     - Dreamedc2015
@@ -13,120 +13,110 @@ mentions:
     - SmokeyStack
 ---
 
-tellraw sends a JSON message to selected or all players being useful for sending plain messages to players ingame
+# tellraw命令
 
-**The titleraw command follows the same theme**
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+`tellraw` 用于向指定或所有玩家发送JSON格式消息，适用于在游戏中向玩家发送纯文本信息
+
+**titleraw命令遵循相同的设计理念**
 
 ![](/assets/images/documentation/tellrawshow.png)
 
+## 格式规范
 
-## Format
-
-this is how the tell raw command is formatted
+`tellraw`命令的基础语法结构如下：
 
 ```
-tellraw <target: target> <raw json message: json>
+tellraw <目标: 目标> <原始JSON消息: json>
 ```
 
--   ` <target: target>`: The target is expressed as a playername or player groups such as `@a` `@r` `@s` `@p`
--   `<raw json message: json>`: This is a json schema that tells how the message is structured or constructed. expressed with for example:
+-   ` <目标: 目标>`: 目标可以表示为玩家名称或玩家组，例如`@a` `@r` `@s` `@p`
+-   `<原始JSON消息: json>`: 用于定义消息结构的JSON格式，例如：
     `{"rawtext":[{"text":""}]}`
 
+## 基础示例
 
-## Examples
+发送引号内的文字内容
 
-This sends the words in the last set of quotes
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [命令]
 /tellraw @a {"rawtext":[{"text":"Hello"}]}
 ```
+:::
 
+## 转义字符处理
 
-## Escaping Characters
+在消息中使用引号时，需在引号左侧添加反斜杠进行转义
 
-To use quotations in a tellraw message place a backslash to the left side of the quotation mark.
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [命令]
 /tellraw @a {"rawtext":[{"text":"Quote me: \"I am here\"."}]}
 ```
+:::
 
+## 换行处理
 
-## Line breaks
+使用`\n`实现文本换行
 
-To insert a line break use `\n`
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [命令]
 /tellraw @a { "rawtext": [ { "text":"I am line one\nI am line two" } ] }
 ```
+:::
 
+## 显示实体/玩家信息
 
-## Displaying entities / player
+通过选择器显示实体名称的用法示例
 
-You can use the following to use selector to display names.
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [命令]
 /tellraw @a {"rawtext": [{"text": "§6The winner is: §a"}, {"selector": "@a[r=5,c=1]"}]}
 ```
+:::
 
+## 显示计分板数值
 
-## Displaying scores
+显示玩家计分板数值的复合用法
 
-You can use the following to use selector to display names.
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [命令]
 /tellraw @a {"rawtext": [{"text": "§6The winner is: §a"}, {"selector": "@a[r=5,c=1]"}, {"text": "§6With a score of: "}, {"score":{"name": "@s","objective": "value"}}]}
 ```
+:::
 
+## 多语言文本翻译
 
-## Translate text
+使用translate组件配合[翻译键](/wiki/concepts/text-and-translations)实现多语言支持。注意需在对应语言的.lang文件中配置翻译内容
 
-To have a language dependant text you can use the translate component and [translation keys](/concepts/text-and-translations). please note you will need relevant information in each of the desired .lang files for this to work.
-
-
-<CodeHeader>RP/texts/en_US.lang</CodeHeader>
-
-```
+::: code-group
+```json [RP/texts/en_US.lang]
 example.langcode.1=I am line one
 ```
 
-<CodeHeader>RP/texts/de_DE.lang</CodeHeader>
-
-```
+```json [RP/texts/de_DE.lang]
 example.langcode.1=Ich bin Zeile eins
 ```
+:::
 
+对应命令：
 
-The command:
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [命令]
 /tellraw @a { "rawtext": [ { "translate": "example.langcode.1" } ] }
 ```
+:::
 
+## 复合型翻译模板
 
-## Translate text with selectors/scores
+多语言文件配置：
 
-language files:
-
-<CodeHeader></CodeHeader>
-
-```
+::: code-group
+```json [示例]
 example.langcode.2=The winner is: %s. With a score of %s
 ```
 
-<CodeHeader></CodeHeader>
-
-```json
+```json [命令]
 /tellraw @a {"rawtext":[{"translate":"example.langcode.2","with":{"rawtext":[{"selector":"@a[r=5,c=1]"},{"text":"§6With a score of: "},{"score":{"name":"@s","objective":"value"}}]}}]}
 ```
+:::

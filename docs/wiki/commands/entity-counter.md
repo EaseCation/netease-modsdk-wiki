@@ -1,77 +1,83 @@
 ---
-title: Entity Counter
-category: Scoreboard Systems
+title: 实体计数器
+category: 计分板系统
 mentions:
     - BedrockCommands
     - zheaEvyline
 nav_order: 3
 tags:
-    - system
+    - 系统
 ---
 
-## Introduction
+# 实体计数器
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This system allows you to track how many players/entities are there on your world and run your desired commands based on the values obtained.
+## 前言
 
-> Note: you cannot track entities in unloaded chunks though players can still be tracked regardless.
+[源自Bedrock Commands社区Discord](https://discord.gg/SYstTYx5G5)
 
-## Setup
+本系统可用于追踪世界中玩家/实体的数量，并根据获取的数值执行自定义命令。
 
-*To be typed in Chat:*
+> 注意：无法追踪未加载区块中的实体，但玩家无论是否在加载区块中都可被追踪。
+
+## 初始化设置
+
+*在聊天栏输入:*
 
 `/scoreboard objectives add total dummy`
 
-If you prefer to have the objective added automatically on world initialisation, follow the process outlined in [On First World Load.](/commands/on-first-world-load)
+若希望在世界初始化时自动添加该计分项，请参照[首次世界加载](/wiki/commands/on-first-world-load)中的流程进行设置。
 
-## System
+## 核心系统
 
-<CodeHeader>BP/functions/entity_counter.mcfunction</CodeHeader>
-
-```yaml
+::: code-group
+```yaml [BP/functions/entity_counter.mcfunction]
 scoreboard players set onlinePlayers total 0
 execute as @e [type=player] run scoreboard players add onlinePlayers total 1
 
-#Your Commands Here (examples)
-execute if score onlinePlayers total matches 4.. run title @a actionbar Enough players to start game.
-execute if score onlinePlayers total matches ..3 run title @a actionbar Not enough players.
+# 在此处添加你的命令（示例）
+execute if score onlinePlayers total matches 4.. run title @a actionbar 玩家数量已满足游戏条件。
+execute if score onlinePlayers total matches ..3 run title @a actionbar 玩家数量不足。
+
 ```
+:::
+
 ![commandBlockChain3](/assets/images/commands/commandBlockChain/3.png)
 
+本示例使用名为`onlinePlayers`的虚拟玩家分数，通过选择器`@e [type=player]`追踪当前在线玩家数量。您可以根据需求使用任意虚拟玩家名称和实体类型，例如`@e [type=creeper]`来追踪苦力怕数量。
 
-Here we have used a FakePlayer name `onlinePlayers` and targeting `@e [type=player]` to track how many players are currently on the world. However you may use any FakePlayer name and target any entity you might need. Such as `@e [type=creeper]`
+示例中使用的`/title`命令演示了两种条件判断：
+- a) 当玩家数≥4时触发 `4..`
+- b) 当玩家数≤3时触发 `..3`
 
-Similarly we're running a `/title` command as an example:
-- a) when there are 4 or more players `4..`
-- b) when there are 3 players or less `..3`
+您可根据实际需求修改这些条件。
 
-You can edit this as well to suit your need.
+## 系统原理
 
-## Explanation
+- 系统中的前两条命令将虚拟玩家分数（此处为`onlinePlayers`）重置为0，然后通过遍历每个已加载的目标实体（此处为`type=player`）来累计分数
 
-- The first two commands in the system sets the FakePlayer name's score to 0 (here `onlinePlayers`) and from each loaded entity we want to track (here `type=player`) it will add a score to the specified FakePlayer name (here `onlinePlayers`)
+通过获取的数值，我们可以使用`/execute if score`命令在满足特定条件时执行自定义操作：
+- **` n `** 精确匹配数值n
+- **` n.. `** 数值≥n时触发
+- **` ..n `** 数值≤n时触发
+- **` n1..n2 `** 数值在n1到n2区间时触发
 
-Now based on the values obtained we can use the `/execute if score` command to run our desired commands when certain values are met.
-- **` n `** any number n
-- **` n.. `** any number n and above
-- **` ..n `** any number n and below
-- **` n1..n2 `** any number n1 to any number n2.
+## 循环执行配置
 
-## Tick JSON
+若使用函数替代命令方块，需将`entity_counter`函数添加至`tick.json`以实现循环持续执行。通过在字符串后添加逗号分隔，可将多个文件添加至`tick.json`。更多信息请参考[函数文档](/wiki/commands/mcfunctions#tick-json)。
 
-If you are using functions instead of command blocks, the ` entity_counter ` function must be added to the ` tick.json ` in order to loop and run it continuously. Multiple files can be added to the ` tick.json ` by placing a comma after each string. Refer to [Functions](/commands/mcfunctions#tick-json) documentation for further info.
-
-<CodeHeader>BP/functions/tick.json</CodeHeader>
-```json
+::: code-group
+```json [BP/functions/tick.json]
 {
   "values": [
     "entity_counter"
   ]
 }
 ```
+:::
 
-If using functions, your pack folder structure will be be as follows:
+使用函数时，资源包文件夹结构如下所示：
 
 <FolderView
 	:paths="[
@@ -84,6 +90,6 @@ If using functions, your pack folder structure will be be as follows:
 ]"
 ></FolderView>
 
-> **Note:** the scoreboard names (in this case: 'total') may end up being used by other people. Appending ` _ ` and a set of randomly generated characters after would be a choice that reduces the probability of collisions. Similar technique can be employed for the ` .mcfunction ` filenames. Ex:
-> - ` total_0fe678 `
-> - ` entity_counter_0fe678.mcfunction `
+> **注意：** 计分项名称（本例中的'total'）可能被他人重复使用。建议在名称后追加`_`和随机字符组合来降低冲突概率，此方法同样适用于`.mcfunction`文件名。例如：
+> - `total_0fe678`
+> - `entity_counter_0fe678.mcfunction`

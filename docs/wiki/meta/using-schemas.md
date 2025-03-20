@@ -1,5 +1,5 @@
 ---
-title: Using Schemas
+title: 使用Schema
 mentions:
     - SirLich
     - MedicalJewel105
@@ -7,57 +7,63 @@ mentions:
     - KalmeMarq
 ---
 
-A JSON schema gives you two things: validation to be sure that your JSON has the correct structure and (depending on editor support) IntelliSense to help you write your JSON correctly, to begin with. Schemas are nice because they give you instant feedback when you screw something up, but they can't catch everything.
+# 使用Schema
 
-JSON schemas are just JSON files themselves and don't do anything on their own. You can write your own or use somebody else's. There's a handful of schemas for Bedrock out there already. Since none of the schemas are "official" (that I know of), and since Bedrock is a moving target, there will probably be some inaccuracies in any schema that you find. So keep that in mind: sometimes the issue will be in your code, sometimes the schema may be wrong. If you find a wrong schema, consider improving it and giving the author a pull request to our collective benefit.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-To get the validation working, you'll need a validator. You have many options here, including editor-specific options.
+JSON Schema能为您提供两大核心功能：**验证**确保JSON结构正确性，以及**智能感知**辅助编写（具体取决于编辑器支持）。Schema的优势在于能即时反馈错误，但需注意它无法捕捉所有潜在问题。
 
-## Schemas
+Schema本身也是JSON文件，需借助验证工具发挥作用。您可以使用现有Schema或自行编写。目前已有多个适用于Minecraft基岩版的Schema，但请注意这些Schema并非官方认证（据我所知），且基岩版持续更新迭代，因此任何现有Schema都可能存在不准确之处。请保持理性认知：问题可能出在您的代码，也可能是Schema本身存在缺陷。若发现Schema错误，建议贡献改进并向作者提交Pull Request，共同完善生态。
 
-Many schemas exist, with many minor differences. Try out different schemas and see which one works best for you:
+## Schema列表
 
-| Author                                                                 | Supports                                                                                                       | Note                                             |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| [Assassin](https://github.com/aexer0e/bedrock-schema)                  | Behavior pack entity file                                                                                      | The original Schema this article was written for |
-| [Tschrock's](https://github.com/bedrock-studio/bedrock-json-schemas/)  | Manifest, Actor Animation Controller, Actor Animations, Actor Resource Definition, Render Controller, Geometry |                                                  |
-| [stirante](https://github.com/stirante/bedrock-shader-schema/)         | Shaders                                                                                                        |                                                  |
-| [KalmeMarq](https://github.com/KalmeMarq/Bugrock-JSON-UI-Schemas/)     | JSON UI files (including _ui_defs.json and _global_variables.json)                                                                                                        |                                                  |
+现有多种Schema各具特色，建议尝试不同方案选择最适合您的：
 
-## VSCode
+| 作者                                                                 | 支持范围                                                                                                      | 备注                                             |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| [Assassin](https://github.com/aexer0e/bedrock-schema)                | 行为包实体文件                                                                                                | 本文最初基于此Schema编写                         |
+| [Tschrock's](https://github.com/bedrock-studio/bedrock-json-schemas/) | 清单文件、实体动画控制器、实体动画、实体资源定义、渲染控制器、几何体                                          |                                                  |
+| [stirante](https://github.com/stirante/bedrock-shader-schema/)       | 着色器                                                                                                        |                                                  |
+| [KalmeMarq](https://github.com/KalmeMarq/Bugrock-JSON-UI-Schemas/)   | JSON UI文件（包含_ui_defs.json 和 _global_variables.json）                                                                                                        |                                                  |
 
-To use this schema inside your JSON file in VSCode, simply add this line to your root object:
+## VSCode配置
+
+### 单文件配置
+在JSON文件根对象中添加以下字段即可启用Schema验证：
 
 `"$schema": "https://aexer0e.github.io/bedrock-schema/"`
 
-It should look like something like this:
+完整示例：
 
-<CodeHeader></CodeHeader>
-
-```json
-"format_version": "1.14.0",
-"$schema": "https://aexer0e.github.io/bedrock-schema/"
-```
-
-### Adding Schema to Workspaces
-
-If you want to utilize this schema to work with all of your files inside your Workspace, you can add it to your VS Code Workspace's settings.
-
-To do this, make sure you're in your Workspace, then press `Ctrl+Shift+P` and type and select `>Preferences: Open Workspace Settings (JSON)`. After that, add this to the root object
-
-<CodeHeader></CodeHeader>
-
-```json
-"settings": {
-    "json.schemas": [
-        {
-            "fileMatch": [
-                "*.json"
-            ],
-            "url": "https://aexer0e.github.io/bedrock-schema/"
-        }
-    ]
+::: code-group
+```json [示例]
+{
+    "format_version": "1.14.0",
+    "$schema": "https://aexer0e.github.io/bedrock-schema/"
 }
 ```
+:::
 
-To test if it works, create a `.json` file, open an object, and see if you get the auto-completion options. (You can also press `Ctrl+Space` to force it into showing the available options.)
+### 工作区配置
+若需为整个工作区启用Schema验证，请按以下步骤操作：
+
+1. 在目标工作区中按下 `Ctrl+Shift+P`
+2. 输入并选择 `>Preferences: Open Workspace Settings (JSON)`
+3. 在根对象中添加以下配置：
+
+::: code-group
+```json [工作区设置]
+{
+    "settings": {
+        "json.schemas": [
+            {
+                "fileMatch": ["*.json"],
+                "url": "https://aexer0e.github.io/bedrock-schema/"
+            }
+        ]
+    }
+}
+```
+:::
+
+验证配置是否生效：新建`.json`文件，在对象中输入内容时观察是否出现自动补全提示（也可手动按`Ctrl+Space`触发提示）。

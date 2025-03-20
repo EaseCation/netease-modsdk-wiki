@@ -1,11 +1,11 @@
 ---
-title: Intro to Items
-description: A "Hello world" guide in making items. Learn the item format and how to create basic custom items.
-category: General
+title: 物品入门指南
+description: 手把手教你创建自定义物品，学习物品格式和基础制作方法。
+category: 基础
 nav_order: 1
 tags:
-    - guide
-    - beginner
+    - 教程
+    - 新手入门
 mentions:
     - SirLich
     - solvedDev
@@ -23,19 +23,22 @@ mentions:
     - SmokeyStack
 ---
 
-Minecraft Bedrock allows us to add custom items into our world with various vanilla-like properties
+# 物品入门指南
 
-This tutorial will cover how to create basic items for the stable version of Minecraft.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## Registering Items
+Minecraft 基岩版允许我们在世界中添加具有多种原版特性的自定义物品。
 
-Item definitions are structured similarly to entities: they contain a description and a list of components that defines the item's behavior.
+本教程将介绍如何为稳定版 Minecraft 创建基础物品。
 
-Below is the **minimum** behavior-side code to get a custom item into the creative inventory.
+## 注册物品
 
-<CodeHeader>BP/items/custom_item.json</CodeHeader>
+物品定义的结构与实体类似：包含描述信息和定义物品行为的组件列表。
 
-```json
+以下是让自定义物品出现在创造模式物品栏的**最低限度**行为端代码。
+
+::: code-group
+```json [BP/items/custom_item.json]
 {
     "format_version": "1.20.50",
     "minecraft:item": {
@@ -45,26 +48,26 @@ Below is the **minimum** behavior-side code to get a custom item into the creati
               "category": "construction"
             }
         },
-        "components": {} // Must be here, even if empty!
+        "components": {} // 必须存在，即使为空！
     }
 }
 ```
+:::
 
-### Item Description
+### 物品描述
 
-- Defines the item's identifier - a unique ID in the format of `namespace:identifier`.
-- Configures which `menu_category` the item is placed into.
-    - Also takes the optional parameters `group` and `is_hidden_in_commands`.
+- 定义物品唯一标识符，格式为 `命名空间:标识符`
+- 配置物品在哪个`menu_category`分组显示
+    - 可额外设置`group`分组和`is_hidden_in_commands`是否隐藏于命令提示
 
-## Adding Components
+## 添加组件
 
-Right now, our custom item is using the default component values (which can be found [here](/items/item-components)).
+当前我们的自定义物品使用的是默认组件值（详见[物品组件文档](/wiki/items/item-components)）。
 
-Let's configure our own functionality!
+现在让我们配置自定义功能！
 
-<CodeHeader>BP/items/custom_item.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/custom_item.json]
 {
     "format_version": "1.20.50",
     "minecraft:item": {
@@ -88,16 +91,16 @@ Let's configure our own functionality!
     }
 }
 ```
+:::
 
-Browse more item components [here](/items/item-components)!
+查看完整物品组件列表请访问[物品组件文档](/wiki/items/item-components)！
 
-## Applying Textures
+## 应用纹理
 
-We need to create a texture shortname to link it to an image in `RP/textures/item_texture.json`.
+我们需要在`RP/textures/item_texture.json`中创建纹理简称来关联图片。
 
-<CodeHeader>RP/textures/item_texture.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/textures/item_texture.json]
 {
     "resource_pack_name": "wiki",
     "texture_name": "atlas.items",
@@ -108,12 +111,12 @@ We need to create a texture shortname to link it to an image in `RP/textures/ite
     }
 }
 ```
+:::
 
-In our item file, we will add the `minecraft:icon` component to apply the texture.
+在物品文件中添加`minecraft:icon`组件来应用纹理。
 
-<CodeHeader>BP/items/custom_item.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/items/custom_item.json]
 {
     "format_version": "1.20.50",
     "minecraft:item": {
@@ -131,26 +134,27 @@ In our item file, we will add the `minecraft:icon` component to apply the textur
     }
 }
 ```
+:::
 
-## Defining Names
+## 定义名称
 
-Finally, we will give our item a name. Additionally, you can use the [Display Name](/items/item-components#display_name) component.
+最后为物品添加名称。你还可以使用[显示名称组件](/wiki/items/item-components#display_name)。
 
-<CodeHeader>RP/texts/en_US.lang</CodeHeader>
-
-```c
-tile.wiki:custom_item.name=Custom Item
+::: code-group
+```c [RP/texts/zh_CN.lang]
+tile.wiki:custom_item.name=自定义物品
 ```
+:::
 
-## Result
+## 成果总结
 
-In this page, you've learnt about the following:
+本节教程您已掌握以下内容：
 
 <Checklist>
 
--   [x] Basic features of items
--   [x] How to apply a texture
--   [x] How to link textures using shortnames in `item_textures.json`
--   [x] How to define names in the language file
+-   [x] 物品基础特性
+-   [x] 如何应用纹理
+-   [x] 使用`item_textures.json`关联纹理简称
+-   [x] 在语言文件中定义物品名称
 
 </Checklist>

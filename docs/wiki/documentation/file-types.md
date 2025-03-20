@@ -1,106 +1,113 @@
 ---
-title: File Types
+title: 文件类型
 max_toc_level : 3
 mentions:
     - Ciosciaa
     - SirLich
 ---
 
-A number of file types exist for *Minecraft*, all for importing content. All *Minecraft* files are ZIP archives renamed to use a `mc…` extension. These archives can currently be divided into three sets:
+# 文件类型
 
-- **Levels (`mcworld` and `mcproject`)**: level data and associated resources for worlds and projects
-- **Assets (`mcpack` and `mctemplate`)**: cosmetics or supporting assets for worlds
-- **Composites (`mcaddon` and `mceditoraddon)`**: used to import up to one world or project and any number of asset types
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-All file types for Minecraft can be opened as any file, launching Minecraft and importing the content. When packages are imported, they are automatically unpacked into their constituent files and directories. If it was not already open, most file types will launch Minecraft in normal mode; `mcproject` and `mceditoraddon` will instead launch Minecraft into Editor mode.
+*Minecraft* 存在多种文件类型，均用于导入内容。所有 *Minecraft* 文件本质上都是 ZIP 压缩包，通过重命名使用 `mc...` 扩展名。这些压缩包目前可分为三大类：
 
-# Levels
-Levels represent save data and resources for regular worlds and Editor projects. All levels, regardless of mode, are imported to `minecraftWorlds` in the `com.mojang` directory.
+- **世界文件（`mcworld` 与 `mcproject`）**：包含世界或项目的关卡数据及相关资源
+- **资源文件（`mcpack` 与 `mctemplate`）**：包含世界的装饰性素材或支持性资源
+- **复合文件（`mcaddon` 与 `mceditoraddon`）**：可同时包含最多一个世界/项目文件及任意数量的资源文件
 
-Importing an exact duplicate of an existing saved level will create a duplicate saved level. Composite archives will only import one level if multiple are included, including across nested composite archives.
+所有 *Minecraft* 文件类型均可通过常规文件打开方式启动游戏并导入内容。当资源包被导入时，会自动解压到对应的文件目录结构中。若游戏未处于运行状态，多数文件类型会以普通模式启动游戏；而 `mcproject` 和 `mceditoraddon` 则会直接进入编辑器模式。
 
-## Worlds
+# 世界文件
+世界文件代表普通世界与编辑器项目的存档数据及资源。所有世界文件无论模式，都会被导入到 `com.mojang` 目录下的 `minecraftWorlds` 文件夹中。
+
+若导入与已有存档完全相同的世界文件，会生成重复存档。复合文件包中若包含多个世界文件（包括嵌套的复合文件），只会导入其中一个世界。
+
+## 普通世界
 `mcworld`
-Archive encapsulating an individual world
+单个世界的压缩存档包
 
-World archives can be created a few different ways:
-- Zipping the *contents* of a world directory and renaming the extension from `zip` to `mcworld`
-- Using the "Export World" button on the Game settings screen for a world
-- In Editor mode, exporting the world from the File → Export as → Playable world menu option. The world will be saved to the `projectbackups` directory in the `com.mojang` folder.
-- In Editor mode, running the `/project export world` command. The world will be saved to the `projectbackups` directory in the `com.mojang` folder.
+创建世界存档的几种方式：
+- 将世界目录的**全部内容**打包为 ZIP 文件后，将扩展名改为 `mcworld`
+- 在游戏设置界面点击"导出世界"按钮
+- 在编辑器模式中，通过 文件 → 导出为 → 可游玩世界 菜单选项导出。存档将保存在 `com.mojang` 文件夹的 `projectbackups` 目录中
+- 在编辑器模式中运行 `/project export world` 命令。存档将保存在 `com.mojang` 文件夹的 `projectbackups` 目录中
 
-Importing a world package while *Minecraft* is launched in Editor mode will import the world as a project. The imported world will then be inaccessible outside Editor mode and will need to be re-exported as a world for playing. Editor extension packs bundled in a world archive will be retained on import outside Editor mode.
+在编辑器模式下导入世界文件会将其作为项目导入。此时该世界将无法在编辑器模式之外访问，需重新导出为普通世界才能游玩。世界文件中包含的编辑器扩展包在非编辑器模式导入时会被保留。
 
-## Projects
+## 项目文件
 `mcproject`
-Archive encapsulating an individual Editor project
+单个编辑器项目的压缩存档包
 
-Project archives can be created two different ways:
-- Zipping the *contents* of a project directory and renaming the extension from `zip` to `mcproject`.
-- Using the "Export Project" button on the Game settings screen for a world
-- In Editor mode, running the `/project export project` command. The world will be saved to the `projectbackups` directory in the `com.mojang` folder.
+创建项目存档的两种方式：
+- 将项目目录的**全部内容**打包为 ZIP 文件后，将扩展名改为 `mcproject`
+- 在编辑器模式中运行 `/project export project` 命令。存档将保存在 `com.mojang` 文件夹的 `projectbackups` 目录中
 
-If *Minecraft* is not open, launching a `mcproject` file will open Editor mode. Importing a `mcproject` will fail if *Minecraft* is open but not in Editor mode.
+若游戏未运行，打开 `mcproject` 文件会直接进入编辑器模式。若游戏已运行但未处于编辑器模式，导入 `mcproject` 文件会失败。
 
-# Assets
-Asset archives represent a singular instance of a number of non-level contents:
+# 资源文件
+资源文件代表各种非世界类内容的独立实例：
+- 行为包
+- 资源包
+- 皮肤包
+- 世界模板
 
-- Behavior packs
-- Resource packs
-- Skin packs
-- World templates
+所有资源文件都包含描述其内容的清单文件（manifest）。若资源清单的 UUID 和版本号与同类型现有资源完全一致，导入将会失败。注意行为包和资源包共享相同的 UUID/版本号命名空间。内置于世界、项目或模板中的行为包/资源包不会被视为重复资源。
 
-All asset archives include a manifest describing their contents. An asset archive will fail to import if its manifest UUID and version exactly matches an existing asset archive of the same type. Note that behavior and resource packs share the same UUID/version space. Behavior and resource packs self-contained within a world, project, or template will not count as duplicates for the sake of importing.
+虽然 `mcpack` 和 `mctemplate` 功能相同，但建议遵循以下规范：
+- 使用 `mcpack` 作为行为包、资源包、皮肤包
+- 使用 `mctemplate` 作为世界模板
+以便用户更直观地识别内容类型。复合文件中可包含任意数量的资源文件。
 
-Both asset extensions, `mcpack` and `mctemplate`, appear to functionally behave the same. It's best practice to use `mcpack` for behavior, resource, and skin packs and `mctemplate` for world templates to make it more clear what's being installed. Any number of asset archives may be included in a composite archive.
-
-## Packs
+## 资源包
 `mcpack`
-Package representing an individual behavior pack, resource pack, skin pack, or world template. It's recommended only to use `mctemplate` for behavior packs, resource packs, or skin packs.
+代表单个行为包、资源包、皮肤包或世界模板的压缩包。建议仅将 `mctemplate` 用于世界模板。
 
-Packs are only created manually, by zipping the contents of a behavior pack, resource pack, or skin pack directory and renaming the extension from `zip` to `mcpack`. Behavior and resource packs are installed globally and do not conflict with matching behavior or resource packs installed in worlds, projects, or templates.
+手动创建方式：
+- 将行为包、资源包或皮肤包目录的全部内容打包为 ZIP 文件后，将扩展名改为 `mcpack`
+行为包与资源包会全局安装，不会与世界/项目/模板中安装的同名资源冲突。
 
-### Behavior Packs
-Behavior packs are attached to servers to change or extend gameplay. Behavior packs are installed to the `behavior_packs` directory in the `com.mojang` folder.
+### 行为包
+行为包用于修改或扩展游戏玩法，安装在 `com.mojang` 目录下的 `behavior_packs` 文件夹中。
 
-Development behavior packs must be placed in the `development_behavior_packs` directory under `com.mojang` manually.
+开发中的行为包需手动放置到 `com.mojang` 下的 `development_behavior_packs` 目录。
 
-### Resource Packs
-Resource packs are attached to clients to affect sounds, visuals, etc. Resource packs are installed to the `resource_packs` directory in the `com.mojang` folder.
+### 资源包
+资源包用于修改客户端音效、视觉效果等，安装在 `com.mojang` 目录下的 `resource_packs` 文件夹中。
 
-Development resource packs must be placed in the `development_resource_packs` directory under `com.mojang` manually.
+开发中的资源包需手动放置到 `com.mojang` 下的 `development_resource_packs` 目录。
 
-### Skin Packs
-Skin packs are client-only packs for custom skins. Skin packs are installed to the `skin_packs` directory in the `com.mojang` folder.
+### 皮肤包
+皮肤包是仅限客户端的自定义皮肤资源，安装在 `com.mojang` 目录下的 `skin_packs` 文件夹中。
 
-Development skin packs must be placed in the `development_skin_packs` directory under `com.mojang` manually, but this feature appears non-functional.
+开发中的皮肤包需手动放置到 `com.mojang` 下的 `development_skin_packs` 目录，但此功能目前似乎不可用。
 
-## World Templates
+## 世界模板
 `mctemplate`
-Package representing an individual behavior pack, resource pack, skin pack, or world template. It's recommended only to use `mctemplate` for world templates.
+代表单个行为包、资源包、皮肤包或世界模板的压缩包。建议仅将 `mctemplate` 用于世界模板。
 
-World templates are installed to the `world_templates` directory under `com.mojang`. World templates can be constructed in a few different ways:
-- Zipping the *contents* of a world directory, adding a world template manifest, and renaming the extension from `zip` to `mctemplate`
-- In Editor mode, using the "Export Template" button on the Game settings screen for a world
-- In Editor mode, running the `/project export template` command. The world will be saved to the `projectbackups` directory in the `com.mojang` folder.
+世界模板安装在 `com.mojang` 目录下的 `world_templates` 文件夹中。创建方式：
+- 将世界目录的**全部内容**打包为 ZIP 文件，添加模板清单文件后，将扩展名改为 `mctemplate`
+- 在编辑器模式中点击游戏设置界面的"导出模板"按钮
+- 在编辑器模式中运行 `/project export template` 命令。存档将保存在 `com.mojang` 文件夹的 `projectbackups` 目录中
 
-# Composites
-Composite archives are used to import up to *one* level archive and any number or combination of asset archives in a single import action. In general, contents to a composite must be packaged. Directories can also be given *on the top level* of a composite archive for importing asset types (behavior packs, resource packs, skin packs, and world templates) without needing to pre-package them. Nested sub-directories for organization may not be used.
+# 复合文件
+复合文件用于在一次导入操作中同时导入**最多一个**世界文件及任意数量的资源文件。通常复合文件中的内容需要预先打包，但资源类型（行为包/资源包/皮肤包/世界模板）的原始目录也可直接放在复合文件顶层（不可使用嵌套子目录）。
 
-Composite contents are treated as usual. For example, importing a `mcaddon` contianing a `mcworld` while in Editor mode will import the world as a project.
+复合文件的内容按常规方式处理。例如在编辑器模式导入包含 `mcworld` 的 `mcaddon` 时，世界文件会作为项目导入。
 
-Composite archives may also contain any number or nesting of other composite archives, even across *Minecraft* modes. Nested composite archives cannot be used to get around the singular world import restriction.
+复合文件可包含任意数量或层级的其他复合文件（跨模式也可）。但嵌套复合文件不能突破单世界导入限制。
 
-Composites can only be constructed manually by zipping archives and asset types.
+复合文件只能通过手动打包现有文件/目录创建。
 
-## Add-Ons
+## 附加包
 `mcaddon`
-Generic composite content archive
+通用复合内容存档
 
-Importing a `mcaddon` package while *Minecraft* is launched in Editor mode will import any contained world as a project. The imported world will then be inaccessible outside Editor mode and will need to be re-exported as a world for playing. Asset types are imported as usual.
+在编辑器模式导入 `mcaddon` 时，包含的世界文件会作为项目导入。此时该世界将无法在编辑器模式之外访问，需重新导出为普通世界才能游玩。其他资源类型会正常导入。
 
-## Editor Add-Ons
+## 编辑器附加包
 `mceditoraddon`
-Composite content archive for Editor mode
+专用于编辑器模式的复合内容存档
 
-If *Minecraft* is not open, launching a `mcproject` file will open Editor mode. Importing a `mcproject` will fail if *Minecraft* is open but not in Editor mode.
+若游戏未运行，打开 `mcproject` 文件会直接进入编辑器模式。若游戏已运行但未处于编辑器模式，导入 `mcproject` 文件会失败。

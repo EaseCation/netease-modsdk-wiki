@@ -1,6 +1,6 @@
 ---
-title: Heightmap Noise
-category: Tutorials
+title: 高度图噪声
+category: 巧思案例
 tags:
     - experimental
     - tutorial
@@ -9,19 +9,22 @@ mentions:
     - SirLich
 ---
 
+# 高度图噪声
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::tip
-This tutorial assumes you have a basic understanding of molang, features and feature rules.
+本教程假设您已掌握Molang、特征（feature）及特征规则（feature rule）的基础知识。
 :::
 
-In this tutorial we're gonna see how we can make noise based terrain using the `q.noise` molang query.
+在本教程中，我们将学习如何通过`q.noise` Molang查询实现基于噪声的地形生成。
 
-## Single Block Feature
+## 单方块特征
 
-First we will define the single block feature. It will define the block that is going to be generated. For this tutorial I'll use stone.
+首先定义用于生成地形的单方块特征。本教程将使用石头作为示例。
 
-<CodeHeader>BP/features/stone_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/stone_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:single_block_feature": {
@@ -34,14 +37,14 @@ First we will define the single block feature. It will define the block that is 
 	}
 }
 ```
+:::
 
-## Scatter Feature
+## 散布特征
 
-The scatter feature is the main feature which we'll be using to generate the terrain.
+散布特征（scatter feature）是地形生成的核心组件。
 
-<CodeHeader>BP/features/column.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/column.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:scatter_feature": {
@@ -59,20 +62,20 @@ The scatter feature is the main feature which we'll be using to generate the ter
 	}
 }
 ```
+:::
 
-Let me explain whats happening in the `iterations`:
-In the iterations we've defined a temp `t.height` in which we've defined our main noise function.
-In `t.height` the value that we're adding first is the base height, basically the height at which the function starts.
-After that we're querying perlin using the `q.noise` query which returns values ranging from -1 to 1 and dividing that by a value which smooths out the function.
-Then we're multiplying the whole function by a value which in simple words is basically the variation in the terrain.
+**迭代参数解析**：
+- 我们通过临时变量`t.height`定义噪声函数
+- `64`是基准高度（函数的起始高度）
+- `q.noise`查询Perlin噪声值（范围-1到1），除以64用于平滑噪声曲线
+- 乘以16控制地形起伏幅度
 
-So what's happening here is that we are getting values from the `t.height` temp and assigning them to the y extent ranging from -64 to the value thus generating a column. Now this value is going to vary column by column but not in a random way as `q.noise` queryies Perlin noise, meaning the values are relative to each other. So instead of getting values like 64,69,45,100,7,56 we are getting values like 64,65,66,68,69,68,66,65 and so on.
+该逻辑通过`y`参数的取值范围[-64, t.height]生成地形柱体。由于`q.noise`基于Perlin噪声算法，相邻柱体高度呈现渐变效果（如64,65,66,68...），而非随机突变。
 
-## Feature Rule
+## 特征规则
 
-<CodeHeader>BP/feature_rules/column_grid_placement.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/column_grid_placement.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
@@ -110,7 +113,10 @@ So what's happening here is that we are getting values from the `t.height` temp 
 	}
 }
 ```
+:::
 
-In this we have set the `iteration` to 256 as the area of a whole chunk is 256 (16x16) to make the columns generate in the whole chunk.
+**关键配置**：
+- `iterations`设为256以覆盖整个区块（16x16区域）
+- `fixed_grid`分布模式确保柱体均匀排列
 
-And our custom noise based terrain is finished! Feel free to mess with the values.
+至此，基于噪声的自定义地形已构建完成！您可以自由调整参数进行地形形态实验。

@@ -1,7 +1,7 @@
 ---
-title: Format Versions
-category: Extra
-description: How to work with Format Versions
+title: 格式版本
+category: 扩展内容
+description: 如何正确使用格式版本
 prefix: 'e. '
 nav_order: 5
 mentions:
@@ -11,100 +11,104 @@ mentions:
     - Xterionix
 ---
 
-Format versions are an important part of Minecraft: Bedrock Edition's Addon System. They appear at the top of most files, formatted like this: `"format_version": "1.16.100"`. You can think of this as the "version number" of the file, and the number you select here is really important! The format version you select will define which syntax and features are available to you, in that particular file.
+# 格式版本 format_version
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+格式版本是Minecraft基岩版附加包系统的重要组成部分。它们通常以`"format_version": "1.16.100"`的形式出现在文件头部。你可以将其视为文件的"版本号"，所选用的数值至关重要！格式版本决定了该文件可用的语法和功能特性。
 
 :::tip
-Selecting the wrong format version is a common source of errors. When troubleshooting, people may ask you questions like 'what format version is your item'. Ensure that you know how to answer that question.
+选择错误的格式版本是常见错误来源。排查问题时，人们可能会询问"你的物品使用什么格式版本"。请确保你知晓如何回答这类问题。
 :::
 
-## Why do format versions exist?
+## 格式版本存在的意义
 
-Format versions exist to *version* the Addon system, and allow Minecraft to introduce new features into the addon system, without breaking old Addons. For example, a `1.8.0` format version RP Entity file has very different syntax than a `1.10.0` format version RP Entity file. By using the 'format_version' key in the json *you* can decide which version you want to use.
+格式版本用于为附加包系统建立**版本控制机制**，使Minecraft能够在引入新功能的同时保持旧版附加包的兼容性。例如，使用`1.8.0`格式版本的RP实体文件与`1.10.0`格式版本的RP实体文件在语法结构上有显著差异。通过在JSON中使用`format_version`字段，**你可以自主选择**要使用的版本。
 
-By using format versions *per file*, Minecraft gives you a lot of control over how your addon will be interpreted by the game. It is completely possible and expected to mix different format versions in your addon.
+通过**按文件**指定格式版本，Minecraft赋予你对附加包运行方式的精细控制。在一个附加包中混合使用不同格式版本是完全可行且常见的做法。
 
-## Experimental Format Versions
+## 实验性格式版本
 
-Format versions are also used for the purpose of versioning experimental features. Since Minecraft releases bedrock experiments directly into stable, some format versions will be 'locked' under experimental, unless you toggle the correct experiment.
+格式版本也用于管理实验性功能的版本控制。由于Minecraft基岩版会将实验性功能直接发布到稳定版中，某些格式版本需要开启对应实验性选项才能启用。
 
-A well known example is the item/blocks system, where `1.16.100` denotes experimental, and `1.10.0` denotes stable. If you want to make an item, it's important to select a format version early, as it will effect everything else you add to the files. If you are going with an experimental format version for your item/block you may want to go higher than `1.16.100` because some experimental features won't work properly in that format version, for example if you are making a custom spawn egg and you want it to be able to set the entity type of a monster spawner, then you need to the format version to `1.19.80` or higher. 
+典型案例是物品/方块系统：`1.16.100`代表实验性版本，`1.10.0`代表稳定版本。在制作物品时，建议尽早确定格式版本，因为这会影响文件后续的所有内容。如果选用实验性格式版本，可能需要使用高于`1.16.100`的版本——例如制作自定义刷怪蛋时，若需要设置怪物刷怪箱的实体类型，则必须使用`1.19.80`或更高版本。
 
-## Format Version is not Game Version
+## 格式版本 ≠ 游戏版本
 
-It is really important to understand that format version is *per subsystem*, and is generally not equal to the base game version. This simply means that every type of file (item, rp entity, bp entity, recipe) will use a different versioning system.
+需要重点理解的是：格式版本是**按子系统独立管理**的，通常与基础游戏版本号无关。这意味着每种文件类型（物品、RP实体、BP实体、配方等）都使用独立的版本体系。
 
-For example: `"format_version": "1.8.0"` in an RP entity file means "use version `1.8.0` of the *item system*". It does *not* mean "use version `1.8.0` of the *addon system*".
+例如：RP实体文件中的`"format_version": "1.8.0"`表示"使用物品系统的`1.8.0`版本"，而非"使用附加包系统的`1.8.0`版本"。
 
-For this reason, some file types will have very "old" format versions. Do not be tempted to replace this version with the latest game version, such as `1.17.0`.
+因此某些文件类型可能使用看似"陈旧"的格式版本。切忌将其替换为最新游戏版本（如`1.17.0`）。
 
-## Format Version Fixing
+## 格式版本自动修正
 
-Minecraft has a system that will "fix" your format version if you've written it wrong. This system isn't well understood, isn't enabled for all systems, and shouldn't be relied upon. But it's important to note that an incorrect format version will often "regress" downwards until it hits a valid format version. For example a `1.11.0` RP entity file will simply be interpreted as `1.10.0`, and cause no errors.
+Minecraft具备自动修正错误格式版本的机制。该机制尚未被完全掌握，也未在所有系统中启用，不建议依赖此功能。但需注意：错误的格式版本通常会被"降级"到最近的合法版本。例如`1.11.0`的RP实体文件会被识别为`1.10.0`且不会报错。
 
-This system is useful, as it means you are less likely to generate a broken file, by selecting the wrong format version.
+此机制可有效降低因格式版本错误导致文件损坏的概率。
 
-## Picking a Format Version
+## 如何选择格式版本
 
-Generally speaking, there is a cool tricky to pick the correct format version, for any file type.
+通常可采用以下技巧确定正确的格式版本：
 
-For example, imagine you are creating a Recipe file:
+以配方文件为例：
 
- 1) Install the [Vanilla Packs](/guide/download-packs).
- 2) Look at some recipe files, to judge which format version is most used, or the most recent
- 3) Use this format version in your file
+1. 安装[原版资源包](/wiki/guide/download-packs)
+2. 参考原版配方文件，确定最常用或最新的格式版本
+3. 在你的文件中使用相同版本
 
-This simple trick will help you select a valid format version for your file.
+此方法可帮助你为文件选择有效的格式版本。
 
-## Format Versions per Asset Type
+## 各资源类型的格式版本
 
-This section will list the format versions used in the vanilla game, alongside how many times it appears.
+本节列出原版游戏中使用的格式版本及其出现频率：
 
-    - The '⭐' is the recommended *stable* version.
-    - The '🚀' is the recommended *experimental* version, where applicable.
+    - '⭐' 代表推荐使用的**稳定**版本
+    - '🚀' 代表推荐使用的**实验性**版本（如适用）
 
-### Resource Pack
+### 资源包
 
-| Resource Pack        | Version  | Count |
-|----------------------|----------|-------|
-| Entity               | 1.10.0 ⭐ | 82    |
-| Entity               | 1.8.0    | 74    |
-| Animation Controller | 1.10.0 ⭐ | 56    |
-| Animation            | 1.8.0    | 120   |
-| Animation            | 1.10.0 ⭐ | 6     |
-| Attachables          | 1.10.0 ⭐ | 29    |
-| Attachables          | 1.8.0    | 25    |
-| Attachables          | 1.10     | 1     |
-| Models               | 1.8.0    | 92    |
-| Models               | 1.12.0   | 19    |
-| Models               | 1.10.0   | 4     |
-| Models               | 1.16.0   | 7     |
-| Particles            | 1.10.0 ⭐ | 131   |
-| Render Controllers   | 1.10.0 ⭐ | 83    |
+| 资源类型            | 版本       | 数量 |
+|---------------------|------------|------|
+| 实体                | 1.10.0 ⭐  | 82   |
+| 实体                | 1.8.0      | 74   |
+| 动画控制器          | 1.10.0 ⭐  | 56   |
+| 动画                | 1.8.0      | 120  |
+| 动画                | 1.10.0 ⭐  | 6    |
+| 可附着物            | 1.10.0 ⭐  | 29   |
+| 可附着物            | 1.8.0      | 25   |
+| 可附着物            | 1.10       | 1    |
+| 模型                | 1.8.0      | 92   |
+| 模型                | 1.12.0     | 19   |
+| 模型                | 1.10.0     | 4    |
+| 模型                | 1.16.0     | 7    |
+| 粒子效果            | 1.10.0 ⭐  | 131  |
+| 渲染控制器          | 1.10.0 ⭐  | 83   |
 
-### Behavior Pack
+### 行为包
 
-| Category    | Version    | Count |
-|-------------|------------|-------|
-| Entities    | 1.8.0      | 2     |
-| Entities    | 1.16.210   | 1     |
-| Entities    | 1.13.0     | 7     |
-| Entities    | 1.16.0 ⭐   | 58    |
-| Entities    | 1.16.100   | 3     |
-| Entities    | 1.12.0     | 21    |
-| Entities    | 1.17.20    | 7     |
-| Entities    | 1.17.10    | 4     |
-| Entities    | 1.10.0     | 1     |
-| Entities    | 1.14.0     | 1     |
-| Items       | 1.10 ⭐     | 44    |
-| Items       | 1.16.0     | 1     |
-| Items       | 1.16       | 1     |
-| Items       | 1.14       | 1     |
-| Items       | 1.16.100 🚀 | 0     |
-| Items       | 1.19.80    | 0     |
-| Items       | 1.20.40    | 0     |
-| Recipes     | 1.12       | 991   |
-| Recipes     | 1.16 ⭐     | 194   |
-| Recipes     | 1.14       | 2     |
-| Spawn Rules | 1.8.0 ⭐    | 48    |
-| Spawn Rules | 1.17.0     | 1     |
-| Spawn Rules | 1.11.0     | 1     |
+| 类别         | 版本         | 数量 |
+|--------------|--------------|------|
+| 实体         | 1.8.0        | 2    |
+| 实体         | 1.16.210     | 1    |
+| 实体         | 1.13.0       | 7    |
+| 实体         | 1.16.0 ⭐     | 58   |
+| 实体         | 1.16.100     | 3    |
+| 实体         | 1.12.0       | 21   |
+| 实体         | 1.17.20      | 7    |
+| 实体         | 1.17.10      | 4    |
+| 实体         | 1.10.0       | 1    |
+| 实体         | 1.14.0       | 1    |
+| 物品         | 1.10 ⭐       | 44   |
+| 物品         | 1.16.0       | 1    |
+| 物品         | 1.16         | 1    |
+| 物品         | 1.14         | 1    |
+| 物品         | 1.16.100 🚀  | 0    |
+| 物品         | 1.19.80      | 0    |
+| 物品         | 1.20.40      | 0    |
+| 配方         | 1.12         | 991  |
+| 配方         | 1.16 ⭐       | 194  |
+| 配方         | 1.14         | 2    |
+| 生成规则     | 1.8.0 ⭐      | 48   |
+| 生成规则     | 1.17.0       | 1    |
+| 生成规则     | 1.11.0       | 1    |

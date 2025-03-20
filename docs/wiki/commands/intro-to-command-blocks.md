@@ -1,6 +1,6 @@
 ---
-title: Intro to Command Blocks
-category: General
+title: 命令方块入门
+category: 基础
 mentions:
     - BedrockCommands
     - zheaEvyline
@@ -10,132 +10,122 @@ tags:
     - info
 ---
 
-## Introduction
+# 命令方块入门
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-Command Blocks are special blocks in Minecraft. The same commands (cheats) you type in chat can be run automatically using command blocks and it can be reused without needing to type all over again.
+## 简介
 
-They can only be placed or destroyed by a player with the Operator permission level in gamemode Creative.
+[由 Bedrock Commands 社区 Discord 提供](https://discord.gg/SYstTYx5G5)
 
-## Obtaining
+命令方块是 Minecraft 中的特殊方块。通过在聊天栏输入的指令（作弊命令）可以通过命令方块自动执行，无需重复输入即可复用。
 
-1. Open your world settings.
-2. Under Cheats, toggle "Activate Cheats" setting ON.
-3. Run `/give @s command_block` command in chat.
+只有拥有操作员权限的创造模式玩家才能放置或破坏命令方块。
 
-## Command Block UI
+## 获取方式
+
+1. 打开世界设置
+2. 在「作弊」选项下启用「激活作弊」
+3. 在聊天栏输入 `/give @s command_block`
+
+## 命令方块界面
 
 ![commandBlockUI](/assets/images/commands/commandBlockUI.png)
 
-## Command Block Types
+## 命令方块类型
 
-![impulseCommandBlock](/assets/images/commands/impulseCommandBlock.png) **Impulse** runs the command __once__ each time it is powered.
+![impulseCommandBlock](/assets/images/commands/impulseCommandBlock.png) **脉冲型** 在被激活时__单次__执行命令
 
-![chainCommandBlock](/assets/images/commands/chainCommandBlock.png) **Chain** runs the command in a sequence, ie. only after the previous command block it is connecting from was run.
+![chainCommandBlock](/assets/images/commands/chainCommandBlock.png) **连锁型** 按顺序执行命令，即仅在前置方块执行后触发
 
-![repeatingCommandBlock](/assets/images/commands/repeatingCommandBlock.png) **Repeat** runs the command every game tick. There are approximately 20 ticks per second. A delay can be applied to adjust how often the command is executed, explained [below](/commands/intro-to-command-blocks#command-block-tick-delay).
+![repeatingCommandBlock](/assets/images/commands/repeatingCommandBlock.png) **循环型** 每游戏刻执行一次命令（每秒约20刻）。可通过[下文](#命令方块刻延迟)介绍的延迟设置调整执行频率
 
-## Command Block Conditions
+## 命令方块条件
 
-**Conditional** command blocks will run the command only if the previous command block it was connecting from had an output that was `true` (successful)
-> Conditional command block states are shown by a small indent into the command block's texture, as shown below:
-> - ![pasteCommandButton](/assets/images/commands/impulseConditionalCommandBlock.png) Impulse Conditional Command Block
-> - ![chainConditionalCommandBlock](/assets/images/commands/chainConditionalCommandBlock.png) Chain Conditional Command Block
-> - ![repeatingConditionalCommandBlock](/assets/images/commands/repeatingConditionalCommandBlock.png) Repeating Conditional Command Block
+**条件制约型** 仅当连接的前置方块输出结果为`true`（成功）时执行命令
+> 条件制约型方块在材质上会显示凹陷箭头标识：
+> - ![pasteCommandButton](/assets/images/commands/impulseConditionalCommandBlock.png) 脉冲条件制约型
+> - ![chainConditionalCommandBlock](/assets/images/commands/chainConditionalCommandBlock.png) 连锁条件制约型
+> - ![repeatingConditionalCommandBlock](/assets/images/commands/repeatingConditionalCommandBlock.png) 循环条件制约型
 
-**Unconditional** command blocks will run the command regardless. Whether the previous command block it was connecting from had an output that was `true` (succesful), `false` (failed) or even if it came with a syntax error the command block will still run the command.
+**无条件型** 无论前置方块输出结果如何都会执行命令（包括`true`成功、`false`失败甚至语法错误）
 
-## Command Block Redstone States
+## 命令方块红石状态
 
-**Needs Redstone** command block can only be activated with redstone power. Using buttons, levers, redstone torch etc..
+**需要红石** 必须通过红石信号激活（按钮、拉杆、红石火把等）
 
-**Always Active** command block will be activated as soon as you close the command block UI.
+**保持开启** 关闭命令方块界面后立即持续激活
 
-## Command Block Tick Delay
+## 命令方块刻延迟
 
-In this option you may specify how much delay you want there to be before the command block runs the command.
-
-The ticks refer to Minecraft game ticks. A **tick** is simply a unit of measure for time in games. 1 second in real life is approximately 20 game ticks in Minecraft.
+设置命令执行前的延迟时间。刻（Tick）是 Minecraft 的时间单位，现实1秒约等于20游戏刻。
 
 :::tip
 ![gametick.png](/assets/images/commands/gametick.png)
 :::
 
-## Command Block Hover Note
+## 悬浮提示文本
 
-This option allows you to put a hovering text on your command blocks. It's useful for giving short-names for easy identification when working with many command blocks.
+可为命令方块添加悬浮备注，便于在多命令方块系统中快速识别。
 
-When a command is run, the hover note will be displayed with the output in chat if gamerule `commandblockoutput` is enabled.
+当`commandblockoutput`游戏规则启用时，命令执行后会在聊天栏显示备注信息。
 ![hover_note](/assets/images/commands/hover_note.png)
 
-## Paste Button
+## 粘贴按钮
 
 ![pasteCommandButton](/assets/images/commands/pasteCommandButton.png)
 
-The paste button allows you to paste commands from your clipboard to the 'Command Input' box.
+支持将剪贴板内容粘贴至命令输入框
 
-## Command Block Output
+## 命令输出管理
 
-- Toggle the 'Previous Output' button in the command block UI to see command output and block details.
+- 通过界面中的「上一个输出」按钮查看执行记录
+- 命令方块中无需输入开头的`/`符号（输入也不会报错）
+- 红石比较器可读取输出强度（成功时输出1-15信号）
+- 在聊天栏测试命令：红色文字表示`false`或语法错误，白色表示`true`
+- 也可通过实际效果判断命令是否成功
+- 输出值`0`通常表示失败
 
-- The ` / ` you type before the whole command is not required in a command block but doing so won't cause any errors.
+### 禁用命令提示
+在聊天栏输入：
+- `/gamerule commandblockoutput false` 关闭命令方块提示
+- `/gamerule sendcommandfeedback false` 关闭聊天指令反馈
 
-- A redstone comparator can read command blocks outputs. If output is true, it will send anywhere from 1 to 15 redstone signals depending on the output value.
+## 命令方块布局技巧
 
-- You can check if a command output is `true`/`false` by running it in chat. A red output will be a `false` output or a syntax error. A white output means command was run successfully.
+搭建连锁系统时，确保箭头方向正确连接。箭头朝向可通过方块材质判断。
 
-- You can also tell if a command was `true`/`false` by checking whether action was performed or not.
-
-- An output with a value of `0` is usually a false output.
-
-### Disabling Command Messages In Chat
-Run in Chat:
-- `/gamerule commandblockoutput false` to disable command block messages in chat.
-- `/gamerule sendcommandfeedback false` to disable feedback from commands entered in chat.
-
-## Command Block Placement
-
-When placing command blocks in a line (arranged to work together) for any system, make sure the consecutive command blocks connect/start from the head of the arrow.
-
-The arrow/facing direction can be observed from the command block texture.
-
-**✅ Correct Placement**
+**✅ 正确布局**
 ![correctCommandBlockPlacement](/assets/images/commands/correctCommandBlockPlacement.png)
 
-**❌ Incorrect Placement**
+**❌ 错误布局**
 ![incorrectCommandBlockPlacement](/assets/images/commands/incorrectCommandBlockPlacement.png)
 
-## Troubleshooting Command Blocks
+## 故障排除指南
 
-- In world settings, under **Cheats**, make sure command blocks have not been disabled.
+- 检查世界设置中是否禁用命令方块
+- 确保`maxcommandchainlength`游戏规则不为0
+- 排除意外红石信号干扰（红石线、拉杆、火把等）
+- 切换「需要红石」与「保持开启」模式
+- 仔细检查方块类型、条件和命令语法，重新激活后查看输出
+- 确保区块已加载（可使用[常加载区域](/wiki/commands/tickingarea)）
 
-- Make sure gamerule `maxcommandchainlength` is **not** set to 0
+若仍无法解决，可尝试拆除并重新放置命令方块
 
-- Make sure there are no unwanted redstone power that is interfering with the command block. It can be from redstone dust, lever, redstone torch etc..
+## 学习要点
 
-- Try switching between Always Active & Needs Redstone.
-
-- Double check the block type, condition & the command syntax. Check 'Previous Output' after powering it once again.
-
-- Just like redstone, command blocks must also be in loaded chunks for them to work. You can use a tickingarea to keep them loaded when players are not nearby. Refer to [/tickingarea](https://learn.microsoft.com/en-us/minecraft/creator/documents/tickingareacommand) command documentation for more info.
-
-If nothing seems to work simply break and place that command block again.
-
-## What you have learned
-
-:::tip What you have learned:
-- How to obtain a command block in game.
-- How the different types of command blocks behave and what they look like.
-- What the different command block options are (including conditional, state and delay.)
-- How command blocks output data by redstone and chat messages.
-- How to properly place command block chains.
-- How to resolve 'command block not working' 
+:::tip 学习要点：
+- 游戏内获取命令方块的方法
+- 各类命令方块的特性与外观识别
+- 条件设置、红石状态与延迟配置
+- 通过红石与聊天信息获取输出数据
+- 正确排列命令方块链的技巧
+- 常见故障解决方案
 :::
 
-To put what you have learned into practice, try making this simple [Entity Counter](/commands/entity-counter) system.
-> Note: when setting up command block systems, always the first command will be ![repeatingCommandBlock](/assets/images/commands/repeatingCommandBlock.png) **`Unconditional Always Active`** and the rest will be ![chainCommandBlock](/assets/images/commands/chainCommandBlock.png) **`Unconditional Always Active`** (all 0 ticks delay) *unless specified otherwise.*
+实践建议：尝试制作简易的[实体计数器系统](/wiki/commands/entity-counter)
+> 注意：常规命令链的首个方块应为![repeatingCommandBlock](/assets/images/commands/repeatingCommandBlock.png) **无条件保持开启**，后续使用![chainCommandBlock](/assets/images/commands/chainCommandBlock.png) **无条件保持开启**（默认0刻延迟）
 > 
 > ![commandBlockChain4](/assets/images/commands/commandBlockChain/4.png)
 
-**(Recommended) Read Next: [Understanding Selectors](/commands/selectors)**
+**（推荐延伸阅读）[选择器详解](/wiki/commands/selectors)**

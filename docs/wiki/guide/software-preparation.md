@@ -1,7 +1,7 @@
 ---
-title: Software and preparation
-category: Guide
-description: How to setup your developement environment
+title: 软件与准备工作
+category: 指南
+description: 如何配置开发环境
 nav_order: 3
 prefix: '3. '
 mentions:
@@ -21,56 +21,64 @@ mentions:
     - ThomasOrs
 ---
 
-Before you can start creating addons, you first have to install the required tools and applications. While development will be easiest on Windows 10, we have provided mobile alternatives for both Android and iOS, where applicable.
+# 软件与准备工作
 
-## Download Minecraft Bedrock Edition
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+在开始制作附加包之前，您需要先安装必要的工具和软件。虽然在 Windows 10 上进行开发最为便捷，我们也为 Android 和 iOS 用户提供了适用的移动端替代方案。
+
+## 下载 Minecraft 基岩版
 
 -   [Windows 10](https://www.microsoft.com/en-us/p/minecraft-for-windows-10/9nblggh2jhxj?activetab=pivot:overviewtab)
 -   [Android](https://play.google.com/store/apps/details?id=com.mojang.minecraftpe&hl=en)
 -   [iOS](https://apps.apple.com/us/app/minecraft/id479516143)
--   [Run MC on Linux](https://discord.gg/VJTZ3KaTx6)
+-   [在 Linux 上运行 MC](https://discord.gg/VJTZ3KaTx6)
 
-## Picking an Editor
+## 选择编辑器
 
-Addons can be created using any text editor, however it's much more comfortable to work in a dedicated editor. A good editor can give you code-completion, error-detection, and in-editor documentation.
+虽然任何文本编辑器都可以创建附加包，但使用专用编辑器会更加高效。优秀的编辑器能提供代码补全、错误检测和内置文档支持。
 
-There are strong opinions about the best editor for beginners, but generally speaking you cannot go wrong selecting either VSCode, or bridge. If you are mobile, you will need to use a mobile alternative.
+对于初学者而言，VSCode 和 bridge. 都是不错的选择。移动端用户需要使用对应的移动版编辑器。
 
 ### VSCode
 
-VSCode is a general purpose text-editor and IDE. With VSCode, you will be able to edit your addons in plain-text, guided along by a powerful array of extensions and addons. VSCode is a great option for programmers and advanced users.
+VSCode 是一款通用文本编辑器兼 IDE。通过丰富的扩展支持，您可以在纯文本环境下高效开发附加包。适合程序员和高级用户使用。
 
-[⚙️Install VSCode](https://code.visualstudio.com/)
+[⚙️安装 VSCode](https://code.visualstudio.com/)
 
-<Spoiler title="Configuring VSCode">
+<Spoiler title="配置 VSCode">
 
-Many packages exist for VSCode that make editing addons easier:
+以下扩展能显著提升附加包开发体验：
 
--   [Blockception's Minecraft Bedrock Development](https://marketplace.visualstudio.com/items?itemName=BlockceptionLtd.blockceptionvscodeminecraftbedrockdevelopmentextension)
--   [.mcfunction support](https://marketplace.visualstudio.com/items?itemName=arcensoth.language-mcfunction)
--   [.lang support](https://marketplace.visualstudio.com/items?itemName=zz5840.minecraft-lang-colorizer)
--   [Bedrock Definitions](https://marketplace.visualstudio.com/items?itemName=destruc7i0n.vscode-bedrock-definitions)
--   [Prettify-json](https://marketplace.visualstudio.com/items?itemName=mohsen1.prettify-json)
--   [Spell Checker (for writing wiki)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
--   [Snowstorm Particle Editor](https://marketplace.visualstudio.com/items?itemName=JannisX11.snowstorm)
--   [UUID Generator](https://marketplace.visualstudio.com/items?itemName=netcorext.uuid-generator)
+-   [Blockception 的 Minecraft 基岩版开发扩展](https://marketplace.visualstudio.com/items?itemName=BlockceptionLtd.blockceptionvscodeminecraftbedrockdevelopmentextension)
+-   [.mcfunction 支持](https://marketplace.visualstudio.com/items?itemName=arcensoth.language-mcfunction)
+-   [.lang 支持](https://marketplace.visualstudio.com/items?itemName=zz5840.minecraft-lang-colorizer)
+-   [基岩版定义库](https://marketplace.visualstudio.com/items?itemName=destruc7i0n.vscode-bedrock-definitions)
+-   [JSON 美化工具](https://marketplace.visualstudio.com/items?itemName=mohsen1.prettify-json)
+-   [拼写检查器（用于文档编写）](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+-   [Snowstorm 粒子编辑器](https://marketplace.visualstudio.com/items?itemName=JannisX11.snowstorm)
+-   [UUID 生成器](https://marketplace.visualstudio.com/items?itemName=netcorext.uuid-generator)
 
 </Spoiler>
 
 ### bridge.
 
-[bridge.](https://bridge-core.app/) is a light-weight, dedicated IDE for Minecraft addons. It features [innovative features](https://bridge-core.app/guide/features/) such as [entity and block previews](https://bridge-core.app/guide/features/index.html#file-previews), [rich auto-completions and file validations](https://bridge-core.app/guide/features/index.html#auto-completions-and-validation) and [advanced file creation with presets](https://bridge-core.app/guide/features/index.html#advanced-file-creation).
-bridge. includes a regular text editor for experienced addon creators and a tree editor to make it easy for beginners to get started with editing JSON files.
+[bridge.](https://bridge-core.app/) 是专为 Minecraft 附加包开发的轻量级 IDE，具有以下创新功能：
+- [实体与方块预览](https://bridge-core.app/guide/features/index.html#file-previews)
+- [智能自动补全与文件验证](https://bridge-core.app/guide/features/index.html#auto-completions-and-validation)
+- [预设模板快速创建文件](https://bridge-core.app/guide/features/index.html#advanced-file-creation)
 
-#### Next Steps
-- [Read more on why you should use bridge.](https://bridge-core.app/guide/why-bridge)
-- [Read our guide on getting started with bridge.](https://bridge-core.app/guide/index)
-- [Try out bridge. online](https://editor.bridge-core.app/)
+既提供面向资深开发者的文本编辑器，也包含适合新手的树状 JSON 编辑器。
 
-### Mobile Editors
+#### 下一步
+- [了解选择 bridge. 的理由](https://bridge-core.app/guide/why-bridge)
+- [阅读 bridge. 入门指南](https://bridge-core.app/guide/index)
+- [在线试用 bridge.](https://editor.bridge-core.app/)
+
+### 移动端编辑器
 
 #### Android
--  [ACode Editor](https://play.google.com/store/apps/details?id=com.foxdebug.acodefree)
+-  [ACode 编辑器](https://play.google.com/store/apps/details?id=com.foxdebug.acodefree)
 -  [bridge. v2](https://bridge-core.app/)
 
 #### iOS
@@ -79,101 +87,98 @@ bridge. includes a regular text editor for experienced addon creators and a tree
 
 ## Blockbench
 
--   [Blockbench](https://blockbench.net/) is a 'boxy 3D model editor' typically used to create Minecraft models, textures and animations. Also provides a web-browser version which is compatible with mobile.
+-   [Blockbench](https://blockbench.net/) 是专为 Minecraft 设计的方块化 3D 建模工具，可用于创建模型、纹理和动画。提供网页版并兼容移动设备。
 
-## Image Editors
+## 图像编辑器
 
-When choosing an image editor, it is important to keep in mind that the traditional Minecraft style is composed of simple 16X16 pixelart. There are plenty of powerful and free art programs available for you to use. However, many of these programs have more tools than you will need for Minecraft graphical design and these tools require time to learn.
+选择图像编辑器时需注意：Minecraft 传统风格基于 16x16 像素艺术。以下是推荐工具：
 
 :::tip
-Choose a program that feels comfortable and easy for you to use. Many Addon creators use different art programs for different tasks. (Example: One might use paint․net for most of the art, and piskel for Minecraft block animations). Choose what works best for you!
+根据使用场景灵活选择工具。许多开发者会组合使用不同软件（例如：用 paint.net 处理大部分图像，用 piskel 制作方块动画）。找到最适合您的工作流程！
 :::
 
 ### Krita
-Krita is a powerful open-source art programed with the goal of giving free powerful digital art tools to artists. Krita has more than enough features to cover your Minecraft needs and works on a MAC or PC.
-**+ Pros:** Plenty of features including a pixel brush with an intuitive user interface.
-**- Cons:** Requires a little time to become familar with the tools.
+开源数字绘画软件，功能全面，支持 Windows/macOS。
+**+ 优点：** 内置像素画笔工具，界面直观
+**- 缺点：** 需要时间熟悉工具
 
-[Download Krita](https://krita.org/en/)
+[下载 Krita](https://krita.org/en/)
 
 ### GIMP
-Gimp is similar to Krita in that it is a free and open source digital art program that has a vast arrays of tools. Where Krita focuses more on illustration, GIMP focuses more on image manipulation (think Photoshop). Gimp also works on MAC or PC.
-**+ Pros:** GIMP has more than enough tools for editing Minecraft art
-**- Cons:** The interface is not intuitive. Even though GIMP is powerful, it requires a steep learning curve.
+开源图像处理软件（类似 Photoshop），支持 Windows/macOS。
+**+ 优点：** 功能足以应对 Minecraft 图像需求
+**- 缺点：** 学习曲线陡峭
 
-[Download Gimp](https://www.gimp.org/)
+[下载 GIMP](https://www.gimp.org/)
 
-### Paint․net
-Paint․net is a simple yet powerful image editing and art software. Paint․net may not have a vast array of tools like Krita and GIMP, but it does offer simplicity and ease of use.
-**+ Pros:** Easy to use and learn.
-**- Cons:** Only works on Windows.
+### Paint.net
+简单易用的图像编辑软件。
+**+ 优点：** 快速上手
+**- 缺点：** 仅限 Windows 平台
 
-[Download Paint.net](https://www.getpaint.net)
+[下载 Paint.net](https://www.getpaint.net)
 
 ### Pixilart
-Pixilart is a web-based pixel art software. It is extremely simple to use since it is focused on pixel art. It also has a powerful resize option that may come in handy, so that you can resize your art without losing the pixelart details.
+网页像素艺术工具。
+**+ 优点：** 专为像素设计优化，支持无损缩放
+**- 缺点：** 需要网络连接
 
-**+ Pros:** Easy to use and learn. Curated specifically for pixel art.
-**- Cons:** Must have internet connection. May be missing tools you want.
-
-[Use Pixilart](https://www.pixilart.com/)
+[使用 Pixilart](https://www.pixilart.com/)
 
 ### Piskel
-Piskel is a web-based pixel art software with a focus of making pixelated sprites (or video game character animations). This tool, similar to Pixilart, is simple to use. This is also a great tool for making flipbooks (Minecraft block or skin animations).
+网页像素动画工具。
+**+ 优点：** 适合制作逐帧动画
+**- 缺点：** 功能较为基础
 
-**+ Pros:** Easy to use and learn. Perfect for flipbook animations
-**- Cons:** Must have internet connection. Only offers the most basic tools.
-
-[Download Piskel](https://www.piskelapp.com/)
+[下载 Piskel](https://www.piskelapp.com/)
 
 ### Libresprite
 
-LibreSprite is a free and open source program for creating and animating your sprites. Based on the last GPLv2 commit of aseprite.
+基于 Aseprite 的开源像素艺术工具。
+**+ 优点：** 专为像素艺术定制
+**- 缺点：** macOS 支持有限
 
-**+ Pros**: Basic & easy to use, customizable and curated for pixel artists.
-**- Cons**: May not work on Mac, maintained only by a small community.
-
-## Additional Materials
+## 补充资料
 
 :::tip
-This guide will walk you through the first stages of addon development, but it is not comprehensive! To learn more about addons, you will have to use and reference other sources of information, which we will link to here.
+本指南仅涵盖附加包开发的基础知识，更多进阶内容请参考以下资源：
 :::
 
-### Join the Discord
+### 加入 Discord
 
-The best place to get help with this guide is to join the [discord server](/discord).
+获取实时帮助的最佳途径：[Discord 服务器](/discord)
 
-### Vanilla Packs
+### 原版资源包
 
-Minecraft's vanilla files are a good source of reference material. You should download these packs, and store them on a convenient location on your computer. When you need an example of an item, or entity, or animation, you can reference these files for inspiration.
+Minecraft 原版文件是绝佳的参考素材，建议下载并妥善保存：
 
--   [Vanilla packs](https://github.com/Mojang/bedrock-samples/releases)
+-   [原版资源包](https://github.com/Mojang/bedrock-samples/releases)
 
-### Documentation
+### 文档资源
 
-There are many good sources of Addon documentation. Familiarize yourself with all of them, and consider bookmarking them.
+推荐收藏以下文档网站：
 
--   [bedrock.dev](https://bedrock.dev/): Reference documentation.
--   [wiki.bedrock.dev](https://wiki.bedrock.dev/): Tutorials and guides.
--   [MS Docs](https://docs.microsoft.com/en-us/minecraft/creator/): The official microsoft creator portal for addons.
+-   [bedrock.dev](https://bedrock.dev/)：技术参考文档
+-   [wiki.bedrock.dev](https://wiki.bedrock.dev/)：教程与指南
+-   [微软官方文档](https://docs.microsoft.com/en-us/minecraft/creator/)：微软官方附加包门户
 
-### Troubleshooting and Additional Help
+### 故障排除
 
--   If the json format is very tricky for you, consider reading the [understanding-json guide](/guide/understanding-json).
--   If you get stuck with an odd error, consider reading the [troubleshooting guide](/guide/troubleshooting).
--   If you still haven't found a solution, feel free to join our [Discord server](/discord).
+-   若 JSON 格式困扰您，请阅读 [JSON 理解指南](/wiki/guide/understanding-json)
+-   遇到奇怪错误时参考 [故障排除指南](/wiki/guide/troubleshooting)
+-   仍未解决？欢迎加入 [Discord 服务器](/discord)
 
-### Additional Links and Tools
+### 实用工具
 
--   You can explore additional tools [here](/meta/useful-links).
+-   [更多工具推荐](/wiki/meta/useful-links)
 
-## Your progress so far
+## 当前进度
 
 <Checklist>
 
--   [x] Installed the necessary software
--   [x] Downloaded the Vanilla Example files
--   [ ] Locate your `com.mojang` folder and create your addon's workspace.
--   [ ] Create the manifest and pack icon for your first addon
+-   [x] 已安装必要软件
+-   [x] 已下载原版示例文件
+-   [ ] 定位 `com.mojang` 文件夹并创建工作区
+-   [ ] 创建首个附加包的清单文件和包图标
 
 </Checklist>

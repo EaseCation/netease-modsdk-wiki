@@ -1,61 +1,64 @@
 ---
-title: On First Join
-category: On Event Systems
+title: 首次进入时
+category: 事件系统
 mentions:
     - BedrockCommands
     - zheaEvyline
     - SmokeyStack
 nav_order: 1
 tags:
-    - system
+    - 系统
 ---
 
-## Introduction
+# 首次进入时
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This system will run your desired commands on the event that a player joins the world for the first time.
+## 简介
 
+[由Bedrock Commands社区Discord提供](https://discord.gg/SYstTYx5G5)
 
+本系统将在玩家首次进入世界时执行你预设的命令。
 
-## System
-<CodeHeader>BP/functions/on_first_join.mcfunction</CodeHeader>
+## 系统实现
 
-```yaml
-#Your Commands Here (examples)
-give @a [tag=!joined] stone_pickaxe
-give @a [tag=!joined] bread 16 1
-tag @a [tag=!joined] add joined
+::: code-group
+```yaml [BP/functions/on_first_join.mcfunction]
+# 在此处输入你的命令（示例）
+give @a[tag=!joined] stone_pickaxe
+give @a[tag=!joined] bread 16 1
+tag @a[tag=!joined] add joined
 ```
+:::
 
-![commandBlockChain3](/assets/images/commands/commandBlockChain/3.png)
+![命令方块链示意图3](/assets/images/commands/commandBlockChain/3.png)
 
+我们以两个`give`命令为例，你可以根据需求使用任意命令组合。请确保遵循以下要点：
+- 保持示例中的执行顺序
+- 在选择器参数中正确添加`tag=!joined`条件
 
-Here we have used 2 `give` commands as example but you can use any command you prefer and as many as you require.
+## 原理说明
 
-Just make sure to follow the given order and properly add the selector argument ` tag=!joined ` as shown for your desired commands.
+当玩家首次加入世界时，他们不会携带`joined`标签。系统通过检测未拥有该标签的玩家执行预设命令后，会立即为其添加标签以防止重复执行。
 
-## Explanation
+若需要重置玩家状态，可通过以下命令移除标签：
+`tag <玩家名> remove joined`
 
-When the player joins the world for the first time, they will not have the joined tag.
+## 时钟函数配置
 
-Once we run our desired commands for players without the tag, they will be given the tag immediately and the commands will not repeat for them again unless we remove their tag with:
-`tag <player> remove joined`
+若使用函数替代命令方块，需将`on_first_join`函数添加至`tick.json`以实现循环检测。多个函数可通过逗号分隔添加，详见[函数文档](/wiki/commands/mcfunctions#tick-json)。
 
-## Tick JSON
-
-If you are using functions instead of command blocks, the ` on_first_join ` function must be added to the ` tick.json ` in order to loop and run it continuously. Multiple files can be added to the ` tick.json ` by placing a comma after each string. Refer to [Functions](/commands/mcfunctions#tick-json) documentation for further info.
-
-<CodeHeader>BP/functions/tick.json</CodeHeader>
-```json
+::: code-group
+```json [BP/functions/tick.json]
 {
   "values": [
     "on_first_join"
   ]
 }
 ```
+:::
 
-If using functions, your pack folder structure will be be as follows:
+使用函数时资源包结构如下：
 
 <FolderView
 	:paths="[
@@ -68,6 +71,6 @@ If using functions, your pack folder structure will be be as follows:
 ]"
 ></FolderView>
 
-> **Note:** the tag names (in this case: 'joined') may end up being used by other people. Appending ` _ ` and a set of randomly generated characters after would be a choice that reduces the probability of collisions. Similar technique can be employed for the ` .mcfunction ` filenames. Ex:
-> - ` joined_0fe678 `
-> - ` on_first_join_0fe678.mcfunction `
+> **注意：** 标签名称（如本例中的'joined'）可能与其他开发者重复。建议在名称后追加`_`和随机字符组合来降低冲突概率，此方法同样适用于函数文件名。例如：
+> - `joined_0fe678`
+> - `on_first_join_0fe678.mcfunction`

@@ -1,5 +1,5 @@
 ---
-title: Bedrock Server Software
+title: 基岩版服务端软件
 mentions:
     - SirLich
     - DevGod6969
@@ -22,28 +22,32 @@ mentions:
     - AzaleeX
 ---
 
-Minecraft servers allow players to play online or via a local area network with other people. This is very common within Java Edition Minecraft, but is also possible on Bedrock. [You can download the official Mojang BDS software here.](https://www.minecraft.net/en-us/download/server/bedrock).
+# 基岩版服务端软件
 
-Alongside the Vanilla BDS offering, many community projects exist, in a variety of languages.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-## Software by Language
+Minecraft 服务器可以让玩家通过互联网或局域网进行联机游戏。这在 Java 版中十分常见，但其实基岩版同样可以实现联机。[点击此处下载 Mojang 官方的 BDS 服务端](https://www.minecraft.net/en-us/download/server/bedrock)。
 
-| Language   | Status                                                               |
-| ---------- | -------------------------------------------------------------------- |
-| PHP        | [Still Active](#php)        : 4 < [Discontinued](#php-1)        : 38 |
-| Java       | [Still Active](#java)       : 4 < [Discontinued](#java-1)       : 14 |
-| C++        | [Still Active](#c)          : 1 < [Discontinued](#c-1)          : 5  |
-| TypeScript | [Still Active](#typescript) : 4 < [Discontinued](#typescript-1) : 1  |
-| Go         | [Still Active](#go)         : 1 < [Discontinued](#go-1)         : 5  |
-| JavaScript | [Still Active](#javascript) : 1 < [Discontinued](#javascript-1) : 6  |
-| Rust       | [Still Active](#rust)       : 1 < [Discontinued](#rust-1)       : 1  |
-| C#         | Still Active                : 0 < [Discontinued](#c-2)          : 3  |
-| C          | Still Active                : 0 < [Discontinued](#c-3)          : 1  |
-| Python     | [Still Active](#python)     : 1 < [Discontinued](#python-1)     : 2  |
-| D          | Still Active                : 0 < [Discontinued](#d)            : 1  |
-| Kotlin     | Still Active                : 0 < [Discontinued](#kotlin)       : 1  |
+除了原版 BDS 服务端外，社区还开发了多种不同编程语言实现的服务端项目。
 
-## Active Software
+## 按编程语言分类
+
+| 语言        | 项目状态                                                       |
+| ----------- | ------------------------------------------------------------ |
+| PHP         | [仍活跃](#php) : 4 < [已停更](#php-1) : 38                   |
+| Java        | [仍活跃](#java) : 4 < [已停更](#java-1) : 14                 |
+| C++         | [仍活跃](#c) : 1 < [已停更](#c-1) : 5                        |
+| TypeScript  | [仍活跃](#typescript) : 4 < [已停更](#typescript-1) : 1      |
+| Go          | [仍活跃](#go) : 1 < [已停更](#go-1) : 5                      |
+| JavaScript  | [仍活跃](#javascript) : 1 < [已停更](#javascript-1) : 6      |
+| Rust        | [仍活跃](#rust) : 1 < [已停更](#rust-1) : 1                  |
+| C#          | 仍活跃 : 0 < [已停更](#c-2) : 3                             |
+| C           | 仍活跃 : 0 < [已停更](#c-3) : 1                             |
+| Python      | [仍活跃](#python) : 1 < [已停更](#python-1) : 2             |
+| D           | 仍活跃 : 0 < [已停更](#d) : 1                               |
+| Kotlin      | 仍活跃 : 0 < [已停更](#kotlin) : 1                          |
+
+## 活跃项目
 ### C++
 
 -   [LiteLoader](https://github.com/LiteLDev/LiteLoaderBDS)
@@ -56,7 +60,7 @@ Alongside the Vanilla BDS offering, many community projects exist, in a variety 
 
 -   [JukeBoxMC](https://github.com/LucGamesYT/JukeboxMC)
 -   [NukkitX-version](https://github.com/NukkitX/Nukkit)
--   [Nukkit PetteriM1 Edition](https://github.com/PetteriM1/NukkitPetteriM1Edition)
+-   [Nukkit PetteriM1 版](https://github.com/PetteriM1/NukkitPetteriM1Edition)
 -   [PowerNukkitX](https://github.com/PowerNukkitX/PowerNukkitX)
 
 ### TypeScript
@@ -86,7 +90,7 @@ Alongside the Vanilla BDS offering, many community projects exist, in a variety 
 
 - [PieMC](https://github.com/PieMC-Dev/PieMC)
 
-## Discontinued Software
+## 已停更项目
 
 ### C++
 
@@ -203,10 +207,10 @@ Alongside the Vanilla BDS offering, many community projects exist, in a variety 
 
 -   [Limonite](https://github.com/iTXTech/limonite)
 
-## Licensing
+## 许可声明
 
-:::tip License
-This page is licensed under the `GNU Lesser General Public License v3.0`.
+:::tip 许可协议
+本页面采用 `GNU 宽通用公共许可证 v3.0` 授权。
 
-The original source was authored `xinghao2003`, and may be [found here.](https://github.com/xinghao2003/MCBE-ServerSoftware-List)
+原始内容由 `xinghao2003` 创作，可[在此查看](https://github.com/xinghao2003/MCBE-ServerSoftware-List)。
 :::

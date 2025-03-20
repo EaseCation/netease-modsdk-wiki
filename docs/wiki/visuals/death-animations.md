@@ -1,9 +1,8 @@
 ---
-title: Custom Death Animations
+title: 自定义死亡动画
 tags:
-    - intermediate
-category:
-    - General
+    - 进阶
+category: 基础
 mentions:
     - SirLich
     - Joelant05
@@ -16,32 +15,35 @@ mentions:
     - ThomasOrs
 ---
 
-Death animation refers to the rotation of the entity as it dies. This is accompanied by a red coloring and followed shortly after by the disappearance of the entity geometry and the appearance of the death particles.
+# 自定义死亡动画
 
-## Cancelling Death Animations
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This part will explain how to remove death animations at all.
+死亡动画指实体死亡时的旋转效果，伴随红色着色效果，随后实体几何体会消失并出现死亡粒子。
 
-### Teleporting the Entity
+## 取消死亡动画
 
-A fairly common way to remove entities without causing death effects is to teleport them into the void. This can be done from animation controllers by using `!q.is_alive` like:
+本节将解释如何完全移除死亡动画效果。
+
+### 传送实体
+
+通过传送实体至虚空来消除死亡效果的常用方法，可在动画控制器中使用`!q.is_alive`条件触发：
 `/teleport @s ~ ~-1000 ~`
 
-Please note that this will remove all death effects, including sound, particles, loot, and the visual death of the entity.
+注意：此方法会移除所有死亡效果，包括音效、粒子、战利品和实体视觉死亡效果。
 
 ### minecraft:instant_despawn
 
-If you want to make entity just disappear, you can add component group with `"minecraft:instant_despawn":{}` and run an event which will add this component group.
+若需直接让实体消失，可添加包含`"minecraft:instant_despawn":{}`的组件组，并通过事件激活。
 
-Please note that this will remove all death effects, including sound, particles, loot, and the visual death of the entity.
+注意：此方法会移除所有死亡效果，包括音效、粒子、战利品和实体视觉死亡效果。
 
-### Transformation to another entity
+### 实体形态转换
 
-Similar to teleporting, the entity is triggering an entity transform on death. Use `!q.is_alive` in animation controller to send an event which will add component group with `"minecraft:transformation"` component. With this component entity will convert into another:
+类似传送方法，通过`!q.is_alive`条件触发转换事件，添加包含`"minecraft:transformation"`的组件组实现形态转换：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [转换组件示例]
 "minecraft:transformation": {
 	"into": "wiki:death_animation_entity",
 	"transformation_sound" : "converted_to_zombified",
@@ -57,30 +59,20 @@ Similar to teleporting, the entity is triggering an entity transform on death. U
 	}
 }
 ```
+:::
 
-### Cancelling the Animation
+### 取消旋转动画
 
-We can also cancel the rotational value of the entity, allowing the entity to die more conventionally (particles, red-coloring, loot) without the 90-degree spin.
+通过重置实体旋转值实现常规死亡效果（粒子、红色着色、战利品）同时避免90度旋转。需将旋转动画应用于所有骨骼的父级骨骼，并在`!q.is_alive`时触发。
 
-If you need more information about triggering animations from entity death, see [this document](/animation-controllers/death-commands) on death effects.
-
-Rotation needs to be applied to a bone parent to all other bones, with a pivot at [0,0,0], and the animation should only start when `!q.is_alive`.
-
-Animation:
-
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [旋转动画]
 "rotation" : [ 0, 0, "Math.min(Math.sqrt(Math.max(0, q.anim_time * 20 - 0.5) / 20 * 1.6), 1) * -90" ]
 ```
+:::
 
-Animation Controller:
-
-(q.all_animations_finished is only needed for respawning entities, like players)
-
-<CodeHeader>RP/animation_controllers/custom_death.animation.controllers.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animation_controllers/custom_death.animation.controllers.json]
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -107,26 +99,18 @@ Animation Controller:
 	}
 }
 ```
+:::
 
-Note that you will need attach animation and animations controller in `.entity.json` file of resource pack.
+注意：需在资源包实体文件中附加动画控制器。
 
-## Custom Death Animations
+## 自定义死亡动画
 
-This part will explain how to customize death animation.
+### 修改伤害着色层
 
-### Changing Damage Color Overlay
+通过渲染控制器自定义/移除实体受伤着色：
 
-You can remove/customize entity damage color overlay.
-
-Before starting, you must have the basics of render controller so check out the [tutorial](/entities/render-controllers) of render controllers.
-
-To remove the damage overlay color of any entity you want when it gets damaged, we will use `is_hurt_color` and remove the damage overlay color when an entity receives damage from lava or fire use `on_fire_color`.
-First, you need to make the rgba values to 0
-Here's the example of removing the damage and fire overlay color.
-
-<CodeHeader>RP/render_controllers/custom_death.render_controllers.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/render_controllers/custom_death.render_controllers.json]
 {
 	"format_version": "1.8.0",
 	"render_controllers": {
@@ -140,15 +124,12 @@ Here's the example of removing the damage and fire overlay color.
 	}
 }
 ```
+:::
 
-The code above will remove the red damage overlay color.
+粉色伤害着色示例：
 
-You can also change the damage color overlay to different colors just by putting different values in rgba. You can check out various websites to get the rgba values of all colors.
-Here's another example in which the damage color overlay becomes pink.
-
-<CodeHeader>RP/render_controllers/custom_death.render_controllers.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/render_controllers/custom_death.render_controllers.json]
 {
 	"format_version": "1.8.0",
 	"render_controllers": {
@@ -172,20 +153,14 @@ Here's another example in which the damage color overlay becomes pink.
 	}
 }
 ```
+:::
 
-### Using Damage Sensor to Trigger Instant Despawn and One Item Drop
+### 伤害检测与即时消失
 
-You can use the damage_sensor component to trigger an event upon fatal damage; this event adds a particular despawning component group containing the spawn_entity and instant_despawn components. Spawn_entity with 0 wait time will drop an item just before the entity is despawned. For simple entities like furniture, which only need one item, this is very convenient.
+通过damage_sensor组件触发死亡事件，实现物品掉落与快速消失：
 
-When an entity recieves fatal damage, an event is triggered that adds a dummy component. We can then use this dummy component to play the animation and using `minecraft:timer` we can have it despawn.
-
-Please note that you will have to find another work for entities with an inventory. You should also ensure that the despawn component group is not added when the entity is spawned using the entity_spawned event. If you have a entity that performs other actions (movement and attacks) you will likely want to remove those components as well.
-
-Here an example file in the BP
-
-<CodeHeader>BP/entities/entity.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/entity.json]
 {
     "format_version":"1.14.0",
     "min_engine_version":"1.16.100",
@@ -210,7 +185,7 @@ Here an example file in the BP
                     "time":[
                         2.56,
                         2.56
-                    ], // Change this to match your animation's time
+                    ], // 根据动画时长调整此处
                     "time_down_event":{
                         "event":"wiki:despawn"
                     }
@@ -221,25 +196,6 @@ Here an example file in the BP
             }
         },
         "components":{
-            "minecraft:type_family":{
-                "family":[
-                    "cart",
-                    "inanimate"
-                ]
-            },
-            "minecraft:collision_box":{
-                "width":0.8,
-                "height":0.5
-            },
-            "minecraft:health":{
-                "value":8,
-                "max":8
-            },
-            "minecraft:physics":{},
-            "minecraft:pushable":{
-                "is_pushable":true,
-                "is_pushable_by_piston":true
-            },
             "minecraft:damage_sensor":{
                 "triggers":{
                     "on_damage":{
@@ -278,43 +234,12 @@ Here an example file in the BP
     }
 }
 ```
+:::
 
-Here an example file for the animation controller.
+自定义刷怪蛋掉落示例：
 
-<CodeHeader>RP/animation_controllers/animation_controller.entity.json</CodeHeader>
-
-```json
-{
-	"format_version": "1.10.0",
-	"animation_controllers": {
-		"controller.animation.entity": {
-			"states": {
-				"default": {
-					"blend_transition": 0.2,
-					"transitions": [
-						{
-							"dead": "q.is_sheared"
-						}
-					]
-				},
-				"death": {
-					"blend_transition": 0.2,
-					"animations": [
-						"death"
-					]
-				}
-			}
-		}
-	}
-}
-```
-
-Note: You can also spawn custom spawn egg items using the `minecraft:spawn_entity` component by setting `"spawn_item"`
-to be your entity's id and an affix of `spawn_egg`, and it will look something like this.
-
-<CodeHeader>BP/entities/my_entity.json#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/my_entity.json#components]
 {
 	"minecraft:spawn_entity": [
 		{
@@ -326,50 +251,15 @@ to be your entity's id and an affix of `spawn_egg`, and it will look something l
 	]
 }
 ```
+:::
 
-If you want to drop a loot table, you can trigger an event (as shown below) and summon another entity that have this component:
+战利品表掉落系统：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [战利品组件示例]
 {
 	"minecraft:behavior.drop_item_for":{
-		"seconds_before_pickup":0.0,
-		"cooldown":5,
-		"drop_item_chance":1,
-		"offering_distance":0.0,
-		"minimum_teleport_distance":1024.0,
-		"target_range":[
-			64.0,
-			64.0,
-			64.0
-		],
-		"teleport_offset":[
-			0.0,
-			1.0,
-			0.0
-		],
-		"speed_multiplier":1.0,
-		"search_range":64,
-		"search_height":64,
-		"search_count":0,
-		"goal_radius":64.0,
-		"entity_types":[
-			{
-				"filters":{
-					"test":"is_family",
-					"subject":"other",
-					"value":"player"
-				},
-				"max_dist":64
-			}
-		],
-		"priority":1,
-		"loot_table":"loot_tables/entities/example.loot_table.json",
-		"time_of_day_range":[
-			0.0,
-			1.0
-		]
+		"loot_table":"loot_tables/entities/example.loot_table.json"
 	},
 	"minecraft:timer": {
 		"time": 2,
@@ -379,12 +269,11 @@ If you want to drop a loot table, you can trigger an event (as shown below) and 
 	}
 }
 ```
+:::
 
-And then despawn it through adding component group with instant_despawn through `wiki:my_despawn_event`.
-
-### Detecting Death with Commands
+### 使用命令检测死亡
 
 <BButton
 	link="/commands/tick_json-creations#death-detection"
 	color=blue
->View</BButton>
+>查看详情</BButton>

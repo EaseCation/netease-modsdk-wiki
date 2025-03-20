@@ -1,7 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
 import fg from 'fast-glob';
-import matter from 'gray-matter'
+import matter from 'gray-matter';
+import { generateWikiSidebar } from './sidebar-wiki';
 
 // 定义侧边栏项目接口
 interface SidebarItem {
@@ -54,8 +55,10 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
     const sidebar: Record<string, SidebarItem[]> = {};
     const files = await fg([`${DOCS_DIR}/**/*.md`]);
 
-    // 处理所有非 index.md 文件
+    // 处理所有非 wiki 文件
     for (const filePath of files) {
+        // 跳过wiki
+        if (filePath.includes('wiki')) continue;
         const relativePath = path.relative(DOCS_DIR, filePath);
         if (IGNORE_PATHS.some(ignore => relativePath.toLowerCase().includes(ignore.toLowerCase()))) continue;
 
@@ -148,6 +151,69 @@ async function generateSidebar(): Promise<Record<string, SidebarItem[]>> {
             }
         });
     }
+
+    // 处理wiki
+    const wiki = generateWikiSidebar(path.join(process.cwd(), 'docs'), path.join(process.cwd(), 'docs/wiki'));
+    const wikiSidebar: SidebarItem[] = [];
+    wiki.forEach(item => {
+        if (item.data.categories) {
+            // 一级大分类
+
+            // 二级分类
+            const secondUrls: string[] = [];
+            const second = item.data.categories.map((category: any) => {;
+                return {
+                    text: category.title,
+                    collapsed: false,
+                    items: item.children
+                        .filter(child => child.data.category === category.title)
+                        .filter(child => child.link)
+                        .map(child => {
+                            secondUrls.push(child.link);
+                            return {
+                                text: child.text,
+                                link: child.link,
+                                activeMatch: child.activeMatch
+                            }
+                        })
+                }
+            });
+            // 匹配到一级但是未匹配到二级
+            const notMatched = item.children
+                .filter(child => !secondUrls.includes(child.link))
+                .filter(child => child.link)
+                .map(child => {
+                    return {
+                        text: child.text,
+                        link: child.link,
+                        activeMatch: child.activeMatch
+                    }
+                });
+
+            wikiSidebar.push({
+                text: item.data.title,
+                collapsed: true,
+                items: [...second, ...notMatched]
+            });
+        } else {
+            // 一级大分类
+            wikiSidebar.push({
+                text: item.text,
+                collapsed: true,
+                items: item.children
+                    .filter(child => child.link)
+                    .map(child => {
+                        return {
+                            text: child.text,
+                            link: child.link,
+                            activeMatch: child.activeMatch
+                        }
+                    })
+            });
+        }
+    });
+    // 添加 wiki
+    sidebarFlat['wiki'] = wikiSidebar;
 
     return sidebarFlat;
 }

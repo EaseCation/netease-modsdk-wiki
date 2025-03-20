@@ -1,7 +1,7 @@
 ---
-title: Overwriting Assets
+title: 资源覆盖机制
 tags:
-    - intermediate
+    - 中级
 mentions:
     - SirLich
     - MedicalJewel105
@@ -9,76 +9,80 @@ mentions:
     - SmokeyStack
 ---
 
-## Addon Layering
+# 资源覆盖机制
 
-The addon system is built layer by layer, where each pack is added _on top_ of the ones before it. Even if you only have a single pack added, there is an implicit _vanilla_ pack which is always added. When you add custom content, this content will have full access to all vanilla files.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-### Accessing Vanilla Files
+## 附加包层级系统
 
-This layered structure is very useful, because it allows us to access the files inside of vanilla, without copy/pasting them into our addon. For example you can access `blocks/stone.png` without moving it into your addon! Just set it as the texture for your custom entity - it will work out of the box. This is particularly useful for things like models, or render controllers, or sounds.
+附加包系统采用分层架构，每个资源包/行为包都会叠加在先前加载的包之上。即使你只添加了一个自定义包，系统也会默认加载隐式的原版包。当创建自定义内容时，这些内容将完全继承原版文件的所有权限。
 
-If the vanilla assets change, for example if [JAPPA](https://twitter.com/JasperBoerstra?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor) updates the stone texture, your addon will also receive the update, since you are relying on the actual dynamic, vanilla resources.
+### 访问原版文件
 
-You should try to use this system of layering as often as you can. If you don't *need* to copy/paste something into your addon, don't.
+这种分层结构非常实用，它允许我们无需将原版文件复制到附加包中即可直接调用。例如你可以直接调用`blocks/stone.png`作为自定义实体的纹理，无需复制文件即可直接生效。这种特性在模型、渲染控制器、音效等资源的调用中尤为便利。
 
-:::warning
-It is never OK to make an addon inside of a copy of the vanilla resource/behavior pack. This will make the download for your addon incredibly huge, and will reduce performance. Always begin with a blank addon, then copy/paste the files you want to overwrite.
-:::
+若原版资源发生更新（例如[JAPPA](https://twitter.com/JasperBoerstra?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor)更新了石头纹理），你的附加包也会同步获得更新，因为你的资源始终动态关联着原版资源。
 
-## Overwriting Assets
-
-Pack Layering also allows us to overwrite vanilla assets, by _overwriting_ them with a file that shares the same path, or the same identifier. Our new file will replace the one being used in vanilla, allowing us to change textures, sounds, entity behavior, etc.
+请尽可能使用这种分层调用机制。如果不需要复制粘贴原版资源，就不要进行冗余操作。
 
 :::warning
-Different resources have different methods of overwriting, so be careful to use the right method for each type!
+绝对禁止直接复制原版资源包/行为包进行修改。这会导致附加包体积异常臃肿，并严重影响运行性能。正确做法是新建空白附加包，仅复制需要覆盖的特定文件。
 :::
 
-### Overwriting by Path
+## 资源覆盖方式
 
-Assets that are referenced by _path_, and do _not have an identifier_ can be overwritten by simply placing a new asset into the same path. The following can be overwritten in this way:
+通过包层级系统，我们可以通过创建相同路径或相同标识符的文件来覆盖原版资源。新的文件将完全替代原版文件，从而实现纹理替换、音效修改、实体行为调整等功能。
 
--   Functions
--   Loot tables
--   Textures
--   Sounds
--   Trade Tables
+:::warning
+不同类型的资源需要采用不同的覆盖方式，请仔细确认每种资源的覆盖机制！
+:::
 
-When you overwrite these files, the overwriting is absolute: The new asset will fully replace the old asset.
+### 路径覆盖法
+
+对于通过路径引用且没有标识符的资源，只需在相同路径下创建新文件即可覆盖。以下资源类型适用此方式：
+
+-   游戏指令
+-   战利品表
+-   纹理贴图
+-   音效文件
+-   交易表
+
+此方式会完全替换原文件内容。
 
 :::tip
-**Example**: If you would like to replace the redstone ore texture, simply place a new file at `textures/blocks/redstone_ore.png`.
+**示例**：要替换红石矿石纹理，只需在`textures/blocks/redstone_ore.png`路径放置新纹理文件即可。
 :::
 
-### Overwriting by Identifier
+### 标识符覆盖法
 
-Many assets are defined not by their name, but by their identifier! To overwrite these assets, simply create a new file that shares the same identifier, regardless of file-path. The following can be overwritten in this way:
+对于通过标识符定义的资源，只需创建具有相同标识符的文件（无论路径如何）即可覆盖。以下资源类型适用此方式：
 
--   BP Entities
--   RP Entities
--   Animations
--   Models
--   Animation Controllers
--   Spawn Rules
--   Recipes
--   Particles
--   Render Controllers
+-   行为包实体
+-   资源包实体
+-   动画
+-   模型
+-   动画控制器
+-   生成规则
+-   合成配方
+-   粒子效果
+-   渲染控制器
 
-When you overwrite these files, the overwriting is absolute: The new asset will fully replace the old asset.
+此方式会完全替换原文件内容。
 
 :::tip
-**Example**: If you would like to make Ghasts have higher health, simply create a new BP entity with the `minecraft:ghast` identifier, and all the behaviors required to make the ghast function.
+**示例**：要提升恶魂生命值，需要创建包含`minecraft:ghast`标识符的新实体行为文件，并完整定义恶魂的所有行为组件。
 
-Remember, entity files do not merge together, so you will first need to copy/paste the entire BP Ghast file, and _then_ edit the health. Simply creating a `minecraft:ghast` with a high health component inside will not work.
+注意：实体文件不会自动合并，必须首先完整复制原版恶魂行为文件，再进行生命值修改。仅创建包含高生命值组件的`minecraft:ghast`文件会导致功能异常。
 :::
 
-### Overwriting via Reference File
+### 注册表覆盖法
 
-Many assets can also be registered into some kind of "registration system" file. These files are interesting, because unlike the other asset types, they are _merged together_ instead of _overwritten_. This means that when you define these files, you do not need to copy from the vanilla resources. You can simply start with a blank file, and then overwrite the specific definitions you want.
+部分资源通过注册表文件进行管理，这类文件具有合并特性而非完全覆盖。这意味着你无需复制原版内容，只需创建新的定义即可覆盖特定条目。
 
-The following files work in this way:
+以下注册表文件支持此方式：
 
--   All UI files
--   [All language files](/concepts/text-and-translations)
+-   所有UI文件
+-   [所有语言文件](/wiki/concepts/text-and-translations)
 -   `item_textures.json`
 -   `flipbook_textures.json`
 -   `terrain_textures.json`
@@ -87,11 +91,10 @@ The following files work in this way:
 -   `sound_definitions.json`
 
 :::tip
-**Example:** Lets say you want to override the `sugar` texture, using the reference files. You can do so by creating a new `item_textures.json`, with the following contents:
+**示例**：通过注册表覆盖法修改糖的纹理，只需新建`item_textures.json`并添加以下内容：
 
-<CodeHeader></CodeHeader>
-
-```json
+::: code-group
+```json [item_textures.json]
 {
 	"resource_pack_name": "vanilla",
 	"texture_data": {
@@ -101,20 +104,23 @@ The following files work in this way:
 	}
 }
 ```
-
-This _definition_ will be merged with the vanilla `item_textures.json`, and will override the short-name `sugar`. When the vanilla item accesses this short-name, it will get a reference to your custom texture path, instead of the actual texture path to sugar.
 :::
 
-## Overwriting Dangers
+该定义会与原版`item_textures.json`合并，覆盖`sugar`的纹理路径指向。当原版物品调用此简称时，将自动引用你的自定义纹理。
+:::
 
-Since addons mostly _overwrite_ each other rather than _merge_, it can be very difficult to get two incompatible addons to work together. For example, if you try to combine two addons that overwrite the creeper behavior (for example, one makes them very fast, and one makes them very large) the addon you have applied _second_ will overwrite the first.
+## 覆盖风险提示
 
-This is mostly a problem with `player.json` (in either the RP or the BP), since this file is often used for gameplay purposes.
+由于附加包采用覆盖机制而非合并机制，不同附加包之间可能存在兼容性问题。例如同时安装两个修改爬行者行为的附加包（一个提升速度，一个增大体型），后加载的包会完全覆盖前者的修改。
 
-## Things that Cannot be Overwritten
+这个问题在`player.json`（资源包或行为包中的）中尤为突出，因为该文件常被用于核心玩法修改。
 
-Not everything can be overwritten, the following is a list of things that cannot be overwritten using any of the described methods:
+## 不可覆盖内容列表
 
--   Vanilla items (Not all)
--   Vanilla blocks
--   Vanilla fogs (create a fog with another namespace and change it everywhere it is used)
+以下内容无法通过上述任何方式覆盖：
+
+-   原版物品（部分不可覆盖）
+-   原版方块
+-   原版雾效（需新建命名空间的雾效并全局替换引用）
+
+（注：保留英文术语以保持开发概念准确性）

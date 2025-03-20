@@ -1,6 +1,6 @@
 ---
-title: On Player Join
-category: On Event Systems
+title: 玩家加入事件响应
+category: 事件系统
 mentions:
     - BedrockCommands
     - zheaEvyline
@@ -9,66 +9,72 @@ tags:
     - system
 ---
 
-## Introduction
+# 玩家加入事件响应
 
-[Sourced By Bedrock Commands Community Discord](https://discord.gg/SYstTYx5G5)
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
-This system will run your desired commands on the event that a players joins the world.
+## 简介
 
-## Setup
+[由Bedrock Commands社区Discord提供](https://discord.gg/SYstTYx5G5)
 
-*To be typed in Chat:*
+本系统可在玩家加入世界时触发预设命令的执行。
+
+## 设置
+
+*在聊天栏输入以下指令：*
 
 `/scoreboard objectives add joined dummy`
 
-If you prefer to have the objective added automatically on world initialisation, follow the process outlined in [On First World Load.](/commands/on-first-world-load)
+若需实现世界初始化时自动创建记分板项，请参照[首次世界加载事件响应](/wiki/commands/on-first-world-load)的操作流程。
 
-## System
+## 系统实现
 
-<CodeHeader>BP/functions/on_player_join.mcfunction</CodeHeader>
-
-```yaml
+::: code-group
+```yaml [BP/functions/on_player_join.mcfunction]
 scoreboard players add @a joined 0
 
 
-#Your Commands Here (example)
+#在此处添加你的命令（示例）
 tp @a[scores={joined=0}] 0 65 0
 
 
 scoreboard players reset * joined
 scoreboard players set @a joined 1
 ```
+:::
 
-![commandBlockChain4](/assets/images/commands/commandBlockChain/4.png)
+![命令方块链4](/assets/images/commands/commandBlockChain/4.png)
 
+示例中使用了`tp`传送命令，您可以根据实际需求替换为任意命令，并自由扩展命令数量。
 
-Here we have used a `tp` command as an example but you can use any command you prefer and as many as you require.
+请确保保持现有执行顺序，并为目标命令正确添加选择器参数 `scores={joined=0}`。
 
-Just make sure to follow the given order and properly add the selector argument ` scores={joined=0} ` as shown for your desired commands.
+## 原理说明
 
-## Explanation
+当玩家加入时，系统会为其记分板项赋初始值0，这使我们能够通过`scores`选择器参数定位新加入玩家。
 
-When the player joins, a 0 is added to their objective, this allows us to run commands from them using the 'scores' selector argument.
+在命令执行完毕后立即执行以下操作：
+1. 使用通配符`*`重置所有玩家的记分板值
+2. 为保持在线状态的玩家设置值1
 
-Immediately after the commands are run, we reset all the scores on the objective using wildcard **` * `** and only players who stayed online will have their score set to 1.
-
-And this way, since our commands only target players with the score 0, the commands won't repeat again for the players who stayed unless they leave and rejoin or if we run:
+通过这种机制，由于所有命令仅针对记分板值为0的玩家，已在线玩家不会重复触发响应，除非他们退出后重新加入，或手动执行：
 `/scoreboard players set <player> joined 0`
 
-## Tick JSON
+## 时钟函数配置
 
-If you are using functions instead of command blocks, the ` on_player_join ` function must be added to the ` tick.json ` in order to loop and run it continuously. Multiple files can be added to the ` tick.json ` by placing a comma after each string. Refer to [Functions](/commands/mcfunctions#tick-json) documentation for further info.
+若使用函数替代命令方块，需将`on_player_join`函数添加至`tick.json`以实现循环执行。多个函数可通过逗号分隔添加，详见[函数文档](/wiki/commands/mcfunctions#tick-json)。
 
-<CodeHeader>BP/functions/tick.json</CodeHeader>
-```json
+::: code-group
+```json [BP/functions/tick.json]
 {
   "values": [
     "on_player_join"
   ]
 }
 ```
+:::
 
-If using functions, your pack folder structure will be be as follows:
+使用函数时资源包目录结构如下：
 
 <FolderView
 	:paths="[
@@ -81,6 +87,6 @@ If using functions, your pack folder structure will be be as follows:
 ]"
 ></FolderView>
 
-> **Note:** the scoreboard names (in this case: 'joined') may end up being used by other people. Appending ` _ ` and a set of randomly generated characters after would be a choice that reduces the probability of collisions. Similar technique can be employed for the ` .mcfunction ` filenames. Ex:
-> - ` joined_0fe678 `
-> - ` on_player_join_0fe678.mcfunction `
+> **注意：** 记分板名称（本例中的'joined'）可能与其他开发者重复使用。建议在名称后追加`_`和随机字符组合以降低冲突概率，函数文件名也可采用类似处理方式。例如：
+> - `joined_0fe678`
+> - `on_player_join_0fe678.mcfunction`

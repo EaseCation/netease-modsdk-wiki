@@ -1,8 +1,8 @@
 ---
-title: Attachables
-category: Documentation
+title: 附加物
+category: 文档
 tags:
-    - beginner
+    - 新手
 mentions:
     - Sprunkles317
     - MedicalJewel105
@@ -11,27 +11,31 @@ mentions:
     - TheItsNameless
 ---
 
+# 附加物
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: tip
-This document assumes you have a basic understanding of Molang, render controllers, animations, and client entity definitions. Ensure you are familiar with the basics of [client entities](/entities/entity-intro-rp)!
+本文档假设您已掌握Molang、渲染控制器、动画和客户端实体定义的基础知识。请确保您熟悉[客户端实体](/wiki/entities/entity-intro-rp)的基本原理！
 :::
 
-## Introduction
+## 简介
 
-When we design a custom item or block, Minecraft will build a model from a template so the item can be displayed when held. This takes the form of the item's sprite being an extruded texture mesh, or blocks displaying with their model. By using a system called **attachables** we can design our own models to be displayed when these items are held.
+当我们设计自定义物品或方块时，Minecraft会根据模板生成模型以便在手持时显示。这表现为物品以拉伸纹理网格形式显示，或方块显示其预设模型。通过使用**可附着物**系统，我们可以设计自己的模型来替换这些手持显示效果。
 
-Ever wanted sticks to look like spyglasses? Or to wield a big chainsaw with a spinning chain? Attachables are the way to accomplish that!
+想让木棍看起来像望远镜？或是挥舞带有旋转链条的巨型电锯？可附着物正是实现这些效果的关键！
 
-This document covers **two different ways** to create attachables, depending on how the geometry being used is constructed.
+本文将介绍**两种不同方法**来创建可附着物，具体取决于所用几何体的构建方式。
 
-## Overview
+## 概述
 
-Attachables are a system of rendering entity models when an item or block is equipped. This means having the item held in the main hand, off hand, or armor slots.
+可附着物系统用于在装备物品或方块时渲染实体模型。这里的装备包括主手、副手和护甲槽位中的物品。
 
-Attachable definitions are quite similar in design to client entity definitions; they let us define textures, materials, geometries, and animations to display the attachable.
+可附着物定义文件在结构上与客户端实体定义非常相似，允许我们定义要显示的纹理、材质、几何体和动画。
 
-### File Structure
+### 文件结构
 
-The attachable definition goes within the 'attachables' folder. The file layout is otherwise identical to that of custom entities.
+可附着物定义文件应存放在'attachables'文件夹中。其他文件布局与自定义实体完全一致。
 
 <FolderView
 	:paths="[
@@ -43,13 +47,12 @@ The attachable definition goes within the 'attachables' folder. The file layout 
   ]"
 ></FolderView>
 
-### Attachable Definition
+### 可附着物定义
 
-Here's a basic example of an attachable.
+以下是一个基础的可附着物示例：
 
-<CodeHeader>RP/attachables/stick.entity.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/attachables/stick.entity.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:attachable": {
@@ -87,88 +90,80 @@ Here's a basic example of an attachable.
 	}
 }
 ```
+:::
 
-A few key things to point out with this attachable definition:
+此定义中有几个关键点需要注意：
 
-- The identifier matches an existing block or item ID. This will activate the attachable when the item is equipped, and will replace the original model that appears when held.
-- There is a material and texture listed for the enchantment glint. This is important to keep around if your item should have the glint when enchanted.
+- 标识符需与现有方块/物品ID匹配。这将激活可附着物效果，替换原版手持模型
+- 包含了附魔光效的材质和纹理定义。若物品需要附魔特效，这部分必须保留
 
-Making attachables is a little more involved than making a client entity file. We need to properly rig the geometry's skeleton so that it looks correct when equipped.
+制作可附着物比创建普通客户端实体文件更复杂。我们需要正确绑定几何体的骨骼结构，确保装备时显示正确。
 
-## Method 1 - Attached to the Skeleton
+## 方法一 - 绑定骨骼系统
 
-<Label name="Beginner" color="blue"></Label>
+<Label name="新手" color="blue"></Label>
 
-In this first method we will construct the attachable using a copy of the player's skeleton, by attaching your model to one of the player's bones.
+此方法通过复制玩家骨骼系统，将模型附加到特定骨骼上实现。适用于单一实体类型（特别是玩家）和单一装备槽位的场景，在Blockbench中预览效果更方便。
 
-This solution is ideal for models that are intended for scenarios involving only one type of mob/entity, especially players; and involving only one equipment slot. It is easy to view what the model will look like in Blockbench.
+### 骨骼系统搭建
 
-### Setting up the Skeleton
+需要重建玩家骨骼结构，否则模型无法正确绑定骨骼，导致漂浮在玩家周围。
 
-We need to reconstruct the player's skeleton in order for our model to be parented to the correct bone, otherwise it will not be parented to anything and will float freely on the player.
+使用文本编辑器将玩家骨骼文件中的骨骼结构复制到您的几何体文件中，然后将模型立方体设为`rightItem`骨骼的子级。将此几何体保存至资源包。
 
-With a text editor, take the bones from the provided player skeleton file and copy them to your geometry file, then set the `rightItem` bone as the parent to the cubes from your model. Save this geometry to your resource pack.
-
-For convenience, such a model has been prepared here. The cubes from the player's model have already been removed:
+我们已准备好一个预制模型（已移除原玩家模型的立方体）：
 <BButton
   link="https://github.com/Bedrock-OSS/bedrock-wiki/blob/wiki/docs/public/assets/packs/tutorials/attachables/method_one/steve_head.geo.json?raw=true"
 	color=blue
->📄 Geometry File</BButton>
+>📄 几何体文件</BButton>
 
-### Display Settings
+### 显示设置
 
-Having your model floating at the player's feet is not ideal. Our next step is to create animations so we can properly display the model on the player.
+为避免模型漂浮在玩家脚部，需要创建动画来控制显示位置。
 
-Create two new animations, one for holding the item in first person and another for holding it in third person. Select your third-person animation, and position it however you want. Save this animation to your resource pack.
+新建两个动画：第一人称手持动画和第三人称手持动画。调整第三人称动画的位置参数后保存至资源包。
 
-Here is an example of such an animation. This also includes a first-person animation—the means of making one is detailed in the section below.
+示例动画文件（包含第一人称动画制作说明）：
 <BButton
   link="https://github.com/Bedrock-OSS/bedrock-wiki/blob/wiki/docs/public/assets/packs/tutorials/attachables/method_one/steve_head.animation.json?raw=true"
 	color=blue
->📄 Animation File</BButton>
+>📄 动画文件</BButton>
 
-### First-person Animations
+### 第一人称动画
 
-To more easily create first-person animations, we need to mimic how the arm is positioned in the first person.
+制作第一人称动画时需模拟游戏中手臂的真实姿势：
 
 :::tip
-To add animation for player's hands, you need to use player's animations, not attachables animations. 
+注意：玩家手部动画需使用玩家动画系统，而非可附着物动画系统。
 :::
 
-Use the following guide animation and import it into Blockbench. It applies a rotation of (95, -45, 115) and a translation of (13.5, -10, 12) to the right arm bone, perfectly mimicking how the arm is positioned in first-person.
+使用指导动画文件（应用右臂骨骼旋转(95, -45, 115)和平移(13.5, -10, 12)）来准确定位：
 <BButton
   link="https://github.com/Bedrock-OSS/bedrock-wiki/blob/wiki/docs/public/assets/packs/tutorials/attachables/method_one/attachable_guide.animation.json?raw=true"
 	color=blue
->📄 Attachable Guide File</BButton>
+>📄 动画指导文件</BButton>
 
-:::warning NOTE
-This is where things get tricky. Both animations will need to be played simultaneously; your first-person animation, and the guide's first-person animation.
-
-Be sure you are editing your animation when making your changes. Select it first, then play the guide's first-person animation on top.
+:::warning 重要提示
+需要同时播放两个动画：您的第一人称动画和指导动画。在Blockbench中编辑时，请确保选中您的动画后再叠加播放指导动画。
 :::
 
-### Conclusion
+### 最终效果
 
-With this all set up, go through and delete the *cubes* from the player skeleton if there are any, but keep the bones. Check the model out in-game!
+完成上述步骤后，删除玩家骨骼中的立方体（保留骨骼结构），即可在游戏中查看效果！
 
-## Method 2 - Bound to a Bone
+## 方法二 - 骨骼绑定系统
 
-<Label name="Intermediate" color="orange"></Label>
+<Label name="进阶" color="orange"></Label>
 
-In this second method, the attachable geometry will be constructed using model binding. This allows a model to be directly attached to a bone within a mob's geometry corresponding to the slot it is equipped in. Minecraft employs model binding for its attachable items, including the trident, spyglass, bow, and shield.
+此方法通过模型绑定直接将几何体附加到对应装备槽位的骨骼上。Minecraft原生物品（如三叉戟、望远镜）均采用此方案。虽然能实现动态多生物适配，但存在一些特殊限制。
 
-While this method allows the attachable to apply more dynamically to other mobs and equipment slots, model binding also has strange quirks, which will be illustrated below. Some developers may find this method trickier to get working.
+### 模型绑定
 
-### Model Binding
+首先确保几何体文件版本为`"1.16.0"`（可通过Blockbench转换旧版文件）。然后在根骨骼添加绑定声明：
 
-Our first step is to upgrade the model file format version to `"1.16.0"` if it is not already. If the model is a legacy file, then convert it before continuing; Blockbench has a tool to do this (File → Convert Project).
-
-Next up is modifying the root bone of our geometry to be bound to the equipment slot the item is placed in. Take note of line 4 in this excerpt from the skeleton head geometry file:
-
-<CodeHeader>RP/models/entity/skeleton_head.geo.json</CodeHeader>
-
-```json
-// A bone
+::: code-group
+```json [RP/models/entity/skeleton_head.geo.json]
+// 一个骨骼
 {
   "name": "skeleton_head",
   "binding": "q.item_slot_to_bone_name(context.item_slot)",
@@ -182,70 +177,54 @@ Next up is modifying the root bone of our geometry to be bound to the equipment 
   ]
 }
 ```
+:::
 
-The `"parent"` key in a bone accepts a string, and whichever bone name is entered will be set as the parent to the current bone; the child bones keep their positions but move relative to the parent bone.
+- `binding`键使用Molang查询`q.item_slot_to_bone_name`将装备槽位转换为骨骼名称：
+  - `'main_hand'` → "rightitem"
+  - `'off_hand'` → "leftitem"
 
-The `"binding"` key on the other hand accepts Molang, and the pivot point of whichever bone name is entered is set as the *root position* that the child bone and its children should inherit.
-
-For the value of `"binding"` we are using the Molang query `q.item_slot_to_bone_name`, which converts a slot name to a bone name, with the contextual variable `context.item_slot` as an argument. This converts the name of the equipment slot this item resides in to its corresponding bone name in the player's geometry. The conversions are as follows:
-- `'main_hand'` → "rightitem"
-- `'off_hand'` → "leftitem"
-
-Apply the model binding to your bone, and save the geometry to your resource pack.
-
-An example model with this binding applied is provided here:
+示例绑定模型：
 <BButton
   link="https://github.com/Bedrock-OSS/bedrock-wiki/blob/wiki/docs/public/assets/packs/tutorials/attachables/method_two/skeleton_head.geo.json?raw=true"
 	color=blue
->📄 Geometry File</BButton>
+>📄 几何体文件</BButton>
 
-### Display Settings
+### 显示设置
 
-With that done, the next step is to set up animations to display the model in first person and third person.
+创建第一人称和第三人称动画时，建议：
 
-Create two new animations, one for holding the item in first person and another for holding it in third person.
-
-To make creating these animations easier, please do the following:
-
-- Download the following player skeleton model. We will use this as a visual aid for positioning your model.
+1. 下载玩家骨骼模型作为定位参考：
 <BButton
   link="https://github.com/Bedrock-OSS/bedrock-wiki/blob/wiki/docs/public/assets/packs/tutorials/attachables/method_two/player_skeleton.geo.json?raw=true"
 	color=blue
->📄 Player Skeleton File</BButton>
+>📄 玩家骨骼文件</BButton>
 
-- With a text editor, add the bones and cubes from your model to the player skeleton model, then import the player skeleton model into Blockbench.
-- Set your model's root bone(s) to be a child of the 'rightItem' bone in the player skeleton.
-- Download the following animation file import the `wiki.third_person_guide` animation. This will be used later to make positioning easier.
+2. 将模型骨骼添加为玩家骨骼中'rightItem'的子级
+3. 使用指导动画抵消Minecraft的-24Y轴偏移：
 <BButton
   link="https://github.com/Bedrock-OSS/bedrock-wiki/blob/wiki/docs/public/assets/packs/tutorials/attachables/method_two/attachable_guide.animation.json?raw=true"
 	color=blue
->📄 Attachable Guide File</BButton>
+>📄 动画指导文件</BButton>
 
-These guide animations have one notable feature: they apply a -24 offset to the y-position of the right item bone to counteract a similar -24 y-position offset Minecraft applies to bound bones. We are unsure at this time why this happens.
-
-:::warning NOTE
-Similar to Method One, **two** animations will need to be played simultaneously for correct positioning.
-
-Be sure you are editing your animations when making your changes. Select it first, then play the guide animation on top.
+:::warning 重要提示
+需要同时播放自定义动画和指导动画。在Blockbench中编辑时，请先选中您的动画再叠加播放指导动画。
 :::
 
-Play both animations, and position your model however you want. Save the animations to your resource pack.
-
-An example animation file for this positioning:
+示例动画定位：
 <BButton
   link="https://github.com/Bedrock-OSS/bedrock-wiki/blob/wiki/docs/public/assets/packs/tutorials/attachables/method_two/skeleton_head.animation.json?raw=true"
 	color=blue
->📄 Animation File</BButton>
+>📄 动画文件</BButton>
 
-### First-person Animations
+### 第一人称动画
 
-Similar to the third-person animation, look in the Attachable Guide file and import the `wiki.first_person_guide` animation into Blockbench. Play both your animation and the guide's first-person animation together, then make your changes and save the file.
+参照第三人称动画的制作流程，在指导文件中导入`wiki.first_person_guide`动画进行叠加编辑。
 
-## Example Pack
+## 示例包
 
-Each of these methods have been compiled into an example pack you may reference, for if you are getting stuck or simply want to see a working example.
+我们准备了包含两种方法的完整示例包供参考：
 
 <BButton
     link="https://github.com/Bedrock-OSS/wiki-addon/releases/download/download/attachable-example.mcpack"
     color=blue
->💾 Example Pack</BButton>
+>💾 示例包下载</BButton>

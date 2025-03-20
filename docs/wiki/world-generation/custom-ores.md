@@ -1,6 +1,6 @@
 ---
-title: Generating Custom Ores
-category: Tutorials
+title: 生成自定义矿物
+category: 巧思案例
 tags:
     - experimental
 mentions:
@@ -10,34 +10,37 @@ mentions:
     - Chikorita-Lover
 ---
 
-`ore_feature`'s are basic but important features! They can form clusters of blocks by replacing blocks where they are generated. This tutorial will show you how to make mineral ores that naturally generate.
+# 生成自定义矿物
 
-The use of features and feature rules requires Creation of Custom Biomes to be enabled in your world settings. If your block doesn't generate, make sure it's enabled!
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+`矿石特征`是基础但重要的特性！它们通过替换生成位置的方块来形成方块簇。本教程将展示如何制作自然生成的矿物矿石。
+
+使用特征和特征规则需要在世界设置中启用自定义生物群系功能。如果方块未生成，请确保已启用该选项！
 
 :::tip
-For this tutorial, I'll be using 2 custom blocks, Titanite Ore and Deepslate Titanite Ore. For how to make custom blocks, visit the [Blocks Intro](/blocks/blocks-intro) page.
+本教程将使用两种自定义方块：钛铁矿和深板岩钛铁矿。关于如何制作自定义方块，请访问[方块基础](/wiki/blocks/blocks-intro)页面。
 :::
 
-## The Feature File
+## 特征文件
 
-<CodeHeader>BP/features/titanite_ore_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/features/titanite_ore_feature.json]
 {
 	"format_version": "1.17.0",
 	"minecraft:ore_feature": {
 		"description": {
 			"identifier": "wiki:titanite_ore_feature"
 		},
-		"count": 8, // Placement attempts
+		"count": 8, // 尝试放置次数
 		"replace_rules": [
 			{
-				// Replace all stone variants (andesite, granite, and diorite) with titanite ore
+				// 将所有石质变种（安山岩、花岗岩、闪长岩）替换为钛铁矿
 				"places_block": "wiki:titanite_ore",
 				"may_replace": ["minecraft:stone"]
 			},
 			{
-				// Replace deepslate with deepslate titanite ore
+				// 将深板岩替换为深板岩钛铁矿
 				"places_block": "wiki:deepslate_titanite_ore",
 				"may_replace": ["minecraft:deepslate"]
 			}
@@ -45,23 +48,23 @@ For this tutorial, I'll be using 2 custom blocks, Titanite Ore and Deepslate Tit
 	}
 }
 ```
+:::
 
-## The Feature Rule
+## 特征规则
 
-<CodeHeader>BP/feature_rules/overworld_underground_titanite_ore_feature.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/feature_rules/overworld_underground_titanite_ore_feature.json]
 {
 	"format_version": "1.13.0",
 	"minecraft:feature_rules": {
 		"description": {
 			"identifier": "wiki:overworld_underground_titanite_ore_feature",
-			"places_feature": "wiki:titanite_ore_feature" // Identifier from the feature file
+			"places_feature": "wiki:titanite_ore_feature" // 来自特征文件的标识符
 		},
 		"conditions": {
 			"placement_pass": "underground_pass",
 			"minecraft:biome_filter": [
-				// Scatter the ore throughout the Overworld
+				// 在主世界各处散布矿石
 				{
 					"any_of": [
 						{
@@ -79,17 +82,17 @@ For this tutorial, I'll be using 2 custom blocks, Titanite Ore and Deepslate Tit
 			]
 		},
 		"distribution": {
-			"iterations": 10, // Placement attempts of the cluster, not the ore blocks
+			"iterations": 10, // 矿簇的生成尝试次数（非单个矿石方块）
 			"coordinate_eval_order": "zyx",
 			"x": {
 				"distribution": "uniform",
 				"extent": [0, 16]
 			},
 			"y": {
-				"distribution": "uniform", // You can use "triangle" to make ores more common in the middle of the extent
+				"distribution": "uniform", // 使用"triangle"可使矿石在高度范围中部更常见
 				"extent": [
-					0, // Minimum y level for the ore to generate
-					62 // Maximum y level for the ore to generate
+					0, // 矿石生成的最小高度
+					62 // 矿石生成的最大高度
 				]
 			},
 			"z": {
@@ -100,17 +103,18 @@ For this tutorial, I'll be using 2 custom blocks, Titanite Ore and Deepslate Tit
 	}
 }
 ```
+:::
 
-## Testing
+## 测试验证
 
-You can look for the ore by exploring caves, but if your ores are rare, you can use commands instead to check if they're generating. Simply place this command into a repeating command block, then fly around:
+可以通过探索洞穴寻找矿石，若矿石稀有度较高，建议使用指令验证生成情况。将以下指令放入循环命令方块中，然后四处飞行：
 
 -   `execute @a ~ ~ ~ fill ~8 ~8 ~8 ~-8 ~-8 ~-8 air 0 replace wiki:titanite_ore`
 
-Stone ores:
+普通石质矿石：
 
 ![](/assets/images/world-generation/generating-custom-ores/stone_ore.png)
 
-Deepslate ores:
+深板岩矿石：
 
 ![](/assets/images/world-generation/generating-custom-ores/deepslate_ore.png)
