@@ -18,7 +18,7 @@ next: false
   {
     title: 'Mod脚本开发', 
     desc: '🚀 快速入门我的世界 Mod 开发', 
-    link: '/wiki' 
+    link: '/wiki/modsdk/modsdk-intro' 
   },
   {
     title: '方块',
