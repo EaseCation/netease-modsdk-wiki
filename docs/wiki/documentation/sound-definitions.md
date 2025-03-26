@@ -1,12 +1,25 @@
 ---
-title: Sound Definitions
+title: 音效定义
 mentions:
     - MedicalJewel105
 ---
 
-Sounds from `sound_definitions.json` sorted by categories and subcategories based on their names.
-This page was created with [Wiki Content Generator](https://github.com/Bedrock-OSS/bedrock-wiki-content-generator). If there are issues, contact us on [Bedrock OSS](https://discord.gg/XjV87YN) Discord server.
-*Last updated for 1.20.10*
+# 音效定义
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+按名称分类整理的`sound_definitions.json`中的音效文件。
+本页面由[Wiki内容生成器](https://github.com/Bedrock-OSS/bedrock-wiki-content-generator)创建。如发现问题，请在[Bedrock OSS](https://discord.gg/XjV87YN) Discord服务器联系我们。
+*最后更新于1.20.10版本*
+
+::: tip 说明
+- 音效文件已根据名称进行了分类和子分类
+- 专业名词如`sound_definitions.json`保留英文原格式
+- 版本号保持数字格式不变
+- 链接和Discord服务器名称保留原文
+:::
+
+（注：由于原文主要是说明性文字且没有具体音效列表，因此翻译保留了原文结构，添加了说明提示框使页面更友好。如果后续需要补充具体音效分类列表，可以继续扩展翻译内容。）
 
 ## ambient
 

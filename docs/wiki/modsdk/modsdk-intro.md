@@ -106,7 +106,7 @@ class MyClientSystem(ClientSystem):
 BOOM！就这么简单！
 
 :::details :bulb: 为什么需要这些System？
-<!--@include: @/wiki/1-Mod脚本开发/为什么是System.md-->
+<!--@include: @/wiki/modsdk/why-system.md-->
 :::
 
 ## 3. 运行你的Mod

@@ -28,4 +28,6 @@ features:
 
 <br>
 
-> 如果需要查看官方文档，请访问 [我的世界开发者平台](https://mc.163.com/dev/)。
+> 如果需要查看我的世界官方文档，请访问 [我的世界开发者平台](https://mc.163.com/dev/)。
+
+> 欢迎加入我们的 [交流QQ群](https://qm.qq.com/q/NGIRFwEoMw)，一起贡献教程和文档吧！

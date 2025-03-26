@@ -59,21 +59,31 @@ export default withMermaid({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: 'Wiki', link: '/wiki' },
-      { text: 'API文档', link: '/mcdocs/0-欢迎' },
-      { text: '开发指南', link: '/mcguide/0-欢迎' },
-      { text: '教学课程', link: '/mconline/0-欢迎' },
+      { text: 'Wiki', link: '/wiki', activeMatch: '^/wiki/' },
+      { text: 'API文档', link: '/mcdocs/0-欢迎', activeMatch: '^/mcdocs/' },
+      { text: '开发指南', link: '/mcguide/0-欢迎', activeMatch: '^/mcguide/' },
+      { text: '教学课程', link: '/mconline/0-欢迎', activeMatch: '^/mconline/' },
     ],
 
     sidebar: await generateSidebar(),
 
     socialLinks: [
+      { icon: 'qq', link: 'https://qm.qq.com/q/NGIRFwEoMw' },
       { icon: 'github', link: 'https://github.com/EaseCation/netease-modsdk-wiki' }
     ],
 
     editLink: {
       pattern: 'https://github.com/EaseCation/netease-modsdk-wiki/edit/main/docs/:path',
       text: '在 GitHub 上编辑此页'
+    },
+
+    footer: {
+      message: 'ICP备案/许可证号 <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2022033471号-1</a>',
+      copyright: 'Made with ❤️ by EaseCation' 
+    },
+
+    sitemap: {
+      hostname: 'https://mcwiki.easecation.net'
     },
 
     search: {

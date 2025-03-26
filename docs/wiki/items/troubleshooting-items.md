@@ -18,16 +18,12 @@ mentions:
 <!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
 :::tip
-本文包含关于_物品_的故障排查信息。在继续阅读前，建议先查看[全局故障排查指南](/wiki/guide/troubleshooting)。
+本文包含关于 _物品_ 的故障排查信息。在继续阅读前，建议先查看[全局故障排查指南](/wiki/guide/troubleshooting)。
 :::
 
 ## 从这里开始
 
 我按照教程制作了自定义物品，但出现了问题！请保持冷静。本指南将帮助您排查常见问题。根据按钮提示了解可能的问题原因及修复方法。
-
-<BButton color="blue" link="#_1-10-vs-1-16-items">继续</BButton>
-
----
 
 ## 1.10 与 1.16 格式物品的区别？
 
@@ -46,12 +42,6 @@ mentions:
 🔗 [实验性物品教程](/wiki/items/item-components)
 🔗 [实验性物品文档](https://bedrock.dev/docs/stable/Item)
 :::
-
-### 继续选择
-
-<BButton color="blue" link="#stable-items">1.10 格式（稳定版）</BButton> <BButton color="blue" link="#experimental-items">1.16.100 格式（实验性）</BButton>
-
----
 
 ## 稳定版物品
 
@@ -124,8 +114,6 @@ mentions:
 :::
 
 正确配置后物品将正常显示贴图。
-
----
 
 ## 实验性物品
 

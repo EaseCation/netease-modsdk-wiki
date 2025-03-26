@@ -1,10 +1,10 @@
 ---
-title: Item Functions
-category: Documentation
+title: 物品功能函数
+category: 文档
 nav_order: 4
 tags:
-    - Stable
-    - Last updated for Version 1.18.10
+    - 稳定版
+    - 最后更新于版本1.18.10
 mentions:
     - Ciosciaa
     - MedicalJewel105
@@ -12,52 +12,55 @@ mentions:
 toc_max_level: 1
 ---
 
-Item functions modify the nature of an item in [loot tables](/wiki/loot/loot-tables) and [trade tables](/wiki/loot/trade-tables).
+# 物品功能函数
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+物品功能函数用于修改[战利品表](/wiki/loot/loot-tables)和[交易表](/wiki/loot/trade-tables)中物品的属性。
 
 TODO
-can enchantments be prefixed with minecraft:/whatever?
+附魔前缀是否可以使用minecraft:/whatever格式？
 
-Functions
-Note that every single thing tested here was in trade tables only
-Usable in loot tables and trade tables only
-Are objects with `function` and other props…
-None accept Molang
-No Java additional functions or properties were successful
-All may be prefixed with any sequence of text followed by a colon, like `minecraft:exploration_map` or `d1245436576u:fio2ejfoijfiowejf::::::exploration_map`
+## 功能函数说明
+以下测试仅在交易表中进行
+仅适用于战利品表和交易表
+是以`function`和其他属性构成的对象...
+均不支持Molang表达式
+Java版特有的附加函数或属性均无效
+所有函数名前都可以添加任意文本前缀和冒号，例如`minecraft:exploration_map`或`d1245436576u:fio2ejfoijfiowejf::::::exploration_map`
 
-## General
-A handful of functions are available for basic item properties. These functions are usable on any item.
+## 通用功能
+以下基础功能适用于所有物品。
 
-| Function             | Container Loot | Block Drops | Fishing | Entity Drops | Entity Equipment | Trade Tables |
-| -------------------- | -------------- | ----------- | ------- | ------------ | ---------------- | ------------ |
-| `set_count`          | ✅              | ✅           | ✅       | ✅            | ✅                | ❌            |
-| `set_name`           | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `set_lore`           | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `set_data`           | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `random_block_state` | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `random_aux_value`   | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `set_damage`         | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
+| 函数名               | 容器战利品 | 方块掉落 | 钓鱼   | 实体掉落 | 实体装备 | 交易表   |
+| -------------------- | ---------- | -------- | ------ | -------- | -------- | -------- |
+| `set_count`          | ✅          | ✅        | ✅      | ✅        | ✅        | ❌        |
+| `set_name`           | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `set_lore`           | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `set_data`           | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `random_block_state` | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `random_aux_value`   | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `set_damage`         | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
 
-### Count
+### 数量设置
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ❌      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ❌        |
 
-::: tip NOTE
-Trade tables use the [`"quantity"` property](/wiki/loot/trade-tables#quantity) to set their count.
+::: tip 注意
+交易表使用[`"quantity"`属性](/wiki/loot/trade-tables#quantity)来设置物品数量。
 :::
 
-The `set_count` function sets the count for that item entry.
+`set_count`函数用于设置物品数量。
 
-<CodeHeader>Count Function</CodeHeader>
-
-```json
+::: code-group
+```json [数量函数]
 {
 	"function": "set_count",
 	
@@ -67,93 +70,94 @@ The `set_count` function sets the count for that item entry.
 	}
 }
 ```
+:::
 
-The `"count"` property determines how many of that item should be yielded; it can either be provided as an integer or a [range object](#). Provided counts values may be larger than the stack size for that item. When this happens, the item will leak into other slots if in a container or separate into multiple different item stacks if dropped into the world. The count property actually defaults to `0`, so it should always be included.
+`"count"`属性决定物品的产出数量，可以是整数或[范围对象](#)。设置的数量可以超过物品的堆叠上限，此时在容器中会占用多个槽位，掉落在地面时会分成多个物品堆。该属性默认值为`0`，因此必须显式设置。
 
-### Name
+### 名称设置
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
-The name of an item can be set using the `set_name` function. Names are visible in the user interface when hovering over an item. Names can be changed by players using anvils.
+`set_name`函数用于设置物品名称。名称会显示在物品悬停提示中，玩家可以使用铁砧修改。
 
-<CodeHeader>Name Function</CodeHeader>
-
-```json
+::: code-group
+```json [名称函数]
 {
 	"function": "set_name",
 	
-	"name": "Cursed Bow"
+	"name": "诅咒之弓"
 }
 ```
+:::
 
-The name to give the item is given with the string `"name"` property. By default, name text appears italicized. However, item names support format codes, and `§r` can be inserted at the start of the text to reset it to non-italics. Raw text is unsupported in item names. `\n` can be used for newlines.
+`"name"`属性设置物品名称。默认显示为斜体，但支持格式代码，可以在开头添加`§r`重置为非斜体。不支持原始文本，可使用`\n`换行。
 
-### Lore
+### 描述文本
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
-The `set_lore` function sets the lore for an item.
+`set_lore`函数设置物品的描述文本。
 
-<CodeHeader>Lore Function</CodeHeader>
-
-```json
+::: code-group
+```json [描述函数]
 {
 	"function": "set_lore",
 	
 	"lore": [
-		"",
-		""
+		"第一行描述",
+		"第二行描述"
 	]
 }
 ```
+:::
 
-The `"lore"` property configures the lore. It can be represented as either a string or an array of strings. All lore strings support format codes but do not support localization. In the array form, each string represents a new line of lore. Each such string's formatting context is independent, meaning formatting will reset with each string. By default, purple and italicized text is used for lore; this can be reset by prepending the reset format code (`§r`) to each string as necessary. `\n` can be used within any lore string to form a newline while preserving the current formatting context.
+`"lore"`属性可以是字符串或字符串数组。每行支持格式代码但不支持本地化，每行的格式上下文独立。默认显示紫色斜体，可用`§r`重置。`\n`可在单行内换行并保持格式。
 
-### Data
+### 数据值设置
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
-`set_data` establishes the data for the given item, similar to the argument in the `/give` command. If used on a block, it will set the block's data value. If used on an item, it will set it's aux value. Unlike the command, however, `set_data` cannot set the durability of an item. For that, use [`durability`](#durability).
+`set_data`设置物品的数据值，类似于`/give`命令的参数。对方块设置其数据值，对物品设置辅助值。注意不能设置物品耐久度，需使用[`durability`](#durability)。
 
-<CodeHeader>Data Function</CodeHeader>
-
-```json
+::: code-group
+```json [数据函数]
 {
 	"function": "set_data",
 	
 	"data": 2
 }
 ```
+:::
 
-The `"data"` property sets the item's data. If not provided, it will default to `0`. `"data"` can either be provided as an integer or a range object.
+`"data"`属性可以是整数或范围对象，默认`0`。
 
-As an integer:
+整数形式：
 ```json
 "data": 1
 ```
 
-As a range object:
+范围对象形式：
 ```json
 "data": {
 	"min": 0,
@@ -161,24 +165,21 @@ As a range object:
 }
 ```
 
-The object form will randomly select a data value inclusively between the provided minimum and maximum each instance this function's item entry is selected.
+### 方块状态
 
-### Block State
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+`random_block_state`设置方块的单个状态值。
 
-`random_block_state` sets an individual block state for a block.
-
-<CodeHeader>Block State Function</CodeHeader>
-
-```json
+::: code-group
+```json [方块状态函数]
 {
 	"function": "random_block_state",
 	
@@ -186,30 +187,30 @@ The object form will randomly select a data value inclusively between the provid
 	"values": 3
 }
 ```
+:::
 
-Sets a block state for a block
+设置方块的某个状态值
 block_state
-Required string name of block state
+必需，方块状态名称字符串
 values
-Can be number or min/max object
-Defaults to 0… kinda required otherwise pointless? IDK…
+可以是数字或min/max对象
+默认为0... 否则无意义？
 
-### Aux Value
+### 辅助值
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `random_aux_value`
 
-<CodeHeader>Aux Value Function</CodeHeader>
-
-```json
+::: code-group
+```json [辅助值函数]
 {
 	"function": "random_aux_value",
 	
@@ -219,31 +220,31 @@ Defaults to 0… kinda required otherwise pointless? IDK…
 	}
 }
 ```
+:::
 
-Sets aux value of an item
+设置物品的辅助值
 values
-Can be integer or min/max object
-Min/max object chosen uniformly randomly
-Only used for aux value; won't, for example, set damage of a tool but will set color of wool
-Overrides any provided aux value as identifier `:suffix`, like `minecraft:wool:10`
-Works on block data, too
+可以是整数或min/max对象
+随机均匀选择
+仅影响辅助值（如羊毛颜色而非工具耐久）
+会覆盖标识符中的`:suffix`值（如`minecraft:wool:10`）
+同样适用于方块数据
 
-### Durability
+### 耐久度
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
-Item durability can be set using the `set_damage` function.
+`set_damage`设置物品耐久度。
 
-<CodeHeader>Durability Function</CodeHeader>
-
-```json
+::: code-group
+```json [耐久函数]
 {
 	"function": "set_damage",
 	
@@ -253,280 +254,276 @@ Item durability can be set using the `set_damage` function.
 	}
 }
 ```
+:::
 
-The `"damage"` property sets the item's durability. It can be represented either as a number or a [range object](#). Values are intended to range from `0` to `1`, where `0` is the minimum possible durability for an item and `1` is undamaged.
+`"damage"`属性可以是数字或[范围对象](#)，值域`0`到`1`，`0`表示完全损坏，`1`表示全新。
 
-## Item-Specific Data
-Some functions are only usable by a certain set of items. See each function for which items are relevant.
+## 物品专属功能
+以下功能仅适用于特定物品。
 
-| Function             | Container Loot | Block Drops | Fishing | Entity Drops | Entity Equipment | Trade Tables |
-| -------------------- | -------------- | ----------- | ------- | ------------ | ---------------- | ------------ |
-| `furnace_smelt`      | ❌              | ❌           | ❌       | ✅            | ❌                | ❌            |
-| `set_book_contents`  | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `exploration_map`    | ✅              | ✅           | ✅       | ✅            | ✅                | ⚠️            |
-| `set_banner_details` | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `random_dye`         | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `set_actor_id`       | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `fill_container`     | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
+| 函数名                   | 容器战利品 | 方块掉落 | 钓鱼   | 实体掉落 | 实体装备 | 交易表   |
+| ------------------------ | ---------- | -------- | ------ | -------- | -------- | -------- |
+| `furnace_smelt`          | ❌          | ❌        | ❌      | ✅        | ❌        | ❌        |
+| `set_book_contents`       | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `exploration_map`         | ✅          | ✅        | ✅      | ✅        | ✅        | ⚠️        |
+| `set_banner_details`      | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `random_dye`             | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `set_actor_id`           | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `fill_container`         | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
 
-### Heat Item
+### 熔炼物品
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ❌      |
-| Block drops      | ❌      |
-| Fishing          | ❌      |
-| Entity drops     | ✅      |
-| Entity equipment | ❌      |
-| Trade table      | ❌      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ❌        |
+| 方块掉落           | ❌        |
+| 钓鱼               | ❌        |
+| 实体掉落           | ✅        |
+| 实体装备           | ❌        |
+| 交易表             | ❌        |
 
 `furnace_smelt`
 
-<CodeHeader>Heat Item Function</CodeHeader>
-
-```json
+::: code-group
+```json [熔炼函数]
 {
 	"function": "furnace_smelt"
 }
 ```
+:::
 
-auto-implies that the entity must’ve been on fire when they died
-Vanilla files use a function condition for this, but even removing that condition still implies that the entity must’ve died on fire for the furnace_smelt function to trigger
+暗示实体必须在死亡时处于燃烧状态
+即使移除条件检查，仍需要实体着火死亡才能触发
 
-### Book Contents
+### 书册内容
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `set_book_contents`
 
-<CodeHeader>Book Contents Function</CodeHeader>
-
-```json
+::: code-group
+```json [书册函数]
 {
 	"function": "set_book_contents",
 	
-	"title": "",
-	"author": "",
+	"title": "书名",
+	"author": "作者",
 	
 	"pages": [
-		"",
-		""
+		"第一页内容",
+		"第二页内容"
 	]
 }
 ```
+:::
 
-Sets data for a book
-Can only be used on `writable_book` or `written_book`
+仅适用于`writable_book`和`written_book`
 author
-String name of the author
+作者名字符串
 title
-String name of the book
+书名字符串
 pages
-Array of strings — each string is the contents of that page
-Supports up to 50 strings and 798 characters per string
-12,800‌ character limit across all pages
-Use `\n` in the string (not `\\n`) to add newlines
-Can’t use tabs
-Can use color codes; Each different page string resets the color codes each time
+字符串数组，每元素一页
+最多50页，每页798字符
+总字符限制12,800
+使用`\n`换行（非`\\n`）
+不支持制表符
+支持颜色代码，每页格式独立
 
-### Exploration Map
+### 探险地图
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `exploration_map`
 
-<CodeHeader>Exploration Map Function</CodeHeader>
-
-```json
+::: code-group
+```json [地图函数]
 {
 	"function": "exploration_map",
 	
 	"destination": "village"
 }
 ```
+:::
 
-trade table info:
+交易表信息：
 destination
-Currently only `monument` `mansion`.
-Nothing else, not even buried treasure (this one looks like it’ll work — names the map right instead of Unknown Map like the others, but it doesn’t point anywhere). :(
+目前仅支持`monument`和`mansion`
+其他类型（如沉船宝藏）会显示为"未知地图"
 
-Loot table info:
-Destination
-Works for any /locate location (see old recipe notes for caveats there; this is for container loot tables)
-Only works if in the appropriate dimension
-If a mansion or monument, gets named, colored, and icon’d correctly, corresponding to the right marker decoration
-If invalid or no destination is given, shows no marker but still has the river and ocean lines on the map
-Works in containers and both entity equipment and drops
-Keep in mind how only 2 locations worked from traders
+战利品表信息：
+支持所有/locate定位点
+需在对应维度
+海底神殿和林地府邸会显示正确图标和名称
+无效目标仍会显示基础地图轮廓
+适用于所有获取方式
 
-### Banner Type
+### 旗帜类型
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `set_banner_details`
 
-<CodeHeader>Banner Type Function</CodeHeader>
-
-```json
+::: code-group
+```json [旗帜函数]
 {
 	"function": "set_banner_details"
 }
 ```
+:::
 
-Sets type of a `banner` (only usable on this)
+仅适用于`banner`
 type
-Can only be 0 or 1
-0 is just a white banner
-1 is illager banner
+只能是0或1
+0为白色旗帜
+1为灾厄旗帜
 
-### Random Dyeing
+### 随机染色
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `random_dye`
 
-<CodeHeader>Random Dyeing Function</CodeHeader>
-
-```json
+::: code-group
+```json [染色函数]
 {
 	"function": "random_dye"
 }
 ```
+:::
 
-Randomly dyes leather armor or horse armor
-Doesn’t work on wool or whatever
+随机染色皮革装备或马铠
+不适用于羊毛等方块
 
-### Spawn Eggs
+### 刷怪蛋
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `set_actor_id`
 
-<CodeHeader>Spawn Eggs Function</CodeHeader>
-
-```json
+::: code-group
+```json [刷怪蛋函数]
 {
 	"function": "set_actor_id"
 }
 ```
+:::
 
-Usable with spawn eggs
+适用于刷怪蛋
 id
-Should be the identifier for the mob
-in trade tables, defaults to trader's entity type
+生物标识符
+交易表中默认为交易者实体类型
 
-### Container Contents
+### 容器内容
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `fill_container`
 
-<CodeHeader>Container Contents Function</CodeHeader>
-
-```json
+::: code-group
+```json [容器函数]
 {
 	"function": "fill_container"
 }
 ```
+:::
 
-Sets the contents of a container block
+设置容器方块内容
 loot_table
-Path to loot table file from behavior pack root
+从行为包根目录开始的战利品表路径
+必需，否则显示普通物品
+不能指向当前战利品表
+适用于所有获取方式
 
-loot_table needed or will just be the normal item
-Cannot point to that current loot table
-Works in containers and both entity stuff and blocks
+## 附魔功能
+| 函数名                     | 容器战利品 | 方块掉落 | 钓鱼   | 实体掉落 | 实体装备 | 交易表   |
+| -------------------------- | ---------- | -------- | ------ | -------- | -------- | -------- |
+| `enchant_book_for_trading` | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `enchant_with_levels`      | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `enchant_randomly`         | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `enchant_random_gear`      | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
+| `specific_enchants`        | ✅          | ✅        | ✅      | ✅        | ✅        | ✅        |
 
-## Enchanting
-| Function                   | Container Loot | Block Drops | Fishing | Entity Drops | Entity Equipment | Trade Tables |
-| -------------------------- | -------------- | ----------- | ------- | ------------ | ---------------- | ------------ |
-| `enchant_book_for_trading` | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `enchant_with_levels`      | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `enchant_randomly`         | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `enchant_random_gear`      | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
-| `specific_enchants`        | ✅              | ✅           | ✅       | ✅            | ✅                | ✅            |
+### 交易附魔书
 
-### Enchant for Trading
-
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `enchant_book_for_trading`
 
-<CodeHeader>Enchant for Trading Function</CodeHeader>
-
-```json
+::: code-group
+```json [交易附魔函数]
 {
 	"function": "enchant_book_for_trading"
 }
 ```
+:::
 
-documented in trade tables
+详见交易表文档
 
-### Level-Based Enchantments
+### 等级附魔
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
-`enchant_with_levels` enchants items using enchantment table logic, optionally allowing for treasure enchantments.
+`enchant_with_levels`使用附魔台逻辑附魔物品，可选是否允许宝藏附魔。
 
-<CodeHeader>Level-Based Enchantments Function</CodeHeader>
-
-```json
+::: code-group
+```json [等级附魔函数]
 {
 	"function": "enchant_with_levels",
 	
@@ -537,133 +534,127 @@ documented in trade tables
 	"treasure": true
 }
 ```
+:::
 
-Enchants books as though off an enchantment table with the given levels
-Unlike enchanting table, doesn’t cap at 30, otherwise seems symmetrical
-level 99999 gives ludicrously powerful books… with pretty much every possible enchantment on them
+类似附魔台机制但不限于30级
+99999级会产生包含几乎所有附魔的超强书
 treasure
-	Enables treasure enchantments as possibilities for that item
-	boolean, defaults to false
-	If false, curses can't appear as possibilities; if true, they can	
+布尔值，默认false
+开启宝藏附魔和诅咒附魔可能
 levels
-	Can be number or min/max object
-	Defaults to 0
-	Can be negative, but will just be remapped as though 0.
-	
-### Random Enchantments
+数字或min/max对象
+默认0
+负值视为0
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+### 随机附魔
+
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `enchant_randomly`
 
-<CodeHeader>Random Enchantments Function</CodeHeader>
-
-```json
+::: code-group
+```json [随机附魔函数]
 {
 	"function": "enchant_randomly"
 }
 ```
+:::
 
-Randomly picks a count of enchantments and their strengths for the given item
+随机选择附魔类型和等级
 treasure
-Enables treasure enchantments as possibilities for that item
-boolean, defaults to false
+布尔值，默认false
+开启宝藏附魔可能
 
-### Enchant Gear
+### 装备附魔
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `enchant_random_gear`
 
-<CodeHeader>Enchant Gear Function</CodeHeader>
-
-```json
+::: code-group
+```json [装备附魔函数]
 {
 	"function": "enchant_random_gear"
 }
 ```
+:::
 
-Randomly picks a count of enchantments and their strengths for the given item
-Pretty much like enchant_randomly, but seemingly no treasure enchantments
-Not working on shears, but does even work on carrot-on-a-stick
+类似enchant_randomly但不含宝藏附魔
+适用于胡萝卜钓竿等非常规装备
 chance
-Number from 0 to 1
-Chance that the item is enchanted at all
-Defaults to 0
-Going over 1 doesn't make it "more" enchanted
+0到1的数字
+默认0
+决定是否附魔的概率
 
-### Specific Enchantments
+### 指定附魔
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ✅      |
-| Block drops      | ✅      |
-| Fishing          | ✅      |
-| Entity drops     | ✅      |
-| Entity equipment | ✅      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ✅        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ✅        |
+| 实体掉落           | ✅        |
+| 实体装备           | ✅        |
+| 交易表             | ✅        |
 
 `specific_enchants`
 
-<CodeHeader>Specific Enchantments Function</CodeHeader>
-
-```json
+::: code-group
+```json [指定附魔函数]
 {
 	"function": "specific_enchants"
 }
 ```
+:::
 
-Applies a specific set of enchantments
+应用特定附魔组合
 enchants
-Can be string array or object
-For array, any mix of strings or objects (see below)
-For string, an enchantment id
-For object:
+字符串数组或对象
+字符串为附魔ID
+对象格式：
 id
-The identifier for the enchantment
-See below for names
+附魔标识符
 level
-Optional, defaults to 1
-Can be an exact number or a 2-valued array, representing min and max, inclusive
+可选，默认1
+可以是数字或[min,max]数组
 
-## External Factors
-| Function                    | Container Loot | Block Drops | Fishing | Entity Drops | Entity Equipment | Trade Tables |
-| --------------------------- | -------------- | ----------- | ------- | ------------ | ---------------- | ------------ |
-| `looting_enchant`           | ❌              | ❌           | ❌       | ✅            | ❌                | ❌            |
-| `explosion_decay`           | ❌              | ✅           | ❌       | ❌            | ❌                | ❌            |
-| `set_data_from_color_index` | ❌              | ❌           | ❌       | ❌            | ❌                | ✅            |
-| `trader_material_type`      | ❌              | ❌           | ❌       | ❌            | ❌                | ✅            |
+## 外部因素
+| 函数名                      | 容器战利品 | 方块掉落 | 钓鱼   | 实体掉落 | 实体装备 | 交易表   |
+| --------------------------- | ---------- | -------- | ------ | -------- | -------- | -------- |
+| `looting_enchant`           | ❌          | ❌        | ❌      | ✅        | ❌        | ❌        |
+| `explosion_decay`           | ❌          | ✅        | ❌      | ❌        | ❌        | ❌        |
+| `set_data_from_color_index` | ❌          | ❌        | ❌      | ❌        | ❌        | ✅        |
+| `trader_material_type`      | ❌          | ❌        | ❌      | ❌        | ❌        | ✅        |
 
-### Held Tool Looting Enchantment
+### 抢夺附魔
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ❌      |
-| Block drops      | ❌      |
-| Fishing          | ❌      |
-| Entity drops     | ✅      |
-| Entity equipment | ❌      |
-| Trade table      | ❌      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ❌        |
+| 方块掉落           | ❌        |
+| 钓鱼               | ❌        |
+| 实体掉落           | ✅        |
+| 实体装备           | ❌        |
+| 交易表             | ❌        |
 
 `looting_enchant`
 
-<CodeHeader>Held Tool Looting Function</CodeHeader>
-
-```json
+::: code-group
+```json [抢夺函数]
 {
 	"function": "looting_enchant",
 	
@@ -673,74 +664,75 @@ Can be an exact number or a 2-valued array, representing min and max, inclusive
 	}
 }
 ```
+:::
 
-Count can be an integer or min/max
+count可以是整数或min/max
 
-### Explosion Decay
+### 爆炸衰减
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ❌      |
-| Block drops      | ✅      |
-| Fishing          | ❌      |
-| Entity drops     | ❌      |
-| Entity equipment | ❌      |
-| Trade table      | ❌      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ❌        |
+| 方块掉落           | ✅        |
+| 钓鱼               | ❌        |
+| 实体掉落           | ❌        |
+| 实体装备           | ❌        |
+| 交易表             | ❌        |
 
 `explosion_decay`
 
-<CodeHeader>Explosion Decay Function</CodeHeader>
-
-```json
+::: code-group
+```json [爆炸函数]
 {
 	"function": "explosion_decay"
 }
 ```
+:::
 
-By default, always survives. If in an explosion, has a chance of not dropping based on explosion power at that block’s location
+默认总能存活。在爆炸中时，根据爆炸威力有概率不掉落
 
-### Entity Color
+### 实体颜色
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ❌      |
-| Block drops      | ❌      |
-| Fishing          | ❌      |
-| Entity drops     | ❌      |
-| Entity equipment | ❌      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ❌        |
+| 方块掉落           | ❌        |
+| 钓鱼               | ❌        |
+| 实体掉落           | ❌        |
+| 实体装备           | ❌        |
+| 交易表             | ✅        |
 
 `set_data_from_color_index`
 
-<CodeHeader>Entity Color Function</CodeHeader>
-
-```json
+::: code-group
+```json [颜色函数]
 {
 	"function": "set_data_from_color_index"
 }
 ```
+:::
 
-Sets the data value of the block to the value of the `minecraft:color` component on the entity
+将方块数据值设置为实体`minecraft:color`组件的值
 
-### Trader Material Type
+### 交易者材料类型
 
-| Usage            | Usable |
-| ---------------- | ------ |
-| Container loot   | ❌      |
-| Block drops      | ❌      |
-| Fishing          | ❌      |
-| Entity drops     | ❌      |
-| Entity equipment | ❌      |
-| Trade table      | ✅      |
+| 使用场景           | 是否可用 |
+| ------------------ | -------- |
+| 容器战利品         | ❌        |
+| 方块掉落           | ❌        |
+| 钓鱼               | ❌        |
+| 实体掉落           | ❌        |
+| 实体装备           | ❌        |
+| 交易表             | ✅        |
 
 `trader_material_type`
 
-<CodeHeader>Trader Material Type Function</CodeHeader>
-
-```json
+::: code-group
+```json [交易材料函数]
 {
 	"function": "trader_material_type"
 }
 ```
+:::
 
-Only in trades? Maybe it can work somewhere in loot
+仅限交易使用？可能也适用于某些战利品

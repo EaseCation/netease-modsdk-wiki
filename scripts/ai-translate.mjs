@@ -64,7 +64,7 @@ async function findMarkdownFiles(dir) {
           const content = await fs.readFile(fullPath, 'utf-8');
           // 如果超过600行，跳过
           const lines = content.split('\n').length;
-          if (lines > 600) {
+          if (lines > 6000) {
             console.log(`⏭️  跳过超过600行的文件: ${path.relative(targetDir, fullPath)}`);
             continue;
           }

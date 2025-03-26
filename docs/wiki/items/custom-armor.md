@@ -88,6 +88,7 @@ mentions:
 	}
 }
 ```
+:::
 
 此时你只需在`RP/textures/item_texture.json`中添加名为`my_chest`的纹理即可。我们提供了默认纹理供参考：
 
@@ -131,6 +132,7 @@ mentions:
 	}
 }
 ```
+:::
 
 下载配套纹理文件：
 
@@ -190,6 +192,7 @@ mentions:
 	}
 }
 ```
+:::
 
 护腿纹理下载：
 
@@ -224,6 +227,7 @@ mentions:
 	}
 }
 ```
+:::
 
 ## 头盔部分
 
@@ -255,6 +259,7 @@ mentions:
 	}
 }
 ```
+:::
 
 头盔纹理下载：
 
@@ -291,6 +296,7 @@ mentions:
 	}
 }
 ```
+:::
 
 靴子纹理下载：
 
@@ -321,6 +327,7 @@ mentions:
 	}
 }
 ```
+:::
 
 ```json [BP/entities/player.json#events]
 "wiki:armor_sets.my_custom.taken_damage": {
@@ -347,6 +354,7 @@ mentions:
 	]
 }
 ```
+:::
 
 完成效果展示：
 

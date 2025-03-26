@@ -1,5 +1,6 @@
 ---
 title: 命令 Commands
+nav_order: 7
 categories:
     - title: 基础
       color: green

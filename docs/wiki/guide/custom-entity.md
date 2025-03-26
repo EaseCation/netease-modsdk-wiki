@@ -1,7 +1,7 @@
 ---
-title: 'Create a custom Entity'
-category: Guide
-description: How to create your first custom Entity
+title: '创建自定义实体'
+category: 指南
+description: 如何创建你的第一个自定义实体
 nav_order: 6
 prefix: '6. '
 mentions:
@@ -21,36 +21,38 @@ mentions:
     - ThomasOrs
 ---
 
-Similarly to custom items, we can also make custom entities with many similar mechanics to the vanilla entities in the game. These entities can be incredibly powerful allowing you to make your own animals which can be bred and tamed or an aggressive mob that attacks anything it sees.
+# 创建自定义实体
 
-Here we will make a ghost entity which will float, attack the player and drop our ectoplasm item on death.
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+与自定义物品类似，我们也可以创建具有与游戏中原版实体相似机制的自定义实体。这些实体可以非常强大，允许你制作可繁殖驯养的动物，或是会攻击所见一切的敌对生物。
+
+本文将创建一个幽灵实体，它会漂浮移动、攻击玩家，并在死亡时掉落我们之前制作的灵质物品。
 
 <br>
 <img src="/assets/images/guide/custom_entity/ghost_view.png" width=150>
 <br>
 <br>
 
-Just like items, entities are made up of two parts:
+和物品一样，实体由两部分组成：
 
--   The visuals (texture, name, animations, sounds)
--   The behaviors (movement, attacks)
+-   视觉部分（纹理、名称、动画、音效）
+-   行为部分（移动、攻击）
 
-Differently though, we will need two main files for our entity called the _server_ file and the _client_ file which sit in our BP and RP respectively.
-We will also need additional files to describe the geometry of our entity and its animations, but we will cover those in later sections.
+不同的是，我们需要为实体创建两个主文件：分别放在行为包（BP）和资源包（RP）中的 _服务端_ 文件和 _客户端_ 文件。此外还需要额外的文件来描述实体的几何模型和动画，这些将在后续章节中介绍。
 
-First, we will cover how to create an entity & define its behavior. Next, we will look at how to add the visuals.
+首先我们将介绍如何创建实体并定义其行为，然后再添加视觉效果。
 
-## Entity Behavior
+## 实体行为
 
-Like with items, we need a file to tell our entity how to behave which points an identifier to certain components which define behavior. This file will be very similar to our item behavior file except with a lot more components.
+与物品类似，我们需要一个文件来定义实体行为，通过标识符关联到具体的行为组件。这个文件的结构与物品行为文件非常相似，但包含更多组件。
 
-We define our server file in our BP, under the `BP/entities/` folder. We will call this file `ghost.se.json`. Here the `.se` stands for _server entity_. This is for clarity and is recommend in the [Style Guide](/wiki/meta/style-guide).
+我们在行为包的`BP/entities/`文件夹下创建服务端文件，命名为`ghost.se.json`。这里的`.se`代表 _server entity_ （服务端实体），这是为了清晰起见，符合[样式指南](/wiki/meta/style-guide)的推荐。
 
-This is a basic overview of the file:
+文件基本结构如下：
 
-<CodeHeader>BP/entities/ghost.se.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/ghost.se.json]
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -59,14 +61,14 @@ This is a basic overview of the file:
 	}
 }
 ```
+:::
 
-Just like with the items, we have our format version and here we have `"minecraft:entity"` as this is an entity file. From now on we won't comment on the format version and recommend to use the version example that we give.
+与物品文件类似，我们有格式版本标识，这里使用`"minecraft:entity"`表示这是实体文件。后续我们将不再赘述格式版本，建议直接使用示例中的版本。
 
-For entities we have a little bit more information under `description`:
+实体在`description`部分包含更多信息：
 
-<CodeHeader>BP/entities/ghost.se.json#minecraft:entity</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/ghost.se.json#minecraft:entity]
 "description": {
 	"identifier": "wiki:ghost",
 	"is_summonable": true,
@@ -74,29 +76,26 @@ For entities we have a little bit more information under `description`:
 	"is_experimental": false
 }
 ```
+:::
 
-The `identifier` key serves the same purpose, to point to which entity we are talking about.
-The other keys determine what ways we can add the entity to our world:
+`identifier`键的作用与之前相同，用于标识这个实体。其他键决定了实体加入世界的方式：
 
--   `is_summonable` : Whether it can be summoned using the `/summon` command.
--   `is_spawnable` : Whether it can spawn in the world using a spawn egg or spawn rules.
--   `is_experimental`: Whether the entity is experimental (if so it can only be added to Experimental Worlds).
+-   `is_summonable`：是否可以通过`/summon`命令召唤
+-   `is_spawnable`：是否可以通过刷怪蛋或生成规则在世界中自然生成
+-   `is_experimental`：是否为实验性实体（如果是则只能添加到实验性世界）
 
-We recommend leaving the settings as they are here as any changes will make it harder to test your entity in game.
+建议保持这些设置不变，因为任何更改都会使你在游戏中测试实体变得更加困难。
 
-### Components
+### 组件
 
-An entity has a lot more behaviors than just an item, so we need to define more components for it.
-We will break down the types of components will use into categories and then look at them closer.
-For more information on components in entities, you can check out our page [here](/wiki/entities/entity-intro-bp).
+实体比物品拥有更多行为，因此需要定义更多组件。我们将这些组件分类并详细讲解。更多关于实体组件的信息，可以参考[此页面](/wiki/entities/entity-intro-bp)。
 
-### Stat Components
+### 基础属性组件
 
-These are the components that you will generally have on every entity. This define some core attributes to your entity.
+这些是每个实体通常都会具备的组件，定义了实体的核心属性。
 
-<CodeHeader>BP/entities/ghost.se.json#minecraft:entity#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/ghost.se.json#minecraft:entity#components]
 "minecraft:type_family": {
 	"family": ["ghost", "monster"]
 },
@@ -118,22 +117,22 @@ These are the components that you will generally have on every entity. This defi
 	"table": "loot_tables/entities/ghost.json"
 },
 ```
+:::
 
-The components `minecraft:health` and `minecraft:attack` and `minecraft:movement` are straight forward and set the entities health, attack damage and movement speed. The collision box of an entity is the box within which the entity interacts with or collides with blocks or other entities. This is defined with `minecraft:collision_box` which will center the box on the middle on the entity.
+`minecraft:health`、`minecraft:attack`和`minecraft:movement`组件直接设置实体的生命值、攻击伤害和移动速度。实体的碰撞箱是它与方块或其他实体交互/碰撞的范围，由`minecraft:collision_box`定义，这个箱子会以实体为中心。
 
-`minecraft:type_family` adds family tags to the entity. Family tags are used to group entities in a similar category together. For example `monster` includes zombies, skeletons and creepers. This allows us to be able to select all entities with the `monster` tag.
+`minecraft:type_family`为实体添加家族标签。家族标签用于将相似类别的实体分组。例如`monster`包括僵尸、骷髅和苦力怕，这样我们就可以选择所有带有`monster`标签的实体。
 
-`minecraft:loot` defines the path to the loot table that the entity will drop on death. We will create this loot table in a later section using this path.
+`minecraft:loot`定义了实体死亡时掉落的战利品表路径。我们将在后续章节使用这个路径创建战利品表。
 
-### Movement Components
+### 移动组件
 
-In order for an entity to move around, we need to define two things, _how_ it moves and _where_ it can move to. This is defined using the `movement` and `navigation` components respectively.
+为了让实体能够移动，我们需要定义两件事： _如何_ 移动和 _可以_ 移动到哪里。这分别通过`movement`和`navigation`组件实现。
 
-You will always need a `movement` and `navigation` component if you want your entity to be able to move.
+如果你希望实体能够移动，就必须包含`movement`和`navigation`组件。
 
-<CodeHeader>BP/entities/ghost.se.json#minecraft:entity#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/ghost.se.json#minecraft:entity#components]
 "minecraft:physics": {},
 "minecraft:jump.static": {},
 "minecraft:movement.basic": {},
@@ -144,51 +143,51 @@ You will always need a `movement` and `navigation` component if you want your en
 	"can_open_doors": true
 }
 ```
+:::
 
-`minecraft:physics` is used to apply gravity and collision to your entity. Note: you can not change this component via using a component group.
-`minecraft:jump.static` allows your entity to jump up blocks for traversal. Both are used on almost every entity.
+`minecraft:physics`用于给实体应用重力和碰撞。注意：你不能通过组件组来修改这个组件。
+`minecraft:jump.static`允许你的实体跳跃以跨越障碍。这两个组件几乎用于所有实体。
 
-There are few different types of movement components which allow different types of movement such as `minecraft:movement.swim` used by dolphins, `minecraft:movement.fly` used by parrots and `minecraft:movement.hover` used by bees.
-The `minecraft:movement.basic` component allows our entity to walk by moving over blocks. To make it seem like our entity is actually floating, we will use our geometry .
+有几种不同的移动组件允许不同类型的移动，例如海豚使用的`minecraft:movement.swim`、鹦鹉使用的`minecraft:movement.fly`和蜜蜂使用的`minecraft:movement.hover`。
+`minecraft:movement.basic`组件允许我们的实体通过在地面上行走来移动。为了让实体看起来像是在漂浮，我们将使用几何模型。
 
-The navigation component is a pathfinder which defines what paths we allow our entity to follow. For example skeletons will try not to walk in sunlight, so their pathing stops them from taking paths that would put them in sunlight. Additionally, parrots can fly so they can path into the air unlike walking mobs.
+导航组件是一个路径寻找器，定义了允许实体遵循的路径。例如骷髅会尽量避免走在阳光下，所以它们的路径规划会阻止它们选择阳光下的路径。此外，鹦鹉可以飞行，所以它们可以在空中移动，这与行走的生物不同。
 
-These components have a lot of different settings which allow for interesting pathing. The settings we've chosen let our ghost walk along the ground, avoid stepping into sunlight, pass through doorways and open doors.
+这些组件有许多不同的设置，可以实现有趣的路径规划。我们选择的设置让幽灵可以在地面上行走，避免阳光直射，穿过门道并开门。
 
-### Behavior Components
+### 行为组件
 
-While we have defined _how_ our entity does things, we haven't yet defined _when_ or _what_ they do. This is where `.behavior` components come in. These components define the specific actions that our entity will do.
-For example, villagers will try to breed so they have the `minecraft:behavior.breed` component and tamed wolves follow their owners so they have the `minecraft:behavior.follow_owner` component.
+虽然我们已经定义了实体 _如何_ 做事情，但还没有定义 _何时_ 或 _做什么_ 。这就是`.behavior`组件的作用。这些组件定义了实体将执行的特定动作。
+例如，村民会尝试繁殖，所以他们有`minecraft:behavior.breed`组件，而被驯服的狼会跟随主人，所以他们有`minecraft:behavior.follow_owner`组件。
 
-We want our ghost to be able to idly walk and look around, target the player when nearby and then attack them. Here are the components that we use:
+我们希望幽灵能够闲逛和环顾四周，在玩家靠近时锁定目标并攻击。以下是使用的组件：
 
-<CodeHeader>BP/entities/ghost.se.json#minecraft:entity#components</CodeHeader>
-
-```json
-// Allow for random movement and looking around
+::: code-group
+```json [BP/entities/ghost.se.json#minecraft:entity#components]
+// 允许随机移动和环顾四周
 "minecraft:behavior.random_stroll": {...},
 "minecraft:behavior.random_look_around": {...},
 "minecraft:behavior.look_at_player": {...},
-// Allow for targeting
+// 允许锁定目标
 "minecraft:behavior.hurt_by_target": {...},
 "minecraft:behavior.nearest_attackable_target": {...},
-// Allow for attacking
+// 允许攻击
 "minecraft:behavior.delayed_attack": {...}
 ```
+:::
 
-The first component, `minecraft:behavior.random_stroll` allows our entity to choose a random point nearby to path to periodically. This path is created with our `navigation` component and then the type of movement is defined by our `movement` component.
+第一个组件`minecraft:behavior.random_stroll`允许我们的实体定期选择一个附近的随机点进行移动。这个路径由我们的`navigation`组件创建，然后移动类型由`movement`组件定义。
 
-The next two components allow our entity to randomly look around and to look at the player if they are within range.
+接下来的两个组件允许实体随机环顾四周，并在玩家进入范围内时注视玩家。
 
-For attacking, in order for our entity to attack, it needs a `target`. The two behaviors `minecraft:behavior.hurt_by_target` and `minecraft:behavior.nearest_attackable_target` will cause the entity to target any entity that hurts it and target any the nearest enemy to it within range.
+为了攻击，实体需要一个`target`。`minecraft:behavior.hurt_by_target`和`minecraft:behavior.nearest_attackable_target`行为会使实体锁定任何伤害它的目标，并在范围内锁定最近的敌人。
 
-Finally, the `minecraft:behavior.delayed_attack` is how our entity actually attacks it target.
+最后，`minecraft:behavior.delayed_attack`是实体实际攻击目标的方式。
 
-Each of these behaviors have further settings to tweak the exact behavior we want.
+每个行为都有更多设置可以调整具体行为。
 
-<CodeHeader>BP/entities/ghost.se.json#minecraft:entity#components</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/ghost.se.json#minecraft:entity#components]
 "minecraft:behavior.random_stroll": {
 	"priority": 6,
 	"speed_multiplier": 1
@@ -235,24 +234,24 @@ Each of these behaviors have further settings to tweak the exact behavior we wan
 	"hit_delay_pct": 0.5
 }
 ```
+:::
 
-For more details about what each of these options do, you can read about them on the official documentation, [bedrock.dev](https://bedrock.dev/docs/stable/Entities).
+有关这些选项的更多详细信息，可以在官方文档[bedrock.dev](https://bedrock.dev/docs/stable/Entities)上阅读。
 
-#### Priority
+#### 优先级
 
-All behaviors contain a `"priority"` field. This field is used to decide which behavior to run when many can.
+所有行为都包含一个`"priority"`字段。这个字段用于决定当多个行为可以运行时选择哪一个。
 
-When the entity is picking something to do, it searches all its behaviors from lowest priority to the highest priority and picks the first one that it can do. For this reason, you need to make important behaviors like `minecraft:behavior.nearest_attackable_target` lower than behaviors like `minecraft:behavior.look_at_player`. If the `look_at_player` behavior is lower, it will always run this first when the player is close, and the entity will never attack.
+当实体选择要执行的动作时，它会从最低优先级到最高优先级搜索所有行为，并选择第一个可以执行的行为。因此，你需要将重要的行为（如`minecraft:behavior.nearest_attackable_target`）设置为比`minecraft:behavior.look_at_player`等行为更低的优先级。如果`look_at_player`行为的优先级较低，当玩家靠近时，实体总是会先执行这个行为，而永远不会攻击。
 
-In general, important behaviors will have a priority of `0` or `1`.
+一般来说，重要行为的优先级为`0`或`1`。
 
-### Full Entity Server File
+### 完整实体服务端文件
 
-<Spoiler title="Full ghost.se.json">
+::: details 完整的ghost.se.json
 
-<CodeHeader>BP/entities/ghost.se.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/ghost.se.json]
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -342,33 +341,30 @@ In general, important behaviors will have a priority of `0` or `1`.
 	}
 }
 ```
+:::
 
-</Spoiler>
+至此我们完成了实体行为文件。
 
-With that we have completed our entity behavior file.
+更复杂的实体还可以有不同的_状态_，根据所处状态表现出不同行为。例如，野生的狼会自由走动，但被驯服后会跟随玩家。一个_事件_（被驯服）导致狼改变了_状态_。这个功能允许我们创建动态实体，在不同事件发生时执行不同动作。你可以在[本指南](/wiki/entities/entity-intro-bp)中了解更多。
 
-More complex entities can also have different _states_, where they will behave differently depending on what state they are in. For example, a wild wolf will walk around freely, but once it is tamed it will follow the player. An _event_ (being tamed) caused the wolf to change _states_. This feature allows us to create dynamic entities which can perform different actions when different events occurs. You can learn more about this in our guide [here](/wiki/entities/entity-intro-bp).
+如果你现在打开世界并尝试用`/summon wiki:ghost`召唤实体，它的行为应该符合预期，但地面上只会显示一个影子。你可能还会看到它的名称显示为翻译键，就像我们的物品一样。
 
-If you open your world and try to summon in your entity using `/summon wiki:ghost`, it should behave like we expect but there will only be a shadow on the ground. You might also see its name as a translation key, similar to how it happened with our item.
+接下来我们将学习如何创建资源（客户端）文件，以及如何分配纹理、几何模型和动画。
 
-Next we will learn how to create our resource or client file and how to assign our texture, geometry and animations.
+## 实体资源
 
-## Entity Resource
+为实体添加视觉效果与物品截然不同。由于涉及更多组成部分，我们需要一个专门的文件来定义资源。这个文件称为实体_客户端文件_，我们将其命名为`ghost.ce.json`，存放在`RP/entity/`文件夹中。
 
-Applying visuals to an entity is very different to an item. Since there are a lot more pieces, we have a separate file dedicated to defining the resources.
-This is the called entity _client file_ which we will name `ghost.ce.json`. These files go in the folder `RP/entity/`.
+本节将使用为幽灵实体创建的示例资源，演示如何将它们添加到实体中。在指南的下一节中，我们将介绍如何使用专业3D编辑器Blockbench创建自己的实体几何模型和动画。
 
-In this section, we will use the example resources created for our ghost entity to demonstrate how to add them to an entity. In the next section of the guide, we explain how to use Blockbench, a dedicated 3D editor, to create your own entity geometry and animations.
+### 模型
 
-### Model
+实体的"模型"即其形状，也称为"几何模型"。这描述了实体的外形，比如猪是由一个箱体和四条腿加头部组成，而鸡则有两条腿、一个头部和翅膀。几何模型以JSON格式存储在`RP/models/entity/`目录下，我们的文件将命名为`ghost.geo.json`。
 
-The 'model' for our entity is the shape of our entity, also called the 'geometry'. This describes the shape of our entity, like how a pig is a box with 4 legs and a head whereas a chicken has 2 legs, a head and wings. The geometry is stored as a JSON file in `RP/models/entity/` and ours will be named `ghost.geo.json`.
+这个文件由Blockbench自动生成，因此无需手动学习其语法。所以我们不会深入分析文件细节。它存储了模型中每个方块的数据，包括大小、位置和旋转等。
 
-This file is automatically generated by Blockbench for us, so there is no need to learn its syntax by hand. As such, we won't go into full detail when looking at the file. It stores the data about each block in our model, such as size, position and rotation.
-
-<CodeHeader>RP/models/entity/ghost.geo.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/models/entity/ghost.geo.json]
 {
 	"format_version": "1.12.0",
 	"minecraft:geometry": [
@@ -436,32 +432,32 @@ This file is automatically generated by Blockbench for us, so there is no need t
 	]
 }
 ```
+:::
 
-The important information that we need is the `identifier` which we will use to reference our geometry file, which here is `geometry.ghost`.
+我们需要的关键信息是`identifier`，这里为`geometry.ghost`，这将用于引用我们的几何模型文件。
 
-### Texture
+### 纹理
 
-Our entity now has its shape, but it also needs a texture. This texture can also be created in Blockbench and is simply a `.png` file.
+现在实体有了形状，但还需要纹理。这个纹理也可以在Blockbench中创建，是一个简单的`.png`文件。
 
 `RP/textures/entity/ghost.png`
 
 ![ectoplasm.png](https://raw.githubusercontent.com/Bedrock-OSS/wiki-addon/main/ma-guide/guide_RP/textures/entity/ghost.png)
 
-<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/wiki-addon/main/ma-guide/guide_RP/textures/entity/ghost.png">Download texture here</BButton>
+<BButton link="https://raw.githubusercontent.com/Bedrock-OSS/wiki-addon/main/ma-guide/guide_RP/textures/entity/ghost.png">点击下载纹理</BButton>
 
-You may recall, when we made our item, we assigned a shortname to our texture to reference later. We will be doing something similar for our entity within our entity file, so make sure you keep the file path to the texture.
+你可能记得，在制作物品时，我们为纹理分配了一个短名称以便后续引用。我们将在实体文件中为实体纹理做类似操作，所以请确保记住纹理的文件路径。
 
-### Animations
+### 动画
 
-Animations allow our entity to have more life and move in different ways. We can have as many animations for an entity as we want and we can also trigger them at different types using an _animation controller_ which we will cover in the next section.
+动画让我们的实体更具生命力，能够以不同方式移动。我们可以为实体创建任意数量的动画，还可以使用_动画控制器_在不同时间触发它们，这将在下一节介绍。
 
-Depending on your entity, you may want different animations. For our ghost we will have an `idle`, `attack` and `move` animation. These files are also created automatically in Blockbench, so we won't look into it in full detail.
+根据你的实体需求，可能需要不同的动画。我们的幽灵将有`idle`（待机）、`attack`（攻击）和`move`（移动）动画。这些文件同样由Blockbench自动生成，所以我们不会深入细节。
 
-An animation file can contain one or multiple animations within it. Our animations will all be under one file called `ghost.a.json` under `RP/animations/`.
+一个动画文件可以包含一个或多个动画。我们的所有动画将放在`RP/animations/`目录下的`ghost.a.json`文件中。
 
-<CodeHeader>RP/animations/ghost.a.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animations/ghost.a.json]
 {
 	"format_version": "1.8.0",
 	"animations": {
@@ -471,19 +467,19 @@ An animation file can contain one or multiple animations within it. Our animatio
 	}
 }
 ```
-
-Each animation is defined by the key, so here our three animation identifiers are `animation.ghost.idle`, `animation.ghost.attack` and `animation.ghost.move`.
-
-:::tip NOTE
-If you have multiple animation files for one entity, consider moving them all into one file to keep your folders easy to read and navigate.
-If not, ensure that when you are referencing the animation in your entity file, you use the animation identifier and _not_ the file name.
 :::
 
-<Spoiler title="Full Animation File">
+每个动画由键定义，所以这里我们的三个动画标识符是`animation.ghost.idle`、`animation.ghost.attack`和`animation.ghost.move`。
 
-<CodeHeader>RP/animations/ghost.a.json</CodeHeader>
+:::tip 提示
+如果一个实体有多个动画文件，考虑将它们合并到一个文件中，以保持文件夹结构清晰易读。
+如果不合并，请确保在实体文件中引用动画时使用动画标识符，而不是文件名。
+:::
 
-```json
+::: details 完整动画文件
+
+::: code-group
+```json [RP/animations/ghost.a.json]
 {
 	"format_version": "1.8.0",
 	"animations": {
@@ -596,21 +592,21 @@ If not, ensure that when you are referencing the animation in your entity file, 
 	}
 }
 ```
+:::
 
-</Spoiler>
 
-### Animation Controller
 
-We have our animations but our entity won't know when to play them. This is where animation controllers are used. These controllers at their core, _control_ how the animations are played.
-An animation controller is made up of _states_ and _transitions_ between states. This allows us to play certain animations when the entity is in certain states, which we can transition between when certain conditions are met.
+### 动画控制器
 
-For example, while an entity is moving, transition to the moving state which plays the `move` animation. Or while an entity is attacking, transition to the attack state which plays the `attack` animation.
+有了动画，但实体还不知道何时播放它们。这时就需要动画控制器。这些控制器本质上_控制_动画的播放方式。
+动画控制器由_状态_和状态间的_过渡_组成。这让我们可以在实体处于特定状态时播放特定动画，并在满足条件时在不同状态间切换。
 
-Let us look at our animation controller for attacking.
+例如，当实体移动时，切换到移动状态并播放`move`动画；或者当实体攻击时，切换到攻击状态播放`attack`动画。
 
-<CodeHeader>RP/animation_controllers/ghost.ac.json#animation_controllers</CodeHeader>
+让我们看看攻击动画控制器：
 
-```json
+::: code-group
+```json [RP/animation_controllers/ghost.ac.json#animation_controllers]
 "controller.animation.ghost.attack": {
 	"states": {
 		"default": {
@@ -632,12 +628,11 @@ Let us look at our animation controller for attacking.
 	}
 }
 ```
+:::
 
-You can see we have two states, `default` and `attacking`. Our entity begins in the default state.
+可以看到有两个状态：`default`和`attacking`。实体初始处于default状态。
 
-You can see under `transitions`, we have a condition, which when true will transfer the entity to a state.
-
-<CodeHeader></CodeHeader>
+在`transitions`下，有一个条件，当为真时将转换实体到另一个状态。
 
 ```json
 {
@@ -645,19 +640,18 @@ You can see under `transitions`, we have a condition, which when true will trans
 }
 ```
 
-Here, `attacking` is the state that will be transitioned to, and `q.is_delayed_attacking` is the condition that needs to be true for the transition to occur.
-This condition is called a _query_. These queries can tell us things about the entity such as if it is attacking or moving. The query `q.is_delayed_attacking` will return `true` when the entity is performing the attack behavior.
+这里，`attacking`是要转换到的目标状态，`q.is_delayed_attacking`是触发转换的条件。
+这个条件称为_查询_。这些查询可以告诉我们关于实体的信息，比如它是否正在攻击或移动。查询`q.is_delayed_attacking`会在实体执行攻击行为时返回`true`。
 
-When the entity is in the `attacking` state, it also has a transition back to the default state. Now the condition is `!q.is_delayed_attacking`. Here the `!` means _not_, so it will return the opposite result of `q.is_delayed_attacking` (If `q.is_delayed_attacking` returns `true` then `!q.is_delayed_attacking` returns false).
+当实体处于`attacking`状态时，也有一个返回default状态的过渡。现在的条件是`!q.is_delayed_attacking`。这里的`!`表示_非_，所以它会返回`q.is_delayed_attacking`的相反结果（如果`q.is_delayed_attacking`返回`true`，那么`!q.is_delayed_attacking`返回false）。
 
-This state also has `animations`. These are the animations that will always play while in this state. Note that we are using the _shortname_ for our animation here, which we will reference in our entity file later. If you don't, the animations will not play.
-There is also the `blend_transition` key, which allows the animations to slowly fade into each other. A higher number means a longer blending time.
+这个状态还有`animations`。这些动画将在处于该状态时持续播放。注意这里我们使用的是动画的_短名称_，稍后将在实体文件中引用。如果不这样做，动画将不会播放。
+还有`blend_transition`键，允许动画之间缓慢过渡融合。数值越大，过渡时间越长。
 
-We can also make a similar controller for our `move` and `idle` animation.
+我们也可以为`move`和`idle`动画创建类似的控制器。
 
-<CodeHeader>RP/animation_controllers/ghost.ac.json#animation_controllers</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animation_controllers/ghost.ac.json#animation_controllers]
 "controller.animation.ghost.walk": {
 	"initial_state": "standing",
 	"states": {
@@ -682,18 +676,18 @@ We can also make a similar controller for our `move` and `idle` animation.
 	}
 }
 ```
+:::
 
-This follows a similar pattern with some additions.
-We now have `initial_state` which tells the controller which state to start on. If none is listed then it will start on the state `default`.
-You'll also notice our queries look slightly different. Here the query `q.modified_move_speed` returns a value, so in order to return a boolean (i.e. true or false) we look at when the value is above or below `0.1`. For more in depth information on animation controllers, you can read [here](/animation-controllers/animation-controllers-intro).
+这遵循类似的模式，但有一些新增内容。
+现在有了`initial_state`，告诉控制器从哪个状态开始。如果没有指定，则默认为`default`状态。
+你还会注意到我们的查询有些不同。这里的查询`q.modified_move_speed`返回一个值，所以为了返回布尔值（即真或假），我们检查该值是否大于或小于`0.1`。有关动画控制器的更多详细信息，可以阅读[这里](/animation-controllers/animation-controllers-intro)。
 
-Now that we have our animation controllers, we can add them to our animation controller file. Similarly to animations, the key is the identifier for our animation controller; `controller.animation.ghost.attack` and `controller.animation.ghost.walk`.
+现在有了动画控制器，我们可以将它们添加到动画控制器文件中。与动画类似，键是我们的动画控制器标识符：`controller.animation.ghost.attack`和`controller.animation.ghost.walk`。
 
-Our file will be called `ghost.ac.json` and will be placed in `RP/animation_controllers/`.
+我们的文件将命名为`ghost.ac.json`，放在`RP/animation_controllers/`目录下。
 
-<CodeHeader>RP/animation_controllers/ghost.ac.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/animation_controllers/ghost.ac.json]
 {
 	"format_version": "1.12.0",
 	"animation_controllers": {
@@ -743,17 +737,17 @@ Our file will be called `ghost.ac.json` and will be placed in `RP/animation_cont
 	}
 }
 ```
+:::
 
-With that, we have created all the resources we need for our entity. We will now create our entity file.
+至此，我们已经创建了实体所需的所有资源。现在我们将创建实体文件。
 
-### Entity Client File
+### 实体客户端文件
 
-The client file contains all the references to the visual components of our entity.
-Our client file will go in `RP/entity/` and we name this file `ghost.ce.json`. This file will have all our information under the `description` key. We begin with the familiar formatting:
+客户端文件包含实体所有视觉组件的引用。
+我们的客户端文件将放在`RP/entity/`目录下，命名为`ghost.ce.json`。这个文件的所有信息都在`description`键下。我们从熟悉的格式开始：
 
-<CodeHeader>RP/entity/ghost.ce.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -763,22 +757,22 @@ Our client file will go in `RP/entity/` and we name this file `ghost.ce.json`. T
 	}
 }
 ```
+:::
 
-We use the same identifier as for our behavior file in order to point to the correct entity.
+我们使用与行为文件相同的标识符，以指向正确的实体。
 
-To begin, we need to define the visuals of our entity in our file so we know which models and textures we are using. We also need to do the same for our animations and animation controllers.
+首先，我们需要在文件中定义实体的视觉效果，这样游戏就知道使用哪些模型和纹理。我们还需要为动画和动画控制器做同样的事。
 
-#### Render Controller
+#### 渲染控制器
 
-In order to display our entity it needs to be _rendered_. For this to happen, it needs a material, texture and geometry. We have already made a texture and geometry. A material defines how our texture will be displayed. For example, a skeleton uses a material to allow for transparency and an enderman uses a material to allow its eyes to glow.
+为了显示实体，它需要被_渲染_。为此，它需要材质、纹理和几何模型。我们已经创建了纹理和几何模型。材质定义了纹理如何显示。例如，骷髅使用材质实现透明度，末影人使用材质让眼睛发光。
 
-Since our ghost has some transparency, we need a material which will render this correctly. Luckily, Minecraft has many pre-built materials for us to use such as `entity_alphatest` which will allow us to do this. You can create your own materials but be warned it is very advanced. If you are interested though, you can begin [here](/wiki/documentation/materials).
+由于我们的幽灵有一定透明度，我们需要一个能正确渲染这一效果的材质。幸运的是，Minecraft有许多预置材质可供使用，比如`entity_alphatest`就能满足我们的需求。你可以创建自己的材质，但要注意这非常复杂。如果有兴趣，可以从[这里](/wiki/documentation/materials)开始学习。
 
-For us to now use these resources, we need to define a reference to them with a shortname. This is similar to how we did for items within the `item_texture.json` file, except here we do it in the entity client file. Here is the layout.
+为了使用这些资源，我们需要用短名称定义对它们的引用。这与在`item_texture.json`文件中为物品所做的类似，只不过这里是在实体客户端文件中完成。以下是布局：
 
-<CodeHeader>RP/entity/ghost.ce.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -797,17 +791,17 @@ For us to now use these resources, we need to define a reference to them with a 
 	}
 }
 ```
+:::
 
-Here for each category we have assigned the shortname `default` for each of our resources, ensuring to use the correct paths and identifiers. We are able to define multiple of these, though that is more advanced. Now we can use these shortnames to reference our resources.
+这里我们为每个资源类别分配了短名称`default`，确保使用正确的路径和标识符。我们可以定义多个这样的资源，但这属于更高级的内容。现在我们可以使用这些短名称来引用我们的资源。
 
-In order for these resources to be rendered, we need to tell the game which resources to render in. This is controlled with a _render controller_. The controller tells the game which geometry, material and texture to render for the entity, allowing us to see it in game.
+为了让这些资源被渲染，我们需要告诉游戏要渲染哪些资源。这是通过_渲染控制器_实现的。控制器告诉游戏要为实体渲染哪个几何模型、材质和纹理，让我们能在游戏中看到它。
 
-The render controller is defined in a separate file and uses the shortnames we defined in our entity file.
-The file is called `ghost.rc.json` and is under `RP/render_controllers/`:
+渲染控制器定义在单独的文件中，使用我们在实体文件中定义的短名称。
+文件名为`ghost.rc.json`，位于`RP/render_controllers/`目录下：
 
-<CodeHeader>RP/render_controllers/entity/ghost.rc.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/render_controllers/entity/ghost.rc.json]
 {
 	"format_version": "1.10.0",
 	"render_controllers": {
@@ -823,27 +817,27 @@ The file is called `ghost.rc.json` and is under `RP/render_controllers/`:
 	}
 }
 ```
-
-This follows a similar structure to the animation controller and animation file, with our render controller identifier being `controller.render.ghost`.
-This tells the game that the resource rendered should be the resource with shortname `default`. Render controllers can also allow you to display different textures or apply different materials to different parts of our model. Under `materials`, we use `"*"` to mean that we apply this material to all _bones_ in our model (i.e. each cube in our model.) For more information on render controllers, you can check our page [here](/wiki/entities/render-controllers).
-
-:::tip
-If you keep your shortnames consistent, you can actually reference the same render controller for multiple entities.
 :::
 
-Now to tell your entity to use this render controller, we add it to our entity file like so:
+这与动画控制器和动画文件的结构类似，我们的渲染控制器标识符是`controller.render.ghost`。
+这告诉游戏渲染的资源应该是短名称为`default`的资源。渲染控制器还可以让你为模型的不同部分显示不同纹理或应用不同材质。在`materials`下，我们使用`"*"`表示将材质应用到模型中的所有_骨骼_（即模型中的每个方块）。有关渲染控制器的更多信息，可以查看[此页面](/wiki/entities/render-controllers)。
 
-<CodeHeader>RP/entity/ghost.ce.json#description</CodeHeader>
+:::tip 提示
+如果保持短名称一致，你实际上可以为多个实体引用同一个渲染控制器。
+:::
 
-```json
+现在要让你的实体使用这个渲染控制器，我们像这样将其添加到实体文件中：
+
+::: code-group
+```json [RP/entity/ghost.ce.json#description]
 "render_controllers": ["controller.render.ghost"]
 ```
+:::
 
-With that our entity file should look like this.
+这样我们的实体文件应该如下所示：
 
-<CodeHeader>RP/entity/ghost.ce.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -863,16 +857,16 @@ With that our entity file should look like this.
 	}
 }
 ```
+:::
 
-Now if we spawn our entity into a world, we should be able to see it.
+现在如果我们将实体生成到世界中，应该能看到它了。
 
-#### Scripts
+#### 脚本
 
-Now let us add our animations. Like with our other resources, we need to define shortnames for them. Keep in mind, we also need to define shortnames our animation controllers as well.
+现在添加我们的动画。与其他资源一样，我们需要为它们定义短名称。注意，我们还需要为动画控制器定义短名称。
 
-<CodeHeader>RP/entity/ghost.ce.json#description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json#description]
 "animations": {
 	"walk_controller": "controller.animation.ghost.walk",
 	"attack_controller": "controller.animation.ghost.attack",
@@ -881,14 +875,14 @@ Now let us add our animations. Like with our other resources, we need to define 
 	"move": "animation.ghost.move"
 }
 ```
+:::
 
-You'll recall, these are the shortnames we used in our animation controllers; any animations we want to use in animation controllers, must be defined with a shortname in the entity client file.
+你可能记得，这些是我们在动画控制器中使用的短名称；任何要在动画控制器中使用的动画，都必须在实体客户端文件中用短名称定义。
 
-Now that we have animations and animation controllers referenced, we need to decide when the entity will run them. This is done using `scripts`:
+现在有了引用的动画和动画控制器，我们需要决定实体何时运行它们。这是通过`scripts`实现的：
 
-<CodeHeader>RP/entity/ghost.ce.json#description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json#description]
 "scripts": {
 	"animate": [
 		"walk_controller",
@@ -896,25 +890,26 @@ Now that we have animations and animation controllers referenced, we need to dec
 	]
 }
 ```
+:::
 
-Here, `scripts` tell the entity to perform certain actions at certain times. The `animate` key will run any animation or controller referenced every tick. This means that each tick our animation controller will check whether to transition to a new state and perform any animations in the state they are in.
+这里，`scripts`告诉实体在特定时间执行特定动作。`animate`键会每tick运行任何引用的动画或控制器。这意味着每个tick我们的动画控制器都会检查是否要转换到新状态，并执行当前状态中的任何动画。
 
-With this our animations should be working correctly.
+这样我们的动画应该能正确工作了。
 
-#### Spawn Egg
+#### 刷怪蛋
 
-The final step to finalise our entity client file, is to create a spawn egg for our entity. Luckily, our file can generate one for us with the key `spawn_egg`.
+完成实体客户端文件的最后一步是为我们的实体创建一个刷怪蛋。幸运的是，我们的文件可以通过`spawn_egg`键自动生成一个。
 
-<CodeHeader>RP/entity/ghost.ce.json#description</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json#description]
 "spawn_egg": {
 	"overlay_color": "#bdd1d1",
 	"base_color": "#9fb3b3"
 }
 ```
+:::
 
-This will generate a spawn egg which will summon our entity when used. It uses the hex codes in `base_color` and `overlay_color` to color the egg. If you want a custom icon for your spawn egg, instead use the key `texture` and put in the shortname to the texture you want. Follow the method in the item tutorial on how to define an texture shortname for an item.
+这将生成一个使用时会召唤我们实体的刷怪蛋。它使用`base_color`和`overlay_color`中的十六进制代码为蛋着色。如果想要刷怪蛋有自定义图标，可以使用`texture`键并放入所需纹理的短名称。按照物品教程中的方法为物品定义纹理短名称。
 
 ```json
 "spawn_egg": {
@@ -922,13 +917,12 @@ This will generate a spawn egg which will summon our entity when used. It uses t
 }
 ```
 
-With that, we have completed our entity client file.
+至此，我们已经完成了实体客户端文件。
 
-<Spoiler title="Full ghost.ce.json">
+::: details 完整的ghost.ce.json
 
-<CodeHeader>RP/entity/ghost.ce.json</CodeHeader>
-
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -962,25 +956,24 @@ With that, we have completed our entity client file.
 	}
 }
 ```
+:::
 
-</Spoiler>
+### 实体名称
 
-### Entity name
+最后一步是将实体名称添加到语言文件中。你可能还注意到，如果创建了刷怪蛋，它也会有一个名称的翻译键；我们也要添加这个。在`en_US.lang`中，确保为实体和实体刷怪蛋物品都添加了名称。它们应该类似这样：
 
-The final steps are to add our entity's name to the language files. You may have also noticed that if you created a spawn egg, it will also have a translation key for a name; we will also add this. Within `en_US.lang`, make sure you add names for both the entity and entity spawn egg item. They should look similar to this:
-
-<CodeHeader>RP/texts/en_US.lang</CodeHeader>
-
-```json
-entity.wiki:ghost.name=Ghost
-item.spawn_egg.entity.wiki:ghost.name=Ghost
+::: code-group
+```json [RP/texts/en_US.lang]
+entity.wiki:ghost.name=幽灵
+item.spawn_egg.entity.wiki:ghost.name=幽灵
 ```
+:::
 
-## Overview
+## 最终成果
 
-Done! Your entity should now show up in Minecraft, complete with all behaviors and visuals, including animations! You should be able to summon your entity using `/summon` or by finding the spawn egg in the creative menu.
+完成！现在你的实体应该已经完整地出现在Minecraft中，包含所有行为和视觉效果，还有动画！你可以使用`/summon`命令召唤实体，或者在创造模式菜单中找到刷怪蛋。
 
-Your folder structure should look like this:
+你的文件夹结构应该如下所示：
 
 <FolderView :paths="[
 	'RP/animations/ghost.a.json',
@@ -1003,11 +996,10 @@ Your folder structure should look like this:
 	'BP/pack_icon.png',
 ]"></FolderView>
 
-<Spoiler title="Full ghost.se.json">
+::: details 完整的ghost.se.json
 
-<CodeHeader>BP/entities/ghost.se.json</CodeHeader>
-
-```json
+::: code-group
+```json [BP/entities/ghost.se.json]
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -1097,14 +1089,14 @@ Your folder structure should look like this:
 	}
 }
 ```
+:::
 
-</Spoiler>
 
-<Spoiler title="Full ghost.ce.json">
 
-<CodeHeader>RP/entity/ghost.ce.json</CodeHeader>
+::: details 完整的ghost.ce.json
 
-```json
+::: code-group
+```json [RP/entity/ghost.ce.json]
 {
 	"format_version": "1.10.0",
 	"minecraft:client_entity": {
@@ -1138,14 +1130,14 @@ Your folder structure should look like this:
 	}
 }
 ```
+:::
 
-</Spoiler>
 
-<Spoiler title="Full ghost.geo.json">
 
-<CodeHeader>RP/models/entity/ghost.geo.json</CodeHeader>
+::: details 完整的ghost.geo.json
 
-```json
+::: code-group
+```json [RP/models/entity/ghost.geo.json]
 {
 	"format_version": "1.12.0",
 	"minecraft:geometry": [
@@ -1213,14 +1205,14 @@ Your folder structure should look like this:
 	]
 }
 ```
+:::
 
-</Spoiler>
 
-<Spoiler title="Full ghost.a.json">
 
-<CodeHeader>RP/animations/ghost.a.json</CodeHeader>
+::: details 完整的ghost.a.json
 
-```json
+::: code-group
+```json [RP/animations/ghost.a.json]
 {
 	"format_version": "1.8.0",
 	"animations": {
@@ -1333,14 +1325,14 @@ Your folder structure should look like this:
 	}
 }
 ```
+:::
 
-</Spoiler>
 
-<Spoiler title="Full ghost.ac.json">
 
-<CodeHeader>RP/animation_controllers/ghost.ac.json</CodeHeader>
+::: details 完整的ghost.ac.json
 
-```json
+::: code-group
+```json [RP/animation_controllers/ghost.ac.json]
 {
 	"format_version": "1.12.0",
 	"animation_controllers": {
@@ -1390,14 +1382,14 @@ Your folder structure should look like this:
 	}
 }
 ```
+:::
 
-</Spoiler>
 
-<Spoiler title="Full ghost.rc.json">
 
-<CodeHeader>RP/render_controllers/entity/ghost.rc.json</CodeHeader>
+::: details 完整的ghost.rc.json
 
-```json
+::: code-group
+```json [RP/render_controllers/entity/ghost.rc.json]
 {
 	"format_version": "1.10.0",
 	"render_controllers": {
@@ -1413,19 +1405,18 @@ Your folder structure should look like this:
 	}
 }
 ```
+:::
 
-</Spoiler>
-
-## Your progress so far
+## 当前进度
 
 <Checklist>
 
--   [x] Setup your pack
--   [x] Create a custom item
--   [x] Create a custom entity
--   [x] -   How to format the behavior- and resource files for an item
--   [x] -   How to set an entities texture
--   [x] -   How to use models, animations, and animation controllers to make your entity more exciting
--   [ ] Create the entity's loot, spawn rules, and a custom recipe
+-   [x] 建立资源包
+-   [x] 创建自定义物品
+-   [x] 创建自定义实体
+-   [x] -   如何格式化物品的行为和资源文件
+-   [x] -   如何设置实体纹理
+-   [x] -   如何使用模型、动画和动画控制器让实体更生动
+-   [ ] 创建实体的战利品表、生成规则和自定义配方
 
 </Checklist>

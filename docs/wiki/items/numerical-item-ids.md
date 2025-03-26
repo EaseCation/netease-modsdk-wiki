@@ -1,26 +1,30 @@
 ---
-title: Numerical Item IDs
-category: Documentation
+title: 数字物品ID
+category: 文档
 ---
 
+# 数字物品ID
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ::: tip
-This page is a more up-to-date version of [this page](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/addonsreference/examples/addonitems), and is current as of version 1.20.51.
+本页面是[此微软文档](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/addonsreference/examples/addonitems)的更新版本，内容基于1.20.51版本。
 :::
 
-## Overview
+## 概述
 
-Item IDs (not to be confused with type IDs) are an older system which are mainly used to render items with [JSON UI](/wiki/json-ui/json-ui-documentation#item-id-aux-item-id-aux) nowadays. All items & blocks (Even custom ones!) have their own unique ID.
+物品ID（注意不要与类型ID混淆）是一个较旧的系统，目前主要用于通过[JSON UI](/wiki/json-ui/json-ui-documentation#item-id-aux-item-id-aux)渲染物品。所有物品和方块（包括自定义的！）都有自己唯一的ID。
 
-## ID Formatting
-- Vanilla items & blocks have IDs from `-743` to `721`.
-- All custom blocks have *increasingly negative* IDs, starting from an ID of `-744`. These do not interfere with vanilla IDs in any way. Note that custom blocks do not currently render with their IDs. It is unknown if this is a bug or not.
-- All non-experimental items (1.10 format) have *increasingly positive* IDs, starting from an ID of `722`. These do not interfere with vanilla IDs in any way.
-- All experimental items (1.16.100 format) have *increasingly positive* IDs, starting from an ID of 257. These **WILL SHIFT VANILLA IDs** that are higher than 256. For example, `'minecraft:apple'` (ID of `257`) will be moved up to an ID of `258` if you have one experimental item.
+## ID格式规则
+- 原版物品和方块的ID范围是`-743`至`721`
+- 所有自定义方块使用**递减的负数ID**，从`-744`开始。这些ID不会与原版ID产生冲突。注意：当前自定义方块不会显示其ID，尚不明确这是否是bug
+- 所有非实验性物品（1.10格式）使用**递增的正数ID**，从`722`开始。这些ID不会与原版ID产生冲突
+- 所有实验性物品（1.16.100格式）使用**递增的正数ID**，从`257`开始。这些ID**会导致高于256的原版ID发生偏移**。例如，如果你添加了一个实验性物品，`'minecraft:apple'`（原ID为`257`）会被移动到`258`
 
-## Vanilla ID List
-Note for this list that a namespace of `minecraft:` is assumed for all items & blocks.
+## 原版ID列表
+请注意，本列表中所有物品和方块都默认使用`minecraft:`命名空间。
 
-| Name              |  ID  |
+| 物品名称              |  ID  |
 | ----------------- | :--: |
 | dark_oak_planks | -743 |
 | acacia_planks | -742 |

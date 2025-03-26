@@ -46,7 +46,7 @@ mentions:
     -   16个方向（以22.5度递增）  
     -   4个侧面附着方向
 
-## 基本方向旋转
+## 基本方向旋转 {#cardinal-direction-rotation}
 
 ### 特性
 
@@ -108,7 +108,7 @@ mentions:
 ```
 :::
 
-## 面向方向旋转
+## 面向方向旋转 {#facing-direction-rotation}
 
 ### 特性
 
@@ -183,7 +183,7 @@ mentions:
 ```
 :::
 
-## 方块面附着旋转
+## 方块面附着旋转 {#block-face-rotation}
 
 ### 特性
 
@@ -258,7 +258,7 @@ mentions:
 ```
 :::
 
-## 原木旋转
+## 原木旋转 {#log-rotation}
 
 实现与原版原木相同的旋转方式
 

@@ -1,5 +1,6 @@
 ---
 title: 方块 Blocks
+nav_order: 3
 categories:
     - title: 基础
       color: blue

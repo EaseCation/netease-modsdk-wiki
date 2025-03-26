@@ -1,5 +1,6 @@
 ---
 title: NBT
+nav_order: 13
 categories:
     - title: 基础
       color: blue

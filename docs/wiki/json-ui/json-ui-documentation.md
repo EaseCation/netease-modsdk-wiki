@@ -25,6 +25,8 @@ mentions:
 
 # JSON UI 完整文档
 
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 ## UI元素
 
 ### 元素类型
@@ -920,9 +922,9 @@ $creative_layout_index - $items_index
 | $ignore_3rd_party_servers              |                                                                                           |
 | $is_berwick                            |                                                                                           |
 
-## Hardcoded Hyperlinks
+## 硬编码超链接
 
-`#hyperlink` doesn't allow custom urls. These are the ones that will work:
+`#hyperlink` 不允许自定义URL。以下是可用的预设链接：
 
 -   `http://education.minecraft.net/eula`
 -   `http://pocketbeta.minecraft.net/p/how-to-join-and-leave-beta.html`
@@ -955,1117 +957,1116 @@ $creative_layout_index - $items_index
 -   `https://aka.ms/switchcontent`
 -   `https://social.xbox.com/changegamertag`
 
-## Hardcoded Button IDs
+## 硬编码按钮ID
 
-Some of them only work in specific screens.
+部分按钮仅在特定界面生效。
 
-### Buttons IDs:
+### 通用按钮ID：
 
--   `button.menu_exit`
--   `button.menu_cancel` (`Escape` key or Controller `B`)
--   `button.menu_inventory_cancel` (`Open Inventory` keybinding)
--   `button.menu_ok` (`Enter` key)
--   `button.menu_select` (Mouse click)
--   `button.controller_select` (Controller `X`)
--   `button.menu_secondary_select`
--   `button.controller_secondary_select`
--   `button.controller_secondary_select_left`
--   `button.controller_secondary_select_right` (Controller `R3`)
--   `button.controller_start`
--   `button.menu_up` (`Arrow Up` key)
--   `button.menu_down` (`Arrow Down` key)
--   `button.menu_left` (`Arrow Left` key)
--   `button.menu_right` (`Arrow Right` key)
--   `button.menu_tab_left` (`Menu Tab Left` keybinding or Controller `Left Bumper`)
--   `button.menu_tab_right` (`Menu Tab Right` keybinding or Controller `Right Bumper`)
--   `button.menu_alternate_tab_left`
--   `button.menu_alternate_tab_right`
--   `button.menu_autocomplete` (Uses `Tab` key)
--   `button.menu_autocomplete_back`
--   `button.controller_autocomplete`
--   `button.controller_autocomplete_back`
--   `button.menu_textedit_up` (Uses `Arrow Up` key)
--   `button.menu_textedit_down` (Uses `Arrow Down` key)
--   `button.controller_textedit_up`
--   `button.controller_textedit_down`
--   `button.menu_auto_place`
--   `button.menu_inventory_drop` (`Drop Item` keybinding)
--   `button.menu_inventory_drop_all` (`Drop Item` + `Control` key)
--   `button.menu_clear`
--   `button.chat` (`Open Chat` keybinding)
--   `button.mobeffects` (`Mob Effects` keybinding)
--   `key.emote` (`Emote` keybinding)
--   `button.slot1` (Emote Wheel) (`1` key)
--   `button.slot2` (Emote Wheel) (`2` key)
--   `button.slot3` (Emote Wheel) (`3` key)
--   `button.slot4` (Emote Wheel) (`4` key)
--   `button.slot5` (Emote Wheel) (`5` key)
--   `button.slot6` (Emote Wheel) (`6` key)
--   `button.inventory_right` (`Mouse Wheel Up`)
--   `button.inventory_left` (`Mouse Wheel Down`)
--   `button.scoreboard`
--   `button.hide_gui` (`F1` key)
--   `button.hide_tooltips`
--   `button.hide_paperdoll`
--   `button.slot0`
--   `button.slot1` (`1` key)
--   `button.slot2` (`2` key)
--   `button.slot3` (`3` key)
--   `button.slot4` (`4` key)
--   `button.slot5` (`5` key)
--   `button.slot6` (`6` key)
--   `button.slot7` (`7` key)
--   `button.slot8` (`8` key)
--   `button.slot9` (`9` key)
--   `button.menu_vr_realign`
--   `any` (literally the name of it)
+-   `button.menu_exit` - 退出菜单
+-   `button.menu_cancel` - 取消（对应键盘`ESC`或手柄`B`键）
+-   `button.menu_inventory_cancel` - 关闭背包（对应背包快捷键）
+-   `button.menu_ok` - 确认（对应键盘`Enter`键）
+-   `button.menu_select` - 选择（对应鼠标点击）
+-   `button.controller_select` - 手柄选择键（对应手柄`X`键）
+-   `button.menu_secondary_select` - 二级选择
+-   `button.controller_secondary_select` - 手柄二级选择
+-   `button.controller_secondary_select_left` - 手柄左二级选择
+-   `button.controller_secondary_select_right` - 手柄右二级选择（对应手柄`R3`键）
+-   `button.controller_start` - 手柄开始键
+-   `button.menu_up` - 上移（对应键盘`↑`键）
+-   `button.menu_down` - 下移（对应键盘`↓`键）
+-   `button.menu_left` - 左移（对应键盘`←`键）
+-   `button.menu_right` - 右移（对应键盘`→`键）
+-   `button.menu_tab_left` - 左标签页（对应标签页左键或手柄`左肩键`）
+-   `button.menu_tab_right` - 右标签页（对应标签页右键或手柄`右肩键`）
+-   `button.menu_alternate_tab_left` - 备用左标签页
+-   `button.menu_alternate_tab_right` - 备用右标签页
+-   `button.menu_autocomplete` - 自动补全（对应`Tab`键）
+-   `button.menu_autocomplete_back` - 返回自动补全
+-   `button.controller_autocomplete` - 手柄自动补全
+-   `button.controller_autocomplete_back` - 手柄返回自动补全
+-   `button.menu_textedit_up` - 文本编辑上移（对应键盘`↑`键）
+-   `button.menu_textedit_down` - 文本编辑下移（对应键盘`↓`键）
+-   `button.controller_textedit_up` - 手柄文本编辑上移
+-   `button.controller_textedit_down` - 手柄文本编辑下移
+-   `button.menu_auto_place` - 自动放置
+-   `button.menu_inventory_drop` - 丢弃物品（对应丢弃物品快捷键）
+-   `button.menu_inventory_drop_all` - 丢弃全部物品（对应丢弃物品+`Ctrl`键）
+-   `button.menu_clear` - 清除
+-   `button.chat` - 打开聊天（对应聊天快捷键）
+-   `button.mobeffects` - 生物效果（对应生物效果快捷键）
+-   `key.emote` - 表情（对应表情快捷键）
+-   `button.slot1` - 表情轮盘槽位1（对应`1`键）
+-   `button.slot2` - 表情轮盘槽位2（对应`2`键）
+-   `button.slot3` - 表情轮盘槽位3（对应`3`键）
+-   `button.slot4` - 表情轮盘槽位4（对应`4`键）
+-   `button.slot5` - 表情轮盘槽位5（对应`5`键）
+-   `button.slot6` - 表情轮盘槽位6（对应`6`键）
+-   `button.inventory_right` - 背包右移（对应鼠标滚轮上滑）
+-   `button.inventory_left` - 背包左移（对应鼠标滚轮下滑）
+-   `button.scoreboard` - 记分板
+-   `button.hide_gui` - 隐藏界面（对应`F1`键）
+-   `button.hide_tooltips` - 隐藏提示
+-   `button.hide_paperdoll` - 隐藏纸娃娃
+-   `button.slot0` - 槽位0
+-   `button.slot1` - 槽位1（对应`1`键）
+-   `button.slot2` - 槽位2（对应`2`键）
+-   `button.slot3` - 槽位3（对应`3`键）
+-   `button.slot4` - 槽位4（对应`4`键）
+-   `button.slot5` - 槽位5（对应`5`键）
+-   `button.slot6` - 槽位6（对应`6`键）
+-   `button.slot7` - 槽位7（对应`7`键）
+-   `button.slot8` - 槽位8（对应`8`键）
+-   `button.slot9` - 槽位9（对应`9`键）
+-   `button.menu_vr_realign` - VR重定位
+-   `any` - 字面意思，表示任意按钮
 
-### Specific Screen Button IDs:
+### 特定界面按钮ID：
 
-#### Settings (`ui/settings_screen.json`)
+#### 设置界面 (`ui/settings_screen.json`)
 
--   `button.open_content_log_history`
--   `button.clear_content_log_files`
--   `button.clear_msa_token_button`
--   `button.terms_and_conditions_popup`
--   `button.credits`
--   `button.unlink_msa`
--   `button.attribute_popup`
--   `button.licensed_content`
--   `button.font_license`
--   `button.tos_hyperlink`
--   `button.privpol_hyperlink`
--   `button.tos_popup`
--   `button.privpol_popup`
--   `button.binding_button`
--   `button.reset_binding`
--   `button.reset_keyboard_bindings`
--   `button.view_account_errors`
+-   `button.open_content_log_history` - 打开内容日志历史
+-   `button.clear_content_log_files` - 清除内容日志文件
+-   `button.clear_msa_token_button` - 清除MSA令牌
+-   `button.terms_and_conditions_popup` - 条款与条件弹窗
+-   `button.credits` - 制作人员
+-   `button.unlink_msa` - 取消MSA关联
+-   `button.attribute_popup` - 属性弹窗
+-   `button.licensed_content` - 授权内容
+-   `button.font_license` - 字体授权
+-   `button.tos_hyperlink` - 服务条款超链接
+-   `button.privpol_hyperlink` - 隐私政策超链接
+-   `button.tos_popup` - 服务条款弹窗
+-   `button.privpol_popup` - 隐私政策弹窗
+-   `button.binding_button` - 绑定按钮
+-   `button.reset_binding` - 重置绑定
+-   `button.reset_keyboard_bindings` - 重置键盘绑定
+-   `button.view_account_errors` - 查看账户错误
 
-#### Book (`ui/book_screen.json`)
+#### 书本界面 (`ui/book_screen.json`)
 
--   `button.prev_page`
--   `button.next_page`
--   `button.book_exit`
+-   `button.prev_page` - 上一页
+-   `button.next_page` - 下一页
+-   `button.book_exit` - 退出书本
 
-#### Chat (`ui/chat_screen.json`)
+#### 聊天界面 (`ui/chat_screen.json`)
 
--   `button.send`
--   `button.chat_autocomplete`
--   `button.chat_autocomplete_back`
--   `button.chat_previous_message`
--   `button.chat_next_message`
--   `button.chat_menu_cancel`
+-   `button.send` - 发送
+-   `button.chat_autocomplete` - 聊天自动补全
+-   `button.chat_autocomplete_back` - 返回聊天自动补全
+-   `button.chat_previous_message` - 上一条消息
+-   `button.chat_next_message` - 下一条消息
+-   `button.chat_menu_cancel` - 取消聊天菜单
 
-#### Command Block (`ui/command_block_screen.json`)
+#### 命令方块界面 (`ui/command_block_screen.json`)
 
--   `command_block.input_minimize`
--   `button.chat_autocomplete`
--   `button.chat_autocomplete_back`
+-   `command_block.input_minimize` - 最小化输入框
+-   `button.chat_autocomplete` - 聊天自动补全
+-   `button.chat_autocomplete_back` - 返回聊天自动补全
 
-#### Comment (`ui/comment_screen.json`)
+#### 评论界面 (`ui/comment_screen.json`)
 
--   `button.comment_options_close`
--   `button.comment_feed_options_close`
--   `button.close_comments`
--   `button.comment_next_button`
--   `button.comment_prev_button`
+-   `button.comment_options_close` - 关闭评论选项
+-   `button.comment_feed_options_close` - 关闭评论反馈选项
+-   `button.close_comments` - 关闭评论
+-   `button.comment_next_button` - 下一条评论
+-   `button.comment_prev_button` - 上一条评论
 
-#### Credits (`ui/credits_screen.json`)
+#### 制作人员界面 (`ui/credits_screen.json`)
 
--   `button.show_skip`
+-   `button.show_skip` - 显示跳过按钮
 
-#### Death Menu (`ui/death_screen.json`)
+#### 死亡界面 (`ui/death_screen.json`)
 
--   `button.respawn_button`
--   `button.main_menu_button`
+-   `button.respawn_button` - 重生按钮
+-   `button.main_menu_button` - 主菜单按钮
 
-#### Emote Wheel (`ui/emote_screen_wheel.json`)
+#### 表情轮盘界面 (`ui/emote_screen_wheel.json`)
 
--   `button.rebind_mode`
--   `button.dressing_room`
--   `button.emote_selected`
--   `button.select_emote_slot_0`
--   `button.select_emote_slot_1`
--   `button.select_emote_slot_2`
--   `button.select_emote_slot_3`
--   `button.select_emote_slot_4`
--   `button.select_emote_slot_5`
--   `button.iterate_selection_left`
--   `button.iterate_selection_right`
+-   `button.rebind_mode` - 重绑定模式
+-   `button.dressing_room` - 更衣室
+-   `button.emote_selected` - 已选表情
+-   `button.select_emote_slot_0` - 选择表情槽位0
+-   `button.select_emote_slot_1` - 选择表情槽位1
+-   `button.select_emote_slot_2` - 选择表情槽位2
+-   `button.select_emote_slot_3` - 选择表情槽位3
+-   `button.select_emote_slot_4` - 选择表情槽位4
+-   `button.select_emote_slot_5` - 选择表情槽位5
+-   `button.iterate_selection_left` - 向左循环选择
+-   `button.iterate_selection_right` - 向右循环选择
 
-#### Feed (`ui/feed_screen.json`)
+#### 反馈界面 (`ui/feed_screen.json`)
 
--   `button.feed_image`
--   `button.newpost`
--   `button.add_screenshot`
--   `button.feed_comment`
--   `button.feed_prev_button`
--   `button.feed_next_button`
--   `button.feed_new_post_close`
--   `button.feed_options_close`
--   `button.close_feed`
+-   `button.feed_image` - 反馈图片
+-   `button.newpost` - 新帖子
+-   `button.add_screenshot` - 添加截图
+-   `button.feed_comment` - 反馈评论
+-   `button.feed_prev_button` - 上一条反馈
+-   `button.feed_next_button` - 下一条反馈
+-   `button.feed_new_post_close` - 关闭新帖子
+-   `button.feed_options_close` - 关闭反馈选项
+-   `button.close_feed` - 关闭反馈
 
-#### Game Menu (`ui/pause_screen.json`)
+#### 游戏菜单界面 (`ui/pause_screen.json`)
 
--   `button.to_profile_or_skins_screen`
--   `button.player_profile_card`
--   `button.menu_continue`
--   `button.menu_server_store`
--   `button.screenshot`
--   `button.menu_how_to_play`
--   `button.menu_feedback`
--   `button.menu_permission`
--   `button.menu_invite_players`
--   `button.menu_quit`
--   `button.menu_feed`
--   `button.pause_focus_filler`
+-   `button.to_profile_or_skins_screen` - 前往个人资料/皮肤界面
+-   `button.player_profile_card` - 玩家资料卡片
+-   `button.menu_continue` - 继续游戏
+-   `button.menu_server_store` - 服务器商店
+-   `button.screenshot` - 截图
+-   `button.menu_how_to_play` - 玩法指南
+-   `button.menu_feedback` - 反馈
+-   `button.menu_permission` - 权限设置
+-   `button.menu_invite_players` - 邀请玩家
+-   `button.menu_quit` - 退出游戏
+-   `button.menu_feed` - 反馈菜单
+-   `button.pause_focus_filler` - 暂停焦点填充
 
-#### In Bed (`ui/in_bed_screen.json`)
+#### 床上界面 (`ui/in_bed_screen.json`)
 
--   `button.wake_up_button`
+-   `button.wake_up_button` - 起床按钮
 
-#### Invite (`ui/invite_screen.json`)
+#### 邀请界面 (`ui/invite_screen.json`)
 
--   `button.add_friend`
--   `button.add_member`
--   `button.send_invites`
+-   `button.add_friend` - 添加好友
+-   `button.add_member` - 添加成员
+-   `button.send_invites` - 发送邀请
 
-#### Manage Feed (`ui/manage_feed_screen.json`)
+#### 管理反馈界面 (`ui/manage_feed_screen.json`)
 
--   `button.manage_feed_prev_button`
--   `button.manage_feed_next_button`
--   `button.manage_feed_ignore`
--   `button.manage_feed_delete`
--   `button.close_manage_feed`
+-   `button.manage_feed_prev_button` - 上一条管理反馈
+-   `button.manage_feed_next_button` - 下一条管理反馈
+-   `button.manage_feed_ignore` - 忽略反馈
+-   `button.manage_feed_delete` - 删除反馈
+-   `button.close_manage_feed` - 关闭管理反馈
 
-#### Anvil (`ui/anvil_screen.json`)
+#### 铁砧界面 (`ui/anvil_screen.json`)
 
--   `button.anvil_take_all_place_all`
--   `button.anvil_coalesce_stack`
+-   `button.anvil_take_all_place_all` - 全部取出/放入
+-   `button.anvil_coalesce_stack` - 合并堆叠
 
-#### Cartography Table (`ui/cartography_screen.json`)
+#### 制图台界面 (`ui/cartography_screen.json`)
 
--   `button.cartography_result_take_all_place_all`
+-   `button.cartography_result_take_all_place_all` - 制图结果全部取出/放入
 
-#### Enchanting Table (`ui/enchanting_table_screen.json`)
+#### 附魔台界面 (`ui/enchanting_table_screen.json`)
 
--   `button.enchant`
+-   `button.enchant` - 附魔
 
-#### Grindstone (`ui/grindstone_screen.json`)
+#### 砂轮界面 (`ui/grindstone_screen.json`)
 
--   `button.grindstone_take_all_place_all`
--   `button.grindstone_coalesce_stack`
+-   `button.grindstone_take_all_place_all` - 全部取出/放入
+-   `button.grindstone_coalesce_stack` - 合并堆叠
 
-#### Loom (`ui/loom_screen.json`)
+#### 织布机界面 (`ui/loom_screen.json`)
 
--   `button.loom_result_take_all_place_all`
--   `button.pattern_select`
+-   `button.loom_result_take_all_place_all` - 织布结果全部取出/放入
+-   `button.pattern_select` - 图案选择
 
-#### Villager Trade (`ui/trade_screen.json`)
+#### 村民交易界面 (`ui/trade_screen.json`)
 
-- `button.cycle_recipe_left`
-- `button.cycle_recipe_right`
-- `button.trade_take_all_place_all`
-- `button.trade_take_half_place_one`
-- `button.trade_coalesce_stack`
+- `button.cycle_recipe_left` - 向左循环配方
+- `button.cycle_recipe_right` - 向右循环配方
+- `button.trade_take_all_place_all` - 全部取出/放入
+- `button.trade_take_half_place_one` - 取半/放入单个
+- `button.trade_coalesce_stack` - 合并堆叠
 
-#### Play (`ui/play_screen.json`)
+#### 游戏主界面 (`ui/play_screen.json`)
 
-- `button.menu_sign_in_to_view_realms`
-- `button.menu_realms_world_item_edit`
-- `button.menu_realms_feed`
-- `button.menu_realms_world_item_remove`
-- `button.menu_network_world_item`
-- `button.menu_network_server_world_edit`
-- `button.connect_to_third_party_server`
-- `button.view_third_party_server_offers`
-- `button.description_read_toggle`
-- `button.news_read_toggle`
-- `button.local_world_upload`
-- `button.menu_start_local_world`
-- `button.convert_legacy_world`
-- `button.menu_local_world_item_edit`
-- `button.menu_legacy_world_item_delete`
-- `button.import_beta_retail_local_world`
-- `button.import_beta_retail_legacy_world`
-- `button.menu_network_add_friend`
-- `button.menu_network_join_by_code`
-- `button.menu_quick_play`
-- `button.new_world_upload`
-- `button.menu_local_world_create`
-- `button.create_on_realms_button`
-- `button.archived_world_upload`
-- `button.menu_import_level`
-- `button.menu_sync_legacy_worlds`
-- `button.realms_warning_more_info`
-- `button.menu_realm_world_trial`
-- `button.menu_realm_nintendo_first_realm_purchase_button`
-- `button.no_local_worlds_launch_help`
-- `button.menu_network_join_by_code_popup_join`
-- `button.join_server_anyway`
-- `button.cancel_join_server`
+- `button.menu_sign_in_to_view_realms` - 登录查看Realms
+- `button.menu_realms_world_item_edit` - 编辑Realms世界
+- `button.menu_realms_feed` - Realms反馈
+- `button.menu_realms_world_item_remove` - 移除Realms世界
+- `button.menu_network_world_item` - 网络世界项目
+- `button.menu_network_server_world_edit` - 编辑网络服务器世界
+- `button.connect_to_third_party_server` - 连接第三方服务器
+- `button.view_third_party_server_offers` - 查看第三方服务器优惠
+- `button.description_read_toggle` - 描述阅读切换
+- `button.news_read_toggle` - 新闻阅读切换
+- `button.local_world_upload` - 上传本地世界
+- `button.menu_start_local_world` - 开始本地世界
+- `button.convert_legacy_world` - 转换旧版世界
+- `button.menu_local_world_item_edit` - 编辑本地世界
+- `button.menu_legacy_world_item_delete` - 删除旧版世界
+- `button.import_beta_retail_local_world` - 导入Beta零售版本地世界
+- `button.import_beta_retail_legacy_world` - 导入Beta零售版旧版世界
+- `button.menu_network_add_friend` - 添加网络好友
+- `button.menu_network_join_by_code` - 通过代码加入网络
+- `button.menu_quick_play` - 快速游戏
+- `button.new_world_upload` - 上传新世界
+- `button.menu_local_world_create` - 创建本地世界
+- `button.create_on_realms_button` - 在Realms创建
+- `button.archived_world_upload` - 上传存档世界
+- `button.menu_import_level` - 导入关卡
+- `button.menu_sync_legacy_worlds` - 同步旧版世界
+- `button.realms_warning_more_info` - Realms警告更多信息
+- `button.menu_realm_world_trial` - Realms世界试用
+- `button.menu_realm_nintendo_first_realm_purchase_button` - Nintendo首次购买Realms按钮
+- `button.no_local_worlds_launch_help` - 无本地世界启动帮助
+- `button.menu_network_join_by_code_popup_join` - 通过代码加入网络弹窗
+- `button.join_server_anyway` - 仍然加入服务器
+- `button.cancel_join_server` - 取消加入服务器
 
-### Others
+### 其他按钮
 
--   `button.try_menu_exit`
--   `button.close_dialog`
--   `button.menu_play`
--   `$play_button_target` (**hardcoded**)
--   `button.menu_store`
--   `button.menu_achievements`
--   `button.menu_settings`
--   `button.signin`
--   `button.menu_skins`
--   `button.to_profile_screen`
--   `button.menu_courses`
--   `button.menu_tutorial`
--   `button.featured_world`
--   `button.switch_accounts`
--   `button.launch_editions`
--   `button.edu_feedback`
--   `button.edu_resources`
--   `button.menu_buy_game`
--   `button.menu_invite_notification`
--   `button.search`
--   `button.hotbar_inventory_button`
--   `button.select_offer`
--   `button.action_button`
--   `button.create_realm`
--   `button.switch_accounts`
--   `button.hotbar_select`
--   `button.hotbar_ok`
--   `button.slot_pressed`
--   `button.hotbar_inventory_left`
--   `button.hotbar_inventory_right`
--   `button.hide_gui_all`
--   `button.hide_tooltips_hud`
--   `button.hide_paperdoll_hud`
--   `button.slot_1`
--   `button.slot_2`
--   `button.slot_3`
--   `button.slot_4`
--   `button.slot_5`
--   `button.slot_6`
--   `button.slot_7`
--   `button.slot_8`
--   `button.slot_9`
--   `button.slot_0`
--   `button.chat`
--   `button.menu_continue`
--   `user_confirm_dialog.escape`
--   `user_confirm_dialog.left_button`
--   `user_confirm_dialog.middle_button`
--   `user_confirm_dialog.rightcancel_button`
--   `button.view_skin`
--   `button.delete_action`
--   `button.exit_student`
--   `button.play_video`
--   `button.menu_store_error`
--   `button.left_panel_tab_increment`
--   `button.left_panel_tab_decrement`
--   `button.right_panel_tab_increment`
--   `button.right_panel_tab_decrement`
--   `button.layout_increment`
--   `button.layout_decrement`
--   `button.is_hovered`
--   `button.container_take_all_place_all`
--   `button.container_take_half_place_one`
--   `button.container_auto_place`
--   `button.coalesce_stack`
--   `button.shape_drawing`
--   `button.destroy_selection`
--   `button.clear_selected_recipe`
--   `button.clear_hotbar_or_remove_one`
--   `button.clear_hotbar_or_drop`
--   `button.container_reset_held`
--   `button.container_auto_place`
--   `button.container_slot_hovered`
--   `button.button_hovered`
--   `button.shift_pane_focus`
--   `button.focus_left`
--   `button.focus_right`
--   `button.filter_toggle_hovered`
--   `button.drop_one`
--   `button.cursor_drop_one`
--   `button.drop_all`
--   `button.cursor_drop_all`
--   `button.search_bar_clear`
--   `button.search_bar_selected`
--   `button.search_bar_deselected`
--   `button.menu_leave_screen`
--   `button.turn_doll`
--   `button.select_skin`
--   `button.skin_hovered`
--   `button.skin_unhovered`
--   `button.leave`
--   `button.leave_on_device`
--   `button.text_edit_box_selected`
--   `button.text_edit_box_deselected`
--   `button.text_edit_box_hovered`
--   `button.text_edit_box_clear`
--   `button.help`
--   `button.menu_open_uri`
--   `button.no_interaction`
--   `button.copy_to_clipboard`
+-   `button.try_menu_exit` - 尝试退出菜单
+-   `button.close_dialog` - 关闭对话框
+-   `button.menu_play` - 游戏菜单
+-   `$play_button_target` (**硬编码**)
+-   `button.menu_store` - 商店菜单
+-   `button.menu_achievements` - 成就菜单
+-   `button.menu_settings` - 设置菜单
+-   `button.signin` - 登录
+-   `button.menu_skins` - 皮肤菜单
+-   `button.to_profile_screen` - 前往个人资料界面
+-   `button.menu_courses` - 课程菜单
+-   `button.menu_tutorial` - 教程菜单
+-   `button.featured_world` - 精选世界
+-   `button.switch_accounts` - 切换账户
+-   `button.launch_editions` - 启动旧版
+-   `button.edu_feedback` - 教育版反馈
+-   `button.edu_resources` - 教育资源
+-   `button.menu_buy_game` - 购买游戏菜单
+-   `button.menu_invite_notification` - 邀请通知菜单
+-   `button.search` - 搜索
+-   `button.hotbar_inventory_button` - 快捷栏背包按钮
+-   `button.select_offer` - 选择优惠
+-   `button.action_button` - 操作按钮
+-   `button.create_realm` - 创建Realm
+-   `button.switch_accounts` - 切换账户
+-   `button.hotbar_select` - 快捷栏选择
+-   `button.hotbar_ok` - 快捷栏确认
+-   `button.slot_pressed` - 槽位按下
+-   `button.hotbar_inventory_left` - 快捷栏背包左移
+-   `button.hotbar_inventory_right` - 快捷栏背包右移
+-   `button.hide_gui_all` - 隐藏所有界面
+-   `button.hide_tooltips_hud` - 隐藏HUD提示
+-   `button.hide_paperdoll_hud` - 隐藏HUD纸娃娃
+-   `button.slot_1` - 槽位1
+-   `button.slot_2` - 槽位2
+-   `button.slot_3` - 槽位3
+-   `button.slot_4` - 槽位4
+-   `button.slot_5` - 槽位5
+-   `button.slot_6` - 槽位6
+-   `button.slot_7` - 槽位7
+-   `button.slot_8` - 槽位8
+-   `button.slot_9` - 槽位9
+-   `button.slot_0` - 槽位0
+-   `button.chat` - 聊天
+-   `button.menu_continue` - 继续菜单
+-   `user_confirm_dialog.escape` - 用户确认对话框退出
+-   `user_confirm_dialog.left_button` - 用户确认对话框左按钮
+-   `user_confirm_dialog.middle_button` - 用户确认对话框中按钮
+-   `user_confirm_dialog.rightcancel_button` - 用户确认对话框右取消按钮
+-   `button.view_skin` - 查看皮肤
+-   `button.delete_action` - 删除操作
+-   `button.exit_student` - 退出学生模式
+-   `button.play_video` - 播放视频
+-   `button.menu_store_error` - 商店菜单错误
+-   `button.left_panel_tab_increment` - 左面板标签页增加
+-   `button.left_panel_tab_decrement` - 左面板标签页减少
+-   `button.right_panel_tab_increment` - 右面板标签页增加
+-   `button.right_panel_tab_decrement` - 右面板标签页减少
+-   `button.layout_increment` - 布局增加
+-   `button.layout_decrement` - 布局减少
+-   `button.is_hovered` - 悬停状态
+-   `button.container_take_all_place_all` - 容器全部取出/放入
+-   `button.container_take_half_place_one` - 容器取半/放入单个
+-   `button.container_auto_place` - 容器自动放置
+-   `button.coalesce_stack` - 合并堆叠
+-   `button.shape_drawing` - 形状绘制
+-   `button.destroy_selection` - 销毁选择
+-   `button.clear_selected_recipe` - 清除选定配方
+-   `button.clear_hotbar_or_remove_one` - 清除快捷栏或移除单个
+-   `button.clear_hotbar_or_drop` - 清除快捷栏或丢弃
+-   `button.container_reset_held` - 容器重置持有
+-   `button.container_auto_place` - 容器自动放置
+-   `button.container_slot_hovered` - 容器槽位悬停
+-   `button.button_hovered` - 按钮悬停
+-   `button.shift_pane_focus` - 切换面板焦点
+-   `button.focus_left` - 焦点左移
+-   `button.focus_right` - 焦点右移
+-   `button.filter_toggle_hovered` - 筛选切换悬停
+-   `button.drop_one` - 丢弃单个
+-   `button.cursor_drop_one` - 光标丢弃单个
+-   `button.drop_all` - 丢弃全部
+-   `button.cursor_drop_all` - 光标丢弃全部
+-   `button.search_bar_clear` - 搜索栏清除
+-   `button.search_bar_selected` - 搜索栏选中
+-   `button.search_bar_deselected` - 搜索栏取消选中
+-   `button.menu_leave_screen` - 离开菜单界面
+-   `button.turn_doll` - 旋转纸娃娃
+-   `button.select_skin` - 选择皮肤
+-   `button.skin_hovered` - 皮肤悬停
+-   `button.skin_unhovered` - 皮肤取消悬停
+-   `button.leave` - 离开
+-   `button.leave_on_device` - 在设备上离开
+-   `button.text_edit_box_selected` - 文本编辑框选中
+-   `button.text_edit_box_deselected` - 文本编辑框取消选中
+-   `button.text_edit_box_hovered` - 文本编辑框悬停
+-   `button.text_edit_box_clear` - 文本编辑框清除
+-   `button.help` - 帮助
+-   `button.menu_open_uri` - 打开URI菜单
+-   `button.no_interaction` - 无交互
+-   `button.copy_to_clipboard` - 复制到剪贴板
 -   ...
 
-## Hardcoded Collection Names
+## 硬编码集合名称
 
-All of them only in specific screens.
+以下集合仅在特定界面中生效。
 
-### Screen specific:
+### 界面专属集合：
 
-#### Book (`ui/book_screen.json`)
+#### 书本界面 (`ui/book_screen.json`)
 
--   `book_pages`
--   `pick_collection`
+-   `book_pages` - 书页集合
+-   `pick_collection` - 选取集合
 
-#### Bundle Purchase Warning (`ui/bundle_purchase_warning_screen.json`)
+#### 捆绑包购买警告界面 (`ui/bundle_purchase_warning_screen.json`)
 
--   `owned_list`
--   `unowned_list`
+-   `owned_list` - 已拥有列表
+-   `unowned_list` - 未拥有列表
 
-#### Chat (`ui/chat_screen.json`)
+#### 聊天界面 (`ui/chat_screen.json`)
 
--   `auto_complete`
--   `font_colors`
--   `host_main_collection`
--   `players_collection`
--   `host_teleport_collection`
--   `host_time_collection`
--   `host_weather_collection`
+-   `auto_complete` - 自动补全集合
+-   `font_colors` - 字体颜色集合
+-   `host_main_collection` - 主机主集合
+-   `players_collection` - 玩家集合
+-   `host_teleport_collection` - 主机传送集合
+-   `host_time_collection` - 主机时间集合
+-   `host_weather_collection` - 主机天气集合
 
-#### Choose Realm (`ui/choose_realm_screen.json`)
+#### 选择 Realm 界面 (`ui/choose_realm_screen.json`)
 
--   `realms_collection`
+-   `realms_collection` - Realms 集合
 
-#### Coin Purchase (`ui/coin_purchase_screen.json`)
+#### 代币购买界面 (`ui/coin_purchase_screen.json`)
 
--   `coin_purchase_grid`
+-   `coin_purchase_grid` - 代币购买网格
 
-#### Comment (`ui/comment_screen.json`)
+#### 评论界面 (`ui/comment_screen.json`)
 
--   `comment_collection`
+-   `comment_collection` - 评论集合
 
-#### Content Log History (`ui/content_log_history_screen.json`)
+#### 内容日志历史界面 (`ui/content_log_history_screen.json`)
 
--   `content_log_message`
+-   `content_log_message` - 内容日志消息
 
-#### Create World Upsell (`ui/create_world_upsell_screen.json`)
+#### 创建世界促销界面 (`ui/create_world_upsell_screen.json`)
 
--   `world_list`
--   `realm_list`
+-   `world_list` - 世界列表
+-   `realm_list` - Realm 列表
 
-#### Custom Templates (`ui/custom_templates_screen.json`)
+#### 自定义模板界面 (`ui/custom_templates_screen.json`)
 
--   `templates_collection`
+-   `templates_collection` - 模板集合
 
-#### Feed (`ui/feed_screen.json`)
+#### 反馈界面 (`ui/feed_screen.json`)
 
--   `feed_collection`
+-   `feed_collection` - 反馈集合
 
-#### HUD (`ui/hud_screen.json`)
+#### HUD 界面 (`ui/hud_screen.json`)
 
--   `boss_bars`
--   `chat_text_grid`
--   `hotbar_items`
--   `scoreboard_players`
--   `scoreboard_scores`
--   `left_helper_collection`
--   `right_helper_collection`
+-   `boss_bars` - Boss 血条
+-   `chat_text_grid` - 聊天文本网格
+-   `hotbar_items` - 快捷栏物品
+-   `scoreboard_players` - 记分板玩家
+-   `scoreboard_scores` - 记分板分数
+-   `left_helper_collection` - 左侧帮助集合
+-   `right_helper_collection` - 右侧帮助集合
 
-#### Invite (`ui/invite_screen.json`)
+#### 邀请界面 (`ui/invite_screen.json`)
 
--   `online_platform_friends`
--   `online_linked_account_friends`
--   `online_xbox_live_friends`
--   `offline_platform_friends`
--   `offline_linked_account_friends`
--   `offline_xbox_live_friends`
+-   `online_platform_friends` - 在线平台好友
+-   `online_linked_account_friends` - 在线关联账户好友
+-   `online_xbox_live_friends` - 在线 Xbox Live 好友
+-   `offline_platform_friends` - 离线平台好友
+-   `offline_linked_account_friends` - 离线关联账户好友
+-   `offline_xbox_live_friends` - 离线 Xbox Live 好友
 
-#### Manage Feed (`ui/manage_feed_screen.json`)
+#### 管理反馈界面 (`ui/manage_feed_screen.json`)
 
--   `manage_feed_collection`
+-   `manage_feed_collection` - 管理反馈集合
 
-#### Manifest Validation (`manifest_validation_screen.json`)
+#### 清单验证界面 (`manifest_validation_screen.json`)
 
--   `pack_errors`
+-   `pack_errors` - 包错误集合
 
-#### Mob Effects (`ui/mob_effects_screen.json`)
+#### 生物效果界面 (`ui/mob_effects_screen.json`)
 
--   `mob_effects_collection`
+-   `mob_effects_collection` - 生物效果集合
 
-#### Game Menu (`ui/pause_screen.json`)
+#### 游戏菜单界面 (`ui/pause_screen.json`)
 
--   `players_collection`
+-   `players_collection` - 玩家集合（也在 `pause_screen.json` 中使用）
 
-#### PDP (`ui/pdp_screen.json`)
+#### 产品详情界面 (`ui/pdp_screen.json`)
 
--   `factory_collection`
--   `ratings_star_collection`
+-   `factory_collection` - 厂商集合
+-   `ratings_star_collection` - 评分星级集合
 
-#### Permissions (`ui/permissions_screen.json`)
+#### 权限界面 (`ui/permissions_screen.json`)
 
--   `players_collection` - it's also used in `pause_screen.json`
--   `permissions_collection`
+-   `players_collection` - 玩家集合
+-   `permissions_collection` - 权限集合
 
-#### Persona (`ui/persona_screen.json`)
-
--   `color_collection`
--   `skin_pack_in_grid_item`
--   `persona_featured_skin_pack_collection`
--   `body_size_collection`
--   `arm_size_collection`
--   `category_featured_collection`
--   `main_featured_collection`
--   `profile_featured_collection`
--   `custom_section_collection`
--   `featured_collection`
--   `foobar_collection`
--   `emote_collection`
-
-#### Play (`ui/play_screen.json`)
-
--   `friends_network_worlds`
--   `cross_platform_friends_network_worlds`
--   `lan_network_worlds`
--   `personal_realms`
--   `friends_realms`
--   `servers_network_worlds`
--   `third_party_server_network_worlds`
--   `server_screenshot_collection`
--   `server_games_collection`
--   `local_worlds`
--   `legacy_worlds`
--   `beta_retail_local_worlds`
--   `personal_realms`
--   `loading_personal_realms`
--   `friends_realms`
--   `loading_friends_realms`
-
-#### Portfolio (`ui/portfolio_screen.json`)
-
--   `photos`
-
-#### Progress (`ui/progress_screen.json`)
-
--   `required_resourcepacks`
--   `optional_resourcepacks`
-
-#### Realms Pending Invitations (`ui/realms_pending_invitations_screen.json`)
-
--   `pending_invites_collection`
-
-#### Realms Settings (`ui/realms_settings_screen.json`)
-
--   `additional_realms_subscriptions_collection`
--   `realms_branch_collection`
--   `realms_backup_collection`
--   `members_collection`
--   `invited_friends_collection`
--   `uninvited_friends_collection`
--   `blocked_players_collection`
-
-#### Screenshot Picker (`ui/screenshot_picker_screen.json`)
-
--   `screenshotpicker_collection`
-
-#### Server Form (`ui/server_form.json`)
-
--   `custom_form`
--   `form_buttons`
--   `custom_dropdown`
-
-#### Settings (`ui/settings_screen.json`)
-
--   `keyboard_standard_collection`
--   `keyboard_full_collection`
--   `gamepad_collection`
--   `languages`
--   `realms_plus_subscriptions_collection`
--   `additional_realms_subscriptions_collection`
--   `#selected_pack_items_global`
--   `#available_pack_items_global`
--   `#realms_pack_items_global`
--   `#unowned_pack_items_global`
--   `#invalid_pack_items_global`
--   `#selected_pack_items_level`
--   `#available_pack_items_level`
--   `#realms_pack_items_level`
--   `#unowned_pack_items_level`
--   `#invalid_pack_items_level`
--   `#selected_pack_items_addon`
--   `#available_pack_items_addon`
--   `#realms_pack_items_addon`
--   `#unowned_pack_items_addon`
--   `#invalid_pack_items_addon`
--   `experimental_toggles`
--   `world_panel`
--   `world_template_panel`
--   `resource_panel`
--   `behavior_panel`
--   `skin_panel`
--   `cache_panel`
--   `dependent_packs_panel`
--   `dependency_panel`
-
-#### Structure Block (`ui/structure_editor_screen.json`)
-
--   `save_size_grid`
--   `save_offset_grid`
--   `load_offset_grid`
--   `export_size_grid`
--   `export_offset_grid`
-
-#### Seed Picker (`ui/ugc_viewer_screen.json`)
-
--   `ugc_items`
-
-#### World Templates (`ui/world_templates_screen.json`)
-
--   `world_templates`
--   `realms_plus_templates`
--   `custom_world_templates`
--   `#suggested_offers_collection`
-
-#### Anvil (`ui/anvil_screen.json`)
-
--   `anvil_input_items`
--   `anvil_material_items`
--   `anvil_result_items`
-
-#### Beacon (`ui/beacon_screen.json`)
-
--   `beacon_payment_items`
--   `speed`
--   `haste`
--   `resist`
--   `jump`
--   `strength`
--   `regen`
--   `extra`
--   `confirm`
--   `cancel`
-
-#### Brewing Stand (`ui/brewing_stand_screen.json`)
+#### 角色装扮界面 (`ui/persona_screen.json`)
+
+-   `color_collection` - 颜色集合
+-   `skin_pack_in_grid_item` - 皮肤包网格项
+-   `persona_featured_skin_pack_collection` - 精选皮肤包集合
+-   `body_size_collection` - 体型集合
+-   `arm_size_collection` - 手臂尺寸集合
+-   `category_featured_collection` - 分类精选集合
+-   `main_featured_collection` - 主精选集合
+-   `profile_featured_collection` - 个人资料精选集合
+-   `custom_section_collection` - 自定义部分集合
+-   `featured_collection` - 精选集合
+-   `foobar_collection` - 占位集合
+-   `emote_collection` - 表情集合
+
+#### 游戏主界面 (`ui/play_screen.json`)
+
+-   `friends_network_worlds` - 好友网络世界
+-   `cross_platform_friends_network_worlds` - 跨平台好友网络世界
+-   `lan_network_worlds` - 局域网网络世界
+-   `personal_realms` - 个人 Realms
+-   `friends_realms` - 好友 Realms
+-   `servers_network_worlds` - 服务器网络世界
+-   `third_party_server_network_worlds` - 第三方服务器网络世界
+-   `server_screenshot_collection` - 服务器截图集合
+-   `server_games_collection` - 服务器游戏集合
+-   `local_worlds` - 本地世界
+-   `legacy_worlds` - 旧版世界
+-   `beta_retail_local_worlds` - Beta 零售版本地世界
+-   `personal_realms` - 个人 Realms
+-   `loading_personal_realms` - 加载中的个人 Realms
+-   `friends_realms` - 好友 Realms
+-   `loading_friends_realms` - 加载中的好友 Realms
+
+#### 作品集界面 (`ui/portfolio_screen.json`)
+
+-   `photos` - 照片集合
+
+#### 进度界面 (`ui/progress_screen.json`)
+
+-   `required_resourcepacks` - 必需资源包
+-   `optional_resourcepacks` - 可选资源包
+
+#### Realms 待处理邀请界面 (`ui/realms_pending_invitations_screen.json`)
+
+-   `pending_invites_collection` - 待处理邀请集合
+
+#### Realms 设置界面 (`ui/realms_settings_screen.json`)
+
+-   `additional_realms_subscriptions_collection` - 额外 Realms 订阅集合
+-   `realms_branch_collection` - Realms 分支集合
+-   `realms_backup_collection` - Realms 备份集合
+-   `members_collection` - 成员集合
+-   `invited_friends_collection` - 已邀请好友集合
+-   `uninvited_friends_collection` - 未邀请好友集合
+-   `blocked_players_collection` - 已屏蔽玩家集合
+
+#### 截图选择器界面 (`ui/screenshot_picker_screen.json`)
+
+-   `screenshotpicker_collection` - 截图选择器集合
+
+#### 服务器表单界面 (`ui/server_form.json`)
+
+-   `custom_form` - 自定义表单
+-   `form_buttons` - 表单按钮
+-   `custom_dropdown` - 自定义下拉菜单
+
+#### 设置界面 (`ui/settings_screen.json`)
+
+-   `keyboard_standard_collection` - 标准键盘集合
+-   `keyboard_full_collection` - 完整键盘集合
+-   `gamepad_collection` - 游戏手柄集合
+-   `languages` - 语言集合
+-   `realms_plus_subscriptions_collection` - Realms Plus 订阅集合
+-   `additional_realms_subscriptions_collection` - 额外 Realms 订阅集合
+-   `#selected_pack_items_global` - 全局已选包项
+-   `#available_pack_items_global` - 全局可用包项
+-   `#realms_pack_items_global` - 全局 Realms 包项
+-   `#unowned_pack_items_global` - 全局未拥有包项
+-   `#invalid_pack_items_global` - 全局无效包项
+-   `#selected_pack_items_level` - 关卡已选包项
+-   `#available_pack_items_level` - 关卡可用包项
+-   `#realms_pack_items_level` - 关卡 Realms 包项
+-   `#unowned_pack_items_level` - 关卡未拥有包项
+-   `#invalid_pack_items_level` - 关卡无效包项
+-   `#selected_pack_items_addon` - 附加组件已选包项
+-   `#available_pack_items_addon` - 附加组件可用包项
+-   `#realms_pack_items_addon` - 附加组件 Realms 包项
+-   `#unowned_pack_items_addon` - 附加组件未拥有包项
+-   `#invalid_pack_items_addon` - 附加组件无效包项
+-   `experimental_toggles` - 实验性开关
+-   `world_panel` - 世界面板
+-   `world_template_panel` - 世界模板面板
+-   `resource_panel` - 资源面板
+-   `behavior_panel` - 行为面板
+-   `skin_panel` - 皮肤面板
+-   `cache_panel` - 缓存面板
+-   `dependent_packs_panel` - 依赖包面板
+-   `dependency_panel` - 依赖关系面板
+
+#### 结构方块界面 (`ui/structure_editor_screen.json`)
+
+-   `save_size_grid` - 保存尺寸网格
+-   `save_offset_grid` - 保存偏移网格
+-   `load_offset_grid` - 加载偏移网格
+-   `export_size_grid` - 导出尺寸网格
+-   `export_offset_grid` - 导出偏移网格
+
+#### 种子选择器界面 (`ui/ugc_viewer_screen.json`)
+
+-   `ugc_items` - UGC 项目集合
+
+#### 世界模板界面 (`ui/world_templates_screen.json`)
+
+-   `world_templates` - 世界模板
+-   `realms_plus_templates` - Realms Plus 模板
+-   `custom_world_templates` - 自定义世界模板
+-   `#suggested_offers_collection` - 推荐优惠集合
+
+#### 铁砧界面 (`ui/anvil_screen.json`)
+
+-   `anvil_input_items` - 铁砧输入物品
+-   `anvil_material_items` - 铁砧材料物品
+-   `anvil_result_items` - 铁砧结果物品
+
+#### 信标界面 (`ui/beacon_screen.json`)
+
+-   `beacon_payment_items` - 信标支付物品
+-   `speed` - 速度效果
+-   `haste` - 急迫效果
+-   `resist` - 抗性效果
+-   `jump` - 跳跃提升效果
+-   `strength` - 力量效果
+-   `regen` - 生命恢复效果
+-   `extra` - 额外效果
+-   `confirm` - 确认按钮
+-   `cancel` - 取消按钮
+
+#### 酿造台界面 (`ui/brewing_stand_screen.json`)
 
--   `brewing_fuel_item`
--   `brewing_input_item`
--   `brewing_result_items`
-
-#### Cartography Table (`ui/cartography_screen.json`)
-
--   `cartography_input_items`
--   `cartography_additional_items`
--   `cartography_result_items`
-
-#### Enchanting Table (`ui/enchanting_table_screen.json`)
-
--   `enchanting_input_items`
--   `enchanting_lapis_items`
--   `#enchant_buttons`
-
-#### Furnace (`ui/furnace_screen.json`)
-
--   `furnace_ingredient_items`
--   `furnace_fuel_items`
--   `furnace_output_items`
-
-#### Gridstone (`ui/grindstone_screen.json`)
-
--   `grindstone_input_items`
--   `grindstone_additional_items`
--   `grindstone_result_items`
-
-#### Horse (`ui/horse_screen.json`)
-
--   `horse_equip_items`
-
-#### Inventory (`ui/inventory_screen.json` and `ui/inventory_screen_pocket.json`)
-
--   `armor_items`
--   `offhand_items`
--   `crafting_input_items`
--   `crafting_output_items`
--   `recipe_book`
-
-#### Loom (`ui/loom_screen.json`)
-
--   `loom_input_items`
--   `loom_dye_items`
--   `loom_material_items`
--   `loom_result_items`
--   `patterns`
-
-#### Smithing Table (`ui/smithing_table_screen.json`)
-
--   `smithing_table_input_items`
--   `smithing_table_material_items`
--   `smithing_table_result_items`
-
-#### Stonecutter (`ui/stonecutter_screen.json`)
-
--   `stonecutter_input_items`
--   `stonecutter_result_items`
--   `stones`
-
-#### Villager Trade 2 (`ui/trade_2_screen.json`)
-
--   `trade2_ingredient1_item`
--   `trade2_ingredient2_item`
--   `trade2_result_item`
--   `trade_item_1`
--   `trade_item_2`
--   `sell_item`
--   `trades`
--   `trade_tiers`
-
-## Hardcoded Binding Names
-
-Some of them only work in specific screens.
-
-### Screen specific:
-
-#### Account Transfer Error (`ui/account_transfer_error_screen.json`)
-
--   `#error_title_text`
--   `#error_number_label`
--   `#error_number`
--   `#correlation_id_label`
--   `#correlation_id`
-
-#### Add External Server (`ui/add_external_server_screen.json`)
-
--   `#play_button_enabled`
--   `#play_button_disabled`
--   `#save_button_enabled`
--   `#save_button_disabled`
-
-#### Adhoc In Progress (`ui/adhoc_in_progress_screen.json`)
-
--   `#adhoc_title`
-
-#### Authentication (`ui/authentication_screen.json`)
-
--   `#sign_in_visible`
--   `#sign_in_ios_visible`
--   `#sign_in_button_visible`
--   `#sign_in_ios_buttons_visible`
--   `#authentication_message`
--   `#confirm_button_enabled`
--   `#edu_store_visible`
--   `#edu_store_purchase_info`
--   `#asking_to_buy_visible`
--   `#confirming_purchase_visible`
--   `#demo_choice_visible`
--   `#eula_visible`
--   `#popup_text`
--   `#popup_message_student_text`
--   `#popup_message_student_visible`
--   `#generic_popup_link_visible`
--   `#trial_purchase_link_visible`
--   `#show_popup_dismiss_button`
-
-#### Book (`ui/book_screen.json`)
-
--   `#screenshot_path`
--   `#is_photo_page`
--   `#is_text_page`
--   `#pick_grid_dimensions`
--   `#page_number`
--   `#title_text_box_item_name`
--   `#author_editable`
--   `#author_text_box_item_name`
--   `#editable`
--   `#viewing`
--   `#signing`
--   `#picking`
--   `#exporting`
--   `#page_visible`
--   `#pick_item_visible`
--   `#close_button_visible`
--   `#edit_controls_active`
--   `#finalize_button_enabled`
-
-#### Braze (`ui/braze_screen.json`)
-
--   `#image_texture`
-
-#### Bundle Purchase Warning (`ui/bundle_purchase_warning_screen.json`)
-
--   `#banner_visible`
--   `#offer_title`
--   `#keyart_path`
--   `#keyart_texture_file_system`
-
-#### Chat (`ui/chat_screen.json`)
-
--   `#keyboard_being_use`
--   `#keyboard_button_focus_override_up`
--   `#keyboard_button_focus_override_down`
--   `#keyboard_button_visible`
--   `#send_button_visible`
--   `#send_button_accessibility_text`
--   `#chat_visible`
--   `#message_text_box_content`
--   `#text_edit_box_focus_override_up`
--   `#text_edit_box_focus_override_down`
--   `#auto_complete_item`
--   `#auto_complete_text`
--   `#get_grid_size`
--   `#chat_title_text`
--   `#chat_typeface_visible`
-
-#### Choose Realm (`ui/choose_realm_screen.json`)
-
--   `#realms_grid_dimension`
--   `#world_button_focus_identifier`
--   `#ten_player_button_visible`
--   `#two_player_button_visible`
--   `#realms_world_player_count`
--   `#realms_game_online`
--   `#realms_game_unavailable`
--   `#realms_game_offline`
-
-#### Coin Purchase (`ui/coin_purchase_screen.json`)
-
--   `#bonus_coins`
--   `#coins_without_bonus`
--   `#coin_offer_texture_name`
--   `#coin_offer_texture_file_system`
--   `#bonus_coins_visible`
--   `#price_text`
--   `#coins_required_for_purchase`
--   `#show_missing_coins`
--   `#coin_offer_size`
--   `#has_coin_offers`
--   `#coin_loading_visible`
-
-#### Command Block (`ui/command_block_screen.json`)
-
--   `#maximized_input_visible`
--   `#block_type_icon_texture`
--   `#close_button_visible_binding_name`
--   `#command_impulse_mode`
--   `#command_chain_mode`
--   `#command_repeat_mode`
--   `#block_type_dropdown_toggle_label`
--   `#block_type_dropdown_label_color_binding`
--   `#block_type_dropdown_enabled`
--   `#command_conditional_mode`
--   `#command_unconditional_mode`
--   `#condition_dropdown_toggle_label`
--   `#condition_dropdown_enabled`
--   `#command_always_on_mode`
--   `#command_needs_redstone_mode`
--   `#redstone_dropdown_enabled`
--   `#command_hover_note`
--   `#execute_on_first_tick_enabled`
--   `#command_tick_delay`
--   `#command_text_edit`
--   `#command_output_text`
--   `#previous_block_type_text`
--   `#previous_block_type_text_color`
--   `#previous_condition_mode_text`
--   `#previous_redstone_mode_text`
--   `#minimize_button_visible_binding_name`
-
-#### Comment (`ui/comment_screen.json`)
-
--   `#report_to_club_button_visible_feeditem`
--   `#report_to_enforcement_button_visible_feeditem`
--   `#delete_button_visible_feeditem`
--   `#report_to_club_button_visible_comment`
--   `#report_to_enforcement_button_visible_comment`
--   `#delete_button_visible_comment`
--   `#comment_buttons_visible`
--   `#feed_comment_page_collection_length`
--   `#comment_content`
--   `#is_author_linked_account`
--   `#content`
--   `#text_visible`
--   `#likes_and_comments`
--   `#screenshot_texture`
--   `#screenshot_texture_source`
--   `#textpost_content`
--   `#textpost_visible`
--   `#comment_text_box`
--   `#comment_platform_tag`
--   `#comment_gamertag`
--   `#likes_and_time_since_comment_post`
--   `#author_gamertag`
--   `#time_since_feed_post`
--   `#author_platform_tag`
--   `#author_gamertag`
-
-#### Confirm MSA Unlink (`ui/confirm_msa_unlink_screen.json`)
-
--   `#unlink_warning_text`
--   `#unlink_consequences_acknowledged`
--   `#confirm_0`
--   `#confirm_0_enabled`
--   `#confirm_1`
--   `#confirm_1_enabled`
--   `#confirm_2`
--   `#confirm_2_enabled`
--   `#confirm_3`
--   `#confirm_3_enabled`
-
-#### Content Log History (`ui/content_log_history_screen.json`)
-
--   `#content_log_text`
--   `#messages_size`
-
-#### Create World Upsell (`ui/create_world_upsell.json`)
-
--   `#realm_button_text`
--   `#realm_trial_available`
-
-#### Anvil (`ui/anvil_screen.json`)
-
--   `#cost_text`
--   `#cost_text_green`
--   `#cost_text_red`
-
-#### Beacon (`ui/beacon_screen.json`)
-
--   `#supports_netherite`
--   `#extra_image_selection`
-
-#### Brewing Stand (`ui/brewing_stand_screen.json`)
-
--   `#empty_bottle_image_visible`
--   `#empty_fuel_image_visible`
--   `#brewing_bubbles_ratio`
--   `#brewing_fuel_ratio`
--   `#brewing_arrow_ratio`
-
-#### Cartography Table (`ui/cartography_screen.json`)
-
--   `#is_none_mode`
--   `#is_clone_mode`
--   `#is_rename_mode`
--   `#is_basic_map_mode`
--   `#is_locator_map_mode`
--   `#is_extend_mode`
--   `#is_locked_mode`
--   `#output_description`
-
-#### Enchanting Table (`ui/enchanting_table_screen.json`)
-
--   `#selectable_dust_is_visible`
--   `#unselectable_dust_is_visible`
--   `#runes`
--   `#cost`
--   `#unselectable_button_visibility`
--   `#selectable_button_visibility`
--   `#show_selected_button_highlight`
--   `#active_enchant`
--   `#inactive_enchant`
--   `#input_item_id`
--   `#output_item_id`
--   `#enchant_hint`
--   `#player_level_color`
--   `#player_level_info`
--   `#enchant_error`
-
-#### Furnace (`ui/furnace_screen.json`)
-
--   `#furnace_arrow_ratio`
--   `#furnace_flame_ratio`
--   `#output_name`
-
-#### Horse (`ui/horse_screen.json`)
-
--   `#entity_id`
--   `#equip_grid_dimensions`
--   `#inv_grid_dimensions`
--   `#sadle_slot_centered`
--   `#has_saddle_slot`
--   `#has_armor_slot`
--   `#has_only_armor_slot`
--   `#has_only_carpet_slot`
--   `#has_armor_and_saddle_slot`
--   `#has_carpet_and_saddle_slot`
--   `#is_chested`
--   `#renderer_tab_toggle`
--   `#chest_tab_toggle`
-
-#### Loom (`ui/loom_screen.json`)
-
--   `#pattern_cell_background_texture`
--   `#container_cell_background_texture`
--   `#empty_image_visible`
--   `#banner_patterns`
--   `#banner_colors`
--   `#pattern_selector_total_items`
--   `#result_patterns`
--   `#result_colors`
--   `#is_right_tab_loom`
--   `#is_left_tab_patterns`
-
-#### Stonecutter (`ui/stonecutter_screen.json`)
-
--   `#stone_cell_background_texture`
--   `#container_cell_background_texture`
--   `#item_stack_count`
--   `#stone_selector_total_items`
--   `#has_input_item`
--   `#is_right_tab_stonecutter`
--   `#is_left_tab_stones`
-
-#### Death (`ui/death_screen.json`)
-
-- `#death_reason_text`
-- `#respawn_visible`
-- `#quit_enabled`
-- `#quit_visible`
-- `#buttons_and_deathmessage_visible`
-
-#### Villager Trade2 (`ui/trade2_screen.json`)
-
--   `#name_label`
--   `#trade_cell_background_texture`
--   `#trade_item_count`
--   `#single_slash_visible`
--   `#double_slash_visible`
--   `#second_trade_item_count`
--   `#trade_price_different`
--   `#trade_cross_out_visible`
--   `#padding_around_sell_item`
--   `#trade_possible`
--   `#trade_toggle_state`
--   `#trade_toggle_enabled`
--   `#trade_tier_total`
--   `#tier_name`
--   `#is_tier_unlocked`
--   `#is_left_tab_trade`
--   `#show_level`
--   `#tier_visible`
--   `#trade_selector_total`
--   `#has_second_buy_item`
--   `#exp_bar_visible`
--   `#exp_progress`
--   `#exp_possible_progress`
--   `#trade_details_button_1_visible`
--   `#trade_details_button_2_visible`
--   `#enchantment_details_button_visible`
--   `#item_valid`
-
-### Value depends on the screen it is in:
-
--   `#title_text`
--   `#body_text`
--   `#hover_text`
--   `#cross_out_icon`
--   `#is_left_tab_inventory`
--   `#selected_hover_text`
-
-### Others:
-
--   `#tts_dialog_body`
--   `#button_enabled`
--   `#using_touch`
--   `#close_button_visible`
-
-## Settings
-
-### Sliders
-
-|           Name            |           Slider Name           |        Value Binding Name        | TTS Value (`tts_value_changed`) |                  Slider Text                  |           Enabled Binding Name           |
-| ------------------------- | ------------------------------- | -------------------------------- | ------------------------------- | --------------------------------------------- | ---------------------------------------- |
-| Brightness                | `gamma`                         | `#gamma`                         | `#gamma_text_value`             | `#gamma_slider_label`                         | `#gamma_enabled`                         |
-| Brightness (VR)           | `vr_gamma`                      | `#vr_gamma`                      | `#vr_gamma_text_value`          | `#vr_gamma_slider_label`                      | `#vr_gamma_enabled`                      |
-| HUD Opacity               | `interface_opacity`             | `#interface_opacity`             | `#interface_opacity_text_value` | `#interface_opacity_slider_label`             | `#interface_opacity_enabled`             |
-| HUD Opacity (Splitscreen) | `splitscreen_interface_opacity` | `#splitscreen_interface_opacity` | `#interface_opacity_text_value` | `#splitscreen_interface_opacity_slider_label` | `#splitscreen_interface_opacity_enabled` |
-| Field Of View             | `field_of_view`                 | `#field_of_view`                 | `#field_of_view_text_value`     | `#field_of_view_slider_label`                 | `#field_of_view_enabled`                 |
-
-### Toggles
-
-|                  Name                   |              Toggle Name              |           State Binding Name           |              Enabled Binding Name              |
-| --------------------------------------- | ------------------------------------- | -------------------------------------- | ---------------------------------------------- |
-| Invert Y Axis (Mouse)                   | `keyboard_mouse_invert_y_axis`        | `#keyboard_mouse_invert_y_axis`        | `#keyboard_mouse_invert_y_axis_enabled`        |
-| Auto Jump (Mouse)                       | `keyboard_mouse_autojump`             | `#keyboard_mouse_autojump`             | `#keyboard_mouse_autojump_enabled`             |
-| Show Full Keyboard Options              | `keyboard_show_full_keyboard_options` | `#keyboard_show_full_keyboard_options` | `#keyboard_show_full_keyboard_options_enabled` |
-| Hide Keyboard Tooltips                  | `hide_keyboard_tooltips`              | `#hide_keyboard_tooltips`              | `#hide_keyboard_tooltips_enabled`              |
-| Content File Log                        | `content_log_file`                    | `#content_log_file`                    | `#content_log_file_enabled`                    |
-| Content Gui Log                         | `content_log_gui`                     | `#content_log_gui`                     | `#content_log_gui_enabled`                     |
-| Use SSO                                 | `ad_use_single_sign_on`               | `#ad_use_single_sign_on`               |                                                |
-| Auto Update OFF                         | `#auto_update_mode_off`               | `#auto_update_mode_off`                |                                                |
-| Auto Update ON with Cellular            | `#auto_update_mode_on_with_cellular`  | `#auto_update_mode_on_with_cellular`   |                                                |
-| Auto Update on WiFi Only                | `#auto_update_mode_on_wifi_only`      | `#auto_update_mode_on_wifi_only`       |                                                |
-| Auto Update Enabled                     | `auto_update_enabled`                 | `#auto_update_enabled`                 |                                                |
-| Cross Platform Enabled                  | `crossplatform_toggle`                | `#crossplatform_toggle`                | `#crossplatform_toggle_enabled`                |
-| Allow Cellular Data                     | `allow_cellular_data`                 | `#allow_cellular_data`                 | `#allow_cellular_data_enabled`                 |
-| Websocket Encryption                    | `websocket_encryption`                | `#websocket_encryption`                | `#websocket_encryption_enabled`                |
-| Only Trusted Skins Allowed              | `only_trusted_skins_allowed`          | `#only_trusted_skins_allowed`          | `#only_trusted_skins_allowed_enabled`          |
-| Storage Location External               | `#storage_location_radio_external`    | `#storage_location_radio_external`     | `#file_storage_location_enabled`               |
-| Storage Location App                    | `#storage_location_radio_package`     | `#storage_location_radio_package`      | `#file_storage_location_enabled`               |
-| First Person Perspective                | `#thirdperson_radio_first`            | `#thirdperson_radio_first`             | `#third_person_dropdown_enabled`               |
-| Third Person Back Perspective           | `#thirdperson_radio_third_back`       | `#thirdperson_radio_third_back`        | `#third_person_dropdown_enabled`               |
-| Third Person Front Perspective          | `#thirdperson_radio_third_front`      | `#thirdperson_radio_third_front`       | `#third_person_dropdown_enabled`               |
-| Fullscreen                              | `full_screen`                         | `#full_screen`                         | `#full_screen_enabled`                         |
-| Hide Hand                               | `hide_hand`                           | `#hide_hand`                           | `#hide_hand_enabled`                           |
-| Hide Hand (VR)                          | `vr_hide_hand`                        | `#vr_hide_hand`                        | `#vr_hide_hand_enabled`                        |
-| Hide Paperdoll                          | `hide_paperdoll`                      | `#hide_paperdoll`                      | `#hide_paperdoll_enabled`                      |
-| Hide HUD                                | `hide_hud`                            | `#hide_hud`                            | `#hide_hud_enabled`                            |
-| Hide HUD (VR)                           | `vr_hide_hud`                         | `#vr_hide_hud`                         | `#vr_hide_hud_enabled`                         |
-| Screen Animations                       | `screen_animations`                   | `#screen_animations`                   | `#screen_animations_enabled`                   |
-| Split Screen Horizontally               | `#split_screen_radio_horizontal`      | `#split_screen_radio_horizontal`       | `#split_screen_dropdown_enabled`               |
-| Split Screen Vertically                 | `#split_screen_radio_vertical`        | `#split_screen_radio_vertical`         | `#split_screen_dropdown_enabled`               |
-| Show Auto Save Icon                     | `show_auto_save_icon`                 | `#show_auto_save_icon`                 | `#show_auto_save_icon_enabled`                 |
-| Outline Selection                       | `classic_box_selection`               | `#classic_box_selection`               | `#classic_box_selection_enabled`               |
-| Outline Selection (VR)                  | `vr_classic_box_selection`            | `#vr_classic_box_selection`            | `#vr_classic_box_selection_enabled`            |
-| Show Players Names Ingame               | `ingame_player_names`                 | `#ingame_player_names`                 | `#ingame_player_names_enabled`                 |
-| Show Players Names Ingame (Splitscreen) | `splitscreen_ingame_player_names`     | `#splitscreen_ingame_player_names`     | `#splitscreen_ingame_player_names_enabled`     |
-| View Bobbing                            | `view_bobbing`                        | `#view_bobbing`                        | `#view_bobbing_enabled`                        |
-| Camera Shake                            | `camera_shake`                        | `#camera_shake`                        | `#camera_shake_enabled`                        |
-| Fancy Leaves                            | `transparent_leaves`                  | `#transparent_leaves`                  | `#transparent_leaves_enabled`                  |
-| Fancy Leaves (VR)                       | `vr_transparent_leaves`               | `#vr_transparent_leaves`               | `#vr_transparent_leaves_enabled`               |
-| Fancy Bubbles                           | `bubble_particles`                    | `#bubble_particles`                    | `#bubble_particles_enabled`                    |
-| Render Clouds                           | `render_clouds`                       | `#render_clouds`                       | `#render_clouds_enabled`                       |
-| Fancy Clouds                            | `fancy_skies`                         | `#fancy_skies`                         | `#fancy_skies_enabled`                         |
-| Smooth Lighting                         | `smooth_lighting`                     | `#smooth_lighting`                     | `#smooth_lighting_enabled`                     |
-| Smooth Lighting (VR)                    | `graphics_toggle`                     | `#graphics_toggle`                     | `#graphics_toggle_enabled`                     |
-| Graphics                                | `graphics_toggle`                     | `#graphics_toggle`                     | `#graphics_toggle_enabled`                     |
-| Field of View                           | `field_of_view_toggle`                | `#field_of_view_toggle`                | `#field_of_view_toggle_enabled`                |
-| Classic UI Profile                      | `#ui_profile_radio_classic`           | `#ui_profile_radio_classic`            | `#ui_profile_dropdown_enabled`                 |
-| Pocket UI Profile                       | `#ui_profile_radio_pocket`            | `#ui_profile_radio_pocket`             | `#ui_profile_dropdown_enabled`                 |
-| Texel Anti-Aliasing                     | `texel_aa`                            | `#texel_aa`                            | `#texel_aa_enabled`                            |
-| 3D Rendering (VR)                       | `vr_3d_rendering`                     | `#vr_3d_rendering`                     | `#vr_3d_rendering_enabled`                     |
-| Mirror Texture (VR)                     | `vr_mirror_texture`                   | `#vr_mirror_texture`                   | `#vr_mirror_texture_enabled`                   |
-| Hand Pointer Visible (VR)               | `vr_hand_pointer`                     | `#vr_hand_pointer`                     | `#vr_hand_pointer_enabled`                     |
-| Hands Visible (VR)                      | `vr_hands_visible`                    | `#vr_hands_visible`                    | `#vr_hands_visible_enabled`                    |
-| Enable Auto TTS                         | `enable_auto_text_to_speech`          | `#enable_auto_text_to_speech`          | `#enable_auto_text_to_speech_enabled`          |
-| Enable UI TTS                           | `enable_ui_text_to_speech`            | `#enable_ui_text_to_speech`            | `#enable_ui_text_to_speech_enabled`            |
-| Enable Chat TTS                         | `enable_chat_text_to_speech`          | `#enable_chat_text_to_speech`          | `#enable_chat_text_to_speech_enabled`          |
-| Enable Open Chat Message                | `enable_open_chat_message`            | `#enable_open_chat_message`            | `#enable_open_chat_message_enabled`            |
-| Camera Shake                            | `camera_shake`                        | `#camera_shake`                        | `#camera_shake_enabled`                        |
-| Languages (Collection)                  | `languages`                           | `#language_initial_selected`           |                                                |
-
-## Item ID Aux (`#item_id_aux`)
-
-| Name              |  ID  | Aux Values |
-| ----------------- | :--: | :--------: |
-| diamond           | 306  |  20054016  |
-| emerald           | 519  |  34013184  |
-| gold_ingot        | 308  |  20185088  |
-| iron_ingot        | 307  |  20119552  |
-| netherite_ingot   | 616  |  40370176  |
-| banner            | 574  |  37617664  |
-| saddle            | 373  |  24444928  |
-| cartography_table | -200 | -13107200  |
-| chest             |  54  |  3538944   |
-| crafting_table    |  58  |  3801088   |
-| loom              | -204 | -13369344  |
-| stonecutter_block | -197 | -12910592  |
-
-#### How to calculate block item aux value:
-
-Aux = ID \* 65536
-
-ID = Aux / 65536
-65536 = Aux / ID
-
-Get all Item IDs [here](https://docs.microsoft.com/en-us/minecraft/creator/reference/content/addonsreference/examples/addonitems).
+-   `brewing_fuel_item` - 酿造燃料物品
+-   `brewing_input_item` - 酿造输入物品
+-   `brewing_result_items` - 酿造结果物品
+
+#### 制图台界面 (`ui/cartography_screen.json`)
+
+-   `cartography_input_items` - 制图输入物品
+-   `cartography_additional_items` - 制图附加物品
+-   `cartography_result_items` - 制图结果物品
+
+#### 附魔台界面 (`ui/enchanting_table_screen.json`)
+
+-   `enchanting_input_items` - 附魔输入物品
+-   `enchanting_lapis_items` - 附魔青金石物品
+-   `#enchant_buttons` - 附魔按钮集合
+
+#### 熔炉界面 (`ui/furnace_screen.json`)
+
+-   `furnace_ingredient_items` - 熔炉原料物品
+-   `furnace_fuel_items` - 熔炉燃料物品
+-   `furnace_output_items` - 熔炉输出物品
+
+#### 砂轮界面 (`ui/grindstone_screen.json`)
+
+-   `grindstone_input_items` - 砂轮输入物品
+-   `grindstone_additional_items` - 砂轮附加物品
+-   `grindstone_result_items` - 砂轮结果物品
+
+#### 马匹界面 (`ui/horse_screen.json`)
+
+-   `horse_equip_items` - 马匹装备物品
+
+#### 背包界面 (`ui/inventory_screen.json` 和 `ui/inventory_screen_pocket.json`)
+
+-   `armor_items` - 盔甲物品
+-   `offhand_items` - 副手物品
+-   `crafting_input_items` - 合成输入物品
+-   `crafting_output_items` - 合成输出物品
+-   `recipe_book` - 配方书
+
+#### 织布机界面 (`ui/loom_screen.json`)
+
+-   `loom_input_items` - 织布机输入物品
+-   `loom_dye_items` - 织布机染料物品
+-   `loom_material_items` - 织布机材料物品
+-   `loom_result_items` - 织布机结果物品
+-   `patterns` - 图案集合
+
+#### 锻造台界面 (`ui/smithing_table_screen.json`)
+
+-   `smithing_table_input_items` - 锻造台输入物品
+-   `smithing_table_material_items` - 锻造台材料物品
+-   `smithing_table_result_items` - 锻造台结果物品
+
+#### 切石机界面 (`ui/stonecutter_screen.json`)
+
+-   `stonecutter_input_items` - 切石机输入物品
+-   `stonecutter_result_items` - 切石机结果物品
+-   `stones` - 石头集合
+
+#### 村民交易界面2 (`ui/trade_2_screen.json`)
+
+-   `trade2_ingredient1_item` - 交易原料1物品
+-   `trade2_ingredient2_item` - 交易原料2物品
+-   `trade2_result_item` - 交易结果物品
+-   `trade_item_1` - 交易物品1
+-   `trade_item_2` - 交易物品2
+-   `sell_item` - 出售物品
+-   `trades` - 交易集合
+-   `trade_tiers` - 交易等级
+
+## 硬编码绑定名称
+
+部分绑定仅在特定界面中生效。
+
+### 界面专属绑定：
+
+#### 账户转移错误界面 (`ui/account_transfer_error_screen.json`)
+
+-   `#error_title_text` - 错误标题文本
+-   `#error_number_label` - 错误编号标签
+-   `#error_number` - 错误编号
+-   `#correlation_id_label` - 关联ID标签
+-   `#correlation_id` - 关联ID
+
+#### 添加外部服务器界面 (`ui/add_external_server_screen.json`)
+
+-   `#play_button_enabled` - 启用播放按钮
+-   `#play_button_disabled` - 禁用播放按钮
+-   `#save_button_enabled` - 启用保存按钮
+-   `#save_button_disabled` - 禁用保存按钮
+
+#### 临时处理中界面 (`ui/adhoc_in_progress_screen.json`)
+
+-   `#adhoc_title` - 临时处理标题
+
+#### 认证界面 (`ui/authentication_screen.json`)
+
+-   `#sign_in_visible` - 登录可见
+-   `#sign_in_ios_visible` - iOS登录可见
+-   `#sign_in_button_visible` - 登录按钮可见
+-   `#sign_in_ios_buttons_visible` - iOS登录按钮可见
+-   `#authentication_message` - 认证消息
+-   `#confirm_button_enabled` - 确认按钮启用
+-   `#edu_store_visible` - 教育版商店可见
+-   `#edu_store_purchase_info` - 教育版商店购买信息
+-   `#asking_to_buy_visible` - 购买询问可见
+-   `#confirming_purchase_visible` - 确认购买可见
+-   `#demo_choice_visible` - 演示选择可见
+-   `#eula_visible` - 用户协议可见
+-   `#popup_text` - 弹窗文本
+-   `#popup_message_student_text` - 学生弹窗消息文本
+-   `#popup_message_student_visible` - 学生弹窗消息可见
+-   `#generic_popup_link_visible` - 通用弹窗链接可见
+-   `#trial_purchase_link_visible` - 试用购买链接可见
+-   `#show_popup_dismiss_button` - 显示弹窗关闭按钮
+
+#### 书本界面 (`ui/book_screen.json`)
+
+-   `#screenshot_path` - 截图路径
+-   `#is_photo_page` - 是否为照片页
+-   `#is_text_page` - 是否为文本页
+-   `#pick_grid_dimensions` - 选择网格尺寸
+-   `#page_number` - 页码
+-   `#title_text_box_item_name` - 标题文本框项目名称
+-   `#author_editable` - 作者可编辑
+-   `#author_text_box_item_name` - 作者文本框项目名称
+-   `#editable` - 可编辑状态
+-   `#viewing` - 查看状态
+-   `#signing` - 签名状态
+-   `#picking` - 选择状态
+-   `#exporting` - 导出状态
+-   `#page_visible` - 页面可见
+-   `#pick_item_visible` - 选择项目可见
+-   `#close_button_visible` - 关闭按钮可见
+-   `#edit_controls_active` - 编辑控件激活
+-   `#finalize_button_enabled` - 完成按钮启用
+
+#### Braze界面 (`ui/braze_screen.json`)
+
+-   `#image_texture` - 图像纹理
+
+#### 捆绑包购买警告界面 (`ui/bundle_purchase_warning_screen.json`)
+
+-   `#banner_visible` - 横幅可见
+-   `#offer_title` - 优惠标题
+-   `#keyart_path` - 主视觉图路径
+-   `#keyart_texture_file_system` - 主视觉图文件系统纹理
+
+#### 聊天界面 (`ui/chat_screen.json`)
+
+-   `#keyboard_being_use` - 正在使用键盘
+-   `#keyboard_button_focus_override_up` - 键盘按钮焦点覆盖上
+-   `#keyboard_button_focus_override_down` - 键盘按钮焦点覆盖下
+-   `#keyboard_button_visible` - 键盘按钮可见
+-   `#send_button_visible` - 发送按钮可见
+-   `#send_button_accessibility_text` - 发送按钮无障碍文本
+-   `#chat_visible` - 聊天可见
+-   `#message_text_box_content` - 消息文本框内容
+-   `#text_edit_box_focus_override_up` - 文本编辑框焦点覆盖上
+-   `#text_edit_box_focus_override_down` - 文本编辑框焦点覆盖下
+-   `#auto_complete_item` - 自动补全项目
+-   `#auto_complete_text` - 自动补全文本
+-   `#get_grid_size` - 获取网格尺寸
+-   `#chat_title_text` - 聊天标题文本
+-   `#chat_typeface_visible` - 聊天字体可见
+
+#### 选择Realm界面 (`ui/choose_realm_screen.json`)
+
+-   `#realms_grid_dimension` - Realms网格尺寸
+-   `#world_button_focus_identifier` - 世界按钮焦点标识
+-   `#ten_player_button_visible` - 十人游戏按钮可见
+-   `#two_player_button_visible` - 双人游戏按钮可见
+-   `#realms_world_player_count` - Realms世界玩家数量
+-   `#realms_game_online` - Realms游戏在线状态
+-   `#realms_game_unavailable` - Realms游戏不可用状态
+-   `#realms_game_offline` - Realms游戏离线状态
+
+#### 代币购买界面 (`ui/coin_purchase_screen.json`)
+
+-   `#bonus_coins` - 奖励代币
+-   `#coins_without_bonus` - 无奖励代币
+-   `#coin_offer_texture_name` - 代币优惠纹理名称
+-   `#coin_offer_texture_file_system` - 代币优惠文件系统纹理
+-   `#bonus_coins_visible` - 奖励代币可见
+-   `#price_text` - 价格文本
+-   `#coins_required_for_purchase` - 购买所需代币
+-   `#show_missing_coins` - 显示缺少的代币
+-   `#coin_offer_size` - 代币优惠尺寸
+-   `#has_coin_offers` - 是否有代币优惠
+-   `#coin_loading_visible` - 代币加载可见
+
+#### 命令方块界面 (`ui/command_block_screen.json`)
+
+-   `#maximized_input_visible` - 最大化输入可见
+-   `#block_type_icon_texture` - 方块类型图标纹理
+-   `#close_button_visible_binding_name` - 关闭按钮可见绑定名称
+-   `#command_impulse_mode` - 命令脉冲模式
+-   `#command_chain_mode` - 命令连锁模式
+-   `#command_repeat_mode` - 命令循环模式
+-   `#block_type_dropdown_toggle_label` - 方块类型下拉菜单切换标签
+-   `#block_type_dropdown_label_color_binding` - 方块类型下拉菜单标签颜色绑定
+-   `#block_type_dropdown_enabled` - 方块类型下拉菜单启用
+-   `#command_conditional_mode` - 命令条件模式
+-   `#command_unconditional_mode` - 命令无条件模式
+-   `#condition_dropdown_toggle_label` - 条件下拉菜单切换标签
+-   `#condition_dropdown_enabled` - 条件下拉菜单启用
+-   `#command_always_on_mode` - 命令常开模式
+-   `#command_needs_redstone_mode` - 命令需要红石模式
+-   `#redstone_dropdown_enabled` - 红石下拉菜单启用
+-   `#command_hover_note` - 命令悬停说明
+-   `#execute_on_first_tick_enabled` - 首次执行启用
+-   `#command_tick_delay` - 命令延迟刻数
+-   `#command_text_edit` - 命令文本编辑
+-   `#command_output_text` - 命令输出文本
+-   `#previous_block_type_text` - 先前方块类型文本
+-   `#previous_block_type_text_color` - 先前方块类型文本颜色
+-   `#previous_condition_mode_text` - 先前条件模式文本
+-   `#previous_redstone_mode_text` - 先前红石模式文本
+-   `#minimize_button_visible_binding_name` - 最小化按钮可见绑定名称
+
+#### 评论界面 (`ui/comment_screen.json`)
+
+-   `#report_to_club_button_visible_feeditem` - 反馈给俱乐部按钮可见(动态项)
+-   `#report_to_enforcement_button_visible_feeditem` - 反馈给执行按钮可见(动态项)
+-   `#delete_button_visible_feeditem` - 删除按钮可见(动态项)
+-   `#report_to_club_button_visible_comment` - 反馈给俱乐部按钮可见(评论)
+-   `#report_to_enforcement_button_visible_comment` - 反馈给执行按钮可见(评论)
+-   `#delete_button_visible_comment` - 删除按钮可见(评论)
+-   `#comment_buttons_visible` - 评论按钮可见
+-   `#feed_comment_page_collection_length` - 动态评论页集合长度
+-   `#comment_content` - 评论内容
+-   `#is_author_linked_account` - 是否为作者关联账户
+-   `#content` - 内容
+-   `#text_visible` - 文本可见
+-   `#likes_and_comments` - 点赞和评论
+-   `#screenshot_texture` - 截图纹理
+-   `#screenshot_texture_source` - 截图纹理来源
+-   `#textpost_content` - 文本发布内容
+-   `#textpost_visible` - 文本发布可见
+-   `#comment_text_box` - 评论文本框
+-   `#comment_platform_tag` - 评论平台标签
+-   `#comment_gamertag` - 评论玩家标签
+-   `#likes_and_time_since_comment_post` - 点赞和评论发布时间
+-   `#author_gamertag` - 作者玩家标签
+-   `#time_since_feed_post` - 动态发布时间
+-   `#author_platform_tag` - 作者平台标签
+
+#### 确认MSA解绑界面 (`ui/confirm_msa_unlink_screen.json`)
+
+-   `#unlink_warning_text` - 解绑警告文本
+-   `#unlink_consequences_acknowledged` - 已确认解绑后果
+-   `#confirm_0` - 确认0
+-   `#confirm_0_enabled` - 确认0启用
+-   `#confirm_1` - 确认1
+-   `#confirm_1_enabled` - 确认1启用
+-   `#confirm_2` - 确认2
+-   `#confirm_2_enabled` - 确认2启用
+-   `#confirm_3` - 确认3
+-   `#confirm_3_enabled` - 确认3启用
+
+#### 内容日志历史界面 (`ui/content_log_history_screen.json`)
+
+-   `#content_log_text` - 内容日志文本
+-   `#messages_size` - 消息大小
+
+#### 创建世界促销界面 (`ui/create_world_upsell.json`)
+
+-   `#realm_button_text` - Realm按钮文本
+-   `#realm_trial_available` - Realm试用可用
+
+#### 铁砧界面 (`ui/anvil_screen.json`)
+
+-   `#cost_text` - 花费文本
+-   `#cost_text_green` - 绿色花费文本
+-   `#cost_text_red` - 红色花费文本
+
+#### 信标界面 (`ui/beacon_screen.json`)
+
+-   `#supports_netherite` - 支持下界合金
+-   `#extra_image_selection` - 额外图像选择
+
+#### 酿造台界面 (`ui/brewing_stand_screen.json`)
+
+-   `#empty_bottle_image_visible` - 空瓶图像可见
+-   `#empty_fuel_image_visible` - 空燃料图像可见
+-   `#brewing_bubbles_ratio` - 酿造气泡比例
+-   `#brewing_fuel_ratio` - 酿造燃料比例
+-   `#brewing_arrow_ratio` - 酿造箭头比例
+
+#### 制图台界面 (`ui/cartography_screen.json`)
+
+-   `#is_none_mode` - 是否为无模式
+-   `#is_clone_mode` - 是否为克隆模式
+-   `#is_rename_mode` - 是否为重命名模式
+-   `#is_basic_map_mode` - 是否为基本地图模式
+-   `#is_locator_map_mode` - 是否为定位器地图模式
+-   `#is_extend_mode` - 是否为扩展模式
+-   `#is_locked_mode` - 是否为锁定模式
+-   `#output_description` - 输出描述
+
+#### 附魔台界面 (`ui/enchanting_table_screen.json`)
+
+-   `#selectable_dust_is_visible` - 可选粉尘可见
+-   `#unselectable_dust_is_visible` - 不可选粉尘可见
+-   `#runes` - 符文
+-   `#cost` - 花费
+-   `#unselectable_button_visibility` - 不可选按钮可见性
+-   `#selectable_button_visibility` - 可选按钮可见性
+-   `#show_selected_button_highlight` - 显示选中按钮高亮
+-   `#active_enchant` - 激活附魔
+-   `#inactive_enchant` - 未激活附魔
+-   `#input_item_id` - 输入物品ID
+-   `#output_item_id` - 输出物品ID
+-   `#enchant_hint` - 附魔提示
+-   `#player_level_color` - 玩家等级颜色
+-   `#player_level_info` - 玩家等级信息
+-   `#enchant_error` - 附魔错误
+
+#### 熔炉界面 (`ui/furnace_screen.json`)
+
+-   `#furnace_arrow_ratio` - 熔炉箭头比例
+-   `#furnace_flame_ratio` - 熔炉火焰比例
+-   `#output_name` - 输出名称
+
+#### 马匹界面 (`ui/horse_screen.json`)
+
+-   `#entity_id` - 实体ID
+-   `#equip_grid_dimensions` - 装备网格尺寸
+-   `#inv_grid_dimensions` - 物品栏网格尺寸
+-   `#sadle_slot_centered` - 鞍槽居中
+-   `#has_saddle_slot` - 有鞍槽
+-   `#has_armor_slot` - 有护甲槽
+-   `#has_only_armor_slot` - 仅有护甲槽
+-   `#has_only_carpet_slot` - 仅有地毯槽
+-   `#has_armor_and_saddle_slot` - 有护甲和鞍槽
+-   `#has_carpet_and_saddle_slot` - 有地毯和鞍槽
+-   `#is_chested` - 是否有箱子
+-   `#renderer_tab_toggle` - 渲染器标签切换
+-   `#chest_tab_toggle` - 箱子标签切换
+
+#### 织布机界面 (`ui/loom_screen.json`)
+
+-   `#pattern_cell_background_texture` - 图案单元格背景纹理
+-   `#container_cell_background_texture` - 容器单元格背景纹理
+-   `#empty_image_visible` - 空图像可见
+-   `#banner_patterns` - 旗帜图案
+-   `#banner_colors` - 旗帜颜色
+-   `#pattern_selector_total_items` - 图案选择器总项目数
+-   `#result_patterns` - 结果图案
+-   `#result_colors` - 结果颜色
+-   `#is_right_tab_loom` - 是否为右侧织布机标签
+-   `#is_left_tab_patterns` - 是否为左侧图案标签
+
+#### 切石机界面 (`ui/stonecutter_screen.json`)
+
+-   `#stone_cell_background_texture` - 石头单元格背景纹理
+-   `#container_cell_background_texture` - 容器单元格背景纹理
+-   `#item_stack_count` - 物品堆叠数量
+-   `#stone_selector_total_items` - 石头选择器总项目数
+-   `#has_input_item` - 是否有输入物品
+-   `#is_right_tab_stonecutter` - 是否为右侧切石机标签
+-   `#is_left_tab_stones` - 是否为左侧石头标签
+
+#### 死亡界面 (`ui/death_screen.json`)
+
+- `#death_reason_text` - 死亡原因文本
+- `#respawn_visible` - 重生可见
+- `#quit_enabled` - 退出启用
+- `#quit_visible` - 退出可见
+- `#buttons_and_deathmessage_visible` - 按钮和死亡消息可见
+
+#### 村民交易2界面 (`ui/trade2_screen.json`)
+
+-   `#name_label` - 名称标签
+-   `#trade_cell_background_texture` - 交易单元格背景纹理
+-   `#trade_item_count` - 交易物品数量
+-   `#single_slash_visible` - 单斜杠可见
+-   `#double_slash_visible` - 双斜杠可见
+-   `#second_trade_item_count` - 第二交易物品数量
+-   `#trade_price_different` - 交易价格不同
+-   `#trade_cross_out_visible` - 交易划掉可见
+-   `#padding_around_sell_item` - 出售物品周围填充
+-   `#trade_possible` - 交易可能
+-   `#trade_toggle_state` - 交易切换状态
+-   `#trade_toggle_enabled` - 交易切换启用
+-   `#trade_tier_total` - 交易等级总数
+-   `#tier_name` - 等级名称
+-   `#is_tier_unlocked` - 等级是否解锁
+-   `#is_left_tab_trade` - 是否为左侧交易标签
+-   `#show_level` - 显示等级
+-   `#tier_visible` - 等级可见
+-   `#trade_selector_total` - 交易选择器总数
+-   `#has_second_buy_item` - 是否有第二购买物品
+-   `#exp_bar_visible` - 经验条可见
+-   `#exp_progress` - 经验进度
+-   `#exp_possible_progress` - 可能经验进度
+-   `#trade_details_button_1_visible` - 交易详情按钮1可见
+-   `#trade_details_button_2_visible` - 交易详情按钮2可见
+-   `#enchantment_details_button_visible` - 附魔详情按钮可见
+-   `#item_valid` - 物品有效
+
+### 值取决于所在界面的绑定：
+
+-   `#title_text` - 标题文本
+-   `#body_text` - 正文文本
+-   `#hover_text` - 悬停文本
+-   `#cross_out_icon` - 划掉图标
+-   `#is_left_tab_inventory` - 是否为左侧物品栏标签
+-   `#selected_hover_text` - 选中悬停文本
+
+### 其他绑定：
+
+-   `#tts_dialog_body` - 文本转语音对话框正文
+-   `#button_enabled` - 按钮启用
+-   `#using_touch` - 使用触摸
+-   `#close_button_visible` - 关闭按钮可见
+
+## 设置选项
+
+### 滑动条设置
+
+| 设置名称               | 滑动条ID                 | 数值绑定名称               | 语音播报值               | 文本标签绑定名称               | 启用状态绑定名称               |
+|------------------------|--------------------------|--------------------------|--------------------------|------------------------------|------------------------------|
+| 亮度调节               | `gamma`                  | `#gamma`                | `#gamma_text_value`     | `#gamma_slider_label`        | `#gamma_enabled`            |
+| VR亮度调节             | `vr_gamma`               | `#vr_gamma`             | `#vr_gamma_text_value`  | `#vr_gamma_slider_label`     | `#vr_gamma_enabled`         |
+| HUD透明度              | `interface_opacity`      | `#interface_opacity`    | `#interface_opacity_text_value` | `#interface_opacity_slider_label` | `#interface_opacity_enabled` |
+| 分屏HUD透明度          | `splitscreen_interface_opacity` | `#splitscreen_interface_opacity` | `#interface_opacity_text_value` | `#splitscreen_interface_opacity_slider_label` | `#splitscreen_interface_opacity_enabled` |
+| 视野范围(FOV)          | `field_of_view`          | `#field_of_view`        | `#field_of_view_text_value` | `#field_of_view_slider_label` | `#field_of_view_enabled`     |
+
+### 开关选项
+
+| 设置名称                     | 开关ID                          | 状态绑定名称                   | 启用状态绑定名称                   |
+|------------------------------|--------------------------------|--------------------------------|----------------------------------|
+| 反转Y轴(鼠标)                | `keyboard_mouse_invert_y_axis` | `#keyboard_mouse_invert_y_axis` | `#keyboard_mouse_invert_y_axis_enabled` |
+| 自动跳跃(鼠标)               | `keyboard_mouse_autojump`      | `#keyboard_mouse_autojump`     | `#keyboard_mouse_autojump_enabled` |
+| 显示完整键盘选项             | `keyboard_show_full_keyboard_options` | `#keyboard_show_full_keyboard_options` | `#keyboard_show_full_keyboard_options_enabled` |
+| 隐藏键盘提示                 | `hide_keyboard_tooltips`       | `#hide_keyboard_tooltips`      | `#hide_keyboard_tooltips_enabled` |
+| 内容文件日志                 | `content_log_file`             | `#content_log_file`            | `#content_log_file_enabled`      |
+| 内容GUI日志                  | `content_log_gui`              | `#content_log_gui`             | `#content_log_gui_enabled`       |
+| 使用单点登录(SSO)            | `ad_use_single_sign_on`        | `#ad_use_single_sign_on`       |                                  |
+| 关闭自动更新                 | `#auto_update_mode_off`        | `#auto_update_mode_off`        |                                  |
+| 启用自动更新(包括移动数据)    | `#auto_update_mode_on_with_cellular` | `#auto_update_mode_on_with_cellular` |                                  |
+| 仅WiFi自动更新               | `#auto_update_mode_on_wifi_only` | `#auto_update_mode_on_wifi_only` |                                  |
+| 启用自动更新                 | `auto_update_enabled`          | `#auto_update_enabled`         |                                  |
+| 跨平台游戏                   | `crossplatform_toggle`         | `#crossplatform_toggle`        | `#crossplatform_toggle_enabled`  |
+| 允许使用移动数据              | `allow_cellular_data`          | `#allow_cellular_data`         | `#allow_cellular_data_enabled`   |
+| WebSocket加密                | `websocket_encryption`         | `#websocket_encryption`        | `#websocket_encryption_enabled`  |
+| 仅允许可信皮肤               | `only_trusted_skins_allowed`   | `#only_trusted_skins_allowed`  | `#only_trusted_skins_allowed_enabled` |
+| 外部存储位置                 | `#storage_location_radio_external` | `#storage_location_radio_external` | `#file_storage_location_enabled` |
+| 应用内存储位置               | `#storage_location_radio_package` | `#storage_location_radio_package` | `#file_storage_location_enabled` |
+| 第一人称视角                 | `#thirdperson_radio_first`     | `#thirdperson_radio_first`     | `#third_person_dropdown_enabled` |
+| 第三人称背后视角             | `#thirdperson_radio_third_back` | `#thirdperson_radio_third_back` | `#third_person_dropdown_enabled` |
+| 第三人称正面视角             | `#thirdperson_radio_third_front` | `#thirdperson_radio_third_front` | `#third_person_dropdown_enabled` |
+| 全屏模式                     | `full_screen`                  | `#full_screen`                 | `#full_screen_enabled`           |
+| 隐藏手持物品                 | `hide_hand`                    | `#hide_hand`                   | `#hide_hand_enabled`             |
+| VR模式隐藏手持物品           | `vr_hide_hand`                 | `#vr_hide_hand`                | `#vr_hide_hand_enabled`          |
+| 隐藏纸娃娃                   | `hide_paperdoll`               | `#hide_paperdoll`              | `#hide_paperdoll_enabled`        |
+| 隐藏HUD                     | `hide_hud`                     | `#hide_hud`                    | `#hide_hud_enabled`              |
+| VR模式隐藏HUD               | `vr_hide_hud`                  | `#vr_hide_hud`                 | `#vr_hide_hud_enabled`           |
+| 屏幕动画效果                 | `screen_animations`            | `#screen_animations`           | `#screen_animations_enabled`     |
+| 水平分屏                     | `#split_screen_radio_horizontal` | `#split_screen_radio_horizontal` | `#split_screen_dropdown_enabled` |
+| 垂直分屏                     | `#split_screen_radio_vertical` | `#split_screen_radio_vertical` | `#split_screen_dropdown_enabled` |
+| 显示自动保存图标             | `show_auto_save_icon`          | `#show_auto_save_icon`         | `#show_auto_save_icon_enabled`   |
+| 经典选择框                   | `classic_box_selection`        | `#classic_box_selection`       | `#classic_box_selection_enabled` |
+| VR经典选择框                 | `vr_classic_box_selection`     | `#vr_classic_box_selection`    | `#vr_classic_box_selection_enabled` |
+| 显示玩家名称                 | `ingame_player_names`          | `#ingame_player_names`         | `#ingame_player_names_enabled`   |
+| 分屏显示玩家名称             | `splitscreen_ingame_player_names` | `#splitscreen_ingame_player_names` | `#splitscreen_ingame_player_names_enabled` |
+| 视角晃动效果                 | `view_bobbing`                 | `#view_bobbing`                | `#view_bobbing_enabled`          |
+| 相机抖动效果                 | `camera_shake`                 | `#camera_shake`                | `#camera_shake_enabled`          |
+| 透明树叶                     | `transparent_leaves`           | `#transparent_leaves`          | `#transparent_leaves_enabled`    |
+| VR透明树叶                   | `vr_transparent_leaves`        | `#vr_transparent_leaves`       | `#vr_transparent_leaves_enabled` |
+| 气泡粒子效果                 | `bubble_particles`             | `#bubble_particles`            | `#bubble_particles_enabled`      |
+| 渲染云朵                     | `render_clouds`                | `#render_clouds`               | `#render_clouds_enabled`         |
+| 精美天空                     | `fancy_skies`                  | `#fancy_skies`                 | `#fancy_skies_enabled`           |
+| 平滑光照                     | `smooth_lighting`              | `#smooth_lighting`             | `#smooth_lighting_enabled`       |
+| VR平滑光照                   | `graphics_toggle`              | `#graphics_toggle`             | `#graphics_toggle_enabled`       |
+| 图形质量                     | `graphics_toggle`              | `#graphics_toggle`             | `#graphics_toggle_enabled`       |
+| 视野范围切换                 | `field_of_view_toggle`         | `#field_of_view_toggle`        | `#field_of_view_toggle_enabled`  |
+| 经典UI风格                   | `#ui_profile_radio_classic`    | `#ui_profile_radio_classic`    | `#ui_profile_dropdown_enabled`   |
+| 便携版UI风格                 | `#ui_profile_radio_pocket`     | `#ui_profile_radio_pocket`     | `#ui_profile_dropdown_enabled`   |
+| 像素抗锯齿                   | `texel_aa`                     | `#texel_aa`                    | `#texel_aa_enabled`              |
+| VR 3D渲染                   | `vr_3d_rendering`              | `#vr_3d_rendering`             | `#vr_3d_rendering_enabled`       |
+| VR镜像纹理                   | `vr_mirror_texture`            | `#vr_mirror_texture`           | `#vr_mirror_texture_enabled`     |
+| VR手部指针可见               | `vr_hand_pointer`              | `#vr_hand_pointer`             | `#vr_hand_pointer_enabled`       |
+| VR手部可见                   | `vr_hands_visible`             | `#vr_hands_visible`            | `#vr_hands_visible_enabled`      |
+| 启用自动文本转语音           | `enable_auto_text_to_speech`   | `#enable_auto_text_to_speech`  | `#enable_auto_text_to_speech_enabled` |
+| 启用UI文本转语音             | `enable_ui_text_to_speech`     | `#enable_ui_text_to_speech`    | `#enable_ui_text_to_speech_enabled` |
+| 启用聊天文本转语音           | `enable_chat_text_to_speech`   | `#enable_chat_text_to_speech`  | `#enable_chat_text_to_speech_enabled` |
+| 启用打开聊天消息             | `enable_open_chat_message`     | `#enable_open_chat_message`    | `#enable_open_chat_message_enabled` |
+| 相机抖动                     | `camera_shake`                 | `#camera_shake`                | `#camera_shake_enabled`          |
+| 语言选择(集合)               | `languages`                    | `#language_initial_selected`   |                                  |
+
+## 物品ID与附加值(`#item_id_aux`)
+
+| 物品名称         | ID    | 附加值      |
+|------------------|-------|------------|
+| 钻石             | 306   | 20054016   |
+| 绿宝石           | 519   | 34013184   |
+| 金锭             | 308   | 20185088   |
+| 铁锭             | 307   | 20119552   |
+| 下界合金锭       | 616   | 40370176   |
+| 旗帜             | 574   | 37617664   |
+| 鞍               | 373   | 24444928   |
+| 制图台           | -200  | -13107200  |
+| 箱子             | 54    | 3538944    |
+| 工作台           | 58    | 3801088    |
+| 织布机           | -204  | -13369344  |
+| 切石机           | -197  | -12910592  |
+
+#### 如何计算方块物品的附加值：
+
+附加值 = ID × 65536
+
+ID = 附加值 ÷ 65536  
+65536 = 附加值 ÷ ID
+
+获取所有物品ID请参考[官方文档](https://docs.microsoft.com/en-us/minecraft/creator/reference/content/addonsreference/examples/addonitems)。

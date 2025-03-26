@@ -1,5 +1,6 @@
 ---
 title: 世界生成器
+nav_order: 18
 categories:
     - title: 基础
       color: blue

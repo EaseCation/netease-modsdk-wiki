@@ -71,7 +71,9 @@ mentions:
 	}
 }
 ```
+:::
 
+::: code-group
 ```json [RP/textures/item_texture.json]
 {
 	"resource_pack_name": "vanilla",
@@ -128,7 +130,9 @@ mentions:
 	}
 }
 ```
+:::
 
+::: code-group
 ```json [BP/items/my_sword.json]
 "events": {
     "wiki:my_sword.on_dig_damage": {
@@ -160,7 +164,9 @@ mentions:
     }
 }
 ```
+:::
 
+::: code-group
 ```json [BP/items/my_sword.json]
 "events": {
     "wiki:my_sword.hurt_entity": {

@@ -1,5 +1,5 @@
 ---
-title: 方块变换（置换）
+title: 方块置换
 description: 方块变换数组提供了一种基于当前置换条件性应用组件的方法。
 category: 基础
 nav_order: 7
@@ -7,7 +7,7 @@ mentions:
     - QuazChick
 ---
 
-# 方块变换（置换）
+# 方块置换 `permutations`
 
 <!--@include: @/wiki/bedrock-wiki-mirror.md-->
 
@@ -20,6 +20,8 @@ mentions:
 方块`permutations`数组提供了一种基于当前置换（状态值集合）条件性应用组件（包括事件触发器和标签）的方式。
 
 `permutations`数组中的组件可以覆盖方块的基类组件以及其他组件列表中的组件。置换数组中最后出现的条目具有最高优先级。
+
+**[可旋转方块](/wiki/blocks/rotatable-blocks)** 是 **方块置换** 的一种常用用法。
 
 ## 定义置换
 

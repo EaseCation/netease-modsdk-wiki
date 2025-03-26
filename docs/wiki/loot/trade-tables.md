@@ -1,28 +1,32 @@
 ---
-title: Trade Tables
-category: Documentation
+title: 交易表
+category: 文档
 nav_order: 2
 tags:
-    - Stable
-    - Last updated for Version 1.18.10
+    - 稳定版
+    - 最后更新于版本1.18.10
 mentions:
     - Ciosciaa
     - SirLich
     - TheItsNameless
 ---
 
-Trade tables represent the fundamental data behind trading item transactions for an entity. Trade tables are not standalone; they must be referenced from an [entity component](https://bedrock.dev/docs/stable/Entities#minecraft%3Aeconomy_trade_table). Using the randomizing properties available to trade tables, trade offers, item counts, and cost calculations may vary across entity instances, even if all would point to the same trade table.
+# 交易表
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
+交易表是实体进行物品交易的基础数据载体。交易表不能独立使用，必须通过[实体组件](https://bedrock.dev/docs/stable/Entities#minecraft%3Aeconomy_trade_table)引用。利用交易表提供的随机化特性，即使多个实体实例引用同一交易表，其交易报价、物品数量和成本计算也可能各不相同。
 
 ![](/assets/images/loot/trade_tables/trading.png)
 
-Trade tables are not identified or versioned. Like loot tables, trade tables do not support Molang and instead rely on JSON constructs, like range objects and [functions](#functions). Despite being different, trade tables still support comments.
+交易表没有标识符或版本控制。与战利品表类似，交易表不支持Molang，而是依赖JSON结构（如范围对象和[函数](#functions)）。虽然结构不同，交易表仍支持注释功能。
 
-## Integration
+## 集成方式
 
-Trade tables don't represent a primary add-on system, like blocks or biomes. They aren't registered by being placed in a specific folder; instead, they're referenced (from entities). Trade tables may be placed anywhere within a behavior pack.
+交易表不属于核心附加系统（如方块或生物群系）。它们不是通过放置在特定文件夹来注册，而是通过实体引用。交易表可以放置在行为包的任何位置。
 
 ::: tip
-It's recommended to follow vanilla convention and place all trade tables within the top-level `trading` directory in a behavior pack. From there, any hierarchy can be employed.
+建议遵循原版规范，将所有交易表放在行为包的顶级`trading`目录下。在此目录下可采用任意层级结构。
 :::
 
 <FolderView
@@ -32,12 +36,12 @@ It's recommended to follow vanilla convention and place all trade tables within 
 	]"
 />
 
-The following example is referenced and analyzed throughout the document:
+下文将通过一个贯穿文档的示例进行分析：
 
-<Spoiler title="Trade Table File Example">
+::: details 交易表示例文件
 
-<CodeHeader>BP/trading/minister.json</CodeHeader>
-```json
+::: code-group
+```json [BP/trading/minister.json]
 {
 	"tiers": [
 		{
@@ -159,15 +163,14 @@ The following example is referenced and analyzed throughout the document:
 	]
 }
 ```
-</Spoiler>
+:::
 
-## Structure
+## 结构
 
-Trade tables are represented as un-versioned, un-namespaced objects.
+交易表采用无版本、无命名空间的JSON对象结构。
 
-<CodeHeader>#</CodeHeader>
-
-```json
+::: code-group
+```json [#]
 {
 	"tiers": [
 		{
@@ -175,204 +178,200 @@ Trade tables are represented as un-versioned, un-namespaced objects.
 		},
 		{
 			"total_exp_required": 28,
-
 			"trades": […]
 		}
 	]
 }
 ```
+:::
 
-Trade tables use [tiers](#tiers) to structure trade organization. Tiers are defined with the required top-level `"tiers"` array property. Tiers appear in order in the trading interface.
+交易表使用[层级(tiers)](#tiers)来组织交易结构。层级通过顶层的必需数组属性`"tiers"`定义。层级会按照顺序显示在交易界面中。
 
-### Tiers
+### 交易层级
 
-Tiers act as an unlockable set of trades and represent the highest level of grouping in a trade table.
+层级代表可解锁的交易集合，是交易表中的最高级分组单位。
 
-<CodeHeader>#/tiers/0</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/0]
 {
 	"groups": […]
 }
 ```
+:::
 
-<CodeHeader>#/tiers/1</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/1]
 {
 	"total_exp_required": 28,
-
 	"trades": […]
 }
 ```
-
-Each tier must either represent a set of [trades](#trades) (as `"trades"`) or [trade groups](#groups) (as `"groups"`); one of these properties is required. If trades are specified, all such trades will appear for that tier. If instead groups are given, trades from all listed groups will be used for that tier; how each group selects its trades depends on its configuration.
-
-::: tip NOTE
-If both `"trades"` and `"groups"` are given in a tier, the trades declaration is ignored in favor of groups.
 :::
 
-Within a tier, trades appear in order in the trading interface. If trades are grouped, those groups will appear in their defined order as well, organized by group and then by trade. Trades in one group are not visually differentiable from trades in other groups; only tiers are visually separated and identifiable.
+每个层级必须包含[交易(trades)](#trades)数组（`"trades"`）或[交易组(groups)](#groups)数组（`"groups"`）中的至少一个属性。如果指定交易数组，该层级将显示所有列出的交易。如果指定交易组数组，则根据组配置从所有列出的组中选择交易。
 
-#### Experience Requirement
+::: tip 注意
+如果同时指定`"trades"`和`"groups"`，系统会优先使用groups而忽略trades声明。
+:::
 
-Tiers are unlocked when the _trader_ meets experience thresholds. Each trader has its own internal lifetime experience that accumulates when trading with players. The amount of experience obtained per trade depends on that trade's [experience reward](#trader-experience). The optional `"total_exp_required"` property specifies how much experience the trader needs in order for that tier to unlock.
+在层级内部，交易会按照定义顺序显示。如果交易分组，各组及其内部交易也会按定义顺序组织。不同组的交易在视觉上没有区分，只有层级会进行视觉分隔和标识。
 
-<CodeHeader>#/tiers/1/</CodeHeader>
+#### 经验需求
 
-```json
+当交易者达到经验阈值时，层级会被解锁。每个交易者有独立的累计经验值，通过与玩家交易获得。每次交易获得的经验量取决于该交易的[交易者经验奖励](#trader-experience)。可选属性`"total_exp_required"`指定交易者解锁该层级所需的总经验值。
+
+::: code-group
+```json [#/tiers/1/]
 "total_exp_required": 28
 ```
-
-By default, the amount of experience needed is set to the index of the trade tier. Therefore, the second tier would require the trader to have 1 XP; the third tier would require 2 XP; and so forth. The first tier is always unlocked automatically, [regardless of its set experience threshold](#initial-tier-experience).
-
-#### Tier Unlocking
-
-Tiers are unlocked in order. When a new tier is unlocked, the subsequent tier is additionally checked to see if its threshold is met by the current XP. If it is, it unlocks and checks its subsequent tier, and so forth. Tier unlocking is checked when the rewarded trader experience would suffice for multiple tiers or if a [provided initial experience](#initial-tier-experience) would unlock subsequent tiers when correctly updated by the game.
-
-::: tip NOTE
-Since tiers are checked one-at-a-time, if tier unlocking would stop due to the XP requirements of a tier not being met, no subsequent tiers will be checked, even if those later tiers' XP requirements have been met.
 :::
 
-##### Initial Tier Experience
+默认情况下，所需经验值等于交易层级的索引值。因此第二层需要交易者有1点经验，第三层需要2点，以此类推。[无论设置如何](#initial-tier-experience)，第一层级总是自动解锁。
 
-Special handling occurs for a non-zero experience threshold in the first tier. If negative, _all_ tiers will be unlocked. If greater than 0, the initial experience of the trader is set to the provided value.
+#### 层级解锁机制
+
+层级按顺序解锁。当新层级解锁时，系统会检查后续层级是否满足当前经验值的阈值要求。如果满足则继续解锁后续层级，依此类推。在以下情况会触发层级解锁检查：(1) 获得的交易者经验足以解锁多个层级时；(2) 游戏正确更新后，[提供的初始经验](#initial-tier-experience)可以解锁后续层级时。
+
+::: tip 注意
+由于层级是逐个检查的，如果某个层级的经验要求未满足导致解锁中断，即使后续层级的经验要求已满足，也不会继续检查。
+:::
+
+##### 初始层级经验
+
+第一层级的非零经验阈值有特殊处理：如果为负数，将解锁所有层级；如果大于0，交易者的初始经验值将被设为该值。
 
 ::: warning
-When the initial tier's experience threshold is non-zero, a manual update is required for a trader's trades to reflect the actual nature of their trade table. In these cases, performing a trade or closing and re-opening the trading interface will update the interface correctly. Initially, only the first tier will be available even if other tiers should be unlocked.
+当第一层级的经验阈值非零时，需要手动更新才能使交易者的交易界面正确反映交易表实际状态。此时需要进行一次交易或关闭再重新打开交易界面才能正确更新界面显示。初始时即使其他层级应该解锁，也只会显示第一层级。
 :::
 
-##### Tier Freezing
+##### 层级冻结
 
-Excluding the [initial tier](#initial-tier-experience), it's possible to freeze trades at a tier:
+除[初始层级](#initial-tier-experience)外，可以将交易冻结在某个层级：
 
-<CodeHeader>Example Tier Freeze</CodeHeader>
-
-```json
+::: code-group
+```json [示例层级冻结]
 "total_exp_required": -1
 ```
+:::
 
-When its prior tier is unlocked, a tier with a negative XP requirement will immediately unlock, [as expected](#tier-unlocking). However, it will be impossible for the player to progress to any subsequent tiers.
+当上一层级解锁时，经验要求为负数的层级会立即解锁（[符合预期](#tier-unlocking)），但玩家将无法继续解锁后续任何层级。
 
-### Trade Groups
+### 交易组
 
-Trade groups are a way to randomly select which trades an individual trader should use for a tier.
+交易组用于随机选择单个交易者在某个层级应该使用的交易。
 
-<CodeHeader>#/tiers/0/groups/0</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/0/groups/0]
 {
 	"num_to_select": 1,
-
 	"trades": […]
 }
 ```
+:::
 
-The trades from which to select are given with the required `"trades"` array; each entry is a [trade](#trades). A select number of these trades, indicated by the optional `"num_to_select"` property, will be picked for that tier for each trader. If `"num_to_select"` is `0`, all trades will be selected; this is the default.
+通过必需的`"trades"`数组指定候选交易，每个条目都是一个[交易](#trades)。可选属性`"num_to_select"`表示每个交易者实例在该层级选择交易的数量。如果`"num_to_select"`为0（默认值），将选择所有交易。
 
-::: tip NOTE
-Trade groups cannot be nested for advanced chance selection.
+::: tip 注意
+交易组不支持嵌套以实现高级概率选择。
 :::
 
 ::: tip
-Currently, no random selection count is possible. Nor is weighting by trade, but trades can be duplicated within the array to effectively increase their likelihood of being selected.
+目前无法随机选择数量，也无法按交易设置权重。但可以通过在数组中重复交易条目来有效增加其被选中的概率。
 :::
 
-### Trades
+### 交易
 
-Trades represent a transaction between a trader and the player.
+交易代表交易者与玩家之间的物品交换。
 
-<CodeHeader>#/tiers/0/trades/1</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/0/trades/1]
 {
 	"wants": […],
 	"gives": […],
 	"max_uses": 2,
-
 	"reward_exp": false,
 	"trader_exp": 8
 }
 ```
-
-Once a trade is picked for a trade slot, it will not fundamentally change. Only the [quantity](#quantity) can be modified in certain situations.
-
-::: tip
-Individual trade definitions can affect more than just trades themselves. Notably, an entity can [hold a particular item](https://bedrock.dev/docs/stable/Entities#minecraft%3Abehavior.trade_interest) in response to the player holding an item.
 :::
 
-#### Wanted and Given Items
+一旦交易被选入交易槽，其基本内容不会改变。只有[数量](#quantity)在某些情况下可能被修改。
 
-The fundamental transactional units are declared using `"wants"` and `"gives"`; players trade with `"wants"` to receive `"gives"`. Both properties must be arrays and are required.
+::: tip
+单个交易定义可以影响交易之外的内容。值得注意的是，实体可以[持有特定物品](https://bedrock.dev/docs/stable/Entities#minecraft%3Abehavior.trade_interest)来响应玩家持有的物品。
+:::
 
-<CodeHeader>#/tiers/0/trades/1/</CodeHeader>
+#### 需求与给予物品
 
-```json
+基础交易单元通过`"wants"`和`"gives"`声明：玩家用`"wants"`交换`"gives"`。这两个属性都是必需的数组。
+
+::: code-group
+```json [#/tiers/0/trades/1/]
 "wants": […],
 "gives": […]
 ```
-
-A trade can have between 1 and 2 wanted entries and must have exactly 1 given entry. Each entry of either array may be either an [item](#items) or a [choice](#choices).
-
-The trading interface will adapt depending on the number of items wanted. In some circumstances, some trading modifiers, such as [quantity-modifying enchantment functions](#quantity-modifying-enchantment-functions), only affect the first wanted item.
-
-::: tip NOTE
-If an object is provided as an entry that contains both item and choice properties, only the choice part is considered; the item parts will be ignored.
 :::
 
-#### Trade Limit
+每笔交易可以有1-2个需求条目，必须有1个给予条目。每个条目可以是[物品](#items)或[选择项](#choices)。
 
-A trader can typically only perform an individual trade a set number of times before having to resupply. The numeric `"max_uses"` property configures this number.
+交易界面会根据需求物品数量自动调整。某些情况下，[数量修改附魔函数](#quantity-modifying-enchantment-functions)等交易修饰符只影响第一个需求物品。
 
-<CodeHeader>#/tiers/0/trades/1/</CodeHeader>
+::: tip 注意
+如果条目对象同时包含item和choice属性，只有choice部分会被考虑，item部分将被忽略。
+:::
 
-```json
+#### 交易次数限制
+
+交易者通常只能在补充库存前执行有限次数的单个交易。数值属性`"max_uses"`配置这个限制次数。
+
+::: code-group
+```json [#/tiers/0/trades/1/]
 "max_uses": 2
 ```
-
-Trade limits are specific to each trade. Diminishing supply in one trade won't affect another trade, even if both trades have the same wanted and given items. By default, a trader will be able to carry out an individual trade 7 times before needing to resupply.
-
-::: tip NOTE
-The act of resupplying is handled by an entity component (`"minecraft:trade_resupply": {}`).
 :::
 
-If a value of `0` is given, that trade will be shown in the trading interface but will be impossible to use. If a negative value is given, that trade will never need resupplying; it will be infinitely usable.
+交易限制是每个交易独立的。一个交易的库存减少不会影响另一个交易，即使两者需求与给予物品完全相同。默认情况下，交易者可以在需要补充前执行7次单个交易。
 
-#### Player Experience
+::: tip 注意
+补充行为由实体组件(`"minecraft:trade_resupply": {}`)处理。
+:::
 
-Experience orbs intended for the _player_ can be disabled for a trade using the optional Boolean `"reward_exp"` property.
+如果值为0，该交易会显示在界面中但无法使用。如果为负值，该交易将无限次使用，无需补充。
 
-<CodeHeader>#/tiers/0/trades/1/</CodeHeader>
+#### 玩家经验
 
-```json
+通过可选布尔属性`"reward_exp"`可以禁用交易给玩家的经验球。
+
+::: code-group
+```json [#/tiers/0/trades/1/]
 "reward_exp": false
 ```
-
-By default, `"reward_exp"` is true, and the player will be rewarded with some experience for trading. The amount of experience received is not modifiable within a trade table.
-
-#### Trader Experience
-
-Traders may receive experience when the player finalizes a trade. This property is the key to establishing a trade progression system with a trader using [tiers](#tiers).
-
-<CodeHeader>#/tiers/0/trades/1/</CodeHeader>
-
-```json
-"trader_exp": 8
-```
-
-The amount of experience to reward the _trader_ is given the the optional numeric property `"trader_exp"`. By default, the trader will receive 1 XP.
-
-::: tip
-For non-linearly spaced tiers, it's typical for the trader experience to increase in higher tiers. This way, lower-tier trades will have less leveling impact than higher-tier trades.
 :::
 
-### Choices
+默认`"reward_exp"`为true，玩家会因交易获得经验。交易表中无法修改获得的经验量。
 
-Choices are simple objects for randomly selecting an item to use for a trade. One item is selected with uniform randomness for that trade for each instance of a trader.
+#### 交易者经验
 
-<CodeHeader>#/tiers/1/trades/0/wants/0</CodeHeader>
+玩家完成交易时，交易者可能获得经验。此属性是通过[层级](#tiers)建立交易者交易进度系统的关键。
 
-```json
+::: code-group
+```json [#/tiers/0/trades/1/]
+"trader_exp": 8
+```
+:::
+
+可选数值属性`"trader_exp"`设置奖励给交易者的经验值。默认交易者获得1点经验。
+
+::: tip
+对于非线性分布的层级，通常高阶交易的交易者经验奖励更高。这样低阶交易对升级的影响小于高阶交易。
+:::
+
+### 选择项
+
+选择项是简单对象，用于随机选择交易使用的物品。每个交易者实例会均匀随机选择一个物品用于该交易。
+
+::: code-group
+```json [#/tiers/1/trades/0/wants/0]
 {
 	"choice": [
 		{
@@ -386,44 +385,42 @@ Choices are simple objects for randomly selecting an item to use for a trade. On
 	]
 }
 ```
+:::
 
-Choices only contain the required `"choice"` array property. Each entry in the array is an [item](#items). At least one item must be provided.
+选择项只包含必需的`"choice"`数组属性。数组中必须至少提供一个物品条目。
 
-::: tip NOTE
-Choices cannot be nested.
+::: tip 注意
+选择项不能嵌套。
 :::
 
 ::: tip
-There are currently no means of specifying a weight for a given item, but an item may be duplicated within the array to effectively increase its likelihood for being selected.
+目前无法为物品指定权重，但可以通过在数组中重复物品来有效增加其被选中的概率。
 :::
 
-### Items
+### 物品
 
-Items are the subjects of a trade. Their definitions are shared between wanted and given items, but there are some various implications depending on location used.
+物品是交易的主体。其定义在需求与给予物品间共享，但根据使用位置有不同的含义。
 
-<CodeHeader>#/tiers/1/trades/0/wants/0/choice/0</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/1/trades/0/wants/0/choice/0]
 {
 	"item": "wiki:sacred_stones",
 	"quantity": {
 		"min": 4,
 		"max": 6
 	},
-
 	"price_multiplier": 0.5
 }
 ```
+:::
 
-<CodeHeader>#/tiers/0/groups/0/trades/1/gives/0</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/0/groups/0/trades/1/gives/0]
 {
 	"item": "wiki:exalted_blade",
 	"functions": [
 		{
 			"function": "enchant_with_levels",
-
 			"treasure": true,
 			"levels": {
 				"min": 15,
@@ -433,112 +430,109 @@ Items are the subjects of a trade. Their definitions are shared between wanted a
 	]
 }
 ```
-
-#### Item Reference
-
-Items are referenced within trades using the required `"item"` string property.
-
-<CodeHeader>#/tiers/1/trades/0/wants/0/choice/0/</CodeHeader>
-
-```json
-"item": "wiki:exalted_blade"
-```
-
-The item reference must point to the identifier of an item. A data value can be provided in-place to the reference as a suffix:
-
-<CodeHeader>Example Data Assignment</CodeHeader>
-
-```json
-"item": "minecraft:log:2"
-```
-
-::: tip
-Data values can also be set (and much more conveniently randomized) using the `set_data` function.
 :::
 
-If no data value is specified for a _wanted_ item, any item with that identifier may be traded. If no data value is specified for a _given_ item, a data value of `0` is implied.
+#### 物品引用
 
-#### Quantity
+通过必需的字符串属性`"item"`在交易中引用物品。
 
-The optional `"quantity"` property specifies the count of items wanted or given in a trade.
+::: code-group
+```json [#/tiers/1/trades/0/wants/0/choice/0/]
+"item": "wiki:exalted_blade"
+```
+:::
 
-<CodeHeader>#/tiers/1/trades/0/wants/0/choice/0/</CodeHeader>
+物品引用必须指向物品标识符。可以直接在引用后缀中指定数据值：
 
-```json
+::: code-group
+```json [示例数据值分配]
+"item": "minecraft:log:2"
+```
+:::
+
+::: tip
+也可以通过`set_data`函数设置（更方便地随机化）数据值。
+:::
+
+如果需求物品未指定数据值，任何该标识符的物品都可交易。如果给予物品未指定数据值，默认为0。
+
+#### 数量
+
+可选属性`"quantity"`指定交易中需求或给予的物品数量。
+
+::: code-group
+```json [#/tiers/1/trades/0/wants/0/choice/0/]
 "quantity": {
 	"min": 4,
 	"max": 6
 }
 ```
-
-Quantity can be expressed as either an integer literal or a range object, such as seen above. If expressed as a range, a random value is selected uniformly inclusively within the specified limits. If no quantity is provided, the item count will default to 1.
-
-::: tip NOTE
-Quantity is always bounded by the stack size and can only affect a single slot in a trade. It's impossible to, for example, enforce a requirement of 100 planks from a single slot (although this can be done using 2 `"wants"`) or giving 2 un-stackable swords to the player in a single trade.
 :::
 
-#### Price Multiplier
+数量可以是整数或范围对象（如上）。如果是范围，会在最小最大值之间均匀随机选择。未指定时默认为1。
 
-The price multiplier dictates how an item's [base quantity](#quantity) is altered due to certain events.
+::: tip 注意
+数量始终受堆叠限制，且只能影响交易中的单个槽位。无法通过单个槽位要求100个木板（虽然可以用2个`"wants"`实现），也无法通过单个交易给玩家2把不可堆叠的剑。
+:::
 
-<CodeHeader>#/tiers/1/trades/0/wants/0/choice/0/</CodeHeader>
+#### 价格乘数
 
-```json
+价格乘数决定物品的[基础数量](#quantity)如何因特定事件而变化。
+
+::: code-group
+```json [#/tiers/1/trades/0/wants/0/choice/0/]
 "price_multiplier": 0.5
 ```
+:::
 
-`"price_multiplier"` is optional and defaults to `0`. Two systems exist that use the price multiplier: a modern and a legacy system. In the modern system, the given price multiplier can only affect the _first wanted item_ in a trade. In the legacy system, any _wanted items_ can be affected.
+`"price_multiplier"`可选，默认为0。存在新旧两套使用价格乘数的系统。新系统中，价格乘数只能影响交易的第一个需求物品。旧系统中，可以影响任何需求物品。
 
-##### Fluctuation Factors
+##### 波动因素
 
-Trade prices fluctuate as a result of serval factors:
+交易价格因以下因素波动：
 
--   An increased demand, occurring when trading for the same item across multiple [resupplies](#trade-limit)
--   Being recently cured, such as villagers being cured from being zombie villagers
--   Being _near_ a trader who was recently cured
--   Trading with a player who is affected with "Hero of the Village"
+- 需求增加：同一物品在多次[补充](#trade-limit)后交易
+- 最近被治愈：如村民从僵尸村民治愈
+- 靠近最近被治愈的交易者
+- 与受"村庄英雄"效果影响的玩家交易
 
-The price multiplier affects all these situations with the exception of a player having "Hero of the Village" when using the new pricing formula, which uses fixed values.
+除使用新定价公式的"村庄英雄"效果外，价格乘数影响所有这些情况。新公式使用固定值。
 
-##### Cost Calculations
+##### 成本计算
 
-The price multiplier directly and solely affects cost increases in response to an increased demand for a trade. By default, demand is 0 and cannot decrease past that value. Demand for a trade stacks, increasing when resupplying after that trade [has been exhausted](#trade-limit) and decreasing if no trades occurred between resupplies.
+价格乘数直接影响且仅影响因交易需求增加导致的成本上升。默认需求为0且不能为负。当交易[耗尽](#trade-limit)后补充时需求增加，如果在补充期间未发生交易则需求减少。
 
-Cost increase due solely to demand is linear, where each increase in demand adds a proportion of the base cost, given by the price multiplier. Assuming the following variables…
+仅因需求增加的成本变化是线性的，每增加1点需求就增加基础成本的比例部分（由价格乘数决定）。假设以下变量：
 
-| Variable | Meaning                                                                              |
-| -------- | ------------------------------------------------------------------------------------ |
-| _c_      | Total cost                                                                           |
-| _p_      | Base cost, including [quantity overrides](#quantity-modifying-enchantment-functions) |
-| _m_      | Price multiplier                                                                     |
-| _d_      | Current demand                                                                       |
+| 变量 | 含义 |
+|------|------|
+| _c_ | 总成本 |
+| _p_ | 基础成本（含[数量覆盖](#quantity-modifying-enchantment-functions)） |
+| _m_ | 价格乘数 |
+| _d_ | 当前需求 |
 
-<br>
-…The following formula can be used to calculate the total cost when no other factors are present:
-
+计算公式如下（无其他因素时）：
 _c_ = _p_ × (1 + _m_ \* _d_)
 
-::: tip NOTE
-Other situations additionally use entity properties for cost calculations and are not provided here.
+::: tip 注意
+其他情况还使用实体属性计算成本，此处不提供。
 :::
 
-If the price multiplier is `0`, the quantity will remain constant in most situations (except the "Hero of the Village" modifier using the new pricing formula).
+如果价格乘数为0，在大多数情况下数量保持不变（使用新定价公式的"村庄英雄"修饰符除外）。
 
-::: tip NOTE
-A negative price multiplier is possible but can't affect increasing costs due to [demand](#trade-limit); the multiplier will effectively be capped to `0`. However, negative values do affect prices in response to the trader recently being cured, the trader being nearby another trader who was recently cured, or trading with a player affected with "Hero of the Village" _using the legacy pricing formulas_.
+::: tip 注意
+负价格乘数可能，但不会影响因[需求](#trade-limit)增加导致的成本上升（乘数实际被限制为0）。但负值会影响交易者最近被治愈、靠近被治愈交易者或与受"村庄英雄"影响的玩家交易（使用旧定价公式时）的价格。
 :::
 
-#### Functions
+#### 函数
 
-Functions are used to modify the nature of the item. The optional `"functions"` array contains a collection of functions to be applied to the item.
+函数用于修改物品属性。可选数组`"functions"`包含应用于物品的函数集合。
 
-<CodeHeader>#/tiers/0/groups/0/trades/1/gives/0/</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/0/groups/0/trades/1/gives/0/]
 "functions": [
 	{
 		"function": "enchant_with_levels",
-
 		"treasure": true,
 		"levels": {
 			"min": 15,
@@ -547,56 +541,55 @@ Functions are used to modify the nature of the item. The optional `"functions"` 
 	}
 ]
 ```
-
-The functions used by trade tables are shared with loot tables. When used ([where usable](#unusable-wanted-item-functions)) in a wanted item declaration, they act to restrict the nature of the wanted item. Such function restrictions can only affect the first wanted item.
-
-##### Generally Unusable Functions
-
-In general, functions behave well for trading; however, the following do not work anywhere in trade tables:
-
--   `set_count`
--   `furnace_smelt`
--   `looting_enchant`
--   `trader_material_type`
-
-::: tip NOTE
-`set_count`'s functionality is replaced by the [quantity property](#quantity).
-
-`trader_material_type`, seen only in a single vanilla trade table, would theoretically set the data value of the item based on the mark variant of the entity, but this doesn't seem to be usable in any custom way.
 :::
 
-##### Unusable Wanted Item Functions
+交易表与战利品表共享函数。在需求物品声明中使用时（[可用处](#unusable-wanted-item-functions)），用于限制需求物品的属性。此类函数限制只能影响第一个需求物品。
 
-In general, using functions to specify item attributes for a wanted item will require the offered item to conform to those attributes. However, the following functions do not enforce a strict match and are therefore useless on wanted items:
+##### 通用不可用函数
 
--   `set_name`
--   `set_lore`
--   `set_damage`
--   `set_book_contents`
--   `random_dye`
--   `fill_container`
+通常函数在交易中表现良好，但以下函数在交易表中完全无效：
 
-##### Quantity-Modifying Enchantment Functions
+- `set_count`
+- `furnace_smelt`
+- `looting_enchant`
+- `trader_material_type`
 
-2 functions actually set the quantity for the first _wanted item_ if being used as _given items_, potentially overriding any provided [quantity](#quantity) for that first wanted item:
+::: tip 注意
+`set_count`的功能由[quantity属性](#quantity)替代。
 
--   `enchant_with_levels`
--   `enchant_book_for_trading`
-
-::: tip NOTE
-Despite overriding the quantity, all [modified trade prices](#fluctuation-factors) adapt correctly. These functions cannot affect the quantity of a second wanted item, even when using the legacy cost formulas. If these functions are used on a _wanted item_, the quantity is not overridden.
+`trader_material_type`仅在一个原版交易表中出现，理论上会根据实体的mark变种设置物品数据值，但似乎无法自定义使用。
 :::
 
-###### Enchant with Levels Function
+##### 需求物品不可用函数
 
-`enchant_with_levels` randomly enchants an item as through enchanted from an enchantment table.
+通常使用函数指定需求物品属性会要求提供的物品符合这些属性。但以下函数不会强制严格匹配，因此在需求物品上无效：
 
-<CodeHeader>#/tiers/0/groups/0/trades/1/gives/0/functions/0</CodeHeader>
+- `set_name`
+- `set_lore`
+- `set_damage`
+- `set_book_contents`
+- `random_dye`
+- `fill_container`
 
-```json
+##### 修改数量的附魔函数
+
+2个函数实际上会设置第一个需求物品的数量（当作为给予物品使用时），可能覆盖该需求物品的[quantity](#quantity)：
+
+- `enchant_with_levels`
+- `enchant_book_for_trading`
+
+::: tip 注意
+尽管覆盖了数量，所有[修改的交易价格](#fluctuation-factors)都会正确调整。这些函数不能影响第二个需求物品的数量（即使使用旧成本公式）。如果在需求物品上使用这些函数，数量不会被覆盖。
+:::
+
+###### 附魔等级函数
+
+`enchant_with_levels`随机附魔物品，如同通过附魔台附魔。
+
+::: code-group
+```json [#/tiers/0/groups/0/trades/1/gives/0/functions/0]
 {
 	"function": "enchant_with_levels",
-
 	"treasure": true,
 	"levels": {
 		"min": 5,
@@ -604,100 +597,97 @@ Despite overriding the quantity, all [modified trade prices](#fluctuation-factor
 	}
 }
 ```
+:::
 
-The cost for the first wanted item is determined by adding this function's chosen level value (capped to `0` if it would be negative) to the original [quantity](#quantity). The level value is computed from the optional `"levels"` property. If a numeric literal is used, that value is the chosen level value. If a range object is used, as above, a random number is rolled inclusively between the provided minimum and maximum. That random number then acts as the chosen level value. In the above example, the first wanted item's cost would be increased by 5 to 25.
+第一个需求物品的成本通过将此函数选择的等级值（如果为负则限制为0）加到原始[数量](#quantity)计算。等级值通过可选属性`"levels"`计算。如果使用数值，则为固定等级值。如果使用范围对象（如上），会在最小最大值之间随机选择。上例中第一个需求物品的成本会增加5-25。
 
-###### Enchant Book for Trading Function
+###### 交易附魔书函数
 
-`enchant_book_for_trading` is intended solely for trading. Its properties combine to determine the first wanted item's cost.
+`enchant_book_for_trading`专为交易设计。其属性共同决定第一个需求物品的成本。
 
-<CodeHeader>#/tiers/0/groups/0/trades/0/gives/0/functions/0</CodeHeader>
-
-```json
+::: code-group
+```json [#/tiers/0/groups/0/trades/0/gives/0/functions/0]
 {
 	"function": "enchant_book_for_trading",
-
 	"base_cost": 4,
 	"base_random_cost": 12,
 	"per_level_cost": 4,
 	"per_level_random_cost": 8
 }
 ```
-
-This function was only designed to be used on books, rolling for a single enchantment across all possible non-curse enchantments, including treasure enchantments. The function doesn't adapt to the current item. If used on a book, an enchantment will always successfully be applied; if used on something else enchantable, it's possible the item won't be successfully enchanted.
-
-::: tip NOTE
-Presumably, when failing, the function rolls for an enchantment not applicable to the item and then fails to apply this irrelevant enchantment, resulting in an unenchanted item. The successfulness of enchanting a non-book is therefore proportional to the number of enchantments applicable to that item.
 :::
 
-The total cost is set from a base cost, which is independent of the rolled enchantment, and a per-level cost, which is dependent on the random roll. All cost configuration properties are optional.
+此函数专为书籍设计，在所有可能的非诅咒附魔（包括宝藏附魔）中随机选择一项。函数不适配当前物品。用于书籍时总能成功附魔；用于其他可附魔物品时可能失败。
 
-The base cost is computed by summing a starting value and a random roll. The starting value is given with `"base_cost"`, which defaults to `2`. The random roll is provided via `"base_random_cost"`, which defaults to `4`. A number will be uniformly randomly selected inclusively between 0 and the `"base_random_cost"` when a trade is generated for a trader.
+::: tip 注意
+失败时，函数可能选择了不适用于该物品的附魔导致附魔失败。因此非书籍物品的成功率与其适用附魔数量成正比。
+:::
 
-For each level on the chosen enchantment, the same process occurs as in the base cost calculations: a fixed value is added to a uniformly randomly selected value. In this case, the base per-level cost is given with `"per_level_cost"`, which defaults to `3`, and the random per-level cost is given with `"per_level_random_cost"`, which defaults to `10`. The random per-level roll may be different for each level.
+总成本由基础成本（独立于随机附魔）和每级成本（依赖随机结果）组成。所有成本配置属性都是可选的。
 
-Once the base cost and costs for each level are calculated, they are summed together to form the total cost. Finally, if the chosen enchantment is a treasure enchantment, the cost is then doubled. As usual, this cost cannot be less than 1 or greater than the stack size of that item. This formula holds true regardless of the pricing system being used by the trader.
+基础成本是起始值与随机值的和。起始值由`"base_cost"`设置（默认2），随机值由`"base_random_cost"`设置（默认4），在生成交易时均匀随机选择0到`"base_random_cost"`之间的值。
+
+每级成本同样计算：固定值加上随机值。固定每级成本由`"per_level_cost"`设置（默认3），随机每级成本由`"per_level_random_cost"`设置（默认10）。每级的随机值可能不同。
+
+计算基础成本和所有等级成本后求和得到总成本。如果选择的附魔是宝藏附魔，成本会翻倍。此成本不会小于1或大于物品堆叠上限。无论交易者使用何种定价系统，此公式都适用。
 
 ::: warning
-If either random cost property is negative, there seems to be a 50-50 chance that the cost will be either the given [quantity](#quantity) or the maximum stack size for that first wanted item.
+如果任一随机成本属性为负，似乎有50%概率使用给定的[数量](#quantity)或第一个需求物品的最大堆叠数作为成本。
 :::
 
 ::: tip
-If the total combined cost would be negative (assuming no negative random cost properties were used), the provided [quantity](#quantity) of the affected wanted item is used instead. The simplest means of guaranteeing this would be:
+如果总成本为负（假设未使用负随机成本属性），则使用受影响需求物品的[数量](#quantity)。最简单的保证方法是：
 
-<CodeHeader>Example Quantity-Based Enchanted Book Cost</CodeHeader>
-
-```json
+::: code-group
+```json [基于数量的附魔书成本示例]
 {
 	"function": "enchant_book_for_trading",
-
 	"base_cost": -1,
 	"base_random_cost": 0,
 	"per_level_cost": 0,
 	"per_level_random_cost": 0
 }
 ```
-
 :::
 
-##### Spawn Egg Trader Binding
+##### 刷怪蛋绑定交易者
 
-The `"set_actor_id"` function is used to set the data value of a spawn egg based on a provided entity identifier, given with `"id"`.
+`"set_actor_id"`函数通过`"id"`属性设置刷怪蛋的数据值（基于提供的实体标识符）。
 
-<CodeHeader>Example Spawn Egg Trader Binding</CodeHeader>
-
-```json
+::: code-group
+```json [刷怪蛋绑定交易者示例]
 {
 	"function": "set_actor_id"
 }
 ```
-
-In trade tables, if no ID is provided, the trader's entity type will be assigned to the egg.
-
-## Overrides
-
-Because trade tables do not use in-data identifiers, they are overridden simply by replacing a prior trade table with a new one. You can learn more about [asset overrides here](/wiki/concepts/overwriting-assets)
-
-Below are the currently used vanilla trade tables for each trader:
-|Trader|Path|
-|-|-|
-|Stone Mason|`BP/trading/economy_trades/stone_mason_trades.json`|
-|Farmer|`BP/trading/economy_trades/farmer_trades.json`|
-|Fisherman|`BP/trading/economy_trades/fisherman_trades.json`|
-|Butcher|`BP/trading/economy_trades/butcher_trades.json`|
-|Shepherd|`BP/trading/economy_trades/shepherd_trades.json`|
-|Leather Worker|`BP/trading/economy_trades/leather_worker_trades.json`|
-|Librarian|`BP/trading/economy_trades/librarian_trades.json`|
-|Cartographer|`BP/trading/economy_trades/cartographer_trades.json`|
-|Cleric|`BP/trading/economy_trades/cleric_trades.json`|
-|Tool Smith|`BP/trading/economy_trades/tool_smith_trades.json`|
-|Weapon Smith|`BP/trading/economy_trades/weapon_smith_trades.json`|
-|Fletcher|`BP/trading/economy_trades/fletcher_trades.json`|
-|Armorer|`BP/trading/economy_trades/armorer_trades.json`|
-|Wandering Trader|`BP/trading/economy_trades/wandering_trader_trades.json`|
-
-::: tip NOTE
-Additional trade tables exist directly within the `trading` folder, but these are deprecated. Only the tables in the `economy_trades` sub-folder are currently used.
 :::
 
-Alternatively, a trader entity definition can be updated to point to a new trade table location.
+在交易表中，如果未提供ID，刷怪蛋将绑定交易者的实体类型。
+
+## 覆盖
+
+由于交易表不使用数据内标识符，只需用新交易表替换旧表即可实现覆盖。了解更多关于[资源覆盖](/wiki/concepts/overwriting-assets)的内容。
+
+以下是各交易者当前使用的原版交易表：
+|交易者|路径|
+|-|-|
+|石匠|`BP/trading/economy_trades/stone_mason_trades.json`|
+|农民|`BP/trading/economy_trades/farmer_trades.json`|
+|渔夫|`BP/trading/economy_trades/fisherman_trades.json`|
+|屠夫|`BP/trading/economy_trades/butcher_trades.json`|
+|牧羊人|`BP/trading/economy_trades/shepherd_trades.json`|
+|制革师|`BP/trading/economy_trades/leather_worker_trades.json`|
+|图书管理员|`BP/trading/economy_trades/librarian_trades.json`|
+|制图师|`BP/trading/economy_trades/cartographer_trades.json`|
+|牧师|`BP/trading/economy_trades/cleric_trades.json`|
+|工具匠|`BP/trading/economy_trades/tool_smith_trades.json`|
+|武器匠|`BP/trading/economy_trades/weapon_smith_trades.json`|
+|制箭师|`BP/trading/economy_trades/fletcher_trades.json`|
+|盔甲匠|`BP/trading/economy_trades/armorer_trades.json`|
+|流浪商人|`BP/trading/economy_trades/wandering_trader_trades.json`|
+
+::: tip 注意
+`trading`文件夹中还存在其他交易表，但已弃用。目前仅使用`economy_trades`子文件夹中的表。
+:::
+
+或者，可以更新交易者实体定义以指向新的交易表位置。

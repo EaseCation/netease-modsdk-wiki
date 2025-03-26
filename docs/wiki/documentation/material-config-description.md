@@ -1,29 +1,32 @@
 ---
-title: Material Configuration Description
+title: 材质配置文件说明
 tags:
-    - expert
+    - 专家级
 mentions:
     - MedicalJewel105
     - SmokeyStack
 ---
 
+# 材质配置文件说明
+
+<!--@include: @/wiki/bedrock-wiki-mirror.md-->
+
 :::warning
-Materials are not for the faint of heart. Be prepared for potential crashes, content log errors, and long loading times.
+材质系统不适合心理承受能力弱的用户。请做好应对潜在崩溃、内容日志错误和长时间加载的准备。
 :::
 
-## Foreword
+## 前言
 
-This article is translated from https://mc.163.com/dev/mcmanual/mc-dev/mcguide/ - It is provided by Netease, the developers of china edition. The article will introduce the structure and configuration of the material file in detail.
+本文译自网易中国版开发者文档 [材质配置说明](/mcguide/16-美术/7-材质与着色器/3-材质配置说明) ，将详细介绍材质文件的结构与配置方式。
 
-## Material files
+## 材质文件结构
 
-We will explain the material files of native Microsoft. First of all, the files under the directory are basically files with the suffix ".material". In addition, there are three important json files, namely common. json, fancy.json, sad.json.
+我们将以微软原生材质文件为例进行说明。该目录下主要包含以".material"为后缀的文件，此外还有三个重要的json文件：common.json、fancy.json和sad.json。
 
-Let's take a look at sad.json and fancy.json first. They are used to control the image quality performance. Each of them defines a list of material files. fancy.json usually defines several more material files than sad.json and may Some additional macros have been added to some material files, and the shader can do special processing by judging these macros:
+首先观察sad.json和fancy.json，它们用于控制画面质量表现。每个文件都定义了材质文件列表。通常fancy.json会比sad.json多定义几个材质文件，并可能在某些材质文件中添加额外宏定义，着色器可通过判断这些宏进行特殊处理：
 
-<CodeHeader>sad.json</CodeHeader>
-
-```json
+::: code-group
+```json [sad.json]
 [
 	{"path":"materials/sad.material"},
 	{"path":"materials/entity.material"},
@@ -34,9 +37,7 @@ Let's take a look at sad.json and fancy.json first. They are used to control the
 ]
 ```
 
-<CodeHeader>fancy.json</CodeHeader>
-
-```json
+```json [fancy.json]
 [
 	{"path":"materials/fancy.material", "+defines":["FANCY"]},
 	{"path":"materials/entity.material", "+defines":["FANCY"]},
@@ -47,14 +48,14 @@ Let's take a look at sad.json and fancy.json first. They are used to control the
 	{"path":"materials/wireframe.material"}
 ]
 ```
+:::
 
-It can be seen that fancy.json defines more fancy.material and hologram.material material files than sad.json, and also defines FANCY macros for multiple material files. The switch of in-game settings/video/exquisite texture is to control the switch between sad and fancy. When the fancy texture switch is turned on, the material file in fancy.json will take effect, and when it is turned off, the material file in sad.json will take effect.
+可以看出fancy.json比sad.json多定义了fancy.material和hologram.material材质文件，同时还为多个材质文件定义了FANCY宏。游戏设置/视频/精美图像选项的开关就是控制sad与fancy之间的切换。当开启精美图像时，fancy.json中的材质文件会生效；关闭时则使用sad.json中的材质文件。
 
-In order to achieve better performance, the material files in fancy.json usually have more complex operations, while the materials in sad.json usually sacrifice a little rendering performance in exchange for better performance. If developers need to write more complex shaders, it is recommended to write a low-cost version at the same time, and then define them in fancy and sad respectively. Let the player control whether to turn on the corresponding effect through the exquisite texture option in the game.
+为了获得更好的表现效果，fancy.json中的材质文件通常包含更复杂的运算，而sad.json中的材质则通过牺牲少许渲染效果换取更佳性能。若开发者需要编写更复杂的着色器，建议同时编写低配版本，分别在fancy和sad中进行定义，让玩家通过游戏中的精美图像选项自行控制是否开启对应效果。
 
-<CodeHeader>common.json</CodeHeader>
-
-```json
+::: code-group
+```json [common.json]
 [
 	{"path":"materials/particles.material"},
 	{"path":"materials/shadows.material"},
@@ -66,25 +67,23 @@ In order to achieve better performance, the material files in fancy.json usually
 	{"path":"materials/wireframe.material"}
 ]
 ```
+:::
 
-Compared with sad and fancy, they can be switched between each other. The material files defined in common.json will be loaded after entering the game. Material files are not loaded except those declared in common.json, sad.json, fancy.json.
+与可互相切换的sad和fancy不同，common.json中定义的材质文件会在进入游戏后始终加载。除了声明在common.json、sad.json、fancy.json中的材质文件外，其他材质文件不会被加载。
 
-## Material syntax
+## 材质语法规范
 
-We use one of the material files entity.material to explain, open the file, we can see that the file starts with materials, and then defines the version number version as 1.0.0, these are fixed formats, which identify the parsing of this material file way, we can temporarily ignore it and not modify it.
+我们以entity.material为例进行说明。打开文件可以看到文件以materials开头，接着定义了版本号version为1.0.0，这些都是固定格式，标识该材质文件的解析方式，暂时无需修改。
 
-You can see that the definition of each field in the material is in the form of a key-value pair, for example:
-
+可以看到材质中每个字段的定义都采用键值对形式，例如：
 ```json
 [
 	"vertexShader": "shaders/entity.vertex",
 ]
 ```
+冒号左侧表示键名vertexShader，右侧表示值shaders/entity.vertex；
 
-The left side of the colon represents the key as vertexShader, and the right side represents the value shaders/entity.vertex;
-
-There are also definitions in list form:
-
+也存在列表形式的定义：
 ```json
 [
 	"vertexFields": [
@@ -94,61 +93,59 @@ There are also definitions in list form:
     ],
 ]
 ```
+带有[ ]符号的声明就是列表，内部是每个子元素的json定义。
 
-The declaration with the symbol [ ] is a list, and then inside is the json definition of each child element.
+## 材质属性字段全览
 
-## Overview of all property fields of the material
-
-### Render state
+### 渲染状态
 
 #### `states`
 
-Configure the rendering environment, which can have the following values:
+配置渲染环境，可选值包括：
 
-- `EnableAlphaToCoverage`：An order-independent rendering method for translucent objects. This switch is only useful in environments that support MSAA. When enabled, the edges of objects will be more accurately softened and transitioned according to the transparency. It can also be used for some complex scenes with a large number of meshes overlapping.
+- `EnableAlphaToCoverage`：针对半透明物体的顺序无关渲染方式。该开关仅在支持MSAA的环境中有用。开启后物体边缘会根据透明度更精确地进行柔化过渡。也可用于大量网格重叠的复杂场景。
 
-- `Wireframe`： Draw wireframe mode
+- `Wireframe`：线框绘制模式
 
-- `Blending`: Enables color blending mode, often used to render translucent objects. After declaring this, it is usually necessary to declare the blending factor blendSrc, blendDst
+- `Blending`: 启用颜色混合模式，常用于渲染半透明物体。声明该选项后通常需要接着声明混合因子blendSrc、blendDst
 
-- `DisableColorWrite`： Do not write color values to the color buffer, none of the RGBA channels are written
+- `DisableColorWrite`：不向颜色缓冲区写入颜色值，RGBA通道均不写入
 
-- `DisableAlphaWrite`： Do not write transparency alpha values to the color buffer, allow RGB values to be written
+- `DisableAlphaWrite`：不向颜色缓冲区写入透明度alpha值，允许写入RGB值
 
-- `DisableRGBWrite`： Do not write transparency RGB values to the color buffer, allow writing alpha values
+- `DisableRGBWrite`：不向颜色缓冲区写入RGB值，允许写入alpha值
 
-- `DisableDepthTest`： Turn off depth testing
+- `DisableDepthTest`：关闭深度测试
 
-- `DisableDepthWrite`： Turn off depth writing
+- `DisableDepthWrite`：关闭深度写入
 
-- `DisableCulling`: Render front and back simultaneously
+- `DisableCulling`: 同时渲染正反面
 
-- `InvertCulling`：Use front cropping. The default is back cropping. After declaring this, the back side is rendered and the front side is cropped.
+- `InvertCulling`：使用正面裁剪。默认为背面裁剪。声明此项后背面会被渲染而正面被裁剪。
 
-- `StencilWrite`: Enable stencil mask writing
+- `StencilWrite`: 启用模板掩码写入
 
-- `EnableStencilTest`： Enable stencil mask testing
+- `EnableStencilTest`：启用模板掩码测试
 
-
-### Shader path
+### 着色器路径
 
 #### `vertexShader`
 
-The path to the vertex shader, usually shaders/XXX.vertex.
+顶点着色器路径，通常为shaders/XXX.vertex。
 
-#### `vrGeometryShader` or `geometryShader`
+#### `vrGeometryShader` 或 `geometryShader`
 
-The path of the geometry shader, usually shaders/XXX.geometry, is not used on the mobile side, and does not need to be modified.
+几何着色器路径，通常为shaders/XXX.geometry，移动端不会使用，无需修改。
 
 #### `fragmentShader`
 
-The path to the fragment shader, usually shaders/XXX.fragment.
+片段着色器路径，通常为shaders/XXX.fragment。
 
-### Shader macro definition
+### 着色器宏定义
 
 #### `defines`
 
-Define macros for the shaders used. For code reuse, we use the same shader for many different materials. At this time, if you want to execute different logic somewhere in the shader according to the current material, you can judge it through the macro declared by the material defines. We can use the material entity_for_skeleton as an illustration. Here we can see that three macros USE_SKINNING, USE_OVERLAY, and NETEASE_SKINNING are defined.
+为使用的着色器定义宏。为了实现代码复用，我们会将同一个着色器用于许多不同的材质。此时若希望根据当前材质在着色器某处执行不同逻辑，可以通过材质defines声明的宏进行判断。以entity_for_skeleton材质为例，可以看到这里定义了USE_SKINNING、USE_OVERLAY和NETEASE_SKINNING三个宏。
 
 ```json
 "entity_for_skeleton": {
@@ -172,7 +169,7 @@ Define macros for the shaders used. For code reuse, we use the same shader for m
 }
 ```
 
-Looking at the vertex shader entity.vertex, there will be #ifdef, #else, #endif to judge the macro and execute different logic branches. These judgment statements of the macro are processed at compile time, unlike the if in the traditional shader. Else, the logic branch processed at compile time will not be generated in actual operation, and the performance will not be degraded due to the branch. In addition, it can be seen below that macros can also make multi-layer judgments. First, judge the NETEASE_SKINNING macro, and then judge the LARGE_VERTEX_SHADER_UNIFORMS macro in the internal execution logic:
+观察顶点着色器entity.vertex，会发现通过#ifdef、#else、#endif等指令判断宏定义并执行不同逻辑分支。这些宏的判断语句是在编译期处理的，不同于传统着色器中运行时处理的if else逻辑分支，实际运行时不会产生分支性能损耗。此外可以看到宏还能做多层判断，先判断NETEASE_SKINNING宏，再在内部执行逻辑中判断LARGE_VERTEX_SHADER_UNIFORMS宏：
 
 ```glsl
 #ifdef NETEASE_SKINNING
@@ -190,90 +187,88 @@ Looking at the vertex shader entity.vertex, there will be #ifdef, #else, #endif 
 #endif
 ```
 
-### Runtime state
+### 运行时状态
 
-#### Depth test
+#### 深度测试
 
 ##### `depthFunc`
 
-The depth detection pass function can use the following values:
+深度检测通过函数，可使用以下值：
 
-- `Always`: Always pass
+- `Always`: 总是通过
 
-- `Equal`： Passed when the depth value is equal to the buffer value
+- `Equal`：深度值等于缓冲值时通过
 
-- `NotEqual`：Passed when the depth value is not equal to the buffer value
+- `NotEqual`：深度值不等于缓冲值时通过
 
-- `Less`：Passed when the depth value is less than the buffer value
+- `Less`：深度值小于缓冲值时通过
 
-- `Greater`：Passed when the depth value is greater than the buffer value
+- `Greater`：深度值大于缓冲值时通过
 
-- `GreaterEqual`：Pass when the depth value is greater than or equal to the buffer value
+- `GreaterEqual`：深度值大于等于缓冲值时通过
 
-- `LessEqual`：Pass when the depth value is less than or equal to the buffer value
+- `LessEqual`：深度值小于等于缓冲值时通过
 
-Associated states rendering environment configuration:
+关联状态渲染环境配置：
 
-- `DisableDepthTest`： Turn off depth testing
+- `DisableDepthTest`：关闭深度测试
 
-- `DisableDepthWrite`： Turn off depth writing
+- `DisableDepthWrite`：关闭深度写入
 
-#### Stencil Mask Test
+#### 模板掩码测试
 
 ##### `stencilRef`
 
-Value to compare with or to be written to the mask buffer
+用于与掩码缓冲比较或写入的值
 
 ##### `stencilRefOverride`
 
-Whether to use the buffer's current value as stencilRef, 0 or 1 is supported:
+是否使用缓冲当前值作为stencilRef，支持0或1：
 
-- `1`： Use the configured stencilRef. If stencilRef is configured, stencilRefOverride will automatically take 1
+- `1`：使用配置的stencilRef。若配置了stencilRef，stencilRefOverride会自动取1
 
-- `0`： Use the current value of the buffer as stencilRef, in this case do not configure stencilRef
+- `0`：使用缓冲当前值作为stencilRef，此时不要配置stencilRef
 
 ##### `stencilReadMask`
 
-The mask buffer value and the stencilRef value are bit-ANDed with stencilReadMask before being compared
+掩码缓冲值与stencilRef值在比较前会分别与stencilReadMask做位与运算
 
 ##### `stencilWriteMask`
 
-The stencilRef value is bit-ANDed with stencilWriteMask before being written to the mask buffer
+stencilRef值在写入掩码缓冲前会与stencilWriteMask做位与运算
 
-##### `frontFace` and `backFace`
+##### `frontFace` 和 `backFace`
 
-Configure which mask test function to use on the front or back of the grid. In addition, the order of judgment is mask detection first, then depth detection. You need to configure the following operations:
+配置在网格正面或背面使用哪种掩码测试函数。此外判断顺序是先掩码检测再深度检测。需要配置以下操作：
 
-<!-- Test if this looks ok -->
+- `stencilFunc`: stencilRef与掩码缓冲比较时使用的方法，支持以下值：
+    - `Always`: 总是通过
+    -	`Equal`：stencilRef等于缓冲值时通过
+    -	`NotEqual`：stencilRef不等于缓冲值时通过
+    -	`Less`：stencilRef小于缓冲值时通过
+    -	`Greater`：stencilRef大于缓冲值时通过
+    -	`GreaterEqual`：stencilRef大于等于缓冲值时通过
+    -	`LessEqual`：stencilRef小于等于缓冲值时通过
 
-- `stencilFunc`: The method used when stencilRef is compared with the mask buffer, the following values are supported：
-    - `Always`: Always pass
-    -	`Equal`： Passed when stencilRef is equal to the buffer value
-    -	`NotEqual` ：Passed when stencilRef is not equal to the buffer value
-    -	`Less`：Passed when stencilRef is less than the buffer value
-    -	`Greater`：Passed when stencilRef is greater than the buffer value
-    -	`GreaterEqual`：Passed when stencilRef is greater than or equal to the buffer value
-    -	`LessEqual`：Passed when stencilRef is less than or equal to the buffer value
+- `stencilFailOp`：stencilFunc比较函数返回失败时执行的处理，支持以下值：
+    -	`Keep`：保持缓冲原值
+    -	`Replace`：将stencilRef位与stencilWriteMask的值写入缓冲
 
-- `stencilFailOp`：The processing performed when the stencilFunc comparison function fails to return, supports the following values：
-    -	`Keep`： Keep the original value of the buffer
-    -	`Replace`： Writes the stencilRef bit and the value of stencilWriteMask to the buffer
+- `stencilDepthFailOp`：stencilFunc比较函数返回成功但深度测试失败时执行的处理，支持以下值：
+    -	`Keep`：保持缓冲原值
+    -	`Replace`：将stencilRef位与stencilWriteMask的值写入缓冲
 
-- `stencilDepthFailOp` : The stencilFunc comparison function returns success, but the processing performed when the depth test fails, supports the following values：
-    -	`Keep`： Keep the original value of the buffer
-    -	`Replace`： Writes the stencilRef bit and the value of stencilWriteMask to the buffer
+- `stencilPassOp`: stencilFunc比较函数返回成功且深度测试成功时执行的处理，支持以下值：
+    -	`Keep`：保持缓冲原值
+    -	`Replace`：将stencilRef位与stencilWriteMask的值写入缓冲
 
-- `stencilPassOp`: The stencilFunc comparison function returns successfully, and the processing executed when the depth test is successful, supports the following values：
-    -	`Keep`： Keep the original value of the buffer
-    -	`Replace`： Writes the stencilRef bit and the value of stencilWriteMask to the buffer
+关联状态渲染环境配置：
 
-Associated states rendering environment configuration:
+- `StencilWrite`：启用掩码写入
 
-- `StencilWrite`：Enable mask writing
+- `EnableStencilTest`: 启用掩码测试
 
-- `EnableStencilTest`: Enable mask testing
-
-Finally, let's look at an example:
+最后看一个具体示例：
 
 ```json
     "shadow_back": {
@@ -314,49 +309,49 @@ Finally, let's look at an example:
     }
 ```
 
-In the example, StencilWrite represents the support for writing to the mask buffer, EnableStencilTest represents the opening of the mask test, and the configuration of frontFace represents that the mask test always passes when the front face is rendered. If the depth test fails, the buffer value remains unchanged. If it also passes, the stencil bit and the value of stencilWriteMask will be written to the buffer, that is, 1 & 1 = 1 value. The configuration of backFace is also similar.
+该示例中，StencilWrite表示支持向掩码缓冲写入，EnableStencilTest表示开启掩码测试，frontFace的配置表示渲染正面时掩码测试总是通过，若深度测试失败则保持缓冲值不变，若也都通过则将stencilRef位与stencilWriteMask的值写入缓冲，即1 & 1 = 1的值。backFace的配置也类似。
 
-#### Blend translucent object color blend
+#### 半透明物体颜色混合
 
-The rendering of translucent objects needs to configure the blending factor. The final output rgb color value = current color value * source blending factor + color value in buffer * destination blending factor
+半透明物体的渲染需要配置混合因子。最终输出的rgb颜色值 = 当前颜色值 * 源混合因子 + 缓冲中的颜色值 * 目标混合因子
 
 ##### `blendSrc`
 
-source mix factor
+源混合因子
 
 ##### `blendDst`
 
-target blending factor
+目标混合因子
 
 ##### `alphaSrc`
 
-The source blending factor when calculating alpha, usually not configured to take the default value
+计算alpha时的源混合因子，通常不配置取默认值
 
 ##### `alphaDst`
 
-The target blending factor when calculating alpha, usually not configured to take the default value
+计算alpha时的目标混合因子，通常不配置取默认值
 
-In total, the blending factor can take on the following values:
+混合因子总共可以取以下值：
 
-- `DestColor`： Buffer color value
+- `DestColor`：缓冲颜色值
 
-- `SourceColor`： Current color value
+- `SourceColor`：当前颜色值
 
 - `Zero`： (0,0,0)
 
 - `One`： (1,1,1)
 
-- `OneMinusDestColor`: (1,1,1) - buffer color value
+- `OneMinusDestColor`: (1,1,1) - 缓冲颜色值
 
-- `OneMinusSrcColor`: (1,1,1) - current color value
+- `OneMinusSrcColor`: (1,1,1) - 当前颜色值
 
-- `SourceAlpha`： The alpha value in the current color
+- `SourceAlpha`：当前颜色中的alpha值
 
-- `DestAlpha`： Alpha value in buffer color
+- `DestAlpha`：缓冲颜色中的alpha值
 
-- `OneMinusSrcAlpha`： 1 - alpha value in the current color value
+- `OneMinusSrcAlpha`：1 - 当前颜色值中的alpha值
 
-In the engine, the default is:
+引擎中默认取值为：
 
 - `blendSrc`：SourceAlpha
 
@@ -366,253 +361,222 @@ In the engine, the default is:
 
 - `alphaDst`：OneMinusSrcAlpha
 
-Associated states rendering environment configuration:
+关联状态渲染环境配置：
 
-- `Blending`: Enables color blending mode, often used to render translucent objects. After declaring this, it is usually necessary - to declare the blending factor blendSrc, blendDst
+- `Blending`: 启用颜色混合模式，常用于渲染半透明物体。声明该选项后通常需要接着声明混合因子blendSrc、blendDst
 
-- `DisableColorWrite`： Do not write color values to the color buffer, none of the RGBA channels are written
+- `DisableColorWrite`：不向颜色缓冲区写入颜色值，RGBA通道均不写入
 
-- `DisableAlphaWrite`： Do not write transparency alpha values to the color buffer, allow RGB values to be written
+- `DisableAlphaWrite`：不向颜色缓冲区写入透明度alpha值，允许写入RGB值
 
-- `DisableRGBWrite`： Do not write transparency RGB values to the color buffer, allow writing alpha values
+- `DisableRGBWrite`：不向颜色缓冲区写入RGB值，允许写入alpha值
 
-#### Sample texture sample
+### 模板测试配置
 
-##### `samplerStates`
+#### `stencilRef`
 
-Configure the sampling state, the value is a list, and configure each texture according to the number of textures to be sampled. Usually, if UV0 and UV1 are declared in the vertex attribute, it means that two textures need to be sampled, and two elements need to be configured here. Let's look at the definition of child elements:
+用于与模板缓冲比较或写入的参考值
 
+#### `stencilRefOverride`
+
+是否使用缓冲当前值作为stencilRef，支持0或1：
+- `1`：使用配置的stencilRef（若已配置stencilRef则自动取1）
+- `0`：使用缓冲当前值作为stencilRef（此时不应配置stencilRef）
+
+#### `stencilReadMask`
+
+模板缓冲值与stencilRef值在比较前会分别与stencilReadMask进行位与运算
+
+#### `stencilWriteMask`
+
+stencilRef值在写入模板缓冲前会与stencilWriteMask进行位与运算
+
+#### `frontFace` 和 `backFace`
+
+配置在网格正面/背面使用的模板测试函数。测试顺序为先模板测试后深度测试。需配置以下操作：
+
+- `stencilFunc`: stencilRef与模板缓冲的比较方式，可选：
+    - `Always`: 总是通过
+    - `Equal`：值相等时通过
+    - `NotEqual`：值不等时通过  
+    - `Less`：小于时通过
+    - `Greater`：大于时通过
+    - `GreaterEqual`：大于等于时通过
+    - `LessEqual`：小于等于时通过
+
+- `stencilFailOp`：模板测试失败时的处理：
+    - `Keep`：保持缓冲原值
+    - `Replace`：将stencilRef写入缓冲
+
+- `stencilDepthFailOp`：模板测试通过但深度测试失败时的处理：
+    - `Keep`：保持缓冲原值  
+    - `Replace`：将stencilRef写入缓冲
+
+- `stencilPassOp`：两项测试均通过时的处理：
+    - `Keep`：保持缓冲原值
+    - `Replace`：将stencilRef写入缓冲
+
+关联渲染状态：
+- `StencilWrite`：启用模板写入
+- `EnableStencilTest`：启用模板测试
+
+配置示例：
+```json
+"shadow_back": {
+    "+states": [
+        "StencilWrite",
+        "DisableColorWrite",
+        "DisableDepthWrite",
+        "InvertCulling",
+        "EnableStencilTest"
+    ],
+    "frontFace": {
+        "stencilFunc": "Always",
+        "stencilFailOp": "Keep",
+        "stencilDepthFailOp": "Keep",
+        "stencilPassOp": "Replace"
+    },
+    "backFace": { /* 相同配置 */ },
+    "stencilRef": 1,
+    "stencilReadMask": 255,
+    "stencilWriteMask": 1
+}
+```
+
+### 半透明物体混合
+
+最终颜色 = 当前颜色 × blendSrc + 缓冲颜色 × blendDst
+
+#### 混合因子
+- `blendSrc`：源混合因子（默认SourceAlpha）
+- `blendDst`：目标混合因子（默认OneMinusSrcAlpha）  
+- `alphaSrc`：alpha源因子（默认One）
+- `alphaDst`：alpha目标因子（默认OneMinusSrcAlpha）
+
+可选值：
+- `DestColor`：缓冲颜色
+- `SourceColor`：当前颜色
+- `Zero`：(0,0,0)  
+- `One`：(1,1,1)
+- `OneMinusDestColor`: 1-缓冲颜色
+- `OneMinusSrcColor`: 1-当前颜色
+- `SourceAlpha`：当前alpha值
+- `DestAlpha`：缓冲alpha值
+- `OneMinusSrcAlpha`：1-当前alpha值
+
+关联状态：
+- `Blending`：启用混合
+- `DisableColorWrite`：禁用颜色写入
+- `DisableAlphaWrite`：禁用alpha写入
+- `DisableRGBWrite`：禁用RGB写入
+
+### 纹理采样
+
+#### `samplerStates`
+配置采样状态（列表结构，按纹理索引配置）：
 ```json
 {
-	"samplerIndex": 0,
-	"textureFilter": "Point",
-	"textureWrap": "Repeat"
+    "samplerIndex": 0,    // 纹理索引（从0开始）
+    "textureFilter": "Point",  // 过滤模式
+    "textureWrap": "Repeat"    // 环绕模式
 }
 ```
 
-Each property is defined as follows:
+##### 过滤模式
+- `Point`：点采样
+- `Bilinear`：双线性
+- `Trilinear`：三线性  
+- `MipMapBilinear`：MipMap双线性
+- `TexelAA`：抗锯齿（部分设备不支持）
+- `PCF`：百分比渐近过滤（部分设备不支持）
 
-##### `samplerIndex`
+##### 环绕模式
+- `Repeat`：重复纹理
+- `Clamp`：边缘拉伸
 
-Number, representing the attribute of the texture that is currently being set, starting from 0
+### 顶点属性
 
-##### `textureFilter`
+#### `vertexFields`
+声明网格顶点包含的属性：
+- `Position`：模型空间坐标
+- `Color`：颜色  
+- `Normal`：法线
+- `UV0`/`UV1`/`UV2`：纹理坐标
+- `BoneId0`：骨骼ID（骨骼模型用）
 
-Texture filtering mode (default is Point), when the actual displayed texture map is enlarged or reduced compared to the original image, the mapping relationship between the new resolution map and the pixels on the original resolution map can have the following values:
+### 光栅化配置
 
+#### `msaaSupport`
+抗锯齿支持模式：
+- `NonMSAA`：非MSAA模式下启用
+- `MSAA`：MSAA模式下启用  
+- `Both`：始终启用（推荐）
 
-- `Point`： Point sampling
+#### 深度偏移
+解决z-fighting问题：
+- `depthBias`：基础偏移
+- `slopeScaledDepthBias`：斜率比例偏移  
+- `depthBiasOGL`：OpenGL平台偏移
+- `slopeScaledDepthBiasOGL`：OpenGL斜率偏移
 
-- `Bilinear`: Bilinear sampling
+计算公式：
+`offset = (slopeScaledDepthBias × m) + (depthBias × r)`
 
-- `Trilinear`: Trilinear sampling
+### 图元模式
 
-- `MipMapBilinear`： MipMap bilinear sampling
+#### `primitiveMode`
+渲染图元类型：
+- `None`：不渲染  
+- `QuadList`：四边形列表
+- `TriangleList`：三角形列表（每3个顶点构成三角形）
+- `TriangleStrip`：三角形带（复用顶点）  
+- `LineList`：线段列表
+- `Line`：线段带
 
-- `TexelAA`：Texel antialiasing (not supported on all devices, not recommended)
-
-- `PCF`：Sampling by comparison function (not supported on all devices, not recommended)
-
-##### `textureWrap`
-
-Texture wrapping mode, which controls what kind of texture should be sampled when uv is outside [0,1]. It can have the following values:
-
-- `Repeat`： Repeat, that is, modulo the value to [0, 1] for sampling
-
-- `Clamp`： Edge sampling, sampling the value of the closest edge, that is, if 1.1 is closer to 1, then take 1; if -0.1 is closer to 0, then take 0.
-
-
-#### Vertex
-
-##### `vertexFields`
-
-Vertex attributes, which are used to declare what attributes each vertex of the mesh that is rendered using this material holds. It is determined when the art is producing resources. The following values ​​may be used:
-
-- `Position`： Model space coordinates
-
-- `Color`： Color
-
-- `Normal`： Normal
-
-- `UV0`: Texture sample coordinates
-
-- `UV1`：Texture sample coordinates
-
-- `UV2`：Texture sample coordinates
-
-- `BoneId0`： Bone ID, used in the bone model
-
-#### Rasterizer environment configuration
-
-##### `msaaSupport`
-
-Configure MSAA (Multi-Sample Anti-Aliasing) support (the default in the engine is NonMSAA)
-
-- `NonMSAA`: Materials are allowed when MSAA is not enabled
-
-- `MSAA`: Materials are allowed when MSAA is enabled
-
-- `Both`：Materials are allowed with or without MSAA enabled. Usually just use this value.
-
-
-##### `depth offset`
-
-Depth offset is mainly used to solve the z-fighting problem, that is, when two objects have similar depths, some frames may display this object and some frames display another object when rendering. The principle of depth offset is to offset one of the objects in the direction of large or small depth, so that their depths are no longer the same. The following four variables can be configured:
-
-- depthBias
-
-- slopeScaledDepthBias
-
-- depthBiasOGL
-
-- slopeScaledDepthBiasOGL
-
-The specific offset depth is:
-
-`offset = (slopeScaledDepthBias * m) + (depthBias * r)`
-
-On the OGL platform it is:
-
-`offset = (slopeScaledDepthBiasOGL * m) + (depthBiasOGL * r)`
-
-m is the maximum value in the slope of the depth of the polygon (computed at the rasterization stage). The more parallel a polygon is to the near clipping plane, the closer m is to 0. r is the smallest value that produces a discernible difference in depth values ​​in the window coordinate system, and r is a constant specified by the platform that implements OpenGL.
-
-Associated states rendering environment configuration:
-
-- `Wireframe`： Draw wireframe mode
-
-- `DisableCulling`: Render front and back simultaneously
-
-- `InvertCulling`：Use front cropping. The default is back cropping. After declaring this, the back side is rendered and the front - side is cropped.
-
-#### Primitive
-
-##### `primitiveMode`
-
-Primitive rendering mode (the default in the engine is TriangleList):
-
-- `None`： Do not render, normally not used
-
-- `QuadList`：Quadrilateral pattern
-
-- `TriangleList`: A pattern of drawing a triangle every three vertices, for example the first triangle uses vertices v0, v1, v2, and the second uses v3, v4, v5
-
-- `TriangleStrip`: Each vertex will form a triangle with the first two vertices, the structure is a bit more complicated, but it - will save the amount of data
-
-- `LineList`: Draw a line segment every two vertices
-
-- `Line`: Each vertex forms a line segment with a vertex that appears before it.
-
-### Material variant
+### 材质变体
 
 #### `variants`
-
-Useful for quickly implementing multiple sub-materials based on most of the same definitions. See the actual example of entity_static below:
-
+快速创建衍生材质：
 ```json
-    "entity_static": {
-      "vertexShader": "shaders/entity.vertex",
-      "vrGeometryShader": "shaders/entity.geometry",
-      "fragmentShader": "shaders/entity.fragment",
-      "vertexFields": [
-        { "field": "Position" },
-        { "field": "Normal" },
-        { "field": "UV0" }
-      ],
-      "variants": [
+"base_material": {
+    "vertexShader": "...",
+    "variants": [
         {
-          "skinning": {
-            "+defines": [ "USE_SKINNING" ],
-            "vertexFields": [
-              { "field": "Position" },
-              { "field": "BoneId0" },
-              { "field": "Normal" },
-              { "field": "UV0" }
-            ]
-          }
+            "variant1": {  // 变体1
+                "+defines": ["MACRO_1"],
+                "vertexFields": [...]
+            }
         },
         {
-          "skinning_color": {
-            "+defines": [ "USE_SKINNING", "USE_OVERLAY" ],
-            "+states": [ "Blending" ],
-            "vertexFields": [
-              { "field": "Position" },
-              { "field": "BoneId0" },
-              { "field": "Color" },
-              { "field": "Normal" },
-              { "field": "UV0" }
-            ]
-          }
+            "variant2": {  // 变体2
+                "+states": ["Blending"]
+            }
         }
-      ],
-      "msaaSupport": "Both",
-      "+samplerStates": [
-        {
-          "samplerIndex": 0,
-          "textureFilter": "Point"
-        }
-      ]
-    }
-```
-
-Variants are declarations of material variants. The above declarations declare two sub-variants, skinning and skinning_color. Some external fields are rewritten in the sub-variants. In actual use, it is equivalent to quickly defining two materials. The body and the variant are connected with a dot ".". The two materials are entity_static.skinning and entity_static.skinning_color.
-
-In addition, if there are other materials that inherit from entity_static, such as entity_dynamic, this material will also inherit these two variants, entity_dynamic.skinning and entity_dynamic.skinning_color.
-
-## Material Merge Rules
-
-When the same material is declared in different directory files, it will be merged according to the following rules after loading: 1. Normally, the material fields of the files loaded later will overwrite the previously loaded ones. 2. The following fields are special. Operations to add attributes with "+" and delete attributes with "-" are supported:
-
-- defines
-- states
-- samplerStates
-
-As an example, for example, such a material is declared in the package body file (irrelevant code is omitted), and three macros are defined:
-
-```json
-"testMat": {
-	"defines": [ "MACRO_1", "MACRO_2", "MACRO_3" ],
+    ]
 }
 ```
+使用时通过`base_material.variant1`调用变体
 
-At this point, a mod also declares this material, defining another three macros:
+### 材质合并规则
+多文件定义同一材质时的合并策略：
+1. 常规字段：后加载的覆盖先加载的
+2. 特殊字段（支持`+`/`-`操作符）：
+   - `defines`：宏定义
+   - `states`：渲染状态  
+   - `samplerStates`：采样状态
 
+执行顺序：覆盖 → 添加 → 删除
+
+示例：
 ```json
-"testMat": {
-	"defines": [ "MACRO_4", "MACRO_5", "MACRO_6" ],
+// 基础定义
+"mat": {"defines": ["A","B"]}
+
+// 扩展定义（添加C，删除B）
+"mat": {
+    "+defines": ["C"],
+    "-defines": ["B"] 
 }
+
+// 最终效果：["A","C"]
 ```
-
-In the above case, the final runtime is equivalent to the defines field being overwritten, and the macros that take effect at the actual runtime are only: MACRO_4, MACRO_5, MACRO_6
-
-If the "+" symbol is used when defining in the MOD:
-
-```json
-"testMat": {
-	"+defines": [ "MACRO_4", "MACRO_5", "MACRO_6" ],
-}
-```
-
-Equivalent to adding definitions on the original basis, the macros that take effect at actual runtime are: MACRO_1, MACRO_2, MACRO_3, MACRO_4, MACRO_5, MACRO_6
-
-If the "-" symbol is used when defining in the MOD:
-
-```json
-"testMat": {
-	"-defines": [ "MACRO_3"],
-}
-```
-
-It is equivalent to deleting some definitions on the original basis, the only macros that take effect at runtime are: MACRO_1, MACRO_2
-
-If multiple files define the same material, and they involve overlay, add, and delete operations, the order in which they will take effect is: first perform all overlay operations, then perform all add operations, and finally perform all delete operations .
-
-i.e. if one of the material files declares a delete MACRO_3 action:
-
-```json
-"testMat": {
-	"-defines": [ "MACRO_3"],
-}
-```
-
-Then no matter how other files are covered, add MACRO_3, and this material must not have MACRO_3 macro after the final synthesis.
