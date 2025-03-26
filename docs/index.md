@@ -10,6 +10,9 @@ hero:
     - theme: brand
       text: 开始
       link: /wiki
+    - theme: alt
+      text: API 速查
+      link: /api-tools/events
 
 features:
   - icon: 🎯

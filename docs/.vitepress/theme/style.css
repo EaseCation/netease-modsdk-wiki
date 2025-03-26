@@ -1,0 +1,21 @@
+/* 全宽模式下的变量覆盖 */
+.vp-full-width {
+    --vp-layout-max-width: 100% !important;
+    --vp-sidebar-bg-color: var(--vp-bg-color) !important;
+    --vp-sidebar-width: 200px !important;
+    /*var(--vp-c-bg-alt)*/
+    --vp-sidebar-bg-color: var(--vp-bg-color) !important;
+}
+
+/* 全宽模式下的额外样式 */
+.vp-full-width .VPDoc.has-aside .content-container {
+    max-width: none !important;
+}
+
+.vp-full-width .VPDoc.has-aside .aside {
+    display: none !important;
+}
+
+.vp-full-width .VPDoc {
+    background-color: var(--vp-c-bg-alt);
+}

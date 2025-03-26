@@ -60,6 +60,7 @@ export default withMermaid({
     nav: [
       { text: '首页', link: '/' },
       { text: 'Wiki', link: '/wiki', activeMatch: '^/wiki/' },
+      { text: 'API速查', link: '/api-tools/interface', activeMatch: '^/api-tools/' },
       { text: 'API文档', link: '/mcdocs/0-欢迎', activeMatch: '^/mcdocs/' },
       { text: '开发指南', link: '/mcguide/0-欢迎', activeMatch: '^/mcguide/' },
       { text: '教学课程', link: '/mconline/0-欢迎', activeMatch: '^/mconline/' },
