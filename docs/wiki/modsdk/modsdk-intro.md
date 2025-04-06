@@ -74,15 +74,15 @@ class MyFirstMod:  # 这个类名可以随便取
 
 ::: code-group
 ```python [BP/myScript/MyServerSystem.py]
-from server.extraServerApi import serverApi
+import mod.server.extraServerApi as serverApi
 
 ServerSystem = serverApi.GetServerSystemCls()
 
 # 继承 ServerSystem 类，表示这是一个 服务端System
 class MyServerSystem(ServerSystem):
 
-    def __init__(self):
-        super(MyServerSystem, self).__init__()
+    def __init__(self, namespace, systemName):
+        super(MyServerSystem, self).__init__(namespace, systemName)
         print("MyServerSystem Hello World!")  # print打印的内容将输出在MCStudio的 日志与调试工具 中
 ```
 :::
@@ -90,15 +90,15 @@ class MyServerSystem(ServerSystem):
 ::: code-group
 ```python [BP/myScript/MyClientSystem.py]
 # 本教程中，我们还暂时用不到 ClientSystem，但是我们可以先创建好
-from client.extraClientApi import clientApi
+import mod.client.extraClientApi as clientApi
 
 ClientSystem = clientApi.GetClientSystemCls()
 
 # 继承 ClientSystem 类，表示这是一个 客户端System
 class MyClientSystem(ClientSystem):
 
-    def __init__(self):
-        super(MyClientSystem, self).__init__()
+    def __init__(self, namespace, systemName):
+        super(MyClientSystem, self).__init__(namespace, systemName)
         print("MyClientSystem Hello World!")
 ```
 :::
@@ -129,14 +129,14 @@ BOOM！就这么简单！
 
 ::: code-group
 ```python [BP/myScript/MyServerSystem.py]
-from server.extraServerApi import serverApi
+import mod.server.extraServerApi as serverApi
 
 ServerSystem = serverApi.GetServerSystemCls()
 
 # 继承 ServerSystem 类，表示这是一个 服务端System
 class MyServerSystem(ServerSystem):
-    def __init__(self):
-        super(MyServerSystem, self).__init__()
+    def __init__(self, namespace, systemName):
+        super(MyServerSystem, self).__init__(namespace, systemName)
         # 监听玩家使用方块事件 
         self.ListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(), "ServerBlockUseEvent", self, self.onBlockUse)
 
