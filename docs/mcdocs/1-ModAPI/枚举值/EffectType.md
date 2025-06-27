@@ -41,6 +41,12 @@ class EffectType(object):
 	BAD_OMEN = "bad_omen"                    # 不祥之兆， 进入村庄时触发袭击
 	HERO_OF_THE_VILLAGE = "village_hero"     # 村庄英雄，与村民交易价格降低
 	DARKNESS = "darkness"                    # 黑暗,是一种会将玩家的视野限制在15格内，且导致屏幕不时变暗的状态效果。
+	WIND_CHARGED = "wind_charged"			 # 蓄风，是一种让生物死亡时产生风爆的状态效果
+	INFESTED = "infested"					 # 寄生，是一个可以让生物生成蠹虫的状态效果
+	OOZING = "oozing"						 # 渗浆，是一种让生物死亡时产生史莱姆的状态效果
+	TRIAL_OMEN = "trial_omen"				 # 试炼之兆，是不祥之兆的变种，有此效果的玩家会被不祥的trial_omen粒子包围并播放event.mob_effect.trial_omen音效
+	WEAVING = "weaving"						 # 盘丝，是一个可以让生物死亡时传播蜘蛛网以及让生物以较快速度穿过蜘蛛网的状态效果
+	RAID_OMEN = "raid_omen"					 # 袭击之兆，是带有不祥之兆的玩家进入村庄时获得的状态效果，可触发袭击。
 
 ``` 
 

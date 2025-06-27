@@ -27,6 +27,7 @@ class ItemUseMethodEnum(object):
     Dyed = 13		        # 使用炼药锅对物品染色
     Traded = 14		        # 交易
     BrushingCompleted = 15	# 刷子清刷完毕
+    OpenedVault = 16        # 打开宝库
 
 ``` 
 

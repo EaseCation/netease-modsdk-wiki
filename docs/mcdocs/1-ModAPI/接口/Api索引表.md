@@ -189,6 +189,8 @@ sidebarDepth: 1
 | --- | --- | --- |
 | [GetDirFromRot](通用/数学.md#getdirfromrot) | <span style="display:inline;color:#ff5555">服务端</span> | 通过旋转角度获取朝向 |
 | [GetDirFromRot](通用/数学.md#getdirfromrot) | <span style="display:inline;color:#7575f9">客户端</span> | 通过旋转角度获取朝向 |
+| [GetIntPos](通用/数学.md#getintpos) | <span style="display:inline;color:#ff5555">服务端</span> | 获取坐标所在方块的位置，即浮点数坐标向下取整后的整数坐标。 |
+| [GetIntPos](通用/数学.md#getintpos) | <span style="display:inline;color:#7575f9">客户端</span> | 获取坐标所在方块的位置，即浮点数坐标向下取整后的整数坐标。 |
 | [GetLocalPosFromWorld](通用/数学.md#getlocalposfromworld) | <span style="display:inline;color:#ff5555">服务端</span> | 获取基于实体的世界坐标对应的局部坐标 |
 | [GetLocalPosFromWorld](通用/数学.md#getlocalposfromworld) | <span style="display:inline;color:#7575f9">客户端</span> | 获取基于实体的世界坐标对应的局部坐标 |
 | [GetRotFromDir](通用/数学.md#getrotfromdir) | <span style="display:inline;color:#ff5555">服务端</span> | 通过朝向获取旋转角度 |
@@ -212,6 +214,8 @@ sidebarDepth: 1
 | [GetChinese](通用/工具.md#getchinese) | <span style="display:inline;color:#7575f9">客户端</span> | 获取langStr对应的中文，可参考PC开发包中\handheld\localization\handheld\data\resource_packs\vanilla\texts\zh_CN.lang |
 | [GetClipboardContent](通用/工具.md#getclipboardcontent) | <span style="display:inline;color:#7575f9">客户端</span> | 获取系统剪贴板内容 |
 | [GetFps](通用/工具.md#getfps) | <span style="display:inline;color:#7575f9">客户端</span> | 获取fps |
+| [GetHostPlayerId](通用/工具.md#gethostplayerid) | <span style="display:inline;color:#ff5555">服务端</span> | 获取房主的entityId |
+| [GetHostPlayerId](通用/工具.md#gethostplayerid) | <span style="display:inline;color:#7575f9">客户端</span> | 获取房主的entityId |
 | [GetMinecraftEnum](通用/工具.md#getminecraftenum) | <span style="display:inline;color:#ff5555">服务端</span> | 用于获取[枚举值文档](通用/../../枚举值/索引.md)中的枚举值 |
 | [GetMinecraftEnum](通用/工具.md#getminecraftenum) | <span style="display:inline;color:#7575f9">客户端</span> | 用于获取[枚举值文档](通用/../../枚举值/索引.md)中的枚举值 |
 | [GetModConfigJson](通用/工具.md#getmodconfigjson) | <span style="display:inline;color:#7575f9">客户端</span> | 以字典形式返回指定路径的json格式配置文件的内容，文件必须放置在资源包的/modconfigs目录下 |
@@ -296,13 +300,13 @@ sidebarDepth: 1
 | [GetStructureSize](世界/地图.md#getstructuresize) | <span style="display:inline;color:#ff5555">服务端</span> | 获取结构体的长宽高 |
 | [IsChunkGenerated](世界/地图.md#ischunkgenerated) | <span style="display:inline;color:#ff5555">服务端</span> | 获取某个区块是否生成过。 |
 | [IsSlimeChunk](世界/地图.md#isslimechunk) | <span style="display:inline;color:#ff5555">服务端</span> | 获取某个区块是否是史莱姆区块。 |
-| [LocateNeteaseFeatureRule](世界/地图.md#locateneteasefeaturerule) | <span style="display:inline;color:#ff5555">服务端</span> | 与[/locate指令](https://minecraft-zh.gamepedia.com/%E5%91%BD%E4%BB%A4/locate)相似，用于定位<a href="../../../mcguide/20-玩法开发/15-自定义游戏内容/4-自定义维度/4-自定义特征.html#特征规则（feature-rules）">网易自定义特征规则</a> |
-| [LocateStructureFeature](世界/地图.md#locatestructurefeature) | <span style="display:inline;color:#ff5555">服务端</span> | 与[/locate指令](https://minecraft-zh.gamepedia.com/%E5%91%BD%E4%BB%A4/locate)相似，用于定位原版的部分结构，如海底神殿、末地城等。 |
+| [LocateNeteaseFeatureRule](世界/地图.md#locateneteasefeaturerule) | <span style="display:inline;color:#ff5555">服务端</span> | 与[/locate指令](https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4/locate)相似，用于定位<a href="../../../mcguide/20-玩法开发/15-自定义游戏内容/4-自定义维度/4-自定义特征.html#特征规则（feature-rules）">网易自定义特征规则</a> |
+| [LocateStructureFeature](世界/地图.md#locatestructurefeature) | <span style="display:inline;color:#ff5555">服务端</span> | 与[/locate指令](https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4/locate)相似，用于定位原版的部分结构，如海底神殿、末地城等。 |
 | [MayPlace](世界/地图.md#mayplace) | <span style="display:inline;color:#ff5555">服务端</span> | 判断方块是否可以放置 |
 | [MayPlaceOn](世界/地图.md#mayplaceon) | <span style="display:inline;color:#ff5555">服务端</span> | 判断物品是否可以放到指定的位置上 |
 | [MirrorDimension](世界/地图.md#mirrordimension) | <span style="display:inline;color:#ff5555">服务端</span> | 复制不同dimension的地形 |
 | [OpenClientChunkGeneration](世界/地图.md#openclientchunkgeneration) | <span style="display:inline;color:#ff5555">服务端</span> | 开启/关闭客户端区块生成功能，需要在LoadServerAddonScriptsAfter事件触发时调用。开启客户端区块生成功能时，如果使用了netease:structure_feature或修改了大部分地图，会导致客户端和服务端地图不一致的问题。此时可以通过关闭客户端区块生成功能解决该问题。 |
-| [PlaceFeature](世界/地图.md#placefeature) | <span style="display:inline;color:#ff5555">服务端</span> | 放置特征，与[/placefeature指令](https://minecraft.fandom.com/zh/wiki/%E5%91%BD%E4%BB%A4/placefeature)相似 |
+| [PlaceFeature](世界/地图.md#placefeature) | <span style="display:inline;color:#ff5555">服务端</span> | 放置特征，与[/placefeature指令](https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4/placefeature)相似 |
 | [PlaceNeteaseLargeFeature](世界/地图.md#placeneteaselargefeature) | <span style="display:inline;color:#ff5555">服务端</span> | 放置<a href="../../../mcguide/20-玩法开发/15-自定义游戏内容/4-自定义维度/6-自定义大型特征.html#自定义大型特征">网易版大型结构特征</a> |
 | [PlaceStructure](世界/地图.md#placestructure) | <span style="display:inline;color:#ff5555">服务端</span> | 放置结构 |
 | [SetAddArea](世界/地图.md#setaddarea) | <span style="display:inline;color:#ff5555">服务端</span> | 设置区块的常加载 |
@@ -627,7 +631,7 @@ sidebarDepth: 1
 | [SetMobStrengthMax](实体/属性.md#setmobstrengthmax) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物强度的最大值，截止至网易2.9版本，只对羊驼有效，强度越大羊驼驮运的箱子时格子数量越多，[SetMobStrength](实体/属性.md#setmobstrength)无法超过SetMobStrengthMax的值。由于引擎限制，在羊驼被打时候会reload组件，strengthMax会恢复成llama.json中的配置值(minecraft:strength) |
 | [SetName](实体/属性.md#setname) | <span style="display:inline;color:#ff5555">服务端</span> | 用于设置生物的自定义名称，跟原版命名牌作用相同，玩家和新版流浪商人暂不支持 |
 | [SetOutOfControl](实体/属性.md#setoutofcontrol) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体是否处于失控状态，截止至网易2.9版本，只对船有效 |
-| [SetPersistent](实体/属性.md#setpersistent) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体不会因为离玩家太远而被[清除](https://minecraft.fandom.com/zh/wiki/%E7%94%9F%E6%88%90#.E5.9F.BA.E5.B2.A9.E7.89.88_2) |
+| [SetPersistent](实体/属性.md#setpersistent) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体不会因为离玩家太远而被[清除](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90#%E6%B8%85%E9%99%A4) |
 | [SetPlayerLookAtPos](实体/属性.md#setplayerlookatpos) | <span style="display:inline;color:#7575f9">客户端</span> | 设置本地玩家看向某个位置 |
 | [SetPos](实体/属性.md#setpos) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体位置 |
 | [SetRecoverTotalAirSupplyTime](实体/属性.md#setrecovertotalairsupplytime) | <span style="display:inline;color:#ff5555">服务端</span> | 设置恢复最大氧气量的时间，单位秒 |
@@ -635,7 +639,7 @@ sidebarDepth: 1
 | [SetRot](实体/属性.md#setrot) | <span style="display:inline;color:#7575f9">客户端</span> | 设置实体头与水平方向的俯仰角度和竖直方向的旋转角度 <a href="../../../mcguide/20-玩法开发/10-基本概念/10-Vector3.html">MC坐标系说明</a> |
 | [SetSheared](实体/属性.md#setsheared) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体是否被剃毛，截止至网易2.9版本，只对羊有效 |
 | [SetSitting](实体/属性.md#setsitting) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物是否坐下 |
-| [SetSize](实体/属性.md#setsize) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体的包围盒 |
+| [SetSize](实体/属性.md#setsize) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体的包围盒。设置过大会导致游戏卡顿。实体的scale的立方乘以包围盒的体积不可超过32768 |
 | [SetTradeLevel](实体/属性.md#settradelevel) | <span style="display:inline;color:#ff5555">服务端</span> | 设置村民的交易等级 |
 | [SetVariant](实体/属性.md#setvariant) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体的变种属性值 |
 | [isEntityInLava](实体/属性.md#isentityinlava) | <span style="display:inline;color:#7575f9">客户端</span> | 实体是否在岩浆中 |
@@ -694,7 +698,7 @@ sidebarDepth: 1
 | [SetEntityShareablesItems](实体/行为.md#setentityshareablesitems) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物可分享/可拾取的物品列表 |
 | [SetEntityTamed](实体/行为.md#setentitytamed) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物驯服，需要配合 entityEvent组件使用。该类驯服不包含骑乘功能。 |
 | [SetJumpPower](实体/行为.md#setjumppower) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物跳跃力度，0.42表示正常水平 |
-| [SetLeashHolder](实体/行为.md#setleashholder) | <span style="display:inline;color:#ff5555">服务端</span> | 为实体添加牵引者，与原版拴绳的作用相同，详见<a href="https://minecraft.fandom.com/zh/wiki/%E6%8B%B4%E7%BB%B3#%E6%8B%B4%E8%B5%B7%E7%94%9F%E7%89%A9">基岩版栓绳介绍</a> |
+| [SetLeashHolder](实体/行为.md#setleashholder) | <span style="display:inline;color:#ff5555">服务端</span> | 为实体添加牵引者，与原版拴绳的作用相同，详见<a href="https://zh.minecraft.wiki/w/%E6%8B%B4%E7%BB%B3">基岩版栓绳介绍</a> |
 | [SetLootDropped](实体/行为.md#setlootdropped) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物是否生成掉落物 |
 | [SetMobKnockback](实体/行为.md#setmobknockback) | <span style="display:inline;color:#ff5555">服务端</span> | 设置击退的初始速度，需要考虑阻力的影响 |
 | [SetMotion](实体/行为.md#setmotion) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物（不含玩家）的瞬时移动方向向量 |
@@ -864,6 +868,7 @@ sidebarDepth: 1
 | [GetArmorValue](玩家/属性.md#getarmorvalue) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家护甲值 |
 | [GetEnchantmentSeed](玩家/属性.md#getenchantmentseed) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家的附魔种子，该种子会决定附魔台上准备附魔的装备的附魔项 |
 | [GetPlayerCurLevelExp](玩家/属性.md#getplayercurlevelexp) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家当前等级需要的经验值 |
+| [GetPlayerCurrentExhaustionValue](玩家/属性.md#getplayercurrentexhaustionvalue) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家foodExhaustionLevel的当前消耗度。详见<a href="https://zh.minecraft.wiki/w/%E9%A5%A5%E9%A5%BF#%E6%9C%BA%E5%88%B6">消耗度介绍</a> |
 | [GetPlayerExp](玩家/属性.md#getplayerexp) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家当前等级下的经验值 |
 | [GetPlayerExp](玩家/属性.md#getplayerexp) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家当前等级下的经验值 |
 | [GetPlayerHealthLevel](玩家/属性.md#getplayerhealthlevel) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家健康临界值，当饥饿值大于等于健康临界值时会自动恢复血量，开启饥饿值且开启自然恢复时有效。原版默认值为18 |
@@ -879,6 +884,7 @@ sidebarDepth: 1
 | [IsPlayerNaturalRegen](玩家/属性.md#isplayernaturalregen) | <span style="display:inline;color:#ff5555">服务端</span> | 是否开启玩家自然恢复，当饥饿值大于等于健康临界值时会自动恢复血量，开启饥饿值且开启自然恢复时有效。原版默认开启 |
 | [IsPlayerNaturalStarve](玩家/属性.md#isplayernaturalstarve) | <span style="display:inline;color:#ff5555">服务端</span> | 是否开启玩家饥饿掉血，当饥饿值小于饥饿临界值时会自动恢复血量，开启饥饿值且开启饥饿掉血时有效。原版默认开启 |
 | [SetEnchantmentSeed](玩家/属性.md#setenchantmentseed) | <span style="display:inline;color:#ff5555">服务端</span> | 设置玩家的附魔种子，该种子会决定附魔台上准备附魔的装备的附魔项 |
+| [SetPlayerCurrentExhaustionValue](玩家/属性.md#setplayercurrentexhaustionvalue) | <span style="display:inline;color:#ff5555">服务端</span> | 设置玩家foodExhaustionLevel的当前消耗度。详见<a href="https://zh.minecraft.wiki/w/%E9%A5%A5%E9%A5%BF#%E6%9C%BA%E5%88%B6">消耗度介绍</a> |
 | [SetPlayerHealthLevel](玩家/属性.md#setplayerhealthlevel) | <span style="display:inline;color:#ff5555">服务端</span> | 设置玩家健康临界值，当饥饿值大于等于健康临界值时会自动恢复血量，开启饥饿值且开启自然恢复时有效.原版默认值为18 |
 | [SetPlayerHealthTick](玩家/属性.md#setplayerhealthtick) | <span style="display:inline;color:#ff5555">服务端</span> | 设置玩家自然恢复速度，当饥饿值大于等于健康临界值时会自动恢复血量，开启饥饿值且开启自然恢复时有效.原版默认值为80刻（即每4秒）恢复1点血量 |
 | [SetPlayerHunger](玩家/属性.md#setplayerhunger) | <span style="display:inline;color:#ff5555">服务端</span> | 设置玩家饥饿度。 |
@@ -905,7 +911,7 @@ sidebarDepth: 1
 | [EndSprinting](玩家/行为.md#endsprinting) | <span style="display:inline;color:#7575f9">客户端</span> | 使本地玩家结束向前疾跑/冲刺状态 |
 | [GetEntityRider](玩家/行为.md#getentityrider) | <span style="display:inline;color:#ff5555">服务端</span> | 获取骑乘者正在骑乘的实体的id。 |
 | [GetEntityRider](玩家/行为.md#getentityrider) | <span style="display:inline;color:#7575f9">客户端</span> | 获取骑乘者正在骑乘的实体的id。 |
-| [GetInteracteCenterOffset](玩家/行为.md#getinteractecenteroffset) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家[服务端交互中心](../../1-ModAPI/更新信息/2.8.md#玩家摄像机)的偏移 |
+| [GetInteracteCenterOffset](玩家/行为.md#getinteractecenteroffset) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家[服务端交互中心](玩家/../../更新信息/2.8.md#玩家摄像机)的偏移 |
 | [GetIsBlocking](玩家/行为.md#getisblocking) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家激活盾牌状态 |
 | [GetPickCenterOffset](玩家/行为.md#getpickcenteroffset) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家设置的第三人称下客户端交互中心的偏移 |
 | [GetPickRange](玩家/行为.md#getpickrange) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家客户端的交互距离 |
@@ -917,8 +923,8 @@ sidebarDepth: 1
 | [GetPlayerRespawnPos](玩家/行为.md#getplayerrespawnpos) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家复活点 |
 | [GetRelevantPlayer](玩家/行为.md#getrelevantplayer) | <span style="display:inline;color:#ff5555">服务端</span> | 获取附近玩家id列表 |
 | [IsEntityRiding](玩家/行为.md#isentityriding) | <span style="display:inline;color:#ff5555">服务端</span> | 检查玩家是否骑乘。 |
-| [IsInScaffolding](玩家/行为.md#isinscaffolding) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家是否与脚手架有交叉 |
-| [IsOnLadder](玩家/行为.md#isonladder) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家是否与梯子/藤蔓有交叉 |
+| [IsInScaffolding](玩家/行为.md#isinscaffolding) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家是否在脚手架中 |
+| [IsOnLadder](玩家/行为.md#isonladder) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家是否在梯子/藤蔓上 |
 | [IsPlayerCanFly](玩家/行为.md#isplayercanfly) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家能否飞行 |
 | [IsPlayerFlying](玩家/行为.md#isplayerflying) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家是否在飞行 |
 | [OpenWorkBench](玩家/行为.md#openworkbench) | <span style="display:inline;color:#ff5555">服务端</span> | 在玩家当前位置打开工作台UI，不依赖于工作台方块 |
@@ -1389,7 +1395,7 @@ sidebarDepth: 1
 | [SetAnimationBoneMask](模型.md#setanimationbonemask) | <span style="display:inline;color:#7575f9">客户端</span> | 设置是否屏蔽动画中指定的骨骼的动画，若开启骨骼屏蔽后，该骨骼将不再播放该动画中的动作。通过屏蔽指定骨骼的动画可实现同一个骨骼模型同时在不同骨骼上播放不同的动作动画，从而实现快捷的动作融合。 |
 | [SetBrightness](模型.md#setbrightness) | <span style="display:inline;color:#7575f9">客户端</span> | 设置实体的亮度 |
 | [SetEntityOpacity](模型.md#setentityopacity) | <span style="display:inline;color:#7575f9">客户端</span> | 设置骨骼模型的透明度，只能对骨骼模型生效，如果设置的是原版模型，则模型的影子会被隐藏。 |
-| [SetEntityScale](模型.md#setentityscale) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体的放缩比例大小，设置比例过大会导致游戏卡顿，建议控制在20倍以内 |
+| [SetEntityScale](模型.md#setentityscale) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体的放缩比例大小，设置比例过大会导致游戏卡顿，建议控制在20倍以内。实体的scale的立方乘以包围盒的体积不可超过32768 |
 | [SetEntityShadowShow](模型.md#setentityshadowshow) | <span style="display:inline;color:#7575f9">客户端</span> | 设置实体打开/关闭影子渲染 |
 | [SetExtraUniformValue](模型.md#setextrauniformvalue) | <span style="display:inline;color:#7575f9">客户端</span> | 设置shader中特定Uniform的值 |
 | [SetFreeModelAniSpeed](模型.md#setfreemodelanispeed) | <span style="display:inline;color:#7575f9">客户端</span> | 设置自由模型动画的播放速度 |
@@ -1444,7 +1450,7 @@ sidebarDepth: 1
 | [HideReportGUI](原生UI.md#hidereportgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏举报按钮原生UI。 |
 | [HideSlotBarGui](原生UI.md#hideslotbargui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中底部中间的物品栏界面 |
 | [HideSneakGui](原生UI.md#hidesneakgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中左下角方向键的中心处潜行按钮。隐藏后点击相应位置不会响应 |
-| [HideSwimGui](原生UI.md#hideswimgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。仅影响十字键操作下的浮潜按钮，摇杆模式上浮=跳跃，下潜=潜行，需要通过HideJumpGui和HideSneakGui来隐藏 |
+| [HideSwimGui](原生UI.md#hideswimgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。 |
 | [HideVoiceGUI](原生UI.md#hidevoicegui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏语音按钮原生UI。该接口在开启新版聊天时不生效 |
 | [HideWalkGui](原生UI.md#hidewalkgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中跑/走按钮。隐藏后点击相应位置不会响应 |
 | [OpenChatGui](原生UI.md#openchatgui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版聊天栏 |
@@ -1579,6 +1585,7 @@ sidebarDepth: 1
 | [GetOrientation](自定义UI/UI控件.md#getorientation) | <span style="display:inline;color:#7575f9">客户端</span> | 获取stackPanel的排列方向 |
 | [GetPath](自定义UI/UI控件.md#getpath) | <span style="display:inline;color:#7575f9">客户端</span> | 返回当前控件的相对路径，路径从画布节点开始算起 |
 | [GetPosition](自定义UI/UI控件.md#getposition) | <span style="display:inline;color:#7575f9">客户端</span> | 获取控件相对父节点的坐标 |
+| [GetPropertyBag](自定义UI/UI控件.md#getpropertybag) | <span style="display:inline;color:#7575f9">客户端</span> | 获取PropertyBag |
 | [GetRotateAngle](自定义UI/UI控件.md#getrotateangle) | <span style="display:inline;color:#7575f9">客户端</span> | 获取图片相对自身的旋转锚点旋转的角度 |
 | [GetRotatePivot](自定义UI/UI控件.md#getrotatepivot) | <span style="display:inline;color:#7575f9">客户端</span> | 获取图片相对自身的旋转锚点 |
 | [GetRotateRect](自定义UI/UI控件.md#getrotaterect) | <span style="display:inline;color:#7575f9">客户端</span> | 获取图片当前的四个边角点 |
@@ -1653,6 +1660,7 @@ sidebarDepth: 1
 | [SetOffsetDelta](自定义UI/UI控件.md#setoffsetdelta) | <span style="display:inline;color:#7575f9">客户端</span> | 设置点击面板的拖拽偏移量 |
 | [SetOrientation](自定义UI/UI控件.md#setorientation) | <span style="display:inline;color:#7575f9">客户端</span> | 设置stackPanel的排列方向 |
 | [SetPosition](自定义UI/UI控件.md#setposition) | <span style="display:inline;color:#7575f9">客户端</span> | 设置控件相对父节点的坐标 |
+| [SetPropertyBag](自定义UI/UI控件.md#setpropertybag) | <span style="display:inline;color:#7575f9">客户端</span> | 设置PropertyBag,将使用字典中的每个值来覆盖原本PropertyBag中的值 |
 | [SetRotatePivot](自定义UI/UI控件.md#setrotatepivot) | <span style="display:inline;color:#7575f9">客户端</span> | 设置图片自身旋转锚点，该点并不是固定的点，而是相对于自身位置的点 |
 | [SetScrollViewPercentValue](自定义UI/UI控件.md#setscrollviewpercentvalue) | <span style="display:inline;color:#7575f9">客户端</span> | 设置当前scroll_view内容的百分比位置 |
 | [SetScrollViewPos](自定义UI/UI控件.md#setscrollviewpos) | <span style="display:inline;color:#7575f9">客户端</span> | 设置当前scroll_view内容的位置 |

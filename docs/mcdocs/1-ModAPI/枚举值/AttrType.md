@@ -7,8 +7,8 @@ class in mod.common.minecraftEnum
     描述属性枚举值，用于设置与获取实体的引擎属性的当前值与最大值
 
 - 备注
-    - ABSORPTION: 伤害吸收效果的量化值，详见wiki文档：[伤害吸收](https://minecraft-zh.gamepedia.com/index.php?title=%E4%BC%A4%E5%AE%B3%E5%90%B8%E6%94%B6&variant=zh)
-    - 各类属性值一般通过entity的json配置，如 `minecraft:knockback_resistance : { "value" : 100, "max" : 100}`
+    - ABSORPTION: 伤害吸收效果的量化值，详见wiki文档：[伤害吸收](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3%E5%90%B8%E6%94%B6)
+    - 各类属性值一般通过entity的json配置，如`minecraft:knockback_resistance : {"value": 100, "max": 100}`
     - 当json文件中未配置时，引擎会针对不同属性进行不同初始值、不同最大值的设置
 
 

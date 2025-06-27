@@ -24,7 +24,8 @@ class OriginGUIName(object):
 	PauseBtn = "binding.area.pause" # 暂停键
 	ChatBtn = "binding.area.chat"	# 聊天按钮
 	MenuBtn = "binding.area.fold_menu"	# 菜单按钮(截图分享)
-	ReportBtn = "binding.area.report_cheat" # 举报按钮
+	ReportBtn = "binding.area.report_cheat" # 举报按钮（已废弃）
+	CameraViewBtn = "binding.area.camera_view" # 摄像机视角按钮
 	DestroyOrAttackBtn = "binding.area.destroy_or_attack" # 破坏/攻击按钮
 	BuildOrInteractBtn = "binding.area.build_or_interact" # 建造/交互按钮
 	MoveStickBtn = "binding.area.default_move_stick_area" # 新触控摇杆按钮

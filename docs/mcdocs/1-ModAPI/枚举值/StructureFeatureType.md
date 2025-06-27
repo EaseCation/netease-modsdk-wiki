@@ -27,7 +27,8 @@ class StructureFeatureType(object):
 	Bastion = 14			 # 堡垒遗迹
 	AncientCity = 15         # 远古城市
 	TrailRuins = 16          # 古迹废墟
-	NeteaseLargeFeature = 17 # 网易版大型结构特征
+	TrialChambers = 17		 # 试炼密室
+	NeteaseLargeFeature = 18 # 网易版大型结构特征
 
 ``` 
 

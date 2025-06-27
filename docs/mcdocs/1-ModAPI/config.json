@@ -170,7 +170,6 @@
                 "/mcdocs/1-ModAPI/枚举值/AniCheatConsts", 
                 "/mcdocs/1-ModAPI/枚举值/AniCheatMove", 
                 "/mcdocs/1-ModAPI/枚举值/AniCheatMoveRewind", 
-                "/mcdocs/1-ModAPI/枚举值/AniCheatMoveUnSupportRewind", 
                 "/mcdocs/1-ModAPI/枚举值/AnimationModeType", 
                 "/mcdocs/1-ModAPI/枚举值/ArmorSlotType", 
                 "/mcdocs/1-ModAPI/枚举值/AttrType", 
@@ -237,10 +236,11 @@
         }, 
         {
             "children": [
+                "/mcdocs/1-ModAPI/更新信息/3.4", 
                 "/mcdocs/1-ModAPI/更新信息/3.3"
             ], 
             "title": "更新信息"
         }
     ], 
-    "title": "ModAPI-beta"
+    "title": "ModAPI"
 }

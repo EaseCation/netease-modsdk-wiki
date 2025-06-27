@@ -29,6 +29,8 @@ class OpenContainerId(object):
 	CreatedOutputContainer  = 61 # 创造输出位(目前无用)
 	SmithingTableTemplateContainer = 62 # 锻造台模板位
 	CrafterLevelEntityContainer = 63 # 合成器输入位
+	NeteaseContainer = 64  # 自定义方块容器槽位 (关闭后放入物品数据存于方块实体中)
+	NeteaseUIContainer = 65 # 网易UI槽位 (数据存于玩家中，关闭ui后放入物品返回背包)
 
 ``` 
 

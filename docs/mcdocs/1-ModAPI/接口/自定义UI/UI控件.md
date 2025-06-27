@@ -54,7 +54,7 @@ method in mod.client.ui.controls.minimapUIControl.MiniMapUIControl
     | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
     | :--- | :--- | :--- |
     | entityId | str | 实体Id |
-    | text | str | 文本的内容，可以支持[样式代码](https://minecraft-zh.gamepedia.com/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变） |
+    | text | str | 文本的内容，可以支持[样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变） |
     | scale | float | 文本缩放倍数，等于文本控件json中的font_scale_factor参数，默认缩放倍数为1.0 |
 
 - 返回值
@@ -192,7 +192,7 @@ method in mod.client.ui.controls.minimapUIControl.MiniMapUIControl
     | :--- | :--- | :--- |
     | key | str | 标记Id |
     | vec2 | tuple(float,float) | 地图位置二维坐标(x,z) |
-    | text | str | 文本的内容，可以支持[样式代码](https://minecraft-zh.gamepedia.com/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变） |
+    | text | str | 文本的内容，可以支持[样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变） |
     | scale | float | 文本缩放倍数，等于文本控件json中的font_scale_factor参数，默认缩放倍数为1.0 |
 
 - 返回值
@@ -1267,6 +1267,36 @@ method in mod.client.ui.controls.baseUIControl.BaseUIControl
 text2Path = "/panel/text2"
 baseUIControl = uiNode.GetBaseUIControl(text2Path)
 textPosition = baseUIControl.GetPosition()
+```
+
+
+
+## GetPropertyBag
+
+<span style="display:inline;color:#7575f9">客户端</span>
+
+method in mod.client.ui.controls.baseUIControl.BaseUIControl
+
+- 描述
+
+    获取PropertyBag
+
+- 参数
+
+    无
+
+- 返回值
+
+    | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- |
+    | str | PropertyBag |
+
+- 示例
+
+```python
+text2Path = "/panel/text2"
+baseUIControl = uiNode.GetBaseUIControl(text2Path)
+propertyBag = baseUIControl.GetPropertyBag()
 ```
 
 
@@ -4018,6 +4048,39 @@ baseUIControl.SetPosition(pos)
 
 
 
+## SetPropertyBag
+
+<span style="display:inline;color:#7575f9">客户端</span>
+
+method in mod.client.ui.controls.baseUIControl.BaseUIControl
+
+- 描述
+
+    设置PropertyBag,将使用字典中的每个值来覆盖原本PropertyBag中的值
+
+- 参数
+
+    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- | :--- |
+    | params | dict | 需要设置的属性字典，字典键值对的值仅支持设置字符串、数字、布尔值类型，其余类型会导致设置失败 |
+
+- 返回值
+
+    | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- |
+    | bool | 是否设置成功 |
+
+- 示例
+
+```python
+text2Path = "/panel/text2"
+baseUIControl = uiNode.GetBaseUIControl(text2Path)
+params = {"text": "hello world", "number": 123, "boolean": True}
+success = baseUIControl.SetPropertyBag(params)
+```
+
+
+
 ## SetRotatePivot
 
 <span style="display:inline;color:#7575f9">客户端</span>
@@ -4519,7 +4582,7 @@ method in mod.client.ui.controls.labelUIControl.LabelUIControl
 
     | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
     | :--- | :--- | :--- |
-    | text | str | 文本的内容，可以支持[样式代码](https://minecraft-zh.gamepedia.com/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变） |
+    | text | str | 文本的内容，可以支持[样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变） |
     | syncSize | bool | 是否设置文本时同步更新文本框大小，默认值为False |
 
 - 返回值

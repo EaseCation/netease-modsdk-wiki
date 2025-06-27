@@ -37,7 +37,7 @@ sidebarDepth: 1
 | [HideReportGUI](原生UI.md#hidereportgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏举报按钮原生UI。 |
 | [HideSlotBarGui](原生UI.md#hideslotbargui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中底部中间的物品栏界面 |
 | [HideSneakGui](原生UI.md#hidesneakgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中左下角方向键的中心处潜行按钮。隐藏后点击相应位置不会响应 |
-| [HideSwimGui](原生UI.md#hideswimgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。仅影响十字键操作下的浮潜按钮，摇杆模式上浮=跳跃，下潜=潜行，需要通过HideJumpGui和HideSneakGui来隐藏 |
+| [HideSwimGui](原生UI.md#hideswimgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。 |
 | [HideVoiceGUI](原生UI.md#hidevoicegui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏语音按钮原生UI。该接口在开启新版聊天时不生效 |
 | [HideWalkGui](原生UI.md#hidewalkgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中跑/走按钮。隐藏后点击相应位置不会响应 |
 | [OpenChatGui](原生UI.md#openchatgui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版聊天栏 |
@@ -871,7 +871,7 @@ method in mod.client.extraClientApi
 
 - 描述
 
-    隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。仅影响十字键操作下的浮潜按钮，摇杆模式上浮=跳跃，下潜=潜行，需要通过HideJumpGui和HideSneakGui来隐藏
+    隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。
 
 - 参数
 

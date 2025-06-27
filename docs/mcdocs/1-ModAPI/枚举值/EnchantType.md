@@ -48,8 +48,12 @@ class EnchantType(object):
 	CrossbowQuickCharge = 35	# 快速装填
 	SoulSpeed = 36				# 灵魂疾行
 	SwiftSneak = 37             # 迅捷潜行
-	NumEnchantments = 38		# 附魔种数
-	InvalidEnchantment = 39		# 无效附魔
+	WindBurst = 38				# 风爆
+	Density = 39				# 致密
+	Breach = 40					# 破甲
+	NumEnchantments = 41		# 附魔种数
+	InvalidEnchantment = 42		# 无效附魔
+
 	ModEnchant = 255			# 自定义附魔
 
 ``` 

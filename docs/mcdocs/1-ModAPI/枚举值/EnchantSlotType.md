@@ -23,6 +23,7 @@ class EnchantSlotType(object):
 	BOW = 32					# 弓
 	SPEAR = 32768				# 三叉戟
 	CROSSBOW = 65536			# 弩
+	HEAVY_WEAPON = 4194304		# 重锤
 
 	# tool group
 	G_TOOL = 131520				# 剪刀、打火石、盾

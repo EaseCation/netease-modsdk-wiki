@@ -13,7 +13,7 @@ sidebarDepth: 1
 | [ClientPlayerInventoryCloseEvent](UI.md#clientplayerinventorycloseevent) | <span style="display:inline;color:#7575f9">客户端</span> | 关闭物品背包界面时触发 |
 | [ClientPlayerInventoryOpenEvent](UI.md#clientplayerinventoryopenevent) | <span style="display:inline;color:#7575f9">客户端</span> | 打开物品背包界面时触发 |
 | [CloseNeteaseShopEvent](UI.md#closeneteaseshopevent) | <span style="display:inline;color:#7575f9">客户端</span> | 关闭商城界面时触发，包括脚本商城和Apollo插件商城 |
-| [GridComponentSizeChangedClientEvent](UI.md#gridcomponentsizechangedclientevent) | <span style="display:inline;color:#7575f9">客户端</span> | 触发时机：UI grid组件里格子数目发生变化时触发 |
+| [GridComponentSizeChangedClientEvent](UI.md#gridcomponentsizechangedclientevent) | <span style="display:inline;color:#7575f9">客户端</span> | UI grid控件里格子重新排列时触发 |
 | [HudButtonChangedClientEvent](UI.md#hudbuttonchangedclientevent) | <span style="display:inline;color:#7575f9">客户端</span> | 当原生HUD按钮位置或大小发生改变时触发，例如玩家使用了自定义控件功能会触发，可在该事件中修改mod按钮的位置防止重叠 |
 | [OnItemSlotButtonClickedEvent](UI.md#onitemslotbuttonclickedevent) | <span style="display:inline;color:#7575f9">客户端</span> | 点击快捷栏、背包栏、盔甲栏、副手栏的物品槽时触发 |
 | [PlayerChatButtonClickClientEvent](UI.md#playerchatbuttonclickclientevent) | <span style="display:inline;color:#7575f9">客户端</span> | 玩家点击聊天按钮或回车键触发呼出聊天窗口时客户端抛出的事件 |
@@ -152,7 +152,7 @@ sidebarDepth: 1
 
 - 描述
 
-    触发时机：UI grid组件里格子数目发生变化时触发
+    UI grid控件里格子重新排列时触发
 
 - 参数
 
@@ -206,7 +206,7 @@ sidebarDepth: 1
 
     | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
     | :--- | :--- | :--- |
-    | slotIndex | int | 点击的物品槽的编号，编号对应位置详见[<a href="https://minecraft.fandom.com/zh/wiki/%E7%89%A9%E5%93%81%E6%A0%8F">物品栏</a>] |
+    | slotIndex | int | 点击的物品槽的编号，编号对应位置详见[<a href="https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81%E6%A0%8F">物品栏</a>] |
 
 - 返回值
 

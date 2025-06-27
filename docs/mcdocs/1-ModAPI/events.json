@@ -2985,7 +2985,7 @@
         {
             "name": "ServerItemTryUseEvent", 
             "path": "server.serverEvent", 
-            "desc": "玩家点击右键尝试使用物品时服务端抛出的事件。注：如果需要取消物品的使用需要同时在ClientItemTryUseEvent和ServerItemTryUseEvent中将cancel设置为True才能正确取消。", 
+            "desc": "玩家点击右键尝试使用物品时服务端抛出的事件。注：ClientItemTryUseEvent的cancel设置为True时，服务端事件不会被触发了。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -3028,6 +3028,12 @@
                     "operation": "调整", 
                     "version": "2.10", 
                     "author": "xsf"
+                }, 
+                {
+                    "comment": "ClientItemTryUseEvent的cancel设置为True时，服务端事件不会被触发了。", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "bl"
                 }
             ], 
             "side": "服务端"
@@ -3035,7 +3041,7 @@
         {
             "name": "ServerItemUseOnEvent", 
             "path": "server.serverEvent", 
-            "desc": "玩家在对方块使用物品之前服务端抛出的事件。注：如果需要取消物品的使用需要同时在ClientItemUseOnEvent和ServerItemUseOnEvent中将ret设置为True才能正确取消。", 
+            "desc": "玩家在对方块使用物品之前服务端抛出的事件。注：客户端事件ClientItemUseOnEvent设置ret设置为True时，服务端不再会接受到这个事件。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -3122,6 +3128,12 @@
                     "operation": "调整", 
                     "version": "1.21", 
                     "author": "czh"
+                }, 
+                {
+                    "comment": "客户端事件ClientItemUseOnEvent设置ret设置为True时，服务端不再会接受到这个事件。", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "bl"
                 }
             ], 
             "side": "服务端"
@@ -4168,6 +4180,16 @@
                     "param_type": "int"
                 }, 
                 {
+                    "param_comment": "区块的x坐标，对应方块X坐标区间为[x * 16, x * 16 + 15]", 
+                    "param_name": "chunkPosX", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "区块的z坐标，对应方块Z坐标区间为[z * 16, z * 16 + 15]", 
+                    "param_name": "chunkPosZ", 
+                    "param_type": "int"
+                }, 
+                {
                     "param_comment": "该区块中的自定义方块实体列表，通常是由自定义特征生成的自定义方块，没有自定义方块实体时该值为None", 
                     "param_name": "blockEntityData", 
                     "param_type": "[{\"blockName\":str,\"posX\":int,\"posY\":int,\"posZ\":int}...]/None"
@@ -4177,7 +4199,14 @@
                 "return_type": "", 
                 "return_comment": ""
             }, 
-            "state": [], 
+            "state": [
+                {
+                    "comment": "新增chunkPosX,chunkPosZ", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
+                }
+            ], 
             "side": "服务端"
         }, 
         {
@@ -4919,6 +4948,11 @@
                     "param_type": "int"
                 }, 
                 {
+                    "param_comment": "变化前的红石信号量", 
+                    "param_name": "oldStrength", 
+                    "param_type": "int"
+                }, 
+                {
                     "param_comment": "维度", 
                     "param_name": "dimensionId", 
                     "param_type": "int"
@@ -4934,6 +4968,12 @@
                     "operation": "调整", 
                     "version": "1.21", 
                     "author": "gzhuabo"
+                }, 
+                {
+                    "comment": "新增变化前的红石信号量参数", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
                 }
             ], 
             "side": "服务端"
@@ -6949,7 +6989,7 @@
                     "param_type": "str"
                 }, 
                 {
-                    "param_comment": "玩家放入物品的EnchantSlotType", 
+                    "param_comment": "玩家放入物品的[EnchantSlotType](../枚举值/EnchantSlotType.md)", 
                     "param_name": "slotType", 
                     "param_type": "int"
                 }, 
@@ -7030,7 +7070,7 @@
         {
             "name": "HealthChangeBeforeServerEvent", 
             "path": "server.serverEvent", 
-            "desc": "生物生命值发生变化之前触发", 
+            "desc": "生物生命值或最大生命值发生变化之前触发", 
             "doc_class_path": [
                 "实体"
             ], 
@@ -7981,6 +8021,69 @@
                 }
             ], 
             "side": "服务端"
+        }, 
+        {
+            "name": "PlayerTryPutCustomContainerItemServerEvent", 
+            "path": "server.serverEvent", 
+            "desc": "玩家尝试将物品放入自定义容器时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "尝试放入物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "放入容器名称，目前仅支持netease_container和netease_ui_container", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "玩家id", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "float"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "float"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "float"
+                }, 
+                {
+                    "param_comment": "是否取消该操作，默认为false，事件中改为true时拒绝此次放入自定义容器的操作", 
+                    "param_name": "cancel", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "玩家尝试将物品放入自定义容器时触发该事件", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "lidi"
+                }
+            ], 
+            "side": "服务端"
         }
     ], 
     "client.clientEvent": [
@@ -8709,7 +8812,7 @@
         {
             "name": "ClientItemTryUseEvent", 
             "path": "client.clientEvent", 
-            "desc": "玩家点击右键尝试使用物品时客户端抛出的事件，可以通过设置cancel为True取消使用物品。注：如果需要取消物品的使用需要同时在ClientItemTryUseEvent和ServerItemTryUseEvent中将cancel设置为True才能正确取消。", 
+            "desc": "玩家点击右键尝试使用物品时客户端抛出的事件，可以通过设置cancel为True取消使用物品。注：ClientItemTryUseEvent事件设置cancel时即可取消使用，无需服务端ServerItemTryUseEvent再次cancel，且服务端事件将不再触发。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -8740,6 +8843,12 @@
                     "operation": "调整", 
                     "version": "1.20", 
                     "author": "czh"
+                }, 
+                {
+                    "comment": "ClientItemTryUseEvent事件设置cancel为True时,不会再给服务端同步物品使用网络包。", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "bl"
                 }
             ], 
             "side": "客户端"
@@ -8747,7 +8856,7 @@
         {
             "name": "ClientItemUseOnEvent", 
             "path": "client.clientEvent", 
-            "desc": "玩家在对方块使用物品时客户端抛出的事件。注：如果需要取消物品的使用需要同时在ClientItemUseOnEvent和ServerItemUseOnEvent中将ret设置为True才能正确取消。", 
+            "desc": "玩家在对方块使用物品时客户端抛出的事件。注：事件设置ret = True 时即可取消使用，无需服务端再次设置ServerItemUseOnEvent取消，且服务端事件将不再触发。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -8829,6 +8938,12 @@
                     "operation": "调整", 
                     "version": "1.21", 
                     "author": "czh"
+                }, 
+                {
+                    "comment": "ClientItemUseOnEvent事件设置ret为True时，不会再给服务端同步物品使用网络包。", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "bl"
                 }
             ], 
             "side": "客户端"
@@ -8870,7 +8985,7 @@
             ], 
             "param": [
                 {
-                    "param_comment": "点击的物品槽的编号，编号对应位置详见[<a href=\"https://minecraft.fandom.com/zh/wiki/%E7%89%A9%E5%93%81%E6%A0%8F\">物品栏</a>]", 
+                    "param_comment": "点击的物品槽的编号，编号对应位置详见[<a href=\"https://zh.minecraft.wiki/w/%E7%89%A9%E5%93%81%E6%A0%8F\">物品栏</a>]", 
                     "param_name": "slotIndex", 
                     "param_type": "int"
                 }
@@ -8932,28 +9047,6 @@
                 "return_comment": ""
             }, 
             "state": [], 
-            "side": "客户端"
-        }, 
-        {
-            "name": "PrimaryClientSyncSkinClientEvent", 
-            "path": "client.clientEvent", 
-            "desc": "主客户端自己更换了皮肤触发", 
-            "doc_class_path": [
-                "世界"
-            ], 
-            "param": [], 
-            "return": {
-                "return_type": "", 
-                "return_comment": ""
-            }, 
-            "state": [
-                {
-                    "comment": "主客户端自己更换了皮肤触发", 
-                    "operation": "新增", 
-                    "version": "2.12", 
-                    "author": "bl"
-                }
-            ], 
             "side": "客户端"
         }, 
         {
@@ -9965,6 +10058,12 @@
                     "operation": "调整", 
                     "version": "3.2", 
                     "author": "lrz"
+                }, 
+                {
+                    "comment": "当拦截交互逻辑时，不再会给服务端发送网络包，", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "bl"
                 }
             ], 
             "side": "客户端"
@@ -10780,7 +10879,7 @@
         {
             "name": "GridComponentSizeChangedClientEvent", 
             "path": "client.clientEvent", 
-            "desc": "触发时机：UI grid组件里格子数目发生变化时触发", 
+            "desc": "UI grid控件里格子重新排列时触发", 
             "doc_class_path": [
                 "UI"
             ], 
@@ -11843,6 +11942,16 @@
                     "param_comment": "方块坐标", 
                     "param_name": "blockPos", 
                     "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "方块的identifier，包含命名空间及名称", 
+                    "param_name": "blockName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "方块附加值", 
+                    "param_name": "auxData", 
+                    "param_type": "int"
                 }
             ], 
             "return": {
@@ -11854,6 +11963,12 @@
                     "comment": "客户端新增类似樱花树叶/末地烛的随机动效Tick事件", 
                     "operation": "新增", 
                     "version": "3.3", 
+                    "author": "xgb"
+                }, 
+                {
+                    "comment": "新增blockName与auxData参数", 
+                    "operation": "调整", 
+                    "version": "3.4", 
                     "author": "xgb"
                 }
             ], 

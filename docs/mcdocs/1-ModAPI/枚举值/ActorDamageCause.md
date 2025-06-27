@@ -24,7 +24,8 @@ class ActorDamageCause(object):
     BlockExplosion = "block_explosion"  	# 方块爆炸
     EntityExplosion = "entity_explosion"  	# 生物爆炸
     Void = "void"  							# 虚空
-    Suicide = "suicide"  					# 自杀（kill命令）
+    Suicide = "self_destruct"  				# 自杀（kill命令）兼容旧版
+    SelfDestruct = "self_destruct"          # 自杀（kill命令）
     Magic = "magic"  						# 尖牙对生物造成的伤害、守卫者对生物造成的魔法伤害和药水伤害等
     Wither = "wither"  						# 凋零效果
     Starve = "starve"  						# 饥饿

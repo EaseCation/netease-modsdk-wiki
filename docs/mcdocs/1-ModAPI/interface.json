@@ -600,7 +600,7 @@
                     "param_type": "str"
                 }, 
                 {
-                    "param_comment": "文本的内容，可以支持[样式代码](https://minecraft-zh.gamepedia.com/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变）", 
+                    "param_comment": "文本的内容，可以支持[样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变）", 
                     "param_name": "text", 
                     "param_type": "str"
                 }, 
@@ -682,7 +682,7 @@
                     "param_type": "tuple(float,float)"
                 }, 
                 {
-                    "param_comment": "文本的内容，可以支持[样式代码](https://minecraft-zh.gamepedia.com/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变）", 
+                    "param_comment": "文本的内容，可以支持[样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变）", 
                     "param_name": "text", 
                     "param_type": "str"
                 }, 
@@ -1207,7 +1207,7 @@
         {
             "name": "SetPersistent", 
             "path": "server.component.attrCompServer.AttrCompServer", 
-            "desc": "设置实体不会因为离玩家太远而被[清除](https://minecraft.fandom.com/zh/wiki/%E7%94%9F%E6%88%90#.E5.9F.BA.E5.B2.A9.E7.89.88_2)", 
+            "desc": "设置实体不会因为离玩家太远而被[清除](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90#%E6%B8%85%E9%99%A4)", 
             "doc_class_path": [
                 "实体/属性"
             ], 
@@ -1224,7 +1224,7 @@
             }, 
             "state": [
                 {
-                    "comment": "设置实体不会因为离玩家太远而被[清除](https://minecraft.fandom.com/zh/wiki/%E7%94%9F%E6%88%90#.E5.9F.BA.E5.B2.A9.E7.89.88_2)", 
+                    "comment": "设置实体不会因为离玩家太远而被[清除](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90#%E6%B8%85%E9%99%A4)", 
                     "operation": "新增", 
                     "version": "2.0", 
                     "author": "czh"
@@ -3528,6 +3528,52 @@
                 }
             ], 
             "side": "客户端"
+        }, 
+        {
+            "name": "GetPropertyBag", 
+            "path": "client.ui.controls.baseUIControl.BaseUIControl", 
+            "desc": "获取PropertyBag", 
+            "doc_class_path": [], 
+            "param": [], 
+            "return": {
+                "return_type": "str", 
+                "return_comment": "PropertyBag"
+            }, 
+            "state": [
+                {
+                    "comment": "获取PropertyBag", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetPropertyBag", 
+            "path": "client.ui.controls.baseUIControl.BaseUIControl", 
+            "desc": "设置PropertyBag,将使用字典中的每个值来覆盖原本PropertyBag中的值", 
+            "doc_class_path": [], 
+            "param": [
+                {
+                    "param_comment": "需要设置的属性字典，字典键值对的值仅支持设置字符串、数字、布尔值类型，其余类型会导致设置失败", 
+                    "param_name": "params", 
+                    "param_type": "dict"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "是否设置成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置PropertyBag", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
+                }
+            ], 
+            "side": "客户端"
         }
     ], 
     "server.component.blockStateCompServer.BlockStateComponentServer": [
@@ -5825,11 +5871,6 @@
             ], 
             "param": [
                 {
-                    "param_comment": "如果实体是由CreateClientEntityByTypeStr接口创建的,则需要传入True.默认为False", 
-                    "param_name": "isClientEntity", 
-                    "param_type": "bool"
-                }, 
-                {
                     "param_comment": "绑定的entity的ID", 
                     "param_name": "bindEntityId", 
                     "param_type": "str"
@@ -5847,6 +5888,11 @@
                 {
                     "param_comment": "默认不开启，开启后可以使特效的旋转角度准确设置为参照玩家的相对角度", 
                     "param_name": "correction", 
+                    "param_type": "bool"
+                }, 
+                {
+                    "param_comment": "如果实体是由CreateClientEntityByTypeStr接口创建的,则需要传入True.默认为False", 
+                    "param_name": "isClientEntity", 
                     "param_type": "bool"
                 }
             ], 
@@ -7570,7 +7616,7 @@
         {
             "name": "HideSwimGui", 
             "path": "client.extraClientApi", 
-            "desc": "隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。仅影响十字键操作下的浮潜按钮，摇杆模式上浮=跳跃，下潜=潜行，需要通过HideJumpGui和HideSneakGui来隐藏", 
+            "desc": "隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。", 
             "doc_class_path": [
                 "原生UI"
             ], 
@@ -7591,6 +7637,12 @@
                     "operation": "调整", 
                     "version": "3.2", 
                     "author": "lidi"
+                }, 
+                {
+                    "comment": "修改接口描述, 隐藏潜伏按钮", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "jiaoshe"
                 }
             ], 
             "side": "客户端"
@@ -9954,6 +10006,56 @@
                 }
             ], 
             "side": "客户端"
+        }, 
+        {
+            "name": "GetIntPos", 
+            "path": "client.extraClientApi", 
+            "desc": "获取坐标所在方块的位置，即浮点数坐标向下取整后的整数坐标。", 
+            "doc_class_path": [
+                "通用/数学"
+            ], 
+            "param": [
+                {
+                    "param_comment": "坐标元组", 
+                    "param_name": "pos", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "tuple(int,int,int)", 
+                "return_comment": "坐标所在方块的位置"
+            }, 
+            "state": [
+                {
+                    "comment": "获取坐标所在方块的位置", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetHostPlayerId", 
+            "path": "client.extraClientApi", 
+            "desc": "获取房主的entityId", 
+            "doc_class_path": [
+                "通用/工具"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "str", 
+                "return_comment": "房主的entityId,若房主未加入则返回None"
+            }, 
+            "state": [
+                {
+                    "comment": "获取房主的entityId", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
         }
     ], 
     "server.component.weatherCompServer.WeatherComponentServer": [
@@ -10470,12 +10572,12 @@
             "param": [
                 {
                     "param_comment": "贴图键", 
-                    "param_name": "geometryKey", 
+                    "param_name": "textureKey", 
                     "param_type": "str"
                 }, 
                 {
                     "param_comment": "贴图路径", 
-                    "param_name": "geometryName", 
+                    "param_name": "textureName", 
                     "param_type": "str"
                 }
             ], 
@@ -12096,6 +12198,11 @@
                     "param_comment": "渲染参数类型，可选类型有\"textures\",\"geometry\",\"materials\",\"animations\",\"render_controllers\",\"particle_effects\",\"sound_effects\"", 
                     "param_name": "paramTypeStr", 
                     "param_type": "str"
+                }, 
+                {
+                    "param_comment": "是否获取详细值，默认为False。该参数对render_controllers无效", 
+                    "param_name": "getValue", 
+                    "param_type": "bool"
                 }
             ], 
             "return": {
@@ -12108,6 +12215,12 @@
                     "operation": "新增", 
                     "version": "2.7", 
                     "author": "wangdingdong"
+                }, 
+                {
+                    "comment": "修复返回数据", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "lrz"
                 }
             ], 
             "side": "客户端"
@@ -12873,16 +12986,23 @@
                     "param_type": "tuple(float,float,float)"
                 }, 
                 {
-                    "param_comment": "摄像机的角度（俯仰角及偏航角）", 
+                    "param_comment": "摄像机的角度（俯仰角,偏航角,横滚角）", 
                     "param_name": "lockRot", 
-                    "param_type": "tuple(float,float)"
+                    "param_type": "tuple(float,float,float)"
                 }
             ], 
             "return": {
                 "return_type": "bool", 
                 "return_comment": "设置是否成功"
             }, 
-            "state": [], 
+            "state": [
+                {
+                    "comment": "lockRot支持roll旋转", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
+                }
+            ], 
             "side": "客户端"
         }, 
         {
@@ -13484,12 +13604,12 @@
                 {
                     "param_comment": "相机到达targetPos时的朝向，受参数relativeCoord影响，默认为None，表示使用调用[StartCameraMotion](#StartCameraMotion)时的朝向。", 
                     "param_name": "targetRot", 
-                    "param_type": "tuple(float,float)"
+                    "param_type": "tuple(float,float,float)"
                 }, 
                 {
                     "param_comment": "相机到达startPos时的朝向，受参数relativeCoord影响，默认为None，表示使用调用[StartCameraMotion](#StartCameraMotion)时的朝向。", 
                     "param_name": "startRot", 
-                    "param_type": "tuple(float,float)"
+                    "param_type": "tuple(float,float,float)"
                 }, 
                 {
                     "param_comment": "是否使用运动中的速度方向作为朝向，默认为False，若为True，则参数targetRot和startRot无效", 
@@ -13524,6 +13644,12 @@
                     "operation": "调整", 
                     "version": "2.10", 
                     "author": "xusifan"
+                }, 
+                {
+                    "comment": "targetRot和startRot支持roll旋转", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
                 }
             ], 
             "side": "客户端"
@@ -18329,7 +18455,7 @@
         {
             "name": "PlaceFeature", 
             "path": "server.component.gameCompServer.GameComponentServer", 
-            "desc": "放置特征，与[/placefeature指令](https://minecraft.fandom.com/zh/wiki/%E5%91%BD%E4%BB%A4/placefeature)相似", 
+            "desc": "放置特征，与[/placefeature指令](https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4/placefeature)相似", 
             "doc_class_path": [
                 "世界/地图"
             ], 
@@ -19313,7 +19439,7 @@
                     "param_type": "bool"
                 }, 
                 {
-                    "param_comment": "是否给相邻的方块触发[方块更新](https://minecraft.fandom.com/zh/wiki/%E6%96%B9%E5%9D%97%E6%9B%B4%E6%96%B0?variant=zh)以及BlockNeighborChangedServerEvent事件。默认为True触发。若选择不触发可节省约30%的性能消耗。", 
+                    "param_comment": "是否给相邻的方块触发[方块更新](https://zh.minecraft.wiki/w/%E6%96%B9%E5%9D%97%E6%9B%B4%E6%96%B0)以及BlockNeighborChangedServerEvent事件。默认为True触发。若选择不触发可节省约30%的性能消耗。", 
                     "param_name": "updateNeighbors", 
                     "param_type": "bool"
                 }
@@ -20236,7 +20362,7 @@
                     "param_type": "float"
                 }, 
                 {
-                    "param_comment": "[时运等级](https://minecraft-zh.gamepedia.com/时运)，默认为0", 
+                    "param_comment": "[时运等级](https://zh.minecraft.wiki/w/时运)，默认为0", 
                     "param_name": "bonusLootLevel", 
                     "param_type": "int"
                 }, 
@@ -20248,6 +20374,11 @@
                 {
                     "param_comment": "是否允许随机采集，默认为True，如果为False，掉落概率probability无效", 
                     "param_name": "allowRandomness", 
+                    "param_type": "bool"
+                }, 
+                {
+                    "param_comment": "是否生成经验球，默认都不生成，设成True时按原版采集逻辑进行经验球掉落，如矿石类方块会产生随机数量的经验球", 
+                    "param_name": "spawnOrb", 
                     "param_type": "bool"
                 }
             ], 
@@ -20273,6 +20404,12 @@
                     "operation": "调整", 
                     "version": "1.22", 
                     "author": "gzhuabo"
+                }, 
+                {
+                    "comment": "新增是否生成经验球参数，默认为False，设成True时按原版采集逻辑进行经验球掉落，如矿石类方块会产生随机数量的经验球", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "xgb"
                 }
             ], 
             "side": "服务端"
@@ -22298,7 +22435,7 @@
                     "param_type": "str"
                 }, 
                 {
-                    "param_comment": "颜色样式代码字符串，可参考wiki[样式代码](https://minecraft-zh.gamepedia.com/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)，默认为白色", 
+                    "param_comment": "颜色样式代码字符串，可参考wiki[样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)，默认为白色", 
                     "param_name": "color", 
                     "param_type": "str"
                 }
@@ -23049,18 +23186,18 @@
         {
             "name": "IsOnLadder", 
             "path": "client.component.playerCompClient.PlayerCompClient", 
-            "desc": "获取玩家是否与梯子/藤蔓有交叉", 
+            "desc": "获取玩家是否在梯子/藤蔓上", 
             "doc_class_path": [
                 "玩家/行为"
             ], 
             "param": [], 
             "return": {
                 "return_type": "bool", 
-                "return_comment": "是否与梯子/藤蔓有交叉"
+                "return_comment": "是否在梯子/藤蔓上"
             }, 
             "state": [
                 {
-                    "comment": "获取玩家是否与梯子/藤蔓有交叉", 
+                    "comment": "获取玩家是否在梯子/藤蔓上", 
                     "operation": "新增", 
                     "version": "3.3", 
                     "author": "lrz"
@@ -23071,18 +23208,18 @@
         {
             "name": "IsInScaffolding", 
             "path": "client.component.playerCompClient.PlayerCompClient", 
-            "desc": "获取玩家是否与脚手架有交叉", 
+            "desc": "获取玩家是否在脚手架中", 
             "doc_class_path": [
                 "玩家/行为"
             ], 
             "param": [], 
             "return": {
                 "return_type": "bool", 
-                "return_comment": "是否与脚手架有交叉"
+                "return_comment": "是否在脚手架中"
             }, 
             "state": [
                 {
-                    "comment": "获取玩家是否与脚手架有交叉", 
+                    "comment": "获取玩家是否在脚手架中", 
                     "operation": "新增", 
                     "version": "3.3", 
                     "author": "lrz"
@@ -23126,6 +23263,56 @@
                 "return_comment": "是否设置成功"
             }, 
             "state": [], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "GetPlayerCurrentExhaustionValue", 
+            "path": "server.component.playerCompServer.PlayerCompServer", 
+            "desc": "获取玩家foodExhaustionLevel的当前消耗度。详见<a href=\"https://zh.minecraft.wiki/w/%E9%A5%A5%E9%A5%BF#%E6%9C%BA%E5%88%B6\">消耗度介绍</a>", 
+            "doc_class_path": [
+                "玩家/属性"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "float", 
+                "return_comment": "玩家foodExhaustionLevel的当前消耗度,"
+            }, 
+            "state": [
+                {
+                    "comment": "获取玩家当前消耗度", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "SetPlayerCurrentExhaustionValue", 
+            "path": "server.component.playerCompServer.PlayerCompServer", 
+            "desc": "设置玩家foodExhaustionLevel的当前消耗度。详见<a href=\"https://zh.minecraft.wiki/w/%E9%A5%A5%E9%A5%BF#%E6%9C%BA%E5%88%B6\">消耗度介绍</a>", 
+            "doc_class_path": [
+                "玩家/属性"
+            ], 
+            "param": [
+                {
+                    "param_comment": "当前消耗度", 
+                    "param_name": "value", 
+                    "param_type": "float"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "是否设置成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置玩家当前消耗度", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
+                }
+            ], 
             "side": "服务端"
         }, 
         {
@@ -25788,7 +25975,7 @@
         {
             "name": "SetLeashHolder", 
             "path": "server.component.entityDefinitionsCompServer.EntityDefinitionsCompServer", 
-            "desc": "为实体添加牵引者，与原版拴绳的作用相同，详见<a href=\"https://minecraft.fandom.com/zh/wiki/%E6%8B%B4%E7%BB%B3#%E6%8B%B4%E8%B5%B7%E7%94%9F%E7%89%A9\">基岩版栓绳介绍</a>", 
+            "desc": "为实体添加牵引者，与原版拴绳的作用相同，详见<a href=\"https://zh.minecraft.wiki/w/%E6%8B%B4%E7%BB%B3\">基岩版栓绳介绍</a>", 
             "doc_class_path": [
                 "实体/行为"
             ], 
@@ -25942,7 +26129,7 @@
                 {
                     "param_comment": "xyz值", 
                     "param_name": "pos", 
-                    "param_type": "tuple(int,int,int)"
+                    "param_type": "tuple(float,float,float)"
                 }
             ], 
             "return": {
@@ -25961,6 +26148,12 @@
                     "operation": "调整", 
                     "version": "1.20", 
                     "author": "jishaobin"
+                }, 
+                {
+                    "comment": "修改文档类型描述", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "bailei"
                 }
             ], 
             "side": "服务端"
@@ -26632,7 +26825,7 @@
         {
             "name": "SetEntityScale", 
             "path": "server.component.scaleCompServer.ScaleComponentServer", 
-            "desc": "设置实体的放缩比例大小，设置比例过大会导致游戏卡顿，建议控制在20倍以内", 
+            "desc": "设置实体的放缩比例大小，设置比例过大会导致游戏卡顿，建议控制在20倍以内。实体的scale的立方乘以包围盒的体积不可超过32768", 
             "doc_class_path": [
                 "模型"
             ], 
@@ -27354,7 +27547,7 @@
             ], 
             "param": [
                 {
-                    "param_comment": "贴图路径，以textures\\models为当前路径的相对路径", 
+                    "param_comment": "贴图路径，以textures/models为当前路径的相对路径", 
                     "param_name": "skin", 
                     "param_type": "str"
                 }
@@ -30163,6 +30356,56 @@
                 }
             ], 
             "side": "服务端"
+        }, 
+        {
+            "name": "GetIntPos", 
+            "path": "server.extraServerApi", 
+            "desc": "获取坐标所在方块的位置，即浮点数坐标向下取整后的整数坐标。", 
+            "doc_class_path": [
+                "通用/数学"
+            ], 
+            "param": [
+                {
+                    "param_comment": "坐标元组", 
+                    "param_name": "pos", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "tuple(int,int,int)", 
+                "return_comment": "坐标所在方块的位置"
+            }, 
+            "state": [
+                {
+                    "comment": "获取坐标所在方块的位置", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "GetHostPlayerId", 
+            "path": "server.extraServerApi", 
+            "desc": "获取房主的entityId", 
+            "doc_class_path": [
+                "通用/工具"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "str", 
+                "return_comment": "房主的entityId,若房主未加入则返回None"
+            }, 
+            "state": [
+                {
+                    "comment": "获取房主的entityId", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "服务端"
         }
     ], 
     "server.component.blockUseEventWhiteListCompServer.BlockUseEventWhiteListComponentServer": [
@@ -31411,6 +31654,12 @@
                     "operation": "调整", 
                     "version": "3.2", 
                     "author": "xgb"
+                }, 
+                {
+                    "comment": "新增字段，enchant_slot_type", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
                 }
             ], 
             "side": "服务端"
@@ -33148,7 +33397,7 @@
         {
             "name": "LocateStructureFeature", 
             "path": "server.component.featureCompServer.FeatureCompServer", 
-            "desc": "与[/locate指令](https://minecraft-zh.gamepedia.com/%E5%91%BD%E4%BB%A4/locate)相似，用于定位原版的部分结构，如海底神殿、末地城等。", 
+            "desc": "与[/locate指令](https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4/locate)相似，用于定位原版的部分结构，如海底神殿、末地城等。", 
             "doc_class_path": [
                 "世界/地图"
             ], 
@@ -33197,7 +33446,7 @@
         {
             "name": "LocateNeteaseFeatureRule", 
             "path": "server.component.featureCompServer.FeatureCompServer", 
-            "desc": "与[/locate指令](https://minecraft-zh.gamepedia.com/%E5%91%BD%E4%BB%A4/locate)相似，用于定位<a href=\"../../../../mcguide/20-玩法开发/15-自定义游戏内容/4-自定义维度/4-自定义特征.html#特征规则（feature-rules）\">网易自定义特征规则</a>", 
+            "desc": "与[/locate指令](https://zh.minecraft.wiki/w/%E5%91%BD%E4%BB%A4/locate)相似，用于定位<a href=\"../../../../mcguide/20-玩法开发/15-自定义游戏内容/4-自定义维度/4-自定义特征.html#特征规则（feature-rules）\">网易自定义特征规则</a>", 
             "doc_class_path": [
                 "世界/地图"
             ], 
@@ -36596,6 +36845,12 @@
                     "operation": "调整", 
                     "version": "3.2", 
                     "author": "xgb"
+                }, 
+                {
+                    "comment": "新增字段，enchant_slot_type", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "qiuyukun"
                 }
             ], 
             "side": "客户端"
@@ -37354,7 +37609,7 @@
                     "param_type": "tuple(float,float,float)"
                 }, 
                 {
-                    "param_comment": "爆炸威力，具体含义可参考[wiki](https://minecraft-zh.gamepedia.com/%E7%88%86%E7%82%B8)对爆炸的解释", 
+                    "param_comment": "爆炸威力，具体含义可参考[wiki](https://zh.minecraft.wiki/w/%E7%88%86%E7%82%B8)对爆炸的解释", 
                     "param_name": "radius", 
                     "param_type": "int"
                 }, 
@@ -38701,7 +38956,7 @@
         {
             "name": "SetSize", 
             "path": "server.component.collisionBoxCompServer.CollisionBoxComponentServer", 
-            "desc": "设置实体的包围盒", 
+            "desc": "设置实体的包围盒。设置过大会导致游戏卡顿。实体的scale的立方乘以包围盒的体积不可超过32768", 
             "doc_class_path": [
                 "实体/属性"
             ], 
@@ -40299,7 +40554,7 @@
             "doc_class_path": [], 
             "param": [
                 {
-                    "param_comment": "文本的内容，可以支持[样式代码](https://minecraft-zh.gamepedia.com/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变）", 
+                    "param_comment": "文本的内容，可以支持[样式代码](https://zh.minecraft.wiki/w/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81)（§可以设置文字的颜色、格式等，该种用法更加灵活多变）", 
                     "param_name": "text", 
                     "param_type": "str"
                 }, 
