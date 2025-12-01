@@ -20,7 +20,7 @@
 
 ```bash
 git lfs install
-git clone htps://github.com/EaseCation/netease-modsdk-wiki.git
+git clone https://github.com/EaseCation/netease-modsdk-wiki.git
 ```
 
 ### 安装依赖
