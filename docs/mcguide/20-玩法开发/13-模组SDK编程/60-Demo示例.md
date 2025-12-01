@@ -10,7 +10,7 @@ time: 分钟
 
 ## 示例下载
 
-下载地址：[示例Demo](https://g79.gdl.netease.com/3.3Demo.zip)。
+下载地址：[示例Demo](https://g79.gdl.netease.com/3.6Demo.zip)。
 
 
 
@@ -175,7 +175,7 @@ time: 分钟
 
 - 自定义云成就-CloudAchievementMod
 
-  展示了[云成就](../../28-成就系统/云成就使用文档.md)的基本用法
+  展示了[云成就](../../29-成就系统/云成就使用文档.md)的基本用法
 
 - 微软粒子发射骨骼模型-NeteaseModelParticleDemo
 

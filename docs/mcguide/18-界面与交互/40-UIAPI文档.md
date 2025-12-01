@@ -23,8 +23,8 @@ sidebarDepth: 1
 ScreenNode的一些有用的函数，界面Node节点的获取方式在[UI使用文档](30-UI说明文档.html)中有详细说明。
 
 ```python
-	import mod.client.extraClientApi as clientApi
-	uiNode = clientApi.GetUI("myModName", "myUIName")
+import mod.client.extraClientApi as clientApi
+uiNode = clientApi.GetUI("myModName", "myUIName")
 ```
 
 假设下文中的函数，uiNode为获取到的ScreenNode继承类，调用的UI界面是按下面的节点树组织结构的

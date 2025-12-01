@@ -18,7 +18,7 @@
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.7",
-    "mermaid": "^11.5.0",
+    "mermaid": "^11.10.0",
     "openai": "^4.87.4",
     "tencentcloud-sdk-nodejs": "^4.1.0",
     "vitepress": "^1.6.3",

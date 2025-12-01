@@ -31,12 +31,13 @@ sidebarDepth: 1
 - [指令](#指令)
 - [消息](#消息)
 - [记分板](#记分板)
+- [行为](#行为)
 ## 实体
 
 - [实体类型](#实体类型)
 - [附加值](#附加值)
 - [属性](#属性)
-- [行为](#行为)
+- [行为](#行为1)
 - [状态效果](#状态效果)
 - [渲染](#渲染1)
 - [背包](#背包)
@@ -52,7 +53,7 @@ sidebarDepth: 1
 ## 玩家
 
 - [属性](#属性1)
-- [行为](#行为1)
+- [行为](#行为2)
 - [渲染](#渲染2)
 - [背包](#背包1)
 - [摄像机](#摄像机)
@@ -86,6 +87,10 @@ sidebarDepth: 1
 ## 模型
 
 - [模型](#模型-2)
+## 山头服务器
+
+- [山头服务器](#山头服务器-2)
+
 ## 原生UI
 
 - [原生UI](#原生ui-2)
@@ -127,6 +132,9 @@ sidebarDepth: 1
 ## 商城
 
 - [商城](#商城-2)
+## 渲染
+
+- [渲染](#渲染-2)
 
 #### Component
 | 接口| <div style="width: 3em"></div> | 描述 |
@@ -541,6 +549,10 @@ sidebarDepth: 1
 | [GetAllPlayerScoreboardObjects](世界/记分板.md#getallplayerscoreboardobjects) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家记分项 |
 | [GetAllScoreboardObjects](世界/记分板.md#getallscoreboardobjects) | <span style="display:inline;color:#ff5555">服务端</span> | 获取所有记分板项 |
 | [GetAllScoreboardObjects](世界/记分板.md#getallscoreboardobjects) | <span style="display:inline;color:#7575f9">客户端</span> | 获取所有记分板项 |
+#### 行为
+| 接口| <div style="width: 3em"></div> | 描述 |
+| --- | --- | --- |
+| [UseItemAttackEntity](世界/行为.md#useitemattackentity) | <span style="display:inline;color:#ff5555">服务端</span> | 使用指定物品攻击某个实体。 |
 #### 实体类型
 | 接口| <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
@@ -644,7 +656,7 @@ sidebarDepth: 1
 | [SetVariant](实体/属性.md#setvariant) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体的变种属性值 |
 | [isEntityInLava](实体/属性.md#isentityinlava) | <span style="display:inline;color:#7575f9">客户端</span> | 实体是否在岩浆中 |
 | [isEntityOnGround](实体/属性.md#isentityonground) | <span style="display:inline;color:#7575f9">客户端</span> | 实体是否触地 |
-#### 行为
+#### 行为<span id = "行为1"></span>
 | 接口| <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
 | [AddActorComponent](实体/行为.md#addactorcomponent) | <span style="display:inline;color:#ff5555">服务端</span> | 给指定实体自定义添加实体Component |
@@ -818,10 +830,12 @@ sidebarDepth: 1
 | [EvalMolangExpression](实体/molang.md#evalmolangexpression) | <span style="display:inline;color:#ff5555">服务端</span> | 在实体上下文上执行molang表达式 |
 | [EvalMolangExpression](实体/molang.md#evalmolangexpression) | <span style="display:inline;color:#7575f9">客户端</span> | 在实体上下文上执行molang表达式 |
 | [Get](实体/molang.md#get) | <span style="display:inline;color:#7575f9">客户端</span> | 获取某一个实体计算节点的值，如果不存在返回注册时的默认值 |
+| [GetAllProperties](实体/molang.md#getallproperties) | <span style="display:inline;color:#ff5555">服务端</span> | 获取实体属性列表 |
 | [GetMolangValue](实体/molang.md#getmolangvalue) | <span style="display:inline;color:#7575f9">客户端</span> | 获取实体molang变量的值 |
 | [GetStringHash64](实体/molang.md#getstringhash64) | <span style="display:inline;color:#7575f9">客户端</span> | 返回字符串变量的hash64 |
 | [Register](实体/molang.md#register) | <span style="display:inline;color:#7575f9">客户端</span> | 注册实体计算节点 |
 | [Set](实体/molang.md#set) | <span style="display:inline;color:#7575f9">客户端</span> | 设置某一个实体计算节点的值 |
+| [SetPropertyValue](实体/molang.md#setpropertyvalue) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体属性的值 |
 | [UnRegister](实体/molang.md#unregister) | <span style="display:inline;color:#7575f9">客户端</span> | 注销实体计算节点 |
 #### 标签
 | 接口| <div style="width: 3em"></div> | 描述 |
@@ -881,6 +895,10 @@ sidebarDepth: 1
 | [GetPlayerStarveTick](玩家/属性.md#getplayerstarvetick) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家饥饿掉血速度，当饥饿值小于饥饿临界值时会自动扣除血量，开启饥饿值且开启饥饿掉血时有效。原版默认值为80刻（即每4秒）扣除1点血量 |
 | [GetPlayerTotalExp](玩家/属性.md#getplayertotalexp) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家的总经验值 |
 | [GetPlayerTotalExp](玩家/属性.md#getplayertotalexp) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家的总经验值 |
+| [IsHighLevelMultiJointOfficialSkin](玩家/属性.md#ishighlevelmultijointofficialskin) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家穿戴的皮肤是否为史诗及以上的多关节官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId |
+| [IsHighLevelOfficialSkin](玩家/属性.md#ishighlevelofficialskin) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家穿戴的皮肤是否为史诗及以上的官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId |
+| [IsMultiJointOfficialSkin](玩家/属性.md#ismultijointofficialskin) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家穿戴的皮肤是否为多关节官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId |
+| [IsOfficialSkin](玩家/属性.md#isofficialskin) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家穿戴的皮肤是否为官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId |
 | [IsPlayerNaturalRegen](玩家/属性.md#isplayernaturalregen) | <span style="display:inline;color:#ff5555">服务端</span> | 是否开启玩家自然恢复，当饥饿值大于等于健康临界值时会自动恢复血量，开启饥饿值且开启自然恢复时有效。原版默认开启 |
 | [IsPlayerNaturalStarve](玩家/属性.md#isplayernaturalstarve) | <span style="display:inline;color:#ff5555">服务端</span> | 是否开启玩家饥饿掉血，当饥饿值小于饥饿临界值时会自动恢复血量，开启饥饿值且开启饥饿掉血时有效。原版默认开启 |
 | [SetEnchantmentSeed](玩家/属性.md#setenchantmentseed) | <span style="display:inline;color:#ff5555">服务端</span> | 设置玩家的附魔种子，该种子会决定附魔台上准备附魔的装备的附魔项 |
@@ -897,7 +915,7 @@ sidebarDepth: 1
 | [SetPlayerTotalExp](玩家/属性.md#setplayertotalexp) | <span style="display:inline;color:#ff5555">服务端</span> | 设置玩家的总经验值 |
 | [Swing](玩家/属性.md#swing) | <span style="display:inline;color:#7575f9">客户端</span> | 本地玩家播放原版攻击动作 |
 | [getUid](玩家/属性.md#getuid) | <span style="display:inline;color:#7575f9">客户端</span> | 获取本地玩家的uid |
-#### 行为<span id = "行为1"></span>
+#### 行为<span id = "行为2"></span>
 | 接口| <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
 | [AddPlayerAroundEntityMotion](玩家/行为.md#addplayeraroundentitymotion) | <span style="display:inline;color:#ff5555">服务端</span> | 给玩家添加对实体环绕运动器 |
@@ -927,6 +945,7 @@ sidebarDepth: 1
 | [IsOnLadder](玩家/行为.md#isonladder) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家是否在梯子/藤蔓上 |
 | [IsPlayerCanFly](玩家/行为.md#isplayercanfly) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家能否飞行 |
 | [IsPlayerFlying](玩家/行为.md#isplayerflying) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家是否在飞行 |
+| [OpenNeteaseContainer](玩家/行为.md#openneteasecontainer) | <span style="display:inline;color:#ff5555">服务端</span> | 打开自定义容器界面，不依赖于方块。该界面的物品数据需由开发者自行维护。 |
 | [OpenWorkBench](玩家/行为.md#openworkbench) | <span style="display:inline;color:#ff5555">服务端</span> | 在玩家当前位置打开工作台UI，不依赖于工作台方块 |
 | [PickUpItemEntity](玩家/行为.md#pickupitementity) | <span style="display:inline;color:#ff5555">服务端</span> | 某个Player拾取物品ItemEntity |
 | [PlayerAttackEntity](玩家/行为.md#playerattackentity) | <span style="display:inline;color:#ff5555">服务端</span> | 玩家使用手持武器攻击某个生物 |
@@ -1153,6 +1172,7 @@ sidebarDepth: 1
 | [AddDropItemToWorld](方块/渲染.md#adddropitemtoworld) | <span style="display:inline;color:#7575f9">客户端</span> | 在客户端添加一个掉落物渲染 |
 | [ChangeBlockTextures](方块/渲染.md#changeblocktextures) | <span style="display:inline;color:#7575f9">客户端</span> | 替换方块贴图 |
 | [DeleteClientDropItemEntity](方块/渲染.md#deleteclientdropitementity) | <span style="display:inline;color:#7575f9">客户端</span> | 删除AddDropItemToWorld创建的客户端掉落物 |
+| [DestroyCrackFrame](方块/渲染.md#destroycrackframe) | <span style="display:inline;color:#7575f9">客户端</span> | 销毁特定方块位置上的破坏纹理（仅能销毁SetCrackFrame接口创建的破坏纹理）。 |
 | [GetBlockEntityExtraUniforms](方块/渲染.md#getblockentityextrauniforms) | <span style="display:inline;color:#7575f9">客户端</span> | 获取在自定义方块实体的shader当中使用的自定义变量的值，该自定义变量总共可设置EXTRA_ACTOR_UNIFORM1,EXTRA_ACTOR_UNIFORM2,EXTRA_ACTOR_UNIFORM3,EXTRA_ACTOR_UNIFORM4，总共4组，每组为一个vec4(float, float, float ,float)类型的向量。 |
 | [GetBlockRenderDistance](方块/渲染.md#getblockrenderdistance) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家周围的可渲染距离 |
 | [GetBlockTextures](方块/渲染.md#getblocktextures) | <span style="display:inline;color:#7575f9">客户端</span> | 获取方块的初始贴图信息 |
@@ -1164,6 +1184,8 @@ sidebarDepth: 1
 | [SetBlockEntityModelScale](方块/渲染.md#setblockentitymodelscale) | <span style="display:inline;color:#7575f9">客户端</span> | 设置自定义方块实体的实体模型大小的缩放值，可通过该接口来调整自定义方块实体的实体模型的大小。只有自定义方块实体定义实体模型才生效，实体模型在resource_pack/entity/下定义，详细可参考自定义方块实体动画的教学文档。 |
 | [SetBlockEntityParticlePosOffset](方块/渲染.md#setblockentityparticleposoffset) | <span style="display:inline;color:#7575f9">客户端</span> | 设置自定义方块实体中粒子特效位置偏移值，用于调整粒子特效相对于方块位置的偏移。与特效/粒子/SetPos接口不同，该接口调整的是相对于方块位置的位置偏移值，而不是世界坐标。 |
 | [SetBlockRenderDistance](方块/渲染.md#setblockrenderdistance) | <span style="display:inline;color:#7575f9">客户端</span> | 设置玩家周围方块的可渲染距离 |
+| [SetCrackFrame](方块/渲染.md#setcrackframe) | <span style="display:inline;color:#7575f9">客户端</span> | 仅客户端的破坏纹理的渲染，可自定义破坏阶段在第几帧。 |
+| [SetDropItemTransform](方块/渲染.md#setdropitemtransform) | <span style="display:inline;color:#7575f9">客户端</span> | 设置通过AddDropItemToWorld添加的掉落物的位置、角度和缩放 |
 #### 容器
 | 接口| <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
@@ -1420,7 +1442,10 @@ sidebarDepth: 1
 | [ShowModel](模型.md#showmodel) | <span style="display:inline;color:#7575f9">客户端</span> | 显示纯模型 |
 | [UnBindModelToEntity](模型.md#unbindmodeltoentity) | <span style="display:inline;color:#7575f9">客户端</span> | 取消实体上挂接的某个骨骼模型。取消挂接后，这个modelId的模型便会销毁，无法再使用，如果是临时隐藏可以使用HideModel |
 | [UnBindModelToModel](模型.md#unbindmodeltomodel) | <span style="display:inline;color:#7575f9">客户端</span> | 取消骨骼模型上挂接的某个骨骼模型。取消挂接后，这个modelId的模型便会销毁，无法再使用，如果是临时隐藏可以使用HideModel |
-
+#### 山头服务器<span id = "山头服务器2"></span>
+| 接口 | <div style="width: 3em"></div> | 描述 |
+| --- | --- | --- |
+| [GetHostPlayerUid](山头服务器.md#gethostplayeruid) | <span style="display:inline;color:#ff5555">服务端</span> | 获取服务器拥有者的uid。 |
 #### 原生UI<span id = "原生UI2"></span>
 | 接口 | <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
@@ -1447,7 +1472,6 @@ sidebarDepth: 1
 | [HideMoveGui](原生UI.md#hidemovegui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中左下角的移动按钮。隐藏后点击相应位置不会响应 |
 | [HideNeteaseStoreGui](原生UI.md#hideneteasestoregui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的网易商店按钮。隐藏后点击相应位置不会响应 |
 | [HidePauseGUI](原生UI.md#hidepausegui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏暂停按钮原生UI。 |
-| [HideReportGUI](原生UI.md#hidereportgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏举报按钮原生UI。 |
 | [HideSlotBarGui](原生UI.md#hideslotbargui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中底部中间的物品栏界面 |
 | [HideSneakGui](原生UI.md#hidesneakgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中左下角方向键的中心处潜行按钮。隐藏后点击相应位置不会响应 |
 | [HideSwimGui](原生UI.md#hideswimgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。 |
@@ -1916,4 +1940,37 @@ sidebarDepth: 1
 | [OpenItemDetailWindow](商城.md#openitemdetailwindow) | <span style="display:inline;color:#7575f9">客户端</span> | 打开特定商品的详情界面 |
 | [OpenShopWindow](商城.md#openshopwindow) | <span style="display:inline;color:#7575f9">客户端</span> | 打开网易商城窗口。PC端无效（Apollo的PC端请使用商城插件） |
 | [ShowShopGate](商城.md#showshopgate) | <span style="display:inline;color:#7575f9">客户端</span> | 显示网易商城入口 |
+
+#### 渲染<span id = "渲染2"></span>
+| 接口 | <div style="width: 3em"></div> | 描述 |
+| --- | --- | --- |
+| [AddArrowShape](渲染.md#addarrowshape) | <span style="display:inline;color:#7575f9">客户端</span> | 新建箭头形状 |
+| [AddBoxShape](渲染.md#addboxshape) | <span style="display:inline;color:#7575f9">客户端</span> | 新建盒子形状 |
+| [AddCircleShape](渲染.md#addcircleshape) | <span style="display:inline;color:#7575f9">客户端</span> | 新建圆形状 |
+| [AddLineShape](渲染.md#addlineshape) | <span style="display:inline;color:#7575f9">客户端</span> | 新建线条形状 |
+| [AddSphereShape](渲染.md#addsphereshape) | <span style="display:inline;color:#7575f9">客户端</span> | 新建球形状 |
+| [AddTextShape](渲染.md#addtextshape) | <span style="display:inline;color:#7575f9">客户端</span> | 新建文本形状 |
+| [GetBoxScale](渲染.md#getboxscale) | <span style="display:inline;color:#7575f9">客户端</span> | 获取BoxShape的大小 |
+| [GetColor](渲染.md#getcolor) | <span style="display:inline;color:#7575f9">客户端</span> | 获取Shape的颜色 |
+| [GetEndPos](渲染.md#getendpos) | <span style="display:inline;color:#7575f9">客户端</span> | 获取LineShape或ArrowShape的结束位置 |
+| [GetLength](渲染.md#getlength) | <span style="display:inline;color:#7575f9">客户端</span> | 获取ArrowShape的头部长度 |
+| [GetPos](渲染.md#getpos) | <span style="display:inline;color:#7575f9">客户端</span> | 获取Shape的位置 |
+| [GetPriority](渲染.md#getpriority) | <span style="display:inline;color:#7575f9">客户端</span> | 获取Shape的优先级 |
+| [GetRadius](渲染.md#getradius) | <span style="display:inline;color:#7575f9">客户端</span> | 获取CircleShape或ArrowShape或SphereShape的半径 |
+| [GetSegments](渲染.md#getsegments) | <span style="display:inline;color:#7575f9">客户端</span> | 获取CircleShape或ArrowShape头部的分段数 |
+| [GetText](渲染.md#gettext) | <span style="display:inline;color:#7575f9">客户端</span> | 获取TextShape的文本 |
+| [GetType](渲染.md#gettype) | <span style="display:inline;color:#7575f9">客户端</span> | 获取Shape的类型 |
+| [GetVisible](渲染.md#getvisible) | <span style="display:inline;color:#7575f9">客户端</span> | 获取Shape是否可见 |
+| [Remove](渲染.md#remove) | <span style="display:inline;color:#7575f9">客户端</span> | 删除Shape |
+| [RemoveAll](渲染.md#removeall) | <span style="display:inline;color:#7575f9">客户端</span> | 删除当前所有Shape |
+| [SetBoxScale](渲染.md#setboxscale) | <span style="display:inline;color:#7575f9">客户端</span> | 设置BoxShape的大小 |
+| [SetColor](渲染.md#setcolor) | <span style="display:inline;color:#7575f9">客户端</span> | 设置Shape的颜色 |
+| [SetEndPos](渲染.md#setendpos) | <span style="display:inline;color:#7575f9">客户端</span> | 设置LineShape或ArrowShape的结束位置 |
+| [SetLength](渲染.md#setlength) | <span style="display:inline;color:#7575f9">客户端</span> | 设置组成ArrowShape头部的长度 |
+| [SetPos](渲染.md#setpos) | <span style="display:inline;color:#7575f9">客户端</span> | 设置Shape的位置 |
+| [SetPriority](渲染.md#setpriority) | <span style="display:inline;color:#7575f9">客户端</span> | 设置Shape的渲染优先级, 同一像素点处优先渲染优先级高的Shape, 默认为0 |
+| [SetRadius](渲染.md#setradius) | <span style="display:inline;color:#7575f9">客户端</span> | 设置CircleShape或ArrowShape或SphereShape的半径 |
+| [SetSegments](渲染.md#setsegments) | <span style="display:inline;color:#7575f9">客户端</span> | 设置组成ArrowShape头部的网格数量, 最小为3 |
+| [SetText](渲染.md#settext) | <span style="display:inline;color:#7575f9">客户端</span> | 设置TextShape的文本内容 |
+| [SetVisible](渲染.md#setvisible) | <span style="display:inline;color:#7575f9">客户端</span> | 设置Shape是否可见 |
 

@@ -944,6 +944,12 @@
                     "operation": "调整", 
                     "version": "3.2", 
                     "author": "lrz"
+                }, 
+                {
+                    "comment": "客户端对应事件ClientBlockUseEvent如果开启拦截开关，则服务端也不会收到对应事件，即ServerBlockUseEvent不会触发。", 
+                    "operation": "调整", 
+                    "version": "3.4", 
+                    "author": "bl"
                 }
             ], 
             "side": "服务端"
@@ -2985,7 +2991,7 @@
         {
             "name": "ServerItemTryUseEvent", 
             "path": "server.serverEvent", 
-            "desc": "玩家点击右键尝试使用物品时服务端抛出的事件。注：ClientItemTryUseEvent的cancel设置为True时，服务端事件不会被触发了。", 
+            "desc": "玩家点击右键尝试使用物品时服务端抛出的事件。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -3041,7 +3047,7 @@
         {
             "name": "ServerItemUseOnEvent", 
             "path": "server.serverEvent", 
-            "desc": "玩家在对方块使用物品之前服务端抛出的事件。注：客户端事件ClientItemUseOnEvent设置ret设置为True时，服务端不再会接受到这个事件。", 
+            "desc": "玩家在对方块使用物品之前服务端抛出的事件。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -4466,7 +4472,7 @@
                     "param_type": "int"
                 }, 
                 {
-                    "param_comment": "实体维度", 
+                    "param_comment": "方块所在维度", 
                     "param_name": "dimensionId", 
                     "param_type": "int"
                 }
@@ -8036,8 +8042,13 @@
                     "param_type": "dict"
                 }, 
                 {
-                    "param_comment": "放入容器名称，目前仅支持netease_container和netease_ui_container", 
+                    "param_comment": "放入容器名称，对应容器json中\"custom_description\"字段", 
                     "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器类型，目前仅支持netease_container和netease_ui_container", 
+                    "param_name": "collectionType", 
                     "param_type": "str"
                 }, 
                 {
@@ -8053,17 +8064,17 @@
                 {
                     "param_comment": "容器方块x坐标", 
                     "param_name": "x", 
-                    "param_type": "float"
+                    "param_type": "int"
                 }, 
                 {
                     "param_comment": "容器方块y坐标", 
                     "param_name": "y", 
-                    "param_type": "float"
+                    "param_type": "int"
                 }, 
                 {
                     "param_comment": "容器方块z坐标", 
                     "param_name": "z", 
-                    "param_type": "float"
+                    "param_type": "int"
                 }, 
                 {
                     "param_comment": "是否取消该操作，默认为false，事件中改为true时拒绝此次放入自定义容器的操作", 
@@ -8077,10 +8088,317 @@
             }, 
             "state": [
                 {
+                    "comment": "collectionName改为对应容器json中\"custom_description\"字段，新增collectionType代替原collectionName", 
+                    "operation": "调整", 
+                    "version": "3.5", 
+                    "author": "lidi"
+                }, 
+                {
                     "comment": "玩家尝试将物品放入自定义容器时触发该事件", 
                     "operation": "新增", 
                     "version": "3.4", 
                     "author": "lidi"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "PlayerTryAddCustomContainerItemServerEvent", 
+            "path": "server.serverEvent", 
+            "desc": "玩家尝试将物品添加到自定义容器时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "尝试添加物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "放入容器名称，对应容器json中\"custom_description\"字段", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器类型，目前仅支持netease_container和netease_ui_container", 
+                    "param_name": "collectionType", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "玩家id", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "玩家尝试将物品添加到自定义容器时触发该事件（当目标槽位已有同种物品时触发）", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lidi"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "PlayerTryRemoveCustomContainerItemServerEvent", 
+            "path": "server.serverEvent", 
+            "desc": "玩家尝试从自定义容器中移除物品时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "尝试移除物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "放入容器名称，对应容器json中\"custom_description\"字段", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器类型，目前仅支持netease_container和netease_ui_container", 
+                    "param_name": "collectionType", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "目标容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "玩家id", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "玩家尝试从自定义容器中移除物品时触发该事件", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lidi"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "PlayerPermissionChangeServerEvent", 
+            "path": "server.serverEvent", 
+            "desc": "玩家权限变更事件", 
+            "doc_class_path": [
+                "玩家"
+            ], 
+            "param": [
+                {
+                    "param_comment": "发起者id", 
+                    "param_name": "causePlayerId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "玩家id", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "变化前的权限字典", 
+                    "param_name": "oldPermission", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "变化后的权限字典", 
+                    "param_name": "newPermission", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "变化原因，详见Minecraft枚举值文档的[PermissionChangeCause](../枚举值/PermissionChangeCause.md)", 
+                    "param_name": "changeCause", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "为true时，取消本次权限变更", 
+                    "param_name": "cancel", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "新增发起者id", 
+                    "operation": "调整", 
+                    "version": "3.5", 
+                    "author": "zhujinan"
+                }, 
+                {
+                    "comment": "玩家权限变更事件", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "zhujinan"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "ItemPushInCustomContainerServerEvent", 
+            "path": "server.serverEvent", 
+            "desc": "漏斗漏入物品时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "漏斗漏入物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "目标容器名称，目前仅支持netease_container", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "目标容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "是否取消该操作，默认为false，事件中改为true时拒绝此次漏入物品的操作", 
+                    "param_name": "cancel", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "漏斗漏入物品时触发该事件", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "czk"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "ItemPullOutCustomContainerServerEvent", 
+            "path": "server.serverEvent", 
+            "desc": "漏出物品到漏斗时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "漏斗漏出物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "漏出物品的容器名称，目前仅支持netease_container", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "漏出物品的容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "是否取消该操作，默认为false，事件中改为true时拒绝此次漏出物品的操作", 
+                    "param_name": "cancel", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "漏斗漏出物品时触发该事件", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "czk"
                 }
             ], 
             "side": "服务端"
@@ -8812,7 +9130,7 @@
         {
             "name": "ClientItemTryUseEvent", 
             "path": "client.clientEvent", 
-            "desc": "玩家点击右键尝试使用物品时客户端抛出的事件，可以通过设置cancel为True取消使用物品。注：ClientItemTryUseEvent事件设置cancel时即可取消使用，无需服务端ServerItemTryUseEvent再次cancel，且服务端事件将不再触发。", 
+            "desc": "玩家点击右键尝试使用物品时客户端抛出的事件，可以通过设置cancel为True取消使用物品。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -8856,7 +9174,7 @@
         {
             "name": "ClientItemUseOnEvent", 
             "path": "client.clientEvent", 
-            "desc": "玩家在对方块使用物品时客户端抛出的事件。注：事件设置ret = True 时即可取消使用，无需服务端再次设置ServerItemUseOnEvent取消，且服务端事件将不再触发。", 
+            "desc": "玩家在对方块使用物品时客户端抛出的事件。", 
             "doc_class_path": [
                 "物品"
             ], 
@@ -10913,7 +11231,7 @@
         {
             "name": "AddPlayerAOIClientEvent", 
             "path": "client.clientEvent", 
-            "desc": "玩家加入游戏或者其余玩家进入当前玩家视野时触发的事件，替换AddPlayerEvent", 
+            "desc": "玩家加入游戏时视野内存在其他玩家，或者其余玩家进入当前玩家视野时触发的事件，替换AddPlayerEvent", 
             "doc_class_path": [
                 "世界"
             ], 
@@ -11624,6 +11942,12 @@
             }, 
             "state": [
                 {
+                    "comment": "修复了自定义方块配置了block_container组件时返回的blockName不符合预期，现在能正确返回方块的identifier", 
+                    "operation": "调整", 
+                    "version": "3.6", 
+                    "author": "lidi"
+                }, 
+                {
                     "comment": "客户端自定义方块实体初始化完成时触发", 
                     "operation": "新增", 
                     "version": "2.8", 
@@ -11671,6 +11995,12 @@
                 "return_comment": ""
             }, 
             "state": [
+                {
+                    "comment": "修复了自定义方块配置了block_container组件时返回的blockName不符合预期，现在能正确返回方块的identifier", 
+                    "operation": "调整", 
+                    "version": "3.6", 
+                    "author": "lidi"
+                }, 
                 {
                     "comment": "客户端自定义方块实体卸载时触发", 
                     "operation": "新增", 
@@ -11998,6 +12328,271 @@
                     "operation": "新增", 
                     "version": "3.3", 
                     "author": "lidi"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "PlayerPermissionChangeClientEvent", 
+            "path": "client.clientEvent", 
+            "desc": "玩家权限变更事件", 
+            "doc_class_path": [
+                "玩家"
+            ], 
+            "param": [
+                {
+                    "param_comment": "发起者id", 
+                    "param_name": "causePlayerId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "玩家id", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "变化前的权限字典", 
+                    "param_name": "oldPermission", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "变化后的权限字典", 
+                    "param_name": "newPermission", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "变化原因，详见Minecraft枚举值文档的[PermissionChangeCause](../枚举值/PermissionChangeCause.md)", 
+                    "param_name": "changeCause", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "玩家权限变更事件", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "zhujinan"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "PlayerTryPutCustomContainerItemClientEvent", 
+            "path": "client.clientEvent", 
+            "desc": "玩家尝试将物品放入自定义容器时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "尝试放入物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "放入容器名称，对应容器json中\"custom_description\"字段", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器类型，目前仅支持netease_container和netease_ui_container", 
+                    "param_name": "collectionType", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "是否取消该操作，默认为false，事件中改为true时拒绝此次放入自定义容器的操作", 
+                    "param_name": "cancel", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "玩家尝试将物品放入自定义容器时触发该事件", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lidi"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "PlayerTryAddCustomContainerItemClientEvent", 
+            "path": "client.clientEvent", 
+            "desc": "玩家尝试将物品添加到自定义容器时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "尝试添加物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "放入容器名称，对应容器json中\"custom_description\"字段", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器类型，目前仅支持netease_container和netease_ui_container", 
+                    "param_name": "collectionType", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "是否取消该操作，默认为false，事件中改为true时拒绝此次放入自定义容器的操作", 
+                    "param_name": "cancel", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "玩家尝试将物品添加到自定义容器时触发该事件（当目标槽位已有同种物品时触发）", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lidi"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "PlayerTryRemoveCustomContainerItemClientEvent", 
+            "path": "client.clientEvent", 
+            "desc": "玩家尝试从自定义容器中移除物品时触发该事件", 
+            "doc_class_path": [
+                "物品"
+            ], 
+            "param": [
+                {
+                    "param_comment": "尝试移除物品的<a href=\"../../../mcguide/20-玩法开发/10-基本概念/1-我的世界基础概念.html#物品信息字典#物品信息字典\">物品信息字典</a>", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "放入容器名称，对应容器json中\"custom_description\"字段", 
+                    "param_name": "collectionName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "放入容器类型，目前仅支持netease_container和netease_ui_container", 
+                    "param_name": "collectionType", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "目标容器索引", 
+                    "param_name": "collectionIndex", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块x坐标", 
+                    "param_name": "x", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块y坐标", 
+                    "param_name": "y", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "容器方块z坐标", 
+                    "param_name": "z", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "是否取消该操作，默认为false，事件中改为true时拒绝此次移除物品的操作", 
+                    "param_name": "cancel", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "玩家尝试从自定义容器中移除物品时触发该事件", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lidi"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "UpdatePlayerSkinClientEvent", 
+            "path": "client.clientEvent", 
+            "desc": "触发时机：玩家加入游戏或通过更衣室局内换肤后 同步皮肤信息至客户端后触发", 
+            "doc_class_path": [
+                "玩家"
+            ], 
+            "param": [
+                {
+                    "param_comment": "更换皮肤的玩家id", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }
+            ], 
+            "return": {
+                "return_type": "", 
+                "return_comment": ""
+            }, 
+            "state": [
+                {
+                    "comment": "触发时机：玩家加入游戏或通过更衣室局内换肤后 同步皮肤信息至客户端后触发", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "slp"
                 }
             ], 
             "side": "客户端"

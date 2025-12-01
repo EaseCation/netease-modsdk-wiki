@@ -1,5 +1,5 @@
 ---
-front:
+front: 
 hard: 入门
 time: 分钟
 selection: true
@@ -248,23 +248,22 @@ shootButton的锚点，位移XY，尺寸XY的参考属性如下。按照这种�
 3. 然后激活（显示）对应的界面预设
 
 ```python
-	def InitClient(self):
-		import mod.client.extraClientApi as clientApi
-		self.ListenForEngineEvent("UiInitFinished", self, self.OnUIInitFinished)
+def InitClient(self):
+    import mod.client.extraClientApi as clientApi
+    self.ListenForEngineEvent(UiInitFinishedEvent, self, self.OnUIInitFinished)
 ```
 
 ```python
-	def OnUIInitFinished(self, args):
-		import mod.client.extraClientApi as clientApi
-		if clientApi.GetPlatform() == 0:
-			uiNodePreset = self.GetParent().GetChildPresetsByName("PC版UI界面")[0]
-		else:
-			uiNodePreset = self.GetParent().GetChildPresetsByName("PE版UI界面")[0]
-		if uiNodePreset:
-			uiNodePreset.SetUiActive(True)
+def OnUIInitFinished(self, args):
+    import mod.client.extraClientApi as clientApi
+    if clientApi.GetPlatform() == 0:
+        uiNodePreset = self.GetParent().GetChildPresetsByName("PC版UI界面")[0]
+    else:
+        uiNodePreset = self.GetParent().GetChildPresetsByName("PE版UI界面")[0]
+    if uiNodePreset:
+        uiNodePreset.SetUiActive(True)
 ```
 
-我们利用[UI API文档](40-UIAPI文档.html)中对各个控件的接口和游戏原生支持的格式化，可以在python代码中动态的改变界面的表现，具体可以参考[样式代码](https://zh.minecraft.wiki/w/%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81)
+我们利用[UI API文档](40-UIAPI文档.html)中对各个控件的接口和游戏原生支持的格式化，可以在python代码中动态的改变界面的表现，具体可以参考[样式代码](https://minecraft-zh.gamepedia.com/index.php?title=%E6%A0%B7%E5%BC%8F%E4%BB%A3%E7%A0%81&variant=zh)
 
 当然，更多API功能还需要你的发现和尝试。
-

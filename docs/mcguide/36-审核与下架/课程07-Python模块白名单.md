@@ -8,7 +8,7 @@
 
 | 白名单                                                | 白名单                                                | 白名单                                            |
 | ----------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------- |
-| __future__                                            | mod.server.component.actorPushableCompServer          | client.component.particleSystemCompClient         |
+| \_\_future\_\_                                            | mod.server.component.actorPushableCompServer          | client.component.particleSystemCompClient         |
 | _md5                                                  | mod.server.component.aiCommandCompServer              | client.component.particleTransComp                |
 | _random                                               | mod.server.component.attrCompServer                   | client.component.playerAnimCompClient             |
 | logging                                               | mod.server.component.auxValueCompServer               | client.component.playerCompClient                 |

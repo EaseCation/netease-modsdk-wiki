@@ -69,13 +69,13 @@ Json支持多种软件打开和查看，这里我们使用vscode进行查看。
 
 <br/>
 
-## <a href="../../../mconline/100-历史归档教程/20-玩法地图教程/第05章：设置NPC的基本状态和交易表/课程03.给NPC添加对应的交易表.html" rel="noopenner"> 自定义交易表 </a>配置对应文件
+## <a href="../../../mconline/20-玩法地图教程/第05章：设置NPC的基本状态和交易表/课程03.给NPC添加对应的交易表.html" rel="noopenner"> 自定义交易表 </a>配置对应文件
 
 >  行为包json：***behavior_pack_xxxxxx/trading/交易表名称.json***
 
 <br/>
 
-## <a href="../../../mconline/100-历史归档教程/10-addon教程/第12章：更完善的自定义掉落物/课程01.更完善的自定义掉落物.html" rel="noopenner"> 自定义掉落表 </a>配置对应文件
+## <a href="../../../mconline/10-addon教程/第12章：更完善的自定义掉落物/课程01.更完善的自定义掉落物.html" rel="noopenner"> 自定义掉落表 </a>配置对应文件
 
 >  行为包json：***behavior_pack_xxxxxx/loot_tables/掉落表名称.json***
 

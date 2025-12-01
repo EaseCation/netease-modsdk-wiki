@@ -43,8 +43,8 @@ class ActorDamageCause(object):
     RamAttack = "ram_attack"				# 山羊冲撞
     Custom = "custom"						# 自定义
     SonicBoom = "sonic_boom"				# 音波尖啸(监守者的远程攻击)
-    Campfire = "camp_fire"					# 营火
-    SoulCampfire = "soul_camp_fire"			# 灵魂营火(营火的灵魂火变种)
+    Campfire = "campfire"					# 营火
+    SoulCampfire = "soul_campfire"			# 灵魂营火(营火的灵魂火变种)
 
 ``` 
 

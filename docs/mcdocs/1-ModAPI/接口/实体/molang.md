@@ -107,6 +107,39 @@ result = comp.Get('query.mod.state')
 
 
 
+## GetAllProperties
+
+<span style="display:inline;color:#ff5555">服务端</span>
+
+method in mod.server.component.queryVariableCompServer.QueryVariableComponentServer
+
+- 描述
+
+    获取实体属性列表
+
+- 参数
+
+    无
+
+- 返回值
+
+    | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- |
+    | tuple(str) | 所有已注册properties，每个str为properties的名称，如果有错误，返回None |
+
+- 备注
+    - 可配合query.property，使用EvalMolangExpression获取实体属性的值。在客户端只能获取到client_sync为true的属性
+
+- 示例
+
+```python
+import mod.server.extraServerApi as serverApi
+comp = serverApi.GetEngineCompFactory().CreateQueryVariable(entityId)
+result = comp.GetAllProperties()
+```
+
+
+
 ## GetMolangValue
 
 <span style="display:inline;color:#7575f9">客户端</span>
@@ -247,6 +280,42 @@ method in mod.client.component.queryVariableCompClient.QueryVariableComponentCli
 import mod.client.extraClientApi as clientApi
 comp = clientApi.GetEngineCompFactory().CreateQueryVariable(entityId)
 result = comp.Set('query.mod.state', 1.0)
+```
+
+
+
+## SetPropertyValue
+
+<span style="display:inline;color:#ff5555">服务端</span>
+
+method in mod.server.component.queryVariableCompServer.QueryVariableComponentServer
+
+- 描述
+
+    设置实体属性的值
+
+- 参数
+
+    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- | :--- |
+    | propertyName | str | 属性名，如minecraft:has_nectar |
+    | value | str/int/float/bool | 属性值支持int/float/bool/enum(str)，支持molang表达式 |
+
+- 返回值
+
+    | <div style="width: 4em">数据类型</div> | 说明 |
+    | :--- | :--- |
+    | bool | 是否执行成功 |
+
+- 备注
+    - molang表达式需无副作用， 例如不能设置molang变量的值，例如"variable.moo = 1;return variable.moo;"。query仅支持query.has_property、query.property
+
+- 示例
+
+```python
+import mod.server.extraServerApi as serverApi
+comp = serverApi.GetEngineCompFactory().CreateQueryVariable(entityId)
+result = comp.SetPropertyValue('minecraft:has_nectar', True)
 ```
 
 

@@ -34,7 +34,6 @@ sidebarDepth: 1
 | [HideMoveGui](原生UI.md#hidemovegui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中左下角的移动按钮。隐藏后点击相应位置不会响应 |
 | [HideNeteaseStoreGui](原生UI.md#hideneteasestoregui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的网易商店按钮。隐藏后点击相应位置不会响应 |
 | [HidePauseGUI](原生UI.md#hidepausegui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏暂停按钮原生UI。 |
-| [HideReportGUI](原生UI.md#hidereportgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏举报按钮原生UI。 |
 | [HideSlotBarGui](原生UI.md#hideslotbargui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中底部中间的物品栏界面 |
 | [HideSneakGui](原生UI.md#hidesneakgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中左下角方向键的中心处潜行按钮。隐藏后点击相应位置不会响应 |
 | [HideSwimGui](原生UI.md#hideswimgui) | <span style="display:inline;color:#7575f9">客户端</span> | 隐藏游戏中的浮潜按钮。隐藏后点击相应位置不会响应。 |
@@ -769,35 +768,6 @@ method in mod.client.extraClientApi
 ```python
 import mod.client.extraClientApi as clientApi
 clientApi.HidePauseGUI(True)
-```
-
-
-
-## HideReportGUI
-
-<span style="display:inline;color:#7575f9">客户端</span>
-
-method in mod.client.extraClientApi
-
-- 描述
-
-    隐藏举报按钮原生UI。
-
-- 参数
-
-    | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
-    | :--- | :--- | :--- |
-    | isHide | bool | 是否隐藏，True为隐藏，False为显示 |
-
-- 返回值
-
-    无
-
-- 示例
-
-```python
-import mod.client.extraClientApi as clientApi
-clientApi.HideReportGUI(True)
 ```
 
 

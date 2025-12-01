@@ -33,7 +33,8 @@
                         "/mcdocs/1-ModAPI/接口/世界/自定义数据", 
                         "/mcdocs/1-ModAPI/接口/世界/指令", 
                         "/mcdocs/1-ModAPI/接口/世界/消息", 
-                        "/mcdocs/1-ModAPI/接口/世界/记分板"
+                        "/mcdocs/1-ModAPI/接口/世界/记分板", 
+                        "/mcdocs/1-ModAPI/接口/世界/行为"
                     ], 
                     "title": "世界"
                 }, 
@@ -142,7 +143,8 @@
                 }, 
                 "/mcdocs/1-ModAPI/接口/联机大厅", 
                 "/mcdocs/1-ModAPI/接口/成就", 
-                "/mcdocs/1-ModAPI/接口/商城"
+                "/mcdocs/1-ModAPI/接口/商城", 
+                "/mcdocs/1-ModAPI/接口/渲染"
             ], 
             "title": "接口"
         }, 
@@ -211,6 +213,7 @@
                 "/mcdocs/1-ModAPI/枚举值/OpenContainerId", 
                 "/mcdocs/1-ModAPI/枚举值/OptionId", 
                 "/mcdocs/1-ModAPI/枚举值/OriginGUIName", 
+                "/mcdocs/1-ModAPI/枚举值/PermissionChangeCause", 
                 "/mcdocs/1-ModAPI/枚举值/PlayerActionType", 
                 "/mcdocs/1-ModAPI/枚举值/PlayerExhauseRatioType", 
                 "/mcdocs/1-ModAPI/枚举值/PlayerUISlot", 
@@ -219,6 +222,7 @@
                 "/mcdocs/1-ModAPI/枚举值/RenderControllerArrayType", 
                 "/mcdocs/1-ModAPI/枚举值/RenderLayer", 
                 "/mcdocs/1-ModAPI/枚举值/SetBlockType", 
+                "/mcdocs/1-ModAPI/枚举值/ShapeType", 
                 "/mcdocs/1-ModAPI/枚举值/SliderOptionId", 
                 "/mcdocs/1-ModAPI/枚举值/StructureFeatureType", 
                 "/mcdocs/1-ModAPI/枚举值/TimeEaseType", 
@@ -236,8 +240,31 @@
         }, 
         {
             "children": [
+                "/mcdocs/1-ModAPI/更新信息/3.6", 
+                "/mcdocs/1-ModAPI/更新信息/3.5", 
                 "/mcdocs/1-ModAPI/更新信息/3.4", 
-                "/mcdocs/1-ModAPI/更新信息/3.3"
+                "/mcdocs/1-ModAPI/更新信息/3.3", 
+                "/mcdocs/1-ModAPI/更新信息/3.2", 
+                "/mcdocs/1-ModAPI/更新信息/3.1", 
+                "/mcdocs/1-ModAPI/更新信息/3.0", 
+                "/mcdocs/1-ModAPI/更新信息/2.12", 
+                "/mcdocs/1-ModAPI/更新信息/2.11", 
+                "/mcdocs/1-ModAPI/更新信息/2.10", 
+                "/mcdocs/1-ModAPI/更新信息/2.9", 
+                "/mcdocs/1-ModAPI/更新信息/2.8", 
+                "/mcdocs/1-ModAPI/更新信息/2.7", 
+                "/mcdocs/1-ModAPI/更新信息/2.6", 
+                "/mcdocs/1-ModAPI/更新信息/2.5", 
+                "/mcdocs/1-ModAPI/更新信息/2.4", 
+                "/mcdocs/1-ModAPI/更新信息/2.3", 
+                "/mcdocs/1-ModAPI/更新信息/2.2", 
+                "/mcdocs/1-ModAPI/更新信息/2.1", 
+                "/mcdocs/1-ModAPI/更新信息/2.0", 
+                "/mcdocs/1-ModAPI/更新信息/1.25", 
+                "/mcdocs/1-ModAPI/更新信息/1.24", 
+                "/mcdocs/1-ModAPI/更新信息/1.23", 
+                "/mcdocs/1-ModAPI/更新信息/1.22", 
+                "/mcdocs/1-ModAPI/更新信息/1.21"
             ], 
             "title": "更新信息"
         }

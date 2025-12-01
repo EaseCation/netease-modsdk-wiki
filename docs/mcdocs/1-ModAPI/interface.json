@@ -7181,6 +7181,12 @@
                     "operation": "调整", 
                     "version": "2.8", 
                     "author": "cxz"
+                }, 
+                {
+                    "comment": "添加备注", 
+                    "operation": "调整", 
+                    "version": "3.5", 
+                    "author": "jiaoshe"
                 }
             ], 
             "side": "客户端"
@@ -7333,34 +7339,6 @@
                     "operation": "调整", 
                     "version": "2.8", 
                     "author": "wj"
-                }
-            ], 
-            "side": "客户端"
-        }, 
-        {
-            "name": "HideReportGUI", 
-            "path": "client.extraClientApi", 
-            "desc": "隐藏举报按钮原生UI。", 
-            "doc_class_path": [
-                "原生UI"
-            ], 
-            "param": [
-                {
-                    "param_comment": "是否隐藏，True为隐藏，False为显示", 
-                    "param_name": "isHide", 
-                    "param_type": "bool"
-                }
-            ], 
-            "return": {
-                "return_type": "", 
-                "return_comment": ""
-            }, 
-            "state": [
-                {
-                    "comment": "隐藏举报按钮原生UI", 
-                    "operation": "新增", 
-                    "version": "2.4", 
-                    "author": "hxj"
                 }
             ], 
             "side": "客户端"
@@ -10890,7 +10868,13 @@
             "doc_class_path": [
                 "玩家/渲染"
             ], 
-            "param": [], 
+            "param": [
+                {
+                    "param_comment": "是否清除粒子，默认为False", 
+                    "param_name": "clearBindParticle", 
+                    "param_type": "bool"
+                }
+            ], 
             "return": {
                 "return_type": "bool", 
                 "return_comment": "重建是否成功"
@@ -10907,6 +10891,12 @@
                     "operation": "新增", 
                     "version": "1.18", 
                     "author": "gzhuabo"
+                }, 
+                {
+                    "comment": "增加clearBindParticle参数，用于控制是否清除粒子", 
+                    "operation": "新增", 
+                    "version": "3.6", 
+                    "author": "chenyuekai"
                 }
             ], 
             "side": "客户端"
@@ -14778,7 +14768,7 @@
                 {
                     "param_comment": "实体模型在x,y,z各个轴上的缩放值。支持负值，当某一轴的缩放值为负值时，表示模型将会在这个轴上进行以另外两个轴为对称平面的镜像变换。", 
                     "param_name": "scale", 
-                    "param_type": "tuple(int,int,int)"
+                    "param_type": "tuple(float,float,float)"
                 }
             ], 
             "return": {
@@ -15302,6 +15292,77 @@
                     "operation": "新增", 
                     "version": "3.3", 
                     "author": "xujiarong02"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetCrackFrame", 
+            "path": "client.component.blockInfoCompClient.BlockInfoComponentClient", 
+            "desc": "仅客户端的破坏纹理的渲染，可自定义破坏阶段在第几帧。", 
+            "doc_class_path": [
+                "方块/渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "方块所在维度。", 
+                    "param_name": "dimensionId", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "目标方块的坐标。", 
+                    "param_name": "blockPos", 
+                    "param_type": "tuple(int,int,int)"
+                }, 
+                {
+                    "param_comment": "第几张纹理（取值范围0-9）。", 
+                    "param_name": "frame", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "是否执行成功（不代表必定能显示裂纹）。"
+            }, 
+            "state": [
+                {
+                    "comment": "仅客户端的破坏纹理的渲染，可自定义破坏阶段在第几帧。", 
+                    "operation": "新增", 
+                    "version": "3.6", 
+                    "author": "liujinhua"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "DestroyCrackFrame", 
+            "path": "client.component.blockInfoCompClient.BlockInfoComponentClient", 
+            "desc": "销毁特定方块位置上的破坏纹理（仅能销毁SetCrackFrame接口创建的破坏纹理）。", 
+            "doc_class_path": [
+                "方块/渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "方块所在维度。", 
+                    "param_name": "dimensionId", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "目标方块的坐标。", 
+                    "param_name": "blockPos", 
+                    "param_type": "tuple(int,int,int)"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "是否执行成功。"
+            }, 
+            "state": [
+                {
+                    "comment": "销毁特定方块位置上的破坏纹理。", 
+                    "operation": "新增", 
+                    "version": "3.6", 
+                    "author": "liujinhua"
                 }
             ], 
             "side": "客户端"
@@ -19196,6 +19257,59 @@
                     "operation": "新增", 
                     "version": "3.2", 
                     "author": "gx"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "UseItemAttackEntity", 
+            "path": "server.component.gameCompServer.GameComponentServer", 
+            "desc": "使用指定物品攻击某个实体。", 
+            "doc_class_path": [
+                "世界/行为"
+            ], 
+            "param": [
+                {
+                    "param_comment": "物品字典数据", 
+                    "param_name": "itemDict", 
+                    "param_type": "dict"
+                }, 
+                {
+                    "param_comment": "攻击实体id", 
+                    "param_name": "entityId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "伤害类型，默认值是EntityAttack，详见Minecraft枚举值文档的[ActorDamageCause](../../枚举值/ActorDamageCause.md)", 
+                    "param_name": "cause", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "伤害来源坐标，默认值为None，该参数会影响击退效果的计算", 
+                    "param_name": "attackerPos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "是否击退，默认值为False，如果设置为True，需同时设置attackerPos", 
+                    "param_name": "knocked", 
+                    "param_type": "bool"
+                }, 
+                {
+                    "param_comment": "标识自定义伤害来源，只在cause为Custom生效，可在ActorHurtServerEvent、ActuallyHurtServerEvent、DamageEvent、PlayerHurtEvent、PlayerDieEvent、MobDieEvent监听到标识", 
+                    "param_name": "customTag", 
+                    "param_type": "str"
+                }
+            ], 
+            "return": {
+                "return_type": "dict", 
+                "return_comment": "成功：返回使用过后的物品字典；失败：返回None"
+            }, 
+            "state": [
+                {
+                    "comment": "使用指定物品攻击某个实体。", 
+                    "operation": "新增", 
+                    "version": "3.6", 
+                    "author": "liujinhua"
                 }
             ], 
             "side": "服务端"
@@ -24754,6 +24868,44 @@
                 }
             ], 
             "side": "服务端"
+        }, 
+        {
+            "name": "OpenNeteaseContainer", 
+            "path": "server.component.playerCompServer.PlayerCompServer", 
+            "desc": "打开自定义容器界面，不依赖于方块。该界面的物品数据需由开发者自行维护。", 
+            "doc_class_path": [
+                "玩家/行为"
+            ], 
+            "param": [
+                {
+                    "param_comment": "打开的容器ui的命名空间，格式[namespace.screenName]", 
+                    "param_name": "screenName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "打开的容器ui的标题（复用原版ui时生效）", 
+                    "param_name": "customDescription", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "关闭容器界面时，是否返还物品到背包；默认为False（不返还），由开发者维护物品数据的存储。", 
+                    "param_name": "isCloseReturnItem", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "返回True则执行成功，不代表界面已打开"
+            }, 
+            "state": [
+                {
+                    "comment": "打开自定义容器界面，不依赖于方块。该界面的物品数据需由开发者自行维护。", 
+                    "operation": "新增", 
+                    "version": "3.6", 
+                    "author": "liujinhua"
+                }
+            ], 
+            "side": "服务端"
         }
     ], 
     "client.ui.controls.selectionWheelUIControl.SelectionWheelUIControl": [
@@ -26148,12 +26300,6 @@
                     "operation": "调整", 
                     "version": "1.20", 
                     "author": "jishaobin"
-                }, 
-                {
-                    "comment": "修改文档类型描述", 
-                    "operation": "调整", 
-                    "version": "3.4", 
-                    "author": "bailei"
                 }
             ], 
             "side": "服务端"
@@ -32069,13 +32215,18 @@
                     "param_type": "str"
                 }, 
                 {
-                    "param_comment": "容器槽位，含义见：[容器类型枚举](../../枚举值/PlayerUISlot.md)", 
+                    "param_comment": "容器槽位。在isNeteaseUI为True时代表netease_ui_container中对应槽位；isNeteaseUI为False时含义见：[容器类型枚举](../../枚举值/PlayerUISlot.md)", 
                     "param_name": "slot", 
                     "param_type": "int"
                 }, 
                 {
                     "param_comment": "是否获取userData，默认为False", 
                     "param_name": "getUserData", 
+                    "param_type": "bool"
+                }, 
+                {
+                    "param_comment": "默认为false，true时获取netease_ui_container的物品", 
+                    "param_name": "isNeteaseUI", 
                     "param_type": "bool"
                 }
             ], 
@@ -32089,6 +32240,12 @@
                     "operation": "新增", 
                     "version": "2.1", 
                     "author": "jishaobin"
+                }, 
+                {
+                    "comment": "新增isNeteaseUI参数，默认为false，true时获取netease_ui_container的物品", 
+                    "operation": "调整", 
+                    "version": "3.5", 
+                    "author": "lidi"
                 }
             ], 
             "side": "服务端"
@@ -32107,7 +32264,7 @@
                     "param_type": "str"
                 }, 
                 {
-                    "param_comment": "容器槽位，含义见：[容器类型枚举](../../枚举值/PlayerUISlot.md)", 
+                    "param_comment": "容器槽位。在isNeteaseUI为True时代表netease_ui_container中对应槽位；isNeteaseUI为False时含义见：[容器类型枚举](../../枚举值/PlayerUISlot.md)", 
                     "param_name": "slot", 
                     "param_type": "int"
                 }, 
@@ -32119,6 +32276,11 @@
                 {
                     "param_comment": "是否将容器槽位的已有物品放回至玩家背包中，默认为True。设置为False时，则会直接用itemDict中的物品覆盖容器槽位的已有物品。", 
                     "param_name": "needBack", 
+                    "param_type": "bool"
+                }, 
+                {
+                    "param_comment": "默认为false，true时设置netease_ui_container的物品", 
+                    "param_name": "isNeteaseUI", 
                     "param_type": "bool"
                 }
             ], 
@@ -32132,6 +32294,12 @@
                     "operation": "新增", 
                     "version": "2.3", 
                     "author": "wangdingdong"
+                }, 
+                {
+                    "comment": "新增isNeteaseUI参数，默认为false，true时设置netease_ui_container的物品", 
+                    "operation": "调整", 
+                    "version": "3.5", 
+                    "author": "lidi"
                 }
             ], 
             "side": "服务端"
@@ -32181,6 +32349,12 @@
                     "operation": "调整", 
                     "version": "1.23", 
                     "author": "sutao"
+                }, 
+                {
+                    "comment": "支持自定义容器", 
+                    "operation": "调整", 
+                    "version": "3.5", 
+                    "author": "lidi"
                 }
             ], 
             "side": "服务端"
@@ -34658,6 +34832,61 @@
                 }
             ], 
             "side": "服务端"
+        }, 
+        {
+            "name": "GetAllProperties", 
+            "path": "server.component.queryVariableCompServer.QueryVariableComponentServer", 
+            "desc": "获取实体属性列表", 
+            "doc_class_path": [
+                "实体/molang"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "tuple(str)", 
+                "return_comment": "所有已注册properties，每个str为properties的名称，如果有错误，返回None"
+            }, 
+            "state": [
+                {
+                    "comment": "获取实体属性列表", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "zhujinan"
+                }
+            ], 
+            "side": "服务端"
+        }, 
+        {
+            "name": "SetPropertyValue", 
+            "path": "server.component.queryVariableCompServer.QueryVariableComponentServer", 
+            "desc": "设置实体属性的值", 
+            "doc_class_path": [
+                "实体/molang"
+            ], 
+            "param": [
+                {
+                    "param_comment": "属性名，如minecraft:has_nectar", 
+                    "param_name": "propertyName", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "属性值支持int/float/bool/enum(str)，支持molang表达式", 
+                    "param_name": "value", 
+                    "param_type": "str/int/float/bool"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "是否执行成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置实体属性的值", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "zhujinan"
+                }
+            ], 
+            "side": "服务端"
         }
     ], 
     "client.component.particleSystemCompClient.ParticleSystemCompClient": [
@@ -36681,6 +36910,49 @@
             "side": "客户端"
         }, 
         {
+            "name": "SetDropItemTransform", 
+            "path": "client.component.itemCompClient.ItemCompClient", 
+            "desc": "设置通过AddDropItemToWorld添加的掉落物的位置、角度和缩放", 
+            "doc_class_path": [
+                "方块/渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "掉落物的entityId，entityId可在调用[AddDropItemToWorld](#AddDropItemToWorld)时保存返回值，或者通过[GetClientDropItemEntityIdList](#GetClientDropItemEntityIdList)接口获取list", 
+                    "param_name": "entityId", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "生成的掉落物所在位置。如需设置后续参数需填写None占位，传None表示不修改", 
+                    "param_name": "position", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "选填，设置掉落物的角度，不填默认为None，设置rotation后将会固定角度[AddDropItemToWorld](#AddDropItemToWorld)设置的spinSpeed无效。如需设置后续参数需填写None占位，传None表示不修改", 
+                    "param_name": "rotation", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "选填，设置掉落物的缩放，不填默认为None，传None表示不修改", 
+                    "param_name": "scale", 
+                    "param_type": "float"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置通过AddDropItemToWorld添加的掉落物的位置、角度和缩放", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "zsr"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
             "name": "GetClientDropItemEntityIdList", 
             "path": "client.component.itemCompClient.ItemCompClient", 
             "desc": "获得所有通过AddDropItemToWorld创建的entityId的list", 
@@ -37592,6 +37864,834 @@
                 }
             ], 
             "side": "服务端"
+        }
+    ], 
+    "client.component.drawingCompClient.DrawingCompClient": [
+        {
+            "name": "AddBoxShape", 
+            "path": "client.component.drawingCompClient.DrawingCompClient", 
+            "desc": "新建盒子形状", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "盒子形状的位置", 
+                    "param_name": "pos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "盒子形状的大小, 默认为(1,1,1)", 
+                    "param_name": "scale", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "盒子形状的颜色, RGB值, 取值范围为[0,1], 默认为(1,1,1)", 
+                    "param_name": "color", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "DrawingShapeCompClient", 
+                "return_comment": "新建的盒子形状"
+            }, 
+            "state": [
+                {
+                    "comment": "新建盒子形状", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "AddLineShape", 
+            "path": "client.component.drawingCompClient.DrawingCompClient", 
+            "desc": "新建线条形状", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "线条形状的起始位置", 
+                    "param_name": "startPos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "线条形状的结束位置", 
+                    "param_name": "endPos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "线条形状的颜色, RGB值, 取值范围为[0,1], 默认为(1,1,1)", 
+                    "param_name": "color", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "DrawingShapeCompClient", 
+                "return_comment": "新建的线条形状"
+            }, 
+            "state": [
+                {
+                    "comment": "新建线条形状", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "AddCircleShape", 
+            "path": "client.component.drawingCompClient.DrawingCompClient", 
+            "desc": "新建圆形状", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "圆形状的位置", 
+                    "param_name": "pos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "圆形状的半径", 
+                    "param_name": "radius", 
+                    "param_type": "float"
+                }, 
+                {
+                    "param_comment": "圆形状的颜色, RGB值, 取值范围为[0,1], 默认为(1,1,1)", 
+                    "param_name": "color", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "圆形状的平面, 0时为不指定平面, 1时为XY平面, 2时为XZ平面, 3时为YZ平面, 默认为2", 
+                    "param_name": "plane", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "圆形状的网格数量, 默认为20, 最小为1, 小于1后不渲染", 
+                    "param_name": "segmentsNum", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "DrawingShapeCompClient", 
+                "return_comment": "新建的圆形状"
+            }, 
+            "state": [
+                {
+                    "comment": "新建圆形状", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "AddArrowShape", 
+            "path": "client.component.drawingCompClient.DrawingCompClient", 
+            "desc": "新建箭头形状", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "箭头形状的起始位置", 
+                    "param_name": "startPos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "箭头形状的结束位置", 
+                    "param_name": "endPos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "箭头形状的颜色, RGB值, 取值范围为[0,1], 默认为(1,1,1)", 
+                    "param_name": "color", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "组成箭头形状头部的网格数量, 最小为3, 默认为20", 
+                    "param_name": "headSegmentsNum", 
+                    "param_type": "int"
+                }, 
+                {
+                    "param_comment": "箭头形状头部的长度, 默认为1", 
+                    "param_name": "arrowHeadLength", 
+                    "param_type": "float"
+                }, 
+                {
+                    "param_comment": "箭头形状头部的半径, 默认为0.5", 
+                    "param_name": "radius", 
+                    "param_type": "float"
+                }
+            ], 
+            "return": {
+                "return_type": "DrawingShapeCompClient", 
+                "return_comment": "新建的箭头形状"
+            }, 
+            "state": [
+                {
+                    "comment": "新建箭头形状", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "AddTextShape", 
+            "path": "client.component.drawingCompClient.DrawingCompClient", 
+            "desc": "新建文本形状", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "文本形状的位置", 
+                    "param_name": "pos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "文本形状的文本", 
+                    "param_name": "text", 
+                    "param_type": "str"
+                }, 
+                {
+                    "param_comment": "文本形状的颜色, RGB值, 取值范围为[0,1], 默认为(1,1,1)", 
+                    "param_name": "color", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "DrawingShapeCompClient", 
+                "return_comment": "新建的文本形状"
+            }, 
+            "state": [
+                {
+                    "comment": "新建文本形状", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "AddSphereShape", 
+            "path": "client.component.drawingCompClient.DrawingCompClient", 
+            "desc": "新建球形状", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "球形状的位置", 
+                    "param_name": "pos", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "球形状的半径", 
+                    "param_name": "radius", 
+                    "param_type": "float"
+                }, 
+                {
+                    "param_comment": "球形状的颜色, RGB值, 取值范围为[0,1], 默认为(1,1,1)", 
+                    "param_name": "color", 
+                    "param_type": "tuple(float,float,float)"
+                }, 
+                {
+                    "param_comment": "球形状的网格数量, 默认为20, 最小为1, 小于等于1后不渲染", 
+                    "param_name": "segmentsNum", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "DrawingShapeCompClient", 
+                "return_comment": "新建的球形状"
+            }, 
+            "state": [
+                {
+                    "comment": "新建球形状", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "RemoveAll", 
+            "path": "client.component.drawingCompClient.DrawingCompClient", 
+            "desc": "删除当前所有Shape", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "删除是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "删除当前所有Shape", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }
+    ], 
+    "client.component.drawingShapeCompClient.DrawingShapeCompClient": [
+        {
+            "name": "GetPos", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取Shape的位置", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "tuple(float,float,float)", 
+                "return_comment": "Shape的位置"
+            }, 
+            "state": [
+                {
+                    "comment": "获取Shape的位置", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetBoxScale", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取BoxShape的大小", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "tuple(float,float,float)", 
+                "return_comment": "BoxShape的大小"
+            }, 
+            "state": [
+                {
+                    "comment": "获取BoxShape的大小", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetColor", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取Shape的颜色", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "tuple(float,float,float)", 
+                "return_comment": "Shape的颜色"
+            }, 
+            "state": [
+                {
+                    "comment": "获取Shape的颜色", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetType", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取Shape的类型", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "ShapeType", 
+                "return_comment": "[Shape的类型](../枚举值/ShapeType.md)"
+            }, 
+            "state": [
+                {
+                    "comment": "获取Shape的类型", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetPriority", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取Shape的优先级", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "int", 
+                "return_comment": "Shape的优先级"
+            }, 
+            "state": [
+                {
+                    "comment": "获取Shape的优先级", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetVisible", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取Shape是否可见", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "Shape是否可见"
+            }, 
+            "state": [
+                {
+                    "comment": "获取Shape是否可见", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetEndPos", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取LineShape或ArrowShape的结束位置", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "tuple(float,float,float)", 
+                "return_comment": "LineShape或ArrowShape的结束位置"
+            }, 
+            "state": [
+                {
+                    "comment": "获取LineShape或ArrowShape的结束位置", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetRadius", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取CircleShape或ArrowShape或SphereShape的半径", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "float", 
+                "return_comment": "CircleShape或ArrowShape或SphereShape的半径"
+            }, 
+            "state": [
+                {
+                    "comment": "获取CircleShape或ArrowShape或SphereShape的半径", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetSegments", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取CircleShape或ArrowShape头部的分段数", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "int", 
+                "return_comment": "CircleShape或ArrowShape头部的分段数"
+            }, 
+            "state": [
+                {
+                    "comment": "获取CircleShape或ArrowShape头部的分段数", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetText", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取TextShape的文本", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "str", 
+                "return_comment": "TextShape的文本"
+            }, 
+            "state": [
+                {
+                    "comment": "获取TextShape的文本", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "GetLength", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "获取ArrowShape的头部长度", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "float", 
+                "return_comment": "ArrowShape的头部长度"
+            }, 
+            "state": [
+                {
+                    "comment": "获取ArrowShape的头部长度", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetPos", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置Shape的位置", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "Shape的目标位置", 
+                    "param_name": "pos", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置Shape的位置", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetBoxScale", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置BoxShape的大小", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "BoxShape的目标大小", 
+                    "param_name": "scale", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置BoxShape的大小", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetEndPos", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置LineShape或ArrowShape的结束位置", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "LineShape或ArrowShape的结束位置", 
+                    "param_name": "endPos", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置LineShape或ArrowShape的结束位置", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetRadius", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置CircleShape或ArrowShape或SphereShape的半径", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "CircleShape或ArrowShape或SphereShape的半径", 
+                    "param_name": "radius", 
+                    "param_type": "float"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置CircleShape或ArrowShape或SphereShape的半径", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetSegments", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置组成ArrowShape头部的网格数量, 最小为3", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "组成ArrowShape头部的网格数量, 最小为3", 
+                    "param_name": "segments", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置组成ArrowShape头部的网格数量", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetLength", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置组成ArrowShape头部的长度", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "组成ArrowShape头部的长度", 
+                    "param_name": "length", 
+                    "param_type": "float"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置组成ArrowShape头部的长度", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetText", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置TextShape的文本内容", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "TextShape的文本内容", 
+                    "param_name": "text", 
+                    "param_type": "str"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置TextShape的文本内容", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetColor", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置Shape的颜色", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "Shape的颜色, RGB值, 取值范围为[0,1]", 
+                    "param_name": "color", 
+                    "param_type": "tuple(float,float,float)"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置Shape的颜色", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetPriority", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置Shape的渲染优先级, 同一像素点处优先渲染优先级高的Shape, 默认为0", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "Shape的渲染优先级", 
+                    "param_name": "priority", 
+                    "param_type": "int"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置Shape的渲染优先级, 同一像素点处优先渲染优先级高的Shape, 默认为0", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "SetVisible", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "设置Shape是否可见", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [
+                {
+                    "param_comment": "Shape是否可见", 
+                    "param_name": "visible", 
+                    "param_type": "bool"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "设置是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "设置Shape是否可见", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "Remove", 
+            "path": "client.component.drawingShapeCompClient.DrawingShapeCompClient", 
+            "desc": "删除Shape", 
+            "doc_class_path": [
+                "渲染"
+            ], 
+            "param": [], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "删除是否成功"
+            }, 
+            "state": [
+                {
+                    "comment": "删除Shape", 
+                    "operation": "新增", 
+                    "version": "3.5", 
+                    "author": "lrz"
+                }
+            ], 
+            "side": "客户端"
         }
     ], 
     "server.component.explosionCompServer.ExplosionComponentServer": [
@@ -44700,6 +45800,118 @@
                     "operation": "新增", 
                     "version": "3.3", 
                     "author": "xujiarong02"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "IsOfficialSkin", 
+            "path": "client.component.gameCompClient.GameComponentClient", 
+            "desc": "获取玩家穿戴的皮肤是否为官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId", 
+            "doc_class_path": [
+                "玩家/属性"
+            ], 
+            "param": [
+                {
+                    "param_comment": "玩家ID", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "官方4d皮肤返回True"
+            }, 
+            "state": [
+                {
+                    "comment": "获取玩家穿戴的皮肤是否为官方4d皮肤", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "slp"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "IsHighLevelOfficialSkin", 
+            "path": "client.component.gameCompClient.GameComponentClient", 
+            "desc": "获取玩家穿戴的皮肤是否为史诗及以上的官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId", 
+            "doc_class_path": [
+                "玩家/属性"
+            ], 
+            "param": [
+                {
+                    "param_comment": "玩家ID", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "史诗及以上的官方4d皮肤返回True"
+            }, 
+            "state": [
+                {
+                    "comment": "获取玩家穿戴的皮肤是否为史诗及以上的官方4d皮肤", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "slp"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "IsHighLevelMultiJointOfficialSkin", 
+            "path": "client.component.gameCompClient.GameComponentClient", 
+            "desc": "获取玩家穿戴的皮肤是否为史诗及以上的多关节官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId", 
+            "doc_class_path": [
+                "玩家/属性"
+            ], 
+            "param": [
+                {
+                    "param_comment": "玩家ID", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "史诗及以上的多关节官方4d皮肤返回True"
+            }, 
+            "state": [
+                {
+                    "comment": "获取玩家穿戴的皮肤是否为史诗及以上的多关节官方4d皮肤", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "slp"
+                }
+            ], 
+            "side": "客户端"
+        }, 
+        {
+            "name": "IsMultiJointOfficialSkin", 
+            "path": "client.component.gameCompClient.GameComponentClient", 
+            "desc": "获取玩家穿戴的皮肤是否为多关节官方4d皮肤 在接收到 UpdatePlayerSkinClientEvent 事件后调用 此事件在客户端接收到玩家皮肤信息同步后触发 参数仅playerId", 
+            "doc_class_path": [
+                "玩家/属性"
+            ], 
+            "param": [
+                {
+                    "param_comment": "玩家ID", 
+                    "param_name": "playerId", 
+                    "param_type": "str"
+                }
+            ], 
+            "return": {
+                "return_type": "bool", 
+                "return_comment": "多关节官方4d皮肤返回True"
+            }, 
+            "state": [
+                {
+                    "comment": "获取玩家穿戴的皮肤是否为多关节官方4d皮肤", 
+                    "operation": "新增", 
+                    "version": "3.4", 
+                    "author": "slp"
                 }
             ], 
             "side": "客户端"
