@@ -298,7 +298,7 @@ async function generateAlgoliaRecords() {
 
                 // 构建唯一ID和URL
                 const objectID = `${page.path}${anchor}`;
-                const url = `https://modsdk.easecation.net${page.path}${anchor}`;
+                const url = `https://mcwiki.easecation.net${page.path}.html${anchor}`;
 
                 const description = extractAPIDescription(cleanedContent);
                 

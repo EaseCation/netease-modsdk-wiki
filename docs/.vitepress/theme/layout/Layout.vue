@@ -28,5 +28,7 @@ const layoutClass = computed(() => {
     :class="layoutClass"
   >
     <DefaultTheme.Layout />
+    <!-- 全局 AI 助手（右侧抽屉） -->
+    <AssistantDock />
   </div>
 </template>
