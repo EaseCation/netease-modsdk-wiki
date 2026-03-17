@@ -1,0 +1,6 @@
+{
+  "_comment": "当上游文件名无数字前缀或需要覆盖顺序时，在此配置 order 值。路径相对于对应的 docs/ 子目录（如 mcguide/some-dir/file.md）。每次 sync-docs 运行后，配置的 order 值会注入到对应文件的 frontmatter 中，供 sidebar.ts 排序使用。",
+  "mcdocs": {},
+  "mcguide": {},
+  "mconline": {}
+}

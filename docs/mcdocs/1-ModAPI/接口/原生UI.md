@@ -46,7 +46,6 @@ sidebarDepth: 1
 | [OpenNeteaseStoreGui](原生UI.md#openneteasestoregui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开游戏中的网易商店购买商品界面 |
 | [OpenPauseGui](原生UI.md#openpausegui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版暂停界面 |
 | [OpenReportGui](原生UI.md#openreportgui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版举报界面 |
-| [OpenVoiceGui](原生UI.md#openvoicegui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版语音界面 |
 | [PlayHudHeartBlinkAnim](原生UI.md#playhudheartblinkanim) | <span style="display:inline;color:#7575f9">客户端</span> | 播放原版受伤时血量变化的动效 |
 | [SetCrossHair](原生UI.md#setcrosshair) | <span style="display:inline;color:#7575f9">客户端</span> | 设置是否使用“准星瞄准” |
 | [SetEmoteSwitch](原生UI.md#setemoteswitch) | <span style="display:inline;color:#7575f9">客户端</span> | 设置是否开启表情功能，默认PC端关闭，手机端开启，且该接口只能在手机端使用，在原生UI初始化前调用设置 |
@@ -1126,33 +1125,6 @@ method in mod.client.extraClientApi
 ```python
 import mod.client.extraClientApi as clientApi
 clientApi.OpenReportGui()
-```
-
-
-
-## OpenVoiceGui
-
-<span style="display:inline;color:#7575f9">客户端</span>
-
-method in mod.client.extraClientApi
-
-- 描述
-
-    打开原版语音界面
-
-- 参数
-
-    无
-
-- 返回值
-
-    无
-
-- 示例
-
-```python
-import mod.client.extraClientApi as clientApi
-clientApi.OpenVoiceGui()
 ```
 
 

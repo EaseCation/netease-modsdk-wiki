@@ -96,6 +96,7 @@ class BiomeType(object):
 	deep_dark = 190						    # 深暗之域
 	mangrove_swamp = 191					# 红树林沼泽
 	cherry_grove = 192						# 樱花树林
+	pale_garden = 193						# 苍白花园
 
 ``` 
 

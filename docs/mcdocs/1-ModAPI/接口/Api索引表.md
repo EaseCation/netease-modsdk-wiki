@@ -5,6 +5,9 @@ sidebarDepth: 1
 
 ---
 
+## 物理
+
+- [物理](#物理-2)
 ## 通用
 
 - [Component](#component)
@@ -87,10 +90,6 @@ sidebarDepth: 1
 ## 模型
 
 - [模型](#模型-2)
-## 山头服务器
-
-- [山头服务器](#山头服务器-2)
-
 ## 原生UI
 
 - [原生UI](#原生ui-2)
@@ -101,6 +100,7 @@ sidebarDepth: 1
 - [自定义成就系统](#自定义成就系统)
 - [UI界面](#ui界面)
 - [UI控件](#ui控件)
+- [通用设置](#通用设置)
 ## 音效
 
 - [音效](#音效-2)
@@ -132,9 +132,28 @@ sidebarDepth: 1
 ## 商城
 
 - [商城](#商城-2)
+## 山头服务器
+
+- [山头服务器](#山头服务器-2)
 ## 渲染
 
 - [渲染](#渲染-2)
+
+#### 物理<span id = "物理2"></span>
+| 接口 | <div style="width: 3em"></div> | 描述 |
+| --- | --- | --- |
+| [AddBoxGeometry](物理.md#addboxgeometry) | <span style="display:inline;color:#ff5555">服务端</span> | 给自定义刚体创建盒形碰撞体 |
+| [AddForce](物理.md#addforce) | <span style="display:inline;color:#ff5555">服务端</span> | 对自定义刚体的质心添加力，对运动学刚体无效 |
+| [CreatePxActor](物理.md#createpxactor) | <span style="display:inline;color:#ff5555">服务端</span> | 给实体创建自定义刚体 |
+| [GetQuaternion](物理.md#getquaternion) | <span style="display:inline;color:#ff5555">服务端</span> | 获取自定义刚体的四元数旋转 |
+| [GetQuaternion](物理.md#getquaternion) | <span style="display:inline;color:#7575f9">客户端</span> | 获取自定义刚体的四元数旋转 |
+| [Raycast](物理.md#raycast) | <span style="display:inline;color:#ff5555">服务端</span> | 射线检测，获取与射线相交的碰撞体。目前仅支持获取自定义刚体 |
+| [Raycast](物理.md#raycast) | <span style="display:inline;color:#7575f9">客户端</span> | 射线检测，获取与射线相交的碰撞体。目前仅支持获取自定义刚体 |
+| [SetActorFlag](物理.md#setactorflag) | <span style="display:inline;color:#ff5555">服务端</span> | 设置物理实体的行为开关 |
+| [SetGlobalPose](物理.md#setglobalpose) | <span style="display:inline;color:#ff5555">服务端</span> | 设置自定义刚体的变换（直接瞬移） |
+| [SetKinematicTarget](物理.md#setkinematictarget) | <span style="display:inline;color:#ff5555">服务端</span> | 设置运动学刚体的目标变换，仅对开启了PxRigidBodyFlag.eKINEMATIC的自定义刚体生效 |
+| [SetRigidBodyFlag](物理.md#setrigidbodyflag) | <span style="display:inline;color:#ff5555">服务端</span> | 设置自定义刚体的行为开关 |
+| [SetRigidDynamicLockFlags](物理.md#setrigiddynamiclockflags) | <span style="display:inline;color:#ff5555">服务端</span> | 设置自定义刚体的约束 |
 
 #### Component
 | 接口| <div style="width: 3em"></div> | 描述 |
@@ -226,6 +245,7 @@ sidebarDepth: 1
 | [GetHostPlayerId](通用/工具.md#gethostplayerid) | <span style="display:inline;color:#7575f9">客户端</span> | 获取房主的entityId |
 | [GetMinecraftEnum](通用/工具.md#getminecraftenum) | <span style="display:inline;color:#ff5555">服务端</span> | 用于获取[枚举值文档](通用/../../枚举值/索引.md)中的枚举值 |
 | [GetMinecraftEnum](通用/工具.md#getminecraftenum) | <span style="display:inline;color:#7575f9">客户端</span> | 用于获取[枚举值文档](通用/../../枚举值/索引.md)中的枚举值 |
+| [GetModConfigJson](通用/工具.md#getmodconfigjson) | <span style="display:inline;color:#ff5555">服务端</span> | 以字典形式返回指定路径的json格式配置文件的内容，文件必须放置在行为包的/modconfigs目录下 |
 | [GetModConfigJson](通用/工具.md#getmodconfigjson) | <span style="display:inline;color:#7575f9">客户端</span> | 以字典形式返回指定路径的json格式配置文件的内容，文件必须放置在资源包的/modconfigs目录下 |
 | [GetServerTickTime](通用/工具.md#getserverticktime) | <span style="display:inline;color:#ff5555">服务端</span> | 获取服务端引擎上一帧的帧消耗时间 |
 | [ImportModule](通用/工具.md#importmodule) | <span style="display:inline;color:#ff5555">服务端</span> | 使用字符串路径导入模块，作用与importlib.import_module类似，但只能导入当前加载的mod中的模块 |
@@ -298,8 +318,10 @@ sidebarDepth: 1
 | [GetEntitiesAround](世界/地图.md#getentitiesaround) | <span style="display:inline;color:#7575f9">客户端</span> | 获取区域内的entity列表 |
 | [GetEntitiesAroundByType](世界/地图.md#getentitiesaroundbytype) | <span style="display:inline;color:#ff5555">服务端</span> | 获取区域内的某类型的entity列表 |
 | [GetEntitiesAroundByType](世界/地图.md#getentitiesaroundbytype) | <span style="display:inline;color:#7575f9">客户端</span> | 获取区域内的某类型的entity列表 |
+| [GetEntitiesAroundForClientEntity](世界/地图.md#getentitiesaroundforcliententity) | <span style="display:inline;color:#7575f9">客户端</span> | 获取区域内的客户端实体列表 |
 | [GetEntitiesInSquareArea](世界/地图.md#getentitiesinsquarearea) | <span style="display:inline;color:#ff5555">服务端</span> | 获取区域内的entity列表 |
 | [GetEntitiesInSquareArea](世界/地图.md#getentitiesinsquarearea) | <span style="display:inline;color:#7575f9">客户端</span> | 获取区域内的entity列表 |
+| [GetEntitiesInSquareAreaForClientEntity](世界/地图.md#getentitiesinsquareareaforcliententity) | <span style="display:inline;color:#7575f9">客户端</span> | 获取区域内的客户端实体列表 |
 | [GetLevelId](世界/地图.md#getlevelid) | <span style="display:inline;color:#ff5555">服务端</span> | 获取levelId。某些组件需要levelId创建，可以用此接口获取levelId。其中level即为当前地图的游戏。 |
 | [GetLevelId](世界/地图.md#getlevelid) | <span style="display:inline;color:#7575f9">客户端</span> | 获取levelId。某些组件需要levelId创建，可以用此接口获取levelId。其中level即为当前地图的游戏。 |
 | [GetLoadedChunks](世界/地图.md#getloadedchunks) | <span style="display:inline;color:#ff5555">服务端</span> | 获取指定维度当前已经加载完毕的全部区块的坐标列表 |
@@ -384,6 +406,8 @@ sidebarDepth: 1
 | --- | --- | --- |
 | [AddBrewingRecipes](世界/配方.md#addbrewingrecipes) | <span style="display:inline;color:#ff5555">服务端</span> | 添加酿造台配方的接口 |
 | [AddRecipe](世界/配方.md#addrecipe) | <span style="display:inline;color:#ff5555">服务端</span> | 动态注册配方，支持配方类型详见<a href="../../../mcguide/20-玩法开发/15-自定义游戏内容/5-自定义配方.html#配方类型说明">[配方类型说明]</a> |
+| [GetRecipeByRecipeId](世界/配方.md#getrecipebyrecipeid) | <span style="display:inline;color:#ff5555">服务端</span> | 根据配方id查询配方内容。 |
+| [GetRecipeByRecipeId](世界/配方.md#getrecipebyrecipeid) | <span style="display:inline;color:#7575f9">客户端</span> | 根据配方id查询配方内容。 |
 | [GetRecipeResult](世界/配方.md#getreciperesult) | <span style="display:inline;color:#ff5555">服务端</span> | 根据配方id获取配方结果。仅支持合成配方 |
 | [GetRecipesByInput](世界/配方.md#getrecipesbyinput) | <span style="display:inline;color:#ff5555">服务端</span> | 通过输入物品查询配方 |
 | [GetRecipesByInput](世界/配方.md#getrecipesbyinput) | <span style="display:inline;color:#7575f9">客户端</span> | 通过输入物品查询配方 |
@@ -552,7 +576,9 @@ sidebarDepth: 1
 #### 行为
 | 接口| <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
+| [EntityUseItemToPos](世界/行为.md#entityuseitemtopos) | <span style="display:inline;color:#ff5555">服务端</span> | 模拟实体对某个坐标使用指定物品。 |
 | [UseItemAttackEntity](世界/行为.md#useitemattackentity) | <span style="display:inline;color:#ff5555">服务端</span> | 使用指定物品攻击某个实体。 |
+| [UseItemToEntity](世界/行为.md#useitemtoentity) | <span style="display:inline;color:#ff5555">服务端</span> | 模拟对某个实体使用物品。 |
 #### 实体类型
 | 接口| <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
@@ -578,7 +604,7 @@ sidebarDepth: 1
 | [GetAttrValue](实体/属性.md#getattrvalue) | <span style="display:inline;color:#7575f9">客户端</span> | 获取属性值，包括生命值，饥饿度，移速 |
 | [GetBodyRot](实体/属性.md#getbodyrot) | <span style="display:inline;color:#7575f9">客户端</span> | 获取实体的身体的角度 |
 | [GetCurrentAirSupply](实体/属性.md#getcurrentairsupply) | <span style="display:inline;color:#ff5555">服务端</span> | 生物当前氧气储备值 |
-| [GetCurrentAirSupply](实体/属性.md#getcurrentairsupply) | <span style="display:inline;color:#7575f9">客户端</span> | 玩家当前氧气储备值 |
+| [GetCurrentAirSupply](实体/属性.md#getcurrentairsupply) | <span style="display:inline;color:#7575f9">客户端</span> | 生物当前氧气储备值 |
 | [GetDeathTime](实体/属性.md#getdeathtime) | <span style="display:inline;color:#ff5555">服务端</span> | 获取生物死亡后持续的时间（刻，1秒20刻），用于控制死亡动画。0表示生物未死亡。 |
 | [GetEntitiesBySelector](实体/属性.md#getentitiesbyselector) | <span style="display:inline;color:#ff5555">服务端</span> | 传入目标选择器，获取对应实体id (最大范围是所有已加载的实体) |
 | [GetEntityDamage](实体/属性.md#getentitydamage) | <span style="display:inline;color:#ff5555">服务端</span> | 获取生物(包括玩家)的攻击力 |
@@ -592,7 +618,7 @@ sidebarDepth: 1
 | [GetLoadActors](实体/属性.md#getloadactors) | <span style="display:inline;color:#ff5555">服务端</span> | 获取已加载的实体id |
 | [GetMarkVariant](实体/属性.md#getmarkvariant) | <span style="display:inline;color:#ff5555">服务端</span> | 获取实体的标记变种属性值 |
 | [GetMaxAirSupply](实体/属性.md#getmaxairsupply) | <span style="display:inline;color:#ff5555">服务端</span> | 获取生物最大氧气储备值 |
-| [GetMaxAirSupply](实体/属性.md#getmaxairsupply) | <span style="display:inline;color:#7575f9">客户端</span> | 玩家最大氧气储备值 |
+| [GetMaxAirSupply](实体/属性.md#getmaxairsupply) | <span style="display:inline;color:#7575f9">客户端</span> | 生物最大氧气储备值 |
 | [GetMobColor](实体/属性.md#getmobcolor) | <span style="display:inline;color:#ff5555">服务端</span> | 获取生物的颜色，截止至网易2.9版本，只对羊和热带鱼有效 |
 | [GetMobStrength](实体/属性.md#getmobstrength) | <span style="display:inline;color:#ff5555">服务端</span> | 获取生物的强度，截止至网易2.9版本，只对羊驼有效，强度越大羊驼驮运的箱子时格子数量越多 |
 | [GetMobStrengthMax](实体/属性.md#getmobstrengthmax) | <span style="display:inline;color:#ff5555">服务端</span> | 获取生物强度的最大值，截止至网易2.9版本，只对羊驼有效，强度越大羊驼驮运的箱子时格子数量越多，[SetMobStrength](实体/属性.md#setstrength)无法超过SetMobStrengthMax的值 |
@@ -646,9 +672,11 @@ sidebarDepth: 1
 | [SetPersistent](实体/属性.md#setpersistent) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体不会因为离玩家太远而被[清除](https://zh.minecraft.wiki/w/%E7%94%9F%E6%88%90#%E6%B8%85%E9%99%A4) |
 | [SetPlayerLookAtPos](实体/属性.md#setplayerlookatpos) | <span style="display:inline;color:#7575f9">客户端</span> | 设置本地玩家看向某个位置 |
 | [SetPos](实体/属性.md#setpos) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体位置 |
+| [SetPosForClientEntity](实体/属性.md#setposforcliententity) | <span style="display:inline;color:#7575f9">客户端</span> | 设置客户端实体位置。 |
 | [SetRecoverTotalAirSupplyTime](实体/属性.md#setrecovertotalairsupplytime) | <span style="display:inline;color:#ff5555">服务端</span> | 设置恢复最大氧气量的时间，单位秒 |
 | [SetRot](实体/属性.md#setrot) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体头与水平方向的俯仰角度和竖直方向的旋转角度 <a href="../../../mcguide/20-玩法开发/10-基本概念/10-Vector3.html">MC坐标系说明</a> |
 | [SetRot](实体/属性.md#setrot) | <span style="display:inline;color:#7575f9">客户端</span> | 设置实体头与水平方向的俯仰角度和竖直方向的旋转角度 <a href="../../../mcguide/20-玩法开发/10-基本概念/10-Vector3.html">MC坐标系说明</a> |
+| [SetRotForClientEntity](实体/属性.md#setrotforcliententity) | <span style="display:inline;color:#7575f9">客户端</span> | 设置客户端实体头与水平方向的俯仰角度和竖直方向的旋转角度 <a href="../../../mcguide/20-玩法开发/10-基本概念/10-Vector3.html">MC坐标系说明</a> |
 | [SetSheared](实体/属性.md#setsheared) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体是否被剃毛，截止至网易2.9版本，只对羊有效 |
 | [SetSitting](实体/属性.md#setsitting) | <span style="display:inline;color:#ff5555">服务端</span> | 设置生物是否坐下 |
 | [SetSize](实体/属性.md#setsize) | <span style="display:inline;color:#ff5555">服务端</span> | 设置实体的包围盒。设置过大会导致游戏卡顿。实体的scale的立方乘以包围盒的体积不可超过32768 |
@@ -929,7 +957,7 @@ sidebarDepth: 1
 | [EndSprinting](玩家/行为.md#endsprinting) | <span style="display:inline;color:#7575f9">客户端</span> | 使本地玩家结束向前疾跑/冲刺状态 |
 | [GetEntityRider](玩家/行为.md#getentityrider) | <span style="display:inline;color:#ff5555">服务端</span> | 获取骑乘者正在骑乘的实体的id。 |
 | [GetEntityRider](玩家/行为.md#getentityrider) | <span style="display:inline;color:#7575f9">客户端</span> | 获取骑乘者正在骑乘的实体的id。 |
-| [GetInteracteCenterOffset](玩家/行为.md#getinteractecenteroffset) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家[服务端交互中心](玩家/../../更新信息/2.8.md#玩家摄像机)的偏移 |
+| [GetInteracteCenterOffset](玩家/行为.md#getinteractecenteroffset) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家服务端交互中心的偏移，对应使用[SetPickCenterOffset](玩家/行为.md#setpickcenteroffset)修改的偏移值 |
 | [GetIsBlocking](玩家/行为.md#getisblocking) | <span style="display:inline;color:#ff5555">服务端</span> | 获取玩家激活盾牌状态 |
 | [GetPickCenterOffset](玩家/行为.md#getpickcenteroffset) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家设置的第三人称下客户端交互中心的偏移 |
 | [GetPickRange](玩家/行为.md#getpickrange) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家客户端的交互距离 |
@@ -1442,10 +1470,7 @@ sidebarDepth: 1
 | [ShowModel](模型.md#showmodel) | <span style="display:inline;color:#7575f9">客户端</span> | 显示纯模型 |
 | [UnBindModelToEntity](模型.md#unbindmodeltoentity) | <span style="display:inline;color:#7575f9">客户端</span> | 取消实体上挂接的某个骨骼模型。取消挂接后，这个modelId的模型便会销毁，无法再使用，如果是临时隐藏可以使用HideModel |
 | [UnBindModelToModel](模型.md#unbindmodeltomodel) | <span style="display:inline;color:#7575f9">客户端</span> | 取消骨骼模型上挂接的某个骨骼模型。取消挂接后，这个modelId的模型便会销毁，无法再使用，如果是临时隐藏可以使用HideModel |
-#### 山头服务器<span id = "山头服务器2"></span>
-| 接口 | <div style="width: 3em"></div> | 描述 |
-| --- | --- | --- |
-| [GetHostPlayerUid](山头服务器.md#gethostplayeruid) | <span style="display:inline;color:#ff5555">服务端</span> | 获取服务器拥有者的uid。 |
+
 #### 原生UI<span id = "原生UI2"></span>
 | 接口 | <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
@@ -1484,7 +1509,6 @@ sidebarDepth: 1
 | [OpenNeteaseStoreGui](原生UI.md#openneteasestoregui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开游戏中的网易商店购买商品界面 |
 | [OpenPauseGui](原生UI.md#openpausegui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版暂停界面 |
 | [OpenReportGui](原生UI.md#openreportgui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版举报界面 |
-| [OpenVoiceGui](原生UI.md#openvoicegui) | <span style="display:inline;color:#7575f9">客户端</span> | 打开原版语音界面 |
 | [PlayHudHeartBlinkAnim](原生UI.md#playhudheartblinkanim) | <span style="display:inline;color:#7575f9">客户端</span> | 播放原版受伤时血量变化的动效 |
 | [SetCrossHair](原生UI.md#setcrosshair) | <span style="display:inline;color:#7575f9">客户端</span> | 设置是否使用“准星瞄准” |
 | [SetEmoteSwitch](原生UI.md#setemoteswitch) | <span style="display:inline;color:#7575f9">客户端</span> | 设置是否开启表情功能，默认PC端关闭，手机端开启，且该接口只能在手机端使用，在原生UI初始化前调用设置 |
@@ -1732,6 +1756,11 @@ sidebarDepth: 1
 | [asSwitchToggle](自定义UI/UI控件.md#asswitchtoggle) | <span style="display:inline;color:#7575f9">客户端</span> | 将当前BaseUIControl转换为SwitchToggleUIControl实例，如当前控件非panel类型或非toggle则返回None |
 | [asTextEditBox](自定义UI/UI控件.md#astexteditbox) | <span style="display:inline;color:#7575f9">客户端</span> | 将当前BaseUIControl转换为TextEditBoxUIControl实例，如当前控件非editbox类型则返回None |
 | [resetAnimation](自定义UI/UI控件.md#resetanimation) | <span style="display:inline;color:#7575f9">客户端</span> | 重置该控件的动画 |
+#### 通用设置
+| 接口| <div style="width: 3em"></div> | 描述 |
+| --- | --- | --- |
+| [GetSettingInst](自定义UI/通用设置.md#getsettinginst) | <span style="display:inline;color:#7575f9">客户端</span> | 获取当前模组的通用设置实例 |
+| [RegisterSettingInst](自定义UI/通用设置.md#registersettinginst) | <span style="display:inline;color:#7575f9">客户端</span> | 注册通用设置实例 |
 #### 音效<span id = "音效2"></span>
 | 接口 | <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
@@ -1800,10 +1829,14 @@ sidebarDepth: 1
 | 接口 | <div style="width: 3em"></div> | 描述 |
 | --- | --- | --- |
 | [GetControllerLayout](游戏设置.md#getcontrollerlayout) | <span style="display:inline;color:#7575f9">客户端</span> | 获取玩家控制器绑定映射 |
+| [GetGamepadKeyMappings](游戏设置.md#getgamepadkeymappings) | <span style="display:inline;color:#7575f9">客户端</span> | 获取自定义手柄按键映射 |
+| [GetKeyMappings](游戏设置.md#getkeymappings) | <span style="display:inline;color:#7575f9">客户端</span> | 获取指定的自定义按键映射配置 |
 | [GetSliderOption](游戏设置.md#getslideroption) | <span style="display:inline;color:#7575f9">客户端</span> | 获得某个滑动条设置选项的值 |
 | [GetToggleOption](游戏设置.md#gettoggleoption) | <span style="display:inline;color:#7575f9">客户端</span> | 获得某个开关设置值的接口 |
 | [GetUIProfile](游戏设置.md#getuiprofile) | <span style="display:inline;color:#7575f9">客户端</span> | 获取"UI 档案"模式 |
 | [HighlightBoxSelection](游戏设置.md#highlightboxselection) | <span style="display:inline;color:#7575f9">客户端</span> | 镜头移动时高亮当前视角中心所指的方块 |
+| [RegisterCustomGamepadMapping](游戏设置.md#registercustomgamepadmapping) | <span style="display:inline;color:#7575f9">客户端</span> | 注册自定义手柄按键映射 |
+| [RegisterCustomKeyMapping](游戏设置.md#registercustomkeymapping) | <span style="display:inline;color:#7575f9">客户端</span> | 注册自定义按键映射 |
 | [SetSliderOption](游戏设置.md#setslideroption) | <span style="display:inline;color:#7575f9">客户端</span> | 设置某个滑动条设置选项的值 |
 | [SetSplitControlCanChange](游戏设置.md#setsplitcontrolcanchange) | <span style="display:inline;color:#7575f9">客户端</span> | 设置是否允许使用准星瞄准按钮 |
 | [SetToggleOption](游戏设置.md#settoggleoption) | <span style="display:inline;color:#7575f9">客户端</span> | 修改开关型设置的接口 |
@@ -1940,6 +1973,11 @@ sidebarDepth: 1
 | [OpenItemDetailWindow](商城.md#openitemdetailwindow) | <span style="display:inline;color:#7575f9">客户端</span> | 打开特定商品的详情界面 |
 | [OpenShopWindow](商城.md#openshopwindow) | <span style="display:inline;color:#7575f9">客户端</span> | 打开网易商城窗口。PC端无效（Apollo的PC端请使用商城插件） |
 | [ShowShopGate](商城.md#showshopgate) | <span style="display:inline;color:#7575f9">客户端</span> | 显示网易商城入口 |
+
+#### 山头服务器<span id = "山头服务器2"></span>
+| 接口 | <div style="width: 3em"></div> | 描述 |
+| --- | --- | --- |
+| [GetHostPlayerUid](山头服务器.md#gethostplayeruid) | <span style="display:inline;color:#ff5555">服务端</span> | 获取服务器拥有者的uid。 |
 
 #### 渲染<span id = "渲染2"></span>
 | 接口 | <div style="width: 3em"></div> | 描述 |

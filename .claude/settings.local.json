@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run docs:build:*)"
+      "Bash(npm run docs:build:*)",
+      "Bash(node scripts/sync-docs.mjs)",
+      "Bash(node --max_old_space_size=8192 node_modules/.bin/vitepress build docs 2>&1 | tail -50)",
+      "Bash(npm run docs:algolia)"
     ],
     "deny": [],
     "ask": []

@@ -169,7 +169,6 @@ time: 分钟
 指定语言文件键，用于映射鼠标悬停在物品栏和快捷栏中的方块物品上时显示的文本。如果给定的字符串无法解析为本地字符串，则将显示给定的原始字符串。使用需要方块行为的 `format_version`大于等于1.19.60。
 
 
-
 <span id="netease_portal"></span>
 
 ### netease:portal
@@ -197,7 +196,7 @@ time: 分钟
 | type | string |        | 必须设置，用于控制生成的生物类型 |
 
 - 原生生物type为"minecraft:Namespaced ID"，如"minecraft:parrot"，Namespaced ID可参考[官方wiki](https://zh.minecraft.wiki/w/%E5%9F%BA%E5%B2%A9%E7%89%88%E6%95%B0%E6%8D%AE%E5%80%BC/%E5%AE%9E%E4%BD%93ID)中各Mob的详细信息。
-- 微软自定义生物type为"minecraft:entity"中"description"的"identifier"项，可参考[自定义生物文档](../../3-自定义生物/01-自定义基础生物.md)及[CustomBlocksMod](../../../13-模组SDK编程/60-Demo示例.md#CustomBlocksMod)中的customblocks_test_mobspawner1.json。
+- 微软自定义生物type为"minecraft:entity"中"description"的"identifier"项，可参考[自定义生物文档](../3-自定义生物/01-自定义基础生物.md)及[CustomBlocksMod](../../13-模组SDK编程/60-Demo示例.md#CustomBlocksMod)中的customblocks_test_mobspawner1.json。
 - 自定义刷怪箱方块的base_block需要设为mob_spawner。
 
 
@@ -274,8 +273,6 @@ time: 分钟
 | 键    | 类型 | 默认值 | 解释                                                         |
 | ----- | ---- | ------ | ------------------------------------------------------------ |
 | value | bool |        | 必须设置，用于设置在放置其他方块时，如果该位置已有含netease:can_built_over配置的方块，其他方块能否和放置在此方块中 |
-
-
 
 <span id="netease_tier"></span>
 

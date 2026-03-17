@@ -45,6 +45,7 @@ class ActorDamageCause(object):
     SonicBoom = "sonic_boom"				# 音波尖啸(监守者的远程攻击)
     Campfire = "campfire"					# 营火
     SoulCampfire = "soul_campfire"			# 灵魂营火(营火的灵魂火变种)
+    MaceSmash = "mace_smash"				# 重锤粉碎攻击
 
 ``` 
 

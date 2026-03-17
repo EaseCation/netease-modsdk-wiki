@@ -1,6 +1,75 @@
 # Apollo更新信息
 
+## 2026.01.28 更新内容
+
+1. 发布Apollo 3.7正式版
+   
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+   
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 3.7.0.release20260128 |
+   | proxy   | 3.7.0.release20260128 |
+   | master  | 3.7.0.release20260128 |
+   | service | 3.7.0.release20260128 |
+
+2. 发布Apollo2.0 3.7正式包
+   
+   引擎及插件版本分别是：
+   
+   |                | app_verion              |
+   | -------------- | ----------------------- |
+   | proxy          | 3.7.0.java.release20260128 |
+   | master         | 3.7.0.java.release20260128 |
+   | geyser         | 3.7.0.java.release20260128 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT         |
+   
+   其他插件版本要求：
+   
+   |            | verion |
+   | ---------- | ------ |
+   | BungeeCord | 1.21.5 |
+   | ViaVersion | 5.5.1  |
+   
+   注：由于Viaversion转换1.20.5版本头颅（模型）会过滤掉非法昵称的信息，导致自定义方块和中文昵称的头颅（模型）出错，因此无法直接使用官网版本。可选择MCS内容库中的“ViaVersion-5.5.1”资源或自行修改。 
+
+## 2025.12.31 更新内容
+
+1. 发布Apollo 3.7beta包
+   
+   引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：
+   
+   |         | app_verion         |
+   | ------- | ------------------ |
+   | game    | 3.7.0.beta20251231 |
+   | proxy   | 3.7.0.beta20251231 |
+   | master  | 3.7.0.beta20251231 |
+   | service | 3.7.0.beta20251231 |
+
+2. 发布Apollo2.0 3.7beta包
+   
+   引擎及插件版本分别是：
+   
+   |                | app_verion              |
+   | -------------- | ----------------------- |
+   | proxy          | 3.7.0.java.beta20251231 |
+   | master         | 3.7.0.java.beta20251231 |
+   | geyser         | 3.7.0.java.beta20251231 |
+   | BungeeMaster插件 | 1.0.2-SNAPSHOT          |
+   | SpigotMaster插件 | 1.3.13-SNAPSHOT         |
+   
+   其他插件版本要求：
+   
+   |            | verion |
+   | ---------- | ------ |
+   | BungeeCord | 1.21.5 |
+   | ViaVersion | 5.5.1  |
+   
+   注：由于Viaversion转换1.20.5版本头颅（模型）会过滤掉非法昵称的信息，导致自定义方块和中文昵称的头颅（模型）出错，因此无法直接使用官网版本。可选择MCS内容库中的“ViaVersion-5.5.1”资源或自行修改。 
+
 ## 2025.11.19 更新内容
+
 1. 发布Apollo 3.6正式版
    
    引擎app_verion（deploy.json中需要配置引擎app_verion）分别是：

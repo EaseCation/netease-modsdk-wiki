@@ -665,7 +665,8 @@ Nukkit 使用的默认语言
 |---------|-----|
 | Boolean | off |
 
-启用在 Windows CMD 标题中显示服务器占用信息
+启用在 Windows CMD 标题中显示服务器占用信息  
+<Image img={require('@site/static/images/server-config/windows_cmd_title.png')} alt="Windows 命令行标题" />
 
 ## `block-listener`
 | 数据类型    | 默认值 |

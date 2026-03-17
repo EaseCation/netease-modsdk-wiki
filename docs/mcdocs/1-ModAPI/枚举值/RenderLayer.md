@@ -7,7 +7,7 @@ class in mod.common.minecraftEnum
     方块渲染时的材质类型
 
 - 备注
-    - 目前自定义方块只支持使用部分材质，具体见[自定义方块json组件](../../../mcguide/20-玩法开发/15-自定义游戏内容/2-自定义方块/1-JSON组件.md)
+    - 目前自定义方块只支持使用部分材质，具体见<a href="../../../mcguide/20-玩法开发/15-自定义游戏内容/2-自定义方块/1-JSON组件.html" rel="noopenner"> 自定义方块json组件 </a>
         由于联机大厅和apollo存在部分材质缺少定义，所以枚举值在联机大厅和apollo环境下，整体-2
         如：Blend = 5 变成 Blend = 3 ; Opaque = 6 变成 Opaque = 4，依此类推
 
@@ -22,15 +22,16 @@ class RenderLayer(object):
 	DEFERRED_WATER = 4 # 原版延迟渲染水面
 	BLEND = 5 # 半透明
 	OPAQUE = 6 # 不透明
-	OPTIONAL_ALPHATEST = 7 # 局部全透明
-	ALPHATEST = 8 # 全透明
-	SEASONS_OPAQUE = 9 # 原版用于渲染不透明树叶
-	SEASONS_OPTIONAL_ALPHATEST = 10 # 原版用于渲染局部全透明方块
-	ALPHATEST_SINGLE_SIDE = 11 # 单面全透明
-	ENDPORTAL = 12 # 原版末地传送门
-	BARRIER = 13 # 原版屏障
-	LIGHT = 14 # 原版光源
-	STRUCTURE_VOID = 15
+	LIGHT_SOURCE = 7 # 原版发光方块
+	OPTIONAL_ALPHATEST = 8 # 局部全透明
+	ALPHATEST = 9 # 全透明
+	SEASONS_OPAQUE = 10 # 原版用于渲染不透明树叶
+	SEASONS_OPTIONAL_ALPHATEST = 11 # 原版用于渲染局部全透明方块
+	ALPHATEST_SINGLE_SIDE = 12 # 单面全透明
+	ENDPORTAL = 13 # 原版末地传送门
+	BARRIER = 14 # 原版屏障
+	LIGHT = 15 # 原版光源
+	STRUCTURE_VOID = 16
 
 ``` 
 

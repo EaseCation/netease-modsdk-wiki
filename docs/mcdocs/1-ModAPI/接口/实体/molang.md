@@ -97,6 +97,9 @@ method in mod.client.component.queryVariableCompClient.QueryVariableComponentCli
     | :--- | :--- |
     | float | 节点的值 |
 
+- 备注
+    - 自定义的"query.mod.xxxx"类型的molang变量需要先调用Register接口进行注册，才能正常设置/读取
+
 - 示例
 
 ```python
@@ -166,6 +169,7 @@ method in mod.client.component.queryVariableCompClient.QueryVariableComponentCli
     - 因为没有渲染上下文，某些molang无法通过该种方式获取到正确的值，如query.is_first_person、variable.is_first_person等。
     - 当molangName传入query.get_name或者query.owner_identifier等需要返回字符串的变量值时，返回其hash64，类型是个long，可以用于与GetStringHash64获取的值比较。query.get_name：返回生物的名字；query.owner_identifier：返回其owner的identifier
     - 该接口无法进行molang运算，例如无法计算query.average_frame_time(20)
+    - 该接口对客户端实体(CreateClientEntityByTypeStr)使用时，涉及到服务端逻辑的molang无法返回正确的值，比如query.health、query.in_water、query.can_fly等等。
 
 - 示例
 
@@ -273,6 +277,7 @@ method in mod.client.component.queryVariableCompClient.QueryVariableComponentCli
 
 - 备注
     - 注意节点的值使用单精度浮点数存储，如果用来设置整数，那么值大于16777216（或小于-16777216）时就会有误差
+    - 自定义的"query.mod.xxxx"类型的molang变量需要先调用Register接口进行注册，才能正常设置/读取
 
 - 示例
 
@@ -299,7 +304,7 @@ method in mod.server.component.queryVariableCompServer.QueryVariableComponentSer
     | 参数名 | <div style="width: 4em">数据类型</div> | 说明 |
     | :--- | :--- | :--- |
     | propertyName | str | 属性名，如minecraft:has_nectar |
-    | value | str/int/float/bool | 属性值支持int/float/bool/enum(str)，支持molang表达式 |
+    | value | str | 属性值支持int/float/bool/enum(str)，支持molang表达式 |
 
 - 返回值
 
