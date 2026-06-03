@@ -10,11 +10,15 @@ on:
 # 设置GITHUB_TOKEN的权限
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   # 构建工作
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      ALIYUN_REGION: ${{ vars.ALIYUN_REGION || 'cn-hangzhou' }}
+      OSS_BUCKET: ${{ vars.OSS_BUCKET }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,18 +43,38 @@ jobs:
 
       # docs/.vitepress/dist
         
-      - name: Install OSSUtil
+      - name: Install Aliyun CLI
         run: |
-            curl -o /tmp/ossutil64 https://gosspublic.alicdn.com/ossutil/1.7.8/ossutil64
-            chmod +x /tmp/ossutil64
-            sudo mv /tmp/ossutil64 /usr/local/bin/ossutil
+          curl -fL -o /tmp/aliyun.tgz https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz
+          tar -xzf /tmp/aliyun.tgz -C /tmp
+          sudo mv /tmp/aliyun /usr/local/bin/aliyun
+
+      - name: Configure Aliyun temporary credentials
+        uses: aliyun/configure-aliyun-credentials-action@v1
+        with:
+          role-to-assume: ${{ vars.ALIYUN_STATIC_DEPLOY_ROLE_ARN }}
+          oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
+          role-session-name: gh-${{ github.repository_id }}-${{ github.run_id }}
+          role-session-expiration: 1800
+          audience: sts.aliyuncs.com
+
+      - name: Configure Aliyun CLI
+        run: |
+          set -euo pipefail
+          test -n "$ALIBABA_CLOUD_ACCESS_KEY_ID"
+          test -n "$ALIBABA_CLOUD_ACCESS_KEY_SECRET"
+          test -n "$ALIBABA_CLOUD_SECURITY_TOKEN"
+          aliyun configure set \
+            --mode StsToken \
+            --region "$ALIYUN_REGION" \
+            --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
+            --access-key-secret "$ALIBABA_CLOUD_ACCESS_KEY_SECRET" \
+            --sts-token "$ALIBABA_CLOUD_SECURITY_TOKEN"
 
       - name: Upload to Aliyun OSS
-        env:
-            OSS_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-            OSS_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-            OSS_BUCKET: ec-mcwiki
-            OSS_REGION: oss-cn-hangzhou
         run: |
-            ossutil config -e ${OSS_REGION}.aliyuncs.com -i ${OSS_ACCESS_KEY_ID} -k ${OSS_ACCESS_KEY_SECRET}
-            ossutil cp -r ./docs/.vitepress/dist oss://${OSS_BUCKET}/ --force
+          set -euo pipefail
+          test -n "$OSS_BUCKET"
+          aliyun ossutil cp -r ./docs/.vitepress/dist/ "oss://${OSS_BUCKET}/" \
+            --region "$ALIYUN_REGION" \
+            --force
