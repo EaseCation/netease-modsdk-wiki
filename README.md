@@ -100,6 +100,14 @@ npm run docs:check-links
 npm run docs:preview
 ```
 
+## CI 部署运行环境
+
+主分支部署使用 `frp-macmini` 上的仓库专用 runner：`frp-macmini-modsdk-wiki`，标签为 `self-hosted`、`macOS`、`ARM64`、`modsdk-wiki-deploy`。安装目录为 `/Users/fangyizhou/.local/share/github-runners/netease-modsdk-wiki`，工作区位于该目录的 `_work`。
+
+该 runner 是独立的 macOS 用户服务；现有 `CodeFunCore` 的 OrbStack 容器 runner 不共用此目录或服务。管理时进入上述目录，使用 `./svc.sh status`、`./svc.sh start`、`./svc.sh stop`，不要操作其他 runner 的服务或容器。
+
+部署仅接受本仓库 `main` 的 push 和手动触发，并通过 concurrency 串行执行。Node 20 由 setup-node 管理；Git LFS 位于专用 runner 的 `tools/`。阿里云 CLI 使用经 SHA-256 校验的 macOS ARM64 包，二进制和 STS 配置位于本次任务的 `RUNNER_TEMP` 子目录，结束时清理，不改写宿主机 `~/.aliyun` 配置。
+
 ## 贡献指南
 
 1. Fork 本项目

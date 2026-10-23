@@ -12,10 +12,16 @@ permissions:
   contents: read
   id-token: write
 
+concurrency:
+  group: modsdk-wiki-production
+  cancel-in-progress: false
+
 jobs:
   # 构建工作
   build-and-deploy:
-    runs-on: ubuntu-latest
+    if: github.repository == 'EaseCation/netease-modsdk-wiki' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64, modsdk-wiki-deploy]
+    timeout-minutes: 60
     env:
       ALIYUN_REGION: ${{ vars.ALIYUN_REGION || 'cn-hangzhou' }}
       OSS_BUCKET: ${{ vars.OSS_BUCKET }}
@@ -45,9 +51,16 @@ jobs:
         
       - name: Install Aliyun CLI
         run: |
-          curl -fL -o /tmp/aliyun.tgz https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz
-          tar -xzf /tmp/aliyun.tgz -C /tmp
-          sudo mv /tmp/aliyun /usr/local/bin/aliyun
+          set -euo pipefail
+          umask 077
+          deploy_dir="$RUNNER_TEMP/modsdk-aliyun-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          mkdir -p "$deploy_dir/bin"
+          curl -fL --retry 2 -o "$deploy_dir/aliyun.tgz" \
+            https://github.com/aliyun/aliyun-cli/releases/download/v3.5.2/aliyun-cli-macosx-3.5.2-arm64.tgz
+          printf '%s  %s\n' 076e14de5450e4d61c59a54957e72529a644e8e4309b6ff5118d01db2c4aca6f "$deploy_dir/aliyun.tgz" | shasum -a 256 -c -
+          tar -xzf "$deploy_dir/aliyun.tgz" -C "$deploy_dir/bin"
+          printf '%s\n' "$deploy_dir/bin" >> "$GITHUB_PATH"
+          printf 'ALIYUN_CONFIG_FILE=%s/config.json\n' "$deploy_dir" >> "$GITHUB_ENV"
 
       - name: Configure Aliyun temporary credentials
         uses: aliyun/configure-aliyun-credentials-action@v1
@@ -55,7 +68,7 @@ jobs:
           role-to-assume: ${{ vars.ALIYUN_STATIC_DEPLOY_ROLE_ARN }}
           oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
           role-session-name: gh-${{ github.repository_id }}-${{ github.run_id }}
-          role-session-expiration: 1800
+          role-session-expiration: 3600
           audience: sts.aliyuncs.com
 
       - name: Configure Aliyun CLI
@@ -64,7 +77,9 @@ jobs:
           test -n "$ALIBABA_CLOUD_ACCESS_KEY_ID"
           test -n "$ALIBABA_CLOUD_ACCESS_KEY_SECRET"
           test -n "$ALIBABA_CLOUD_SECURITY_TOKEN"
+          umask 077
           aliyun configure set \
+            --config-path "$ALIYUN_CONFIG_FILE" \
             --mode StsToken \
             --region "$ALIYUN_REGION" \
             --access-key-id "$ALIBABA_CLOUD_ACCESS_KEY_ID" \
@@ -75,6 +90,12 @@ jobs:
         run: |
           set -euo pipefail
           test -n "$OSS_BUCKET"
-          aliyun ossutil cp -r ./docs/.vitepress/dist/ "oss://${OSS_BUCKET}/" \
+          aliyun --config-path "$ALIYUN_CONFIG_FILE" ossutil cp -r ./docs/.vitepress/dist/ "oss://${OSS_BUCKET}/" \
             --region "$ALIYUN_REGION" \
             --force
+
+      - name: Clean deployment credentials and tools
+        if: always()
+        run: |
+          set -euo pipefail
+          rm -rf -- "$RUNNER_TEMP/modsdk-aliyun-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
