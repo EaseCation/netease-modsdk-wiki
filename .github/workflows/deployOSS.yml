@@ -29,7 +29,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          # 部署仅需要当前版本，避免首次下载数 GB 的历史附件。
+          fetch-depth: 1
           lfs: true
           
       - name: Setup Node
