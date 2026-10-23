@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "docs:sync": "node scripts/sync-docs.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "node --max_old_space_size=8192 node_modules/.bin/vitepress build docs",
+    "docs:check-links": "python3 scripts/check-doc-links.py",
     "docs:algolia": "node scripts/algolia-upload.mjs",
     "docs:preview": "vitepress preview docs"
   },

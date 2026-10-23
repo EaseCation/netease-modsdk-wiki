@@ -21,17 +21,19 @@ class RenderLayer(object):
 	RAY_TRACED_WATER = 3 # 原版光线追踪水面
 	DEFERRED_WATER = 4 # 原版延迟渲染水面
 	BLEND = 5 # 半透明
-	OPAQUE = 6 # 不透明
-	LIGHT_SOURCE = 7 # 原版发光方块
-	OPTIONAL_ALPHATEST = 8 # 局部全透明
-	ALPHATEST = 9 # 全透明
-	SEASONS_OPAQUE = 10 # 原版用于渲染不透明树叶
-	SEASONS_OPTIONAL_ALPHATEST = 11 # 原版用于渲染局部全透明方块
-	ALPHATEST_SINGLE_SIDE = 12 # 单面全透明
-	ENDPORTAL = 13 # 原版末地传送门
-	BARRIER = 14 # 原版屏障
-	LIGHT = 15 # 原版光源
-	STRUCTURE_VOID = 16
+	BLEND_TO_OPAQUE = 6 # 半透明转不透明(远距离渲染为不透明)
+	OPAQUE = 7 # 不透明
+	LIGHT_SOURCE = 8 # 原版发光方块
+	OPTIONAL_ALPHATEST = 9 # 全透明转不透明(远距离渲染为不透明)
+	ALPHATEST = 10 # 全透明
+	SEASONS_OPAQUE = 11 # 原版用于渲染不透明树叶
+	SEASONS_OPTIONAL_ALPHATEST = 12 # 原版季节性全透明转不透明方块
+	ALPHATEST_SINGLE_SIDE = 13 # 单面全透明
+	ALPHATEST_SINGLE_SIDE_TO_OPAQUE = 14 # 单面全透明转不透明(远距离渲染为不透明)
+	ENDPORTAL = 15 # 原版末地传送门
+	BARRIER = 16 # 原版屏障
+	LIGHT = 17 # 原版光源
+	STRUCTURE_VOID = 18 # 原版结构空位
 
 ``` 
 

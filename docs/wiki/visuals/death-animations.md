@@ -274,6 +274,6 @@ mentions:
 ### 使用命令检测死亡
 
 <BButton
-	link="/commands/tick_json-creations#death-detection"
+	link="/wiki/commands/on-player-death"
 	color=blue
 >查看详情</BButton>

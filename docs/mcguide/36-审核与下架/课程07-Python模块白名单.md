@@ -1,173 +1,468 @@
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcguide/36-%E5%AE%A1%E6%A0%B8%E4%B8%8E%E4%B8%8B%E6%9E%B6/%E8%AF%BE%E7%A8%8B07-Python%E6%A8%A1%E5%9D%97%E7%99%BD%E5%90%8D%E5%8D%95.html"
+last_modified: "Mon, 03 Aug 2026 03:57:13 GMT"
+synced_from: "NetEase developer official website"
+---
+
 # Python模块白名单
 
-由于平台升级了违规模块的检测力度，从2.9 版本开始，除**模块白名单**以外的模块将不允许使用。具体可供使用的模块白名单如下：
+本页由网易开发者官网白名单表格同步生成，共 456 个唯一模块。
 
-> 注意：该限制不包括开发者**自定义的模块和接口**
-
-
-
-| 白名单                                                | 白名单                                                | 白名单                                            |
-| ----------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------- |
-| \_\_future\_\_                                            | mod.server.component.actorPushableCompServer          | client.component.particleSystemCompClient         |
-| _md5                                                  | mod.server.component.aiCommandCompServer              | client.component.particleTransComp                |
-| _random                                               | mod.server.component.attrCompServer                   | client.component.playerAnimCompClient             |
-| logging                                               | mod.server.component.auxValueCompServer               | client.component.playerCompClient                 |
-| mod_log                                               | mod.server.component.biomeCompServer                  | client.component.playerViewCompClient             |
-| traceback                                             | mod.server.component.blockCompServer                  | client.component.posCompClient                    |
-| random                                                | mod.server.component.blockEntityExDataCompServer      | client.component.postProcessControlComp           |
-| json                                                  | mod.server.component.blockInfoCompServer              | client.component.queryVariableCompClient          |
-| math                                                  | mod.server.component.blockStateCompServer             | client.component.recipeCompClient                 |
-| time                                                  | mod.server.component.blockUseEventWhiteListCompServer | client.component.rideCompClient                   |
-| copy                                                  | mod.server.component.breathCompServer                 | client.component.rotCompClient                    |
-| base64                                                | mod.server.component.bulletAttributesCompServer       | client.component.skyRenderCompClient              |
-| bisect                                                | mod.server.component.chatExtensionCompServer          | client.component.tameCompClient                   |
-| calendar                                              | mod.server.component.chestContainerCompServer         | client.component.textBoardCompClient              |
-| datetime                                              | mod.server.component.chunkSourceComp                  | client.component.textNotifyCompClient             |
-| re                                                    | mod.server.component.collisionBoxCompServer           | client.component.timeCompClient                   |
-| Queue                                                 | mod.server.component.commandCompServer                | client.component.virtualWorldCompClient           |
-| string                                                | mod.server.component.controlAiCompServer              | server                                            |
-| struct                                                | mod.server.component.dimensionCompServer              | server.extraServerApi                             |
-| types                                                 | mod.server.component.effectCompServer                 | server.serverEvent                                |
-| weakref                                               | mod.server.component.engineCompFactoryServer          | server.blockEntityData                            |
-| itertools                                             | mod.server.component.engineTypeCompServer             | server.gamePlay                                   |
-| fnmatch                                               | mod.server.component.entityComponentServer            | server.gamePlay.AI                                |
-| posixpath                                             | mod.server.component.entityDefinitionsCompServer      | server.gamePlay.AI.customGoal                     |
-| keyword                                               | mod.server.component.entityEventCompServer            | server.system                                     |
-| hashlib                                               | mod.server.component.exDataCompServer                 | server.system.serverSystem                        |
-| zlib                                                  | mod.server.component.expCompServer                    | server.component                                  |
-| heapq                                                 | mod.server.component.explosionCompServer              | server.component.achievementCompServer            |
-| abc                                                   | mod.server.component.featureCompServer                | server.component.actionCompServer                 |
-| uuid                                                  | mod.server.component.flyCompServer                    | server.component.actorCollidableCompServer        |
-| functools                                             | mod.server.component.gameCompServer                   | server.component.actorLootCompServer              |
-| collections                                           | mod.server.component.gravityCompServer                | server.component.actorMotionCompServer            |
-| warnings                                              | mod.server.component.httpToWebServerCompServer        | server.component.actorOwnerCompServer             |
-| io                                                    | mod.server.component.hurtCompServer                   | server.component.actorPushableCompServer          |
-| gzip                                                  | mod.server.component.interactCompServer               | server.component.aiCommandCompServer              |
-| singleton                                             | mod.server.component.itemBannedCompServer             | server.component.attrCompServer                   |
-| threading                                             | mod.server.component.itemCompServer                   | server.component.auxValueCompServer               |
-| binascii                                              | mod.server.component.levelCompServer                  | server.component.biomeCompServer                  |
-| cStringIO                                             | mod.server.component.lootCompServer                   | server.component.blockCompServer                  |
-| contextlib                                            | mod.server.component.mobSpawnCompServer               | server.component.blockEntityExDataCompServer      |
-| builtin_modules._inspect                              | mod.server.component.modAttrCompServer                | server.component.blockInfoCompServer              |
-| builtin_modules._operator                             | mod.server.component.modelCompServer                  | server.component.blockStateCompServer             |
-| mod.builtin_modules._inspect                          | mod.server.component.moveToCompServer                 | server.component.blockUseEventWhiteListCompServer |
-| mod.builtin_modules._operator                         | mod.server.component.msgCompServer                    | server.component.breathCompServer                 |
-| mod                                                   | mod.server.component.nameCompServer                   | server.component.bulletAttributesCompServer       |
-| mod.client                                            | mod.server.component.persistenceCompServer            | server.component.chatExtensionCompServer          |
-| mod.client.extraClientApi                             | mod.server.component.petCompServer                    | server.component.chestContainerCompServer         |
-| mod.client.clientEvent                                | mod.server.component.playerCompServer                 | server.component.chunkSourceComp                  |
-| mod.client.ui                                         | mod.server.component.portalCompServer                 | server.component.collisionBoxCompServer           |
-| mod.client.ui.screenNode                              | mod.server.component.posCompServer                    | server.component.commandCompServer                |
-| mod.client.ui.screenController                        | mod.server.component.projectileCompServer             | server.component.controlAiCompServer              |
-| mod.client.ui.viewBinder                              | mod.server.component.recipeCompServer                 | server.component.dimensionCompServer              |
-| mod.client.ui.viewRequest                             | mod.server.component.redStoneCompServer               | server.component.effectCompServer                 |
-| mod.client.ui.NativeScreenManager                     | mod.server.component.rideCompServer                   | server.component.engineCompFactoryServer          |
-| mod.client.ui.CustomUIControlProxy                    | mod.server.component.rotCompServer                    | server.component.engineTypeCompServer             |
-| mod.client.ui.CustomUIScreenProxy                     | mod.server.component.scaleCompServer                  | server.component.entityComponentServer            |
-| mod.client.ui.miniMapBaseScreen                       | mod.server.component.shareableCompServer              | server.component.entityDefinitionsCompServer      |
-| mod.client.ui.controls                                | mod.server.component.tagCompServer                    | server.component.entityEventCompServer            |
-| mod.client.ui.controls.baseUIControl                  | mod.server.component.tameCompServer                   | server.component.exDataCompServer                 |
-| mod.client.ui.controls.buttonUIControl                | mod.server.component.timeCompServer                   | server.component.expCompServer                    |
-| mod.client.ui.controls.gridUIControl                  | mod.server.component.weatherCompServer                | server.component.explosionCompServer              |
-| mod.client.ui.controls.imageUIControl                 | mod.common                                            | server.component.featureCompServer                |
-| mod.client.ui.controls.inputPanelUIControl            | mod.common.mod                                        | server.component.flyCompServer                    |
-| mod.client.ui.controls.itemRendererUIControl          | mod.common.minecraftEnum                              | server.component.gameCompServer                   |
-| mod.client.ui.controls.labelUIControl                 | mod.common.EntityType                                 | server.component.gravityCompServer                |
-| mod.client.ui.controls.minimapUIControl               | mod.common.EnchantType                                | server.component.httpToWebServerCompServer        |
-| mod.client.ui.controls.neteaseComboBoxUIControl       | mod.common.ItemType                                   | server.component.hurtCompServer                   |
-| mod.client.ui.controls.neteasePaperDollUIControl      | mod.common.BiomeType                                  | server.component.interactCompServer               |
-| mod.client.ui.controls.progressBarUIControl           | mod.common.SysSoundType                               | server.component.itemBannedCompServer             |
-| mod.client.ui.controls.scrollViewUIControl            | mod.common.BlockType                                  | server.component.itemCompServer                   |
-| mod.client.ui.controls.selectionWheelUIControl        | mod.common.EffectType                                 | server.component.levelCompServer                  |
-| mod.client.ui.controls.sliderUIControl                | mod.common.KeyBoardType                               | server.component.lootCompServer                   |
-| mod.client.ui.controls.stackPanelUIControl            | mod.common.utils                                      | server.component.mobSpawnCompServer               |
-| mod.client.ui.controls.switchToggleUIControl          | mod.common.utils.mcmath                               | server.component.modAttrCompServer                |
-| mod.client.ui.controls.textEditBoxUIControl           | mod.common.utils.colorUtil                            | server.component.modelCompServer                  |
-| mod.client.system                                     | mod.common.utils.timer                                | server.component.moveToCompServer                 |
-| mod.client.system.clientSystem                        | mod.common.entity                                     | server.component.msgCompServer                    |
-| mod.client.component                                  | mod.common.entity.entityconst                         | server.component.nameCompServer                   |
-| mod.client.component.achievementCompClient            | mod.common.component                                  | server.component.persistenceCompServer            |
-| mod.client.component.actionCompClient                 | mod.common.component.baseComponent                    | server.component.petCompServer                    |
-| mod.client.component.actorMotionCompClient            | mod.common.component.blockPaletteComp                 | server.component.playerCompServer                 |
-| mod.client.component.actorRenderCompClient            | mod.common.system                                     | server.component.portalCompServer                 |
-| mod.client.component.attrCompClient                   | mod.common.system.baseSystem                          | server.component.posCompServer                    |
-| mod.client.component.audioCustomCompClient            | client                                                | server.component.projectileCompServer             |
-| mod.client.component.auxValueCompClient               | client.extraClientApi                                 | server.component.recipeCompServer                 |
-| mod.client.component.biomeCompClient                  | client.clientEvent                                    | server.component.redStoneCompServer               |
-| mod.client.component.blockCompClient                  | client.ui                                             | server.component.rideCompServer                   |
-| mod.client.component.blockGeometryCompClient          | client.ui.screenNode                                  | server.component.rotCompServer                    |
-| mod.client.component.blockInfoCompClient              | client.ui.screenController                            | server.component.scaleCompServer                  |
-| mod.client.component.blockUseEventWhiteListCompClient | client.ui.viewBinder                                  | server.component.shareableCompServer              |
-| mod.client.component.brightnessCompClient             | client.ui.viewRequest                                 | server.component.tagCompServer                    |
-| mod.client.component.cameraCompClient                 | client.ui.NativeScreenManager                         | server.component.tameCompServer                   |
-| mod.client.component.chunkSourceCompClient            | client.ui.controls                                    | server.component.timeCompServer                   |
-| mod.client.component.collisionBoxCompClient           | client.ui.controls.baseUIControl                      | server.component.weatherCompServer                |
-| mod.client.component.configCompClient                 | client.ui.controls.buttonUIControl                    | common                                            |
-| mod.client.component.deviceCompClient                 | client.ui.controls.gridUIControl                      | common.mod                                        |
-| mod.client.component.effectCompClient                 | client.ui.controls.imageUIControl                     | common.minecraftEnum                              |
-| mod.client.component.engineCompFactoryClient          | client.ui.controls.inputPanelUIControl                | common.EntityType                                 |
-| mod.client.component.engineEffectBindControlComp      | client.ui.controls.itemRendererUIControl              | common.EnchantType                                |
-| mod.client.component.engineTypeCompClient             | client.ui.controls.labelUIControl                     | common.ItemType                                   |
-| mod.client.component.fogCompClient                    | client.ui.controls.minimapUIControl                   | common.BiomeType                                  |
-| mod.client.component.frameAniControlComp              | client.ui.controls.neteaseComboBoxUIControl           | common.SysSoundType                               |
-| mod.client.component.frameAniEntityBindComp           | client.ui.controls.neteasePaperDollUIControl          | common.BlockType                                  |
-| mod.client.component.frameAniSkeletonBindComp         | client.ui.controls.progressBarUIControl               | common.EffectType                                 |
-| mod.client.component.frameAniTransComp                | client.ui.controls.scrollViewUIControl                | common.KeyBoardType                               |
-| mod.client.component.gameCompClient                   | client.ui.controls.selectionWheelUIControl            | common.utils                                      |
-| mod.client.component.healthCompClient                 | client.ui.controls.sliderUIControl                    | common.utils.mcmath                               |
-| mod.client.component.itemCompClient                   | client.ui.controls.stackPanelUIControl                | common.utils.colorUtil                            |
-| mod.client.component.modAttrCompClient                | client.ui.controls.switchToggleUIControl              | common.utils.timer                                |
-| mod.client.component.modelCompClient                  | client.ui.controls.textEditBoxUIControl               | common.entity                                     |
-| mod.client.component.nameCompClient                   | client.system                                         | common.entity.entityconst                         |
-| mod.client.component.neteaseShopCompClient            | client.system.clientSystem                            | common.component                                  |
-| mod.client.component.operationCompClient              | client.component                                      | common.component.baseComponent                    |
-| mod.client.component.particleControlComp              | client.component.achievementCompClient                | common.component.blockPaletteComp                 |
-| mod.client.component.particleEntityBindComp           | client.component.actionCompClient                     | common.system                                     |
-| mod.client.component.particleSkeletonBindComp         | client.component.actorMotionCompClient                | common.system.baseSystem                          |
-| mod.client.component.particleSystemCompClient         | client.component.actorRenderCompClient                | Preset                                            |
-| mod.client.component.particleTransComp                | client.component.attrCompClient                       | Preset.Parts                                      |
-| mod.client.component.playerAnimCompClient             | client.component.audioCustomCompClient                | Preset.Parts.WorldPart                            |
-| mod.client.component.playerCompClient                 | client.component.auxValueCompClient                   | Preset.Parts.TriggerPart                          |
-| mod.client.component.playerViewCompClient             | client.component.biomeCompClient                      | Preset.Parts.PostprocessPart                      |
-| mod.client.component.posCompClient                    | client.component.blockCompClient                      | Preset.Parts.PortalPart                           |
-| mod.client.component.postProcessControlComp           | client.component.blockGeometryCompClient              | Preset.Parts.PlayerBasicPart                      |
-| mod.client.component.queryVariableCompClient          | client.component.blockInfoCompClient                  | Preset.Parts.EntityBasePart                       |
-| mod.client.component.recipeCompClient                 | client.component.blockUseEventWhiteListCompClient     | Preset.Parts.CameraTrackPart                      |
-| mod.client.component.rideCompClient                   | client.component.brightnessCompClient                 | Preset.Parts.NavPointsPart                        |
-| mod.client.component.rotCompClient                    | client.component.cameraCompClient                     | Preset.Model                                      |
-| mod.client.component.skyRenderCompClient              | client.component.chunkSourceCompClient                | Preset.Model.BoxData                              |
-| mod.client.component.tameCompClient                   | client.component.collisionBoxCompClient               | Preset.Model.PresetBase                           |
-| mod.client.component.textBoardCompClient              | client.component.configCompClient                     | Preset.Model.TransformObject                      |
-| mod.client.component.textNotifyCompClient             | client.component.deviceCompClient                     | Preset.Model.Transform                            |
-| mod.client.component.timeCompClient                   | client.component.effectCompClient                     | Preset.Model.SdkInterface                         |
-| mod.client.component.virtualWorldCompClient           | client.component.engineCompFactoryClient              | Preset.Model.PartBase                             |
-| mod.server                                            | client.component.engineEffectBindControlComp          | Preset.Model.GameObject                           |
-| mod.server.extraServerApi                             | client.component.engineTypeCompClient                 | Preset.Model.Entity                               |
-| mod.server.serverEvent                                | client.component.fogCompClient                        | Preset.Model.Entity.EntityPreset                  |
-| mod.server.blockEntityData                            | client.component.frameAniControlComp                  | Preset.Model.Entity.EntityObject                  |
-| mod.server.gamePlay                                   | client.component.frameAniEntityBindComp               | Preset.Model.Player                               |
-| mod.server.gamePlay.AI                                | client.component.frameAniSkeletonBindComp             | Preset.Model.Player.PlayerObject                  |
-| mod.server.gamePlay.AI.customGoal                     | client.component.frameAniTransComp                    | Preset.Model.Player.PlayerPreset                  |
-| mod.server.system                                     | client.component.gameCompClient                       | Preset.Model.Block                                |
-| mod.server.system.serverSystem                        | client.component.healthCompClient                     | Preset.Model.Block.BlockPreset                    |
-| mod.server.component                                  | client.component.itemCompClient                       | Preset.Model.Blueprint                            |
-| mod.server.component.achievementCompServer            | client.component.modAttrCompClient                    | Preset.Model.Blueprint.BaseUIBlueprintScreen      |
-| mod.server.component.actionCompServer                 | client.component.modelCompClient                      | Preset.Model.Blueprint.BaseUIBlueprintPart        |
-| mod.server.component.actorCollidableCompServer        | client.component.nameCompClient                       | Preset.Model.Effect                               |
-| mod.server.component.actorLootCompServer              | client.component.neteaseShopCompClient                | Preset.Model.Effect.EffectObject                  |
-| mod.server.component.actorMotionCompServer            | client.component.operationCompClient                  | Preset.Model.Effect.EffectPreset                  |
-| mod.server.component.actorOwnerCompServer             | client.component.particleControlComp                  | Preset.Model.Textboard                            |
-| ast（3.3新增）                                        | client.component.particleEntityBindComp               | Preset.Model.Textboard.TextboardObject            |
-|                                                       | client.component.particleSkeletonBindComp             | Preset.Model.Textboard.TextboardPreset            |
-|                                                       |                                                       | Preset.Model.UI                                   |
-|                                                       |                                                       | Preset.Model.UI.UIPreset                          |
-|                                                       |                                                       | Preset.Controller                                 |
-|                                                       |                                                       | Preset.Controller.PresetApi                       |
-
-若开发者需要添加用于正常功能开发的模块白名单，请联系官方人员进行反馈，经技术评估后进行添加。
-
-## 还有解决不了的问题？
-
-你可以通过[开发者平台 ](https://mcdev.webapp.163.com/#/square)顶部的开发者常见问题答疑的反馈其他问题进行反馈，也可直接点击[这个链接](https://mcdev.webapp.163.com/#/feedbackModal)。官方将通过开发者平台站内信与您取得联系。
-
-或者加入开发者QQ频道，私信频道管理员【我的世界中国版】进行反馈。
+| 序号 | 模块 |
+| --- | --- |
+| 1 | `__future__` |
+| 2 | `mod.server.component.actorPushableCompServer` |
+| 3 | `client.component.particleSystemCompClient` |
+| 4 | `_md5` |
+| 5 | `mod.server.component.aiCommandCompServer` |
+| 6 | `client.component.particleTransComp` |
+| 7 | `_random` |
+| 8 | `mod.server.component.attrCompServer` |
+| 9 | `client.component.playerAnimCompClient` |
+| 10 | `logging` |
+| 11 | `mod.server.component.auxValueCompServer` |
+| 12 | `client.component.playerCompClient` |
+| 13 | `mod_log` |
+| 14 | `mod.server.component.biomeCompServer` |
+| 15 | `client.component.playerViewCompClient` |
+| 16 | `traceback` |
+| 17 | `mod.server.component.blockCompServer` |
+| 18 | `client.component.posCompClient` |
+| 19 | `random` |
+| 20 | `mod.server.component.blockEntityExDataCompServer` |
+| 21 | `client.component.postProcessControlComp` |
+| 22 | `json` |
+| 23 | `mod.server.component.blockInfoCompServer` |
+| 24 | `client.component.queryVariableCompClient` |
+| 25 | `math` |
+| 26 | `mod.server.component.blockStateCompServer` |
+| 27 | `client.component.recipeCompClient` |
+| 28 | `time` |
+| 29 | `mod.server.component.blockUseEventWhiteListCompServer` |
+| 30 | `client.component.rideCompClient` |
+| 31 | `copy` |
+| 32 | `mod.server.component.breathCompServer` |
+| 33 | `client.component.rotCompClient` |
+| 34 | `base64` |
+| 35 | `mod.server.component.bulletAttributesCompServer` |
+| 36 | `client.component.skyRenderCompClient` |
+| 37 | `bisect` |
+| 38 | `mod.server.component.chatExtensionCompServer` |
+| 39 | `client.component.tameCompClient` |
+| 40 | `calendar` |
+| 41 | `mod.server.component.chestContainerCompServer` |
+| 42 | `client.component.textBoardCompClient` |
+| 43 | `datetime` |
+| 44 | `mod.server.component.chunkSourceComp` |
+| 45 | `client.component.textNotifyCompClient` |
+| 46 | `re` |
+| 47 | `mod.server.component.collisionBoxCompServer` |
+| 48 | `client.component.timeCompClient` |
+| 49 | `Queue` |
+| 50 | `mod.server.component.commandCompServer` |
+| 51 | `client.component.virtualWorldCompClient` |
+| 52 | `string` |
+| 53 | `mod.server.component.controlAiCompServer` |
+| 54 | `server` |
+| 55 | `struct` |
+| 56 | `mod.server.component.dimensionCompServer` |
+| 57 | `server.extraServerApi` |
+| 58 | `types` |
+| 59 | `mod.server.component.effectCompServer` |
+| 60 | `server.serverEvent` |
+| 61 | `weakref` |
+| 62 | `mod.server.component.engineCompFactoryServer` |
+| 63 | `server.blockEntityData` |
+| 64 | `itertools` |
+| 65 | `mod.server.component.engineTypeCompServer` |
+| 66 | `server.gamePlay` |
+| 67 | `fnmatch` |
+| 68 | `mod.server.component.entityComponentServer` |
+| 69 | `server.gamePlay.AI` |
+| 70 | `posixpath` |
+| 71 | `mod.server.component.entityDefinitionsCompServer` |
+| 72 | `server.gamePlay.AI.customGoal` |
+| 73 | `keyword` |
+| 74 | `mod.server.component.entityEventCompServer` |
+| 75 | `server.system` |
+| 76 | `hashlib` |
+| 77 | `mod.server.component.exDataCompServer` |
+| 78 | `server.system.serverSystem` |
+| 79 | `zlib` |
+| 80 | `mod.server.component.expCompServer` |
+| 81 | `server.component` |
+| 82 | `heapq` |
+| 83 | `mod.server.component.explosionCompServer` |
+| 84 | `server.component.achievementCompServer` |
+| 85 | `abc` |
+| 86 | `mod.server.component.featureCompServer` |
+| 87 | `server.component.actionCompServer` |
+| 88 | `uuid` |
+| 89 | `mod.server.component.flyCompServer` |
+| 90 | `server.component.actorCollidableCompServer` |
+| 91 | `functools` |
+| 92 | `mod.server.component.gameCompServer` |
+| 93 | `server.component.actorLootCompServer` |
+| 94 | `collections` |
+| 95 | `mod.server.component.gravityCompServer` |
+| 96 | `server.component.actorMotionCompServer` |
+| 97 | `warnings` |
+| 98 | `mod.server.component.httpToWebServerCompServer` |
+| 99 | `server.component.actorOwnerCompServer` |
+| 100 | `io` |
+| 101 | `mod.server.component.hurtCompServer` |
+| 102 | `server.component.actorPushableCompServer` |
+| 103 | `gzip` |
+| 104 | `mod.server.component.interactCompServer` |
+| 105 | `server.component.aiCommandCompServer` |
+| 106 | `singleton` |
+| 107 | `mod.server.component.itemBannedCompServer` |
+| 108 | `server.component.attrCompServer` |
+| 109 | `threading` |
+| 110 | `mod.server.component.itemCompServer` |
+| 111 | `server.component.auxValueCompServer` |
+| 112 | `binascii` |
+| 113 | `mod.server.component.levelCompServer` |
+| 114 | `server.component.biomeCompServer` |
+| 115 | `cStringIO` |
+| 116 | `mod.server.component.lootCompServer` |
+| 117 | `server.component.blockCompServer` |
+| 118 | `contextlib` |
+| 119 | `mod.server.component.mobSpawnCompServer` |
+| 120 | `server.component.blockEntityExDataCompServer` |
+| 121 | `builtin_modules._inspect` |
+| 122 | `mod.server.component.modAttrCompServer` |
+| 123 | `server.component.blockInfoCompServer` |
+| 124 | `builtin_modules._operator` |
+| 125 | `mod.server.component.modelCompServer` |
+| 126 | `server.component.blockStateCompServer` |
+| 127 | `mod.builtin_modules._inspect` |
+| 128 | `mod.server.component.moveToCompServer` |
+| 129 | `server.component.blockUseEventWhiteListCompServer` |
+| 130 | `mod.builtin_modules._operator` |
+| 131 | `mod.server.component.msgCompServer` |
+| 132 | `server.component.breathCompServer` |
+| 133 | `mod` |
+| 134 | `mod.server.component.nameCompServer` |
+| 135 | `server.component.bulletAttributesCompServer` |
+| 136 | `mod.client` |
+| 137 | `mod.server.component.persistenceCompServer` |
+| 138 | `server.component.chatExtensionCompServer` |
+| 139 | `mod.client.extraClientApi` |
+| 140 | `mod.server.component.petCompServer` |
+| 141 | `server.component.chestContainerCompServer` |
+| 142 | `mod.client.clientEvent` |
+| 143 | `mod.server.component.playerCompServer` |
+| 144 | `server.component.chunkSourceComp` |
+| 145 | `mod.client.ui` |
+| 146 | `mod.server.component.portalCompServer` |
+| 147 | `server.component.collisionBoxCompServer` |
+| 148 | `mod.client.ui.screenNode` |
+| 149 | `mod.server.component.posCompServer` |
+| 150 | `server.component.commandCompServer` |
+| 151 | `mod.client.ui.screenController` |
+| 152 | `mod.server.component.projectileCompServer` |
+| 153 | `server.component.controlAiCompServer` |
+| 154 | `mod.client.ui.viewBinder` |
+| 155 | `mod.server.component.recipeCompServer` |
+| 156 | `server.component.dimensionCompServer` |
+| 157 | `mod.client.ui.viewRequest` |
+| 158 | `mod.server.component.redStoneCompServer` |
+| 159 | `server.component.effectCompServer` |
+| 160 | `mod.client.ui.NativeScreenManager` |
+| 161 | `mod.server.component.rideCompServer` |
+| 162 | `server.component.engineCompFactoryServer` |
+| 163 | `mod.client.ui.CustomUIControlProxy` |
+| 164 | `mod.server.component.rotCompServer` |
+| 165 | `server.component.engineTypeCompServer` |
+| 166 | `mod.client.ui.CustomUIScreenProxy` |
+| 167 | `mod.server.component.scaleCompServer` |
+| 168 | `server.component.entityComponentServer` |
+| 169 | `mod.client.ui.miniMapBaseScreen` |
+| 170 | `mod.server.component.shareableCompServer` |
+| 171 | `server.component.entityDefinitionsCompServer` |
+| 172 | `mod.client.ui.controls` |
+| 173 | `mod.server.component.tagCompServer` |
+| 174 | `server.component.entityEventCompServer` |
+| 175 | `mod.client.ui.controls.baseUIControl` |
+| 176 | `mod.server.component.tameCompServer` |
+| 177 | `server.component.exDataCompServer` |
+| 178 | `mod.client.ui.controls.buttonUIControl` |
+| 179 | `mod.server.component.timeCompServer` |
+| 180 | `server.component.expCompServer` |
+| 181 | `mod.client.ui.controls.gridUIControl` |
+| 182 | `mod.server.component.weatherCompServer` |
+| 183 | `server.component.explosionCompServer` |
+| 184 | `mod.client.ui.controls.imageUIControl` |
+| 185 | `mod.common` |
+| 186 | `server.component.featureCompServer` |
+| 187 | `mod.client.ui.controls.inputPanelUIControl` |
+| 188 | `mod.common.mod` |
+| 189 | `server.component.flyCompServer` |
+| 190 | `mod.client.ui.controls.itemRendererUIControl` |
+| 191 | `mod.common.minecraftEnum` |
+| 192 | `server.component.gameCompServer` |
+| 193 | `mod.client.ui.controls.labelUIControl` |
+| 194 | `mod.common.EntityType` |
+| 195 | `server.component.gravityCompServer` |
+| 196 | `mod.client.ui.controls.minimapUIControl` |
+| 197 | `mod.common.EnchantType` |
+| 198 | `server.component.httpToWebServerCompServer` |
+| 199 | `mod.client.ui.controls.neteaseComboBoxUIControl` |
+| 200 | `mod.common.ItemType` |
+| 201 | `server.component.hurtCompServer` |
+| 202 | `mod.client.ui.controls.neteasePaperDollUIControl` |
+| 203 | `mod.common.BiomeType` |
+| 204 | `server.component.interactCompServer` |
+| 205 | `mod.client.ui.controls.progressBarUIControl` |
+| 206 | `mod.common.SysSoundType` |
+| 207 | `server.component.itemBannedCompServer` |
+| 208 | `mod.client.ui.controls.scrollViewUIControl` |
+| 209 | `mod.common.BlockType` |
+| 210 | `server.component.itemCompServer` |
+| 211 | `mod.client.ui.controls.selectionWheelUIControl` |
+| 212 | `mod.common.EffectType` |
+| 213 | `server.component.levelCompServer` |
+| 214 | `mod.client.ui.controls.sliderUIControl` |
+| 215 | `mod.common.KeyBoardType` |
+| 216 | `server.component.lootCompServer` |
+| 217 | `mod.client.ui.controls.stackPanelUIControl` |
+| 218 | `mod.common.utils` |
+| 219 | `server.component.mobSpawnCompServer` |
+| 220 | `mod.client.ui.controls.switchToggleUIControl` |
+| 221 | `mod.common.utils.mcmath` |
+| 222 | `server.component.modAttrCompServer` |
+| 223 | `mod.client.ui.controls.textEditBoxUIControl` |
+| 224 | `mod.common.utils.colorUtil` |
+| 225 | `server.component.modelCompServer` |
+| 226 | `mod.client.system` |
+| 227 | `mod.common.utils.timer` |
+| 228 | `server.component.moveToCompServer` |
+| 229 | `mod.client.system.clientSystem` |
+| 230 | `mod.common.entity` |
+| 231 | `server.component.msgCompServer` |
+| 232 | `mod.client.component` |
+| 233 | `mod.common.entity.entityconst` |
+| 234 | `server.component.nameCompServer` |
+| 235 | `mod.client.component.achievementCompClient` |
+| 236 | `mod.common.component` |
+| 237 | `server.component.persistenceCompServer` |
+| 238 | `mod.client.component.actionCompClient` |
+| 239 | `mod.common.component.baseComponent` |
+| 240 | `server.component.petCompServer` |
+| 241 | `mod.client.component.actorMotionCompClient` |
+| 242 | `mod.common.component.blockPaletteComp` |
+| 243 | `server.component.playerCompServer` |
+| 244 | `mod.client.component.actorRenderCompClient` |
+| 245 | `mod.common.system` |
+| 246 | `server.component.portalCompServer` |
+| 247 | `mod.client.component.attrCompClient` |
+| 248 | `mod.common.system.baseSystem` |
+| 249 | `server.component.posCompServer` |
+| 250 | `mod.client.component.audioCustomCompClient` |
+| 251 | `client` |
+| 252 | `server.component.projectileCompServer` |
+| 253 | `mod.client.component.auxValueCompClient` |
+| 254 | `client.extraClientApi` |
+| 255 | `server.component.recipeCompServer` |
+| 256 | `mod.client.component.biomeCompClient` |
+| 257 | `client.clientEvent` |
+| 258 | `server.component.redStoneCompServer` |
+| 259 | `mod.client.component.blockCompClient` |
+| 260 | `client.ui` |
+| 261 | `server.component.rideCompServer` |
+| 262 | `mod.client.component.blockGeometryCompClient` |
+| 263 | `client.ui.screenNode` |
+| 264 | `server.component.rotCompServer` |
+| 265 | `mod.client.component.blockInfoCompClient` |
+| 266 | `client.ui.screenController` |
+| 267 | `server.component.scaleCompServer` |
+| 268 | `mod.client.component.blockUseEventWhiteListCompClient` |
+| 269 | `client.ui.viewBinder` |
+| 270 | `server.component.shareableCompServer` |
+| 271 | `mod.client.component.brightnessCompClient` |
+| 272 | `client.ui.viewRequest` |
+| 273 | `server.component.tagCompServer` |
+| 274 | `mod.client.component.cameraCompClient` |
+| 275 | `client.ui.NativeScreenManager` |
+| 276 | `server.component.tameCompServer` |
+| 277 | `mod.client.component.chunkSourceCompClient` |
+| 278 | `client.ui.controls` |
+| 279 | `server.component.timeCompServer` |
+| 280 | `mod.client.component.collisionBoxCompClient` |
+| 281 | `client.ui.controls.baseUIControl` |
+| 282 | `server.component.weatherCompServer` |
+| 283 | `mod.client.component.configCompClient` |
+| 284 | `client.ui.controls.buttonUIControl` |
+| 285 | `common` |
+| 286 | `mod.client.component.deviceCompClient` |
+| 287 | `client.ui.controls.gridUIControl` |
+| 288 | `common.mod` |
+| 289 | `mod.client.component.effectCompClient` |
+| 290 | `client.ui.controls.imageUIControl` |
+| 291 | `common.minecraftEnum` |
+| 292 | `mod.client.component.engineCompFactoryClient` |
+| 293 | `client.ui.controls.inputPanelUIControl` |
+| 294 | `common.EntityType` |
+| 295 | `mod.client.component.engineEffectBindControlComp` |
+| 296 | `client.ui.controls.itemRendererUIControl` |
+| 297 | `common.EnchantType` |
+| 298 | `mod.client.component.engineTypeCompClient` |
+| 299 | `client.ui.controls.labelUIControl` |
+| 300 | `common.ItemType` |
+| 301 | `mod.client.component.fogCompClient` |
+| 302 | `client.ui.controls.minimapUIControl` |
+| 303 | `common.BiomeType` |
+| 304 | `mod.client.component.frameAniControlComp` |
+| 305 | `client.ui.controls.neteaseComboBoxUIControl` |
+| 306 | `common.SysSoundType` |
+| 307 | `mod.client.component.frameAniEntityBindComp` |
+| 308 | `client.ui.controls.neteasePaperDollUIControl` |
+| 309 | `common.BlockType` |
+| 310 | `mod.client.component.frameAniSkeletonBindComp` |
+| 311 | `client.ui.controls.progressBarUIControl` |
+| 312 | `common.EffectType` |
+| 313 | `mod.client.component.frameAniTransComp` |
+| 314 | `client.ui.controls.scrollViewUIControl` |
+| 315 | `common.KeyBoardType` |
+| 316 | `mod.client.component.gameCompClient` |
+| 317 | `client.ui.controls.selectionWheelUIControl` |
+| 318 | `common.utils` |
+| 319 | `mod.client.component.healthCompClient` |
+| 320 | `client.ui.controls.sliderUIControl` |
+| 321 | `common.utils.mcmath` |
+| 322 | `mod.client.component.itemCompClient` |
+| 323 | `client.ui.controls.stackPanelUIControl` |
+| 324 | `common.utils.colorUtil` |
+| 325 | `mod.client.component.modAttrCompClient` |
+| 326 | `client.ui.controls.switchToggleUIControl` |
+| 327 | `common.utils.timer` |
+| 328 | `mod.client.component.modelCompClient` |
+| 329 | `client.ui.controls.textEditBoxUIControl` |
+| 330 | `common.entity` |
+| 331 | `mod.client.component.nameCompClient` |
+| 332 | `client.system` |
+| 333 | `common.entity.entityconst` |
+| 334 | `mod.client.component.neteaseShopCompClient` |
+| 335 | `client.system.clientSystem` |
+| 336 | `common.component` |
+| 337 | `mod.client.component.operationCompClient` |
+| 338 | `client.component` |
+| 339 | `common.component.baseComponent` |
+| 340 | `mod.client.component.particleControlComp` |
+| 341 | `client.component.achievementCompClient` |
+| 342 | `common.component.blockPaletteComp` |
+| 343 | `mod.client.component.particleEntityBindComp` |
+| 344 | `client.component.actionCompClient` |
+| 345 | `common.system` |
+| 346 | `mod.client.component.particleSkeletonBindComp` |
+| 347 | `client.component.actorMotionCompClient` |
+| 348 | `common.system.baseSystem` |
+| 349 | `mod.client.component.particleSystemCompClient` |
+| 350 | `client.component.actorRenderCompClient` |
+| 351 | `Preset` |
+| 352 | `mod.client.component.particleTransComp` |
+| 353 | `client.component.attrCompClient` |
+| 354 | `Preset.Parts` |
+| 355 | `mod.client.component.playerAnimCompClient` |
+| 356 | `client.component.audioCustomCompClient` |
+| 357 | `Preset.Parts.WorldPart` |
+| 358 | `mod.client.component.playerCompClient` |
+| 359 | `client.component.auxValueCompClient` |
+| 360 | `Preset.Parts.TriggerPart` |
+| 361 | `mod.client.component.playerViewCompClient` |
+| 362 | `client.component.biomeCompClient` |
+| 363 | `Preset.Parts.PostprocessPart` |
+| 364 | `mod.client.component.posCompClient` |
+| 365 | `client.component.blockCompClient` |
+| 366 | `Preset.Parts.PortalPart` |
+| 367 | `mod.client.component.postProcessControlComp` |
+| 368 | `client.component.blockGeometryCompClient` |
+| 369 | `Preset.Parts.PlayerBasicPart` |
+| 370 | `mod.client.component.queryVariableCompClient` |
+| 371 | `client.component.blockInfoCompClient` |
+| 372 | `Preset.Parts.EntityBasePart` |
+| 373 | `mod.client.component.recipeCompClient` |
+| 374 | `client.component.blockUseEventWhiteListCompClient` |
+| 375 | `Preset.Parts.CameraTrackPart` |
+| 376 | `mod.client.component.rideCompClient` |
+| 377 | `client.component.brightnessCompClient` |
+| 378 | `Preset.Parts.NavPointsPart` |
+| 379 | `mod.client.component.rotCompClient` |
+| 380 | `client.component.cameraCompClient` |
+| 381 | `Preset.Model` |
+| 382 | `mod.client.component.skyRenderCompClient` |
+| 383 | `client.component.chunkSourceCompClient` |
+| 384 | `Preset.Model.BoxData` |
+| 385 | `mod.client.component.tameCompClient` |
+| 386 | `client.component.collisionBoxCompClient` |
+| 387 | `Preset.Model.PresetBase` |
+| 388 | `mod.client.component.textBoardCompClient` |
+| 389 | `client.component.configCompClient` |
+| 390 | `Preset.Model.TransformObject` |
+| 391 | `mod.client.component.textNotifyCompClient` |
+| 392 | `client.component.deviceCompClient` |
+| 393 | `Preset.Model.Transform` |
+| 394 | `mod.client.component.timeCompClient` |
+| 395 | `client.component.effectCompClient` |
+| 396 | `Preset.Model.SdkInterface` |
+| 397 | `mod.client.component.virtualWorldCompClient` |
+| 398 | `client.component.engineCompFactoryClient` |
+| 399 | `Preset.Model.PartBase` |
+| 400 | `mod.server` |
+| 401 | `client.component.engineEffectBindControlComp` |
+| 402 | `Preset.Model.GameObject` |
+| 403 | `mod.server.extraServerApi` |
+| 404 | `client.component.engineTypeCompClient` |
+| 405 | `Preset.Model.Entity` |
+| 406 | `mod.server.serverEvent` |
+| 407 | `client.component.fogCompClient` |
+| 408 | `Preset.Model.Entity.EntityPreset` |
+| 409 | `mod.server.blockEntityData` |
+| 410 | `client.component.frameAniControlComp` |
+| 411 | `Preset.Model.Entity.EntityObject` |
+| 412 | `mod.server.gamePlay` |
+| 413 | `client.component.frameAniEntityBindComp` |
+| 414 | `Preset.Model.Player` |
+| 415 | `mod.server.gamePlay.AI` |
+| 416 | `client.component.frameAniSkeletonBindComp` |
+| 417 | `Preset.Model.Player.PlayerObject` |
+| 418 | `mod.server.gamePlay.AI.customGoal` |
+| 419 | `client.component.frameAniTransComp` |
+| 420 | `Preset.Model.Player.PlayerPreset` |
+| 421 | `mod.server.system` |
+| 422 | `client.component.gameCompClient` |
+| 423 | `Preset.Model.Block` |
+| 424 | `mod.server.system.serverSystem` |
+| 425 | `client.component.healthCompClient` |
+| 426 | `Preset.Model.Block.BlockPreset` |
+| 427 | `mod.server.component` |
+| 428 | `client.component.itemCompClient` |
+| 429 | `Preset.Model.Blueprint` |
+| 430 | `mod.server.component.achievementCompServer` |
+| 431 | `client.component.modAttrCompClient` |
+| 432 | `Preset.Model.Blueprint.BaseUIBlueprintScreen` |
+| 433 | `mod.server.component.actionCompServer` |
+| 434 | `client.component.modelCompClient` |
+| 435 | `Preset.Model.Blueprint.BaseUIBlueprintPart` |
+| 436 | `mod.server.component.actorCollidableCompServer` |
+| 437 | `client.component.nameCompClient` |
+| 438 | `Preset.Model.Effect` |
+| 439 | `mod.server.component.actorLootCompServer` |
+| 440 | `client.component.neteaseShopCompClient` |
+| 441 | `Preset.Model.Effect.EffectObject` |
+| 442 | `mod.server.component.actorMotionCompServer` |
+| 443 | `client.component.operationCompClient` |
+| 444 | `Preset.Model.Effect.EffectPreset` |
+| 445 | `mod.server.component.actorOwnerCompServer` |
+| 446 | `client.component.particleControlComp` |
+| 447 | `Preset.Model.Textboard` |
+| 448 | `ast` |
+| 449 | `client.component.particleEntityBindComp` |
+| 450 | `Preset.Model.Textboard.TextboardObject` |
+| 451 | `client.component.particleSkeletonBindComp` |
+| 452 | `Preset.Model.Textboard.TextboardPreset` |
+| 453 | `Preset.Model.UI` |
+| 454 | `Preset.Model.UI.UIPreset` |
+| 455 | `Preset.Controller` |
+| 456 | `Preset.Controller.PresetApi` |

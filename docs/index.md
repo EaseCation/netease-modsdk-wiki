@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 开始
-      link: /wiki
+      link: /wiki/
     - theme: alt
       text: API 速查
       link: /api-tools/events
@@ -18,7 +18,7 @@ features:
   - icon: 🎯
     title: BedrockWiki 中文镜像
     details: 国际版社区的超优质文档，助你更快地找到你需要的内容，更深入地理解引擎机制。
-    link: /wiki
+    link: /wiki/
   - icon: 🛠️
     title: ModSDK API文档
     details: 中国版 ModSDK（Python2）API 文档。相比于官网，我们提供了更优质的搜索引擎！

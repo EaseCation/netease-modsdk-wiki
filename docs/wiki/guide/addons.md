@@ -72,7 +72,7 @@ mentions:
 ## 下一步建议
 
 <BButton
-    link="/guide/software-preparation"
+    link="/wiki/guide/software-preparation"
     color=blue
 >查看软件准备指南！</BButton>
 

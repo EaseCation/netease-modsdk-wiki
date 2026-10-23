@@ -4,13 +4,15 @@ import { existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import generateSidebar from '../../scripts/sidebar.js';
 import { withMermaid } from "vitepress-plugin-mermaid";
+import { docLinks } from '../../scripts/doc-links';
 
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
   lang: 'zh-CN',
   title: "我的世界中国版 Wiki",
   description: "ModSDK 开发者文档 镜像，但提供更优质的搜索",
-  ignoreDeadLinks: true,
+  ignoreDeadLinks: false,
+  markdown: { config: docLinks(fileURLToPath(new URL('..', import.meta.url))) },
   // 替换原生搜索组件，自定义展示的搜索结果内容
   vite: {
     plugins: [
@@ -154,7 +156,7 @@ export default withMermaid({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: 'Wiki', link: '/wiki', activeMatch: '^/wiki/' },
+      { text: 'Wiki', link: '/wiki/', activeMatch: '^/wiki/' },
       { text: 'API速查', link: '/api-tools/interface', activeMatch: '^/api-tools/' },
       { text: 'API文档', link: '/mcdocs/0-欢迎', activeMatch: '^/mcdocs/' },
       { text: '开发指南', link: '/mcguide/0-欢迎', activeMatch: '^/mcguide/' },

@@ -298,7 +298,7 @@ tile.wiki:compass_block.name=指南针方块
   {
     title: '扩展功能',
     desc: '学习各类可用方块组件打造独特玩法。使用geometry（几何组件）为方块添加自定义模型！还可以通过collision_box（碰撞箱）和selection_box（选择框）配置物理交互区域。',
-    link: '/blocks/block-components',
+    link: '/wiki/blocks/block-components',
     image: 'assets/images/homepage/crafting_table_0.png'
   },
   {
@@ -309,7 +309,7 @@ tile.wiki:compass_block.name=指南针方块
   {
     title: '复刻原版',
     desc: '在原版复刻分类中查看多个完整实现案例。从简单的自定义玻璃方块开始，体验material_instances（材质实例）的应用！',
-    link: '/blocks/block-components',
+    link: '/wiki/blocks/block-components',
     image: 'assets/images/homepage/diamond_ore_0.png'
   }
 ]" />

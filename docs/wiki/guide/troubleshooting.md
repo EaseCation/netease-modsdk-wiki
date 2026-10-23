@@ -72,12 +72,12 @@ JSON 模式是验证文件有效性的重要工具。了解更多关于 JSON 模
 
 ## 实体
 
-<BButton link="/entities/troubleshooting-entities"> 实体问题排查</BButton>
+<BButton link="/wiki/entities/troubleshooting-entities"> 实体问题排查</BButton>
 
 ## 物品
 
-<BButton link="/items/troubleshooting-items"> 物品问题排查</BButton>
+<BButton link="/wiki/items/troubleshooting-items"> 物品问题排查</BButton>
 
 ## 方块
 
-<BButton link="/blocks/troubleshooting-blocks"> 方块问题排查</BButton>
+<BButton link="/wiki/blocks/troubleshooting-blocks"> 方块问题排查</BButton>

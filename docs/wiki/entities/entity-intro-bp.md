@@ -165,7 +165,7 @@ _仅能对组件组进行添加/移除操作_，无法直接操作单个组件�
 
 想深入了解事件的更多用法，请参阅[实体事件](/wiki/entities/entity-events)页面。
 
-<BButton link="/entities/entity-events">实体事件详解</BButton>
+<BButton link="/wiki/entities/entity-events">实体事件详解</BButton>
 
 ## 原版应用案例
 
