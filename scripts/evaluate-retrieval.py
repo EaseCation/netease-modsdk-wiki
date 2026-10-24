@@ -14,12 +14,12 @@ from api_knowledge import ROOT, Search, load
 
 def query_cli():
     configured = os.environ.get('MODSDK_SKILL_ROOT')
-    roots = [Path(configured).expanduser()] if configured else [ROOT.parent / 'netease-api-query', Path.home() / '.codex/skills/netease-api-query']
+    roots = [Path(configured).expanduser()] if configured else [ROOT.parent / 'netease-modsdk-skill', Path.home() / '.codex/skills/netease-modsdk-skill']
     for root in roots:
         entry = root.resolve() / 'scripts/query.py'
         if entry.is_file():
             return entry
-    raise ValueError('未找到独立查询 skill；请设置 MODSDK_SKILL_ROOT 指向 netease-api-query 仓库')
+    raise ValueError('未找到独立查询 skill；请设置 MODSDK_SKILL_ROOT 指向 netease-modsdk-skill 仓库')
 
 
 def evaluate_scenarios(data, engine):

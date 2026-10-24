@@ -156,9 +156,9 @@ PYTHONHASHSEED=0 python3 scripts/evaluate-retrieval.py --legacy-root /absolute/p
 
 ### Skill 与 MCP 共用
 
-Skill 已拆分到公开的独立 Git 仓库 [EaseCation/netease-api-query](https://github.com/EaseCation/netease-api-query)，不再在 Wiki 内保存副本。独立 skill 通过自身 `.env` 或环境变量 `MODSDK_WIKI_ROOT` 绑定本仓库，并调用这里唯一的 `scripts/api_knowledge.py`。其安装入口支持浅克隆、partial clone、Markdown 稀疏检出和跳过 LFS 资源；只需要查询时不下载图片、视频或完整网页资源。缺少查询入口或标注的旧 Wiki 会报错，不提供兼容回退。发布时应先发布含查询功能的最新版 Wiki。
+Skill 已拆分到公开的独立 Git 仓库 [EaseCation/netease-modsdk-skill](https://github.com/EaseCation/netease-modsdk-skill)，不再在 Wiki 内保存副本。独立 skill 通过自身 `.env` 或环境变量 `MODSDK_WIKI_ROOT` 绑定本仓库，并调用这里唯一的 `scripts/api_knowledge.py`。其安装入口支持浅克隆、partial clone、Markdown 稀疏检出和跳过 LFS 资源；只需要查询时不下载图片、视频或完整网页资源。缺少查询入口或标注的旧 Wiki 会报错，不提供兼容回退。发布时应先发布含查询功能的最新版 Wiki。
 
-本仓库检索验收通过 `MODSDK_SKILL_ROOT` 指定独立 skill 位置，默认查找同级 `netease-api-query` 或 Agent 已安装的技能目录；调用时显式绑定当前 Wiki。社区迁移需求继续先解释中文基础能力，保留对象、读写动作和生命周期时机，再核对合同。
+本仓库检索验收通过 `MODSDK_SKILL_ROOT` 指定独立 skill 位置，默认查找同级 `netease-modsdk-skill` 或 Agent 已安装的技能目录；调用时显式绑定当前 Wiki。社区迁移需求继续先解释中文基础能力，保留对象、读写动作和生命周期时机，再核对合同。
 
 配套 `modsdk_mcp_server` 试点通过 `MODSDK_WIKI_ROOT` 加载同一实现，提供紧凑搜索、批量详情和 `resolve_api_requirement`。Skill 负责指导按需求逐步读取，MCP 保留结构化工具入口；两者可以共存，无需为了换成 skill 而复制检索逻辑。源码变更和本地校验不等于已经替换运行中的 MCP 或发布 Wiki。
 
