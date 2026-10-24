@@ -52,6 +52,29 @@ function initialize(userOptions: DefaultTheme.AlgoliaSearchOptions) {
   >({}, userOptions, {
     container: '#docsearch',
 
+    transformSearchClient(client) {
+      return {
+        ...client,
+        search({ requests, ...rest }, requestOptions) {
+          return client.search({ ...rest, requests: requests.map(request => {
+            const query = request.query || '';
+            const positive = query.replace(/(?:不要|排除|不使用|不用|不搜(?:索)?|非)\s*(?:preset|预设)/gi, '');
+            const preset = /\bpreset\b|预设/i.test(positive);
+            const filters = request.facetFilters || [];
+            return {
+              ...request,
+              // 范围词不再要求出现在正文中，例如「预设 SetAttrValue」。
+              query: preset ? positive.replace(/\bpreset\b|预设/gi, ' ').trim() : positive,
+              facetFilters: [
+                ...(Array.isArray(filters) ? filters : [filters]).filter(f => typeof f !== 'string' || !f.startsWith('scope:')),
+                preset ? 'scope:preset' : 'scope:modsdk'
+              ]
+            };
+          }) }, requestOptions);
+        }
+      };
+    },
+
     navigator: {
       navigate({ itemUrl }) {
         router.go(itemUrl)

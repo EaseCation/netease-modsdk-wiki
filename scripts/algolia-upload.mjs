@@ -174,6 +174,8 @@ async function upload(records, report) {
     const wait = (indexName, result) => client.waitForTask({ indexName, taskID: result.taskID });
     let published = false;
     try {
+        Object.assign(report, { status: 'uploading', staging_index: staging });
+        await writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
         // 保留现有人工同义词和规则。上传失败时不改动线上记录或设置。
         const copy = await client.operationIndex({ indexName: INDEX, operationIndexParams: {
             operation: 'copy', destination: staging, scope: ['settings', 'rules', 'synonyms'] } });
@@ -193,18 +195,19 @@ async function upload(records, report) {
         report.queries = [];
         for (const [query, expected] of cases) {
             const result = await client.searchSingleIndex({ indexName: staging, searchParams: {
-                query, hitsPerPage: 5, facetFilters: ['rootType:-mconline'], attributesToRetrieve: ['apiName', 'url', 'tags'] } });
+                query, hitsPerPage: 5, facetFilters: ['rootType:-mconline', 'scope:modsdk'], attributesToRetrieve: ['apiName', 'url', 'tags'] } });
             const names = result.hits.flatMap(h => h.apiName || []);
             report.queries.push({ query, expected, names, passed: names.includes(expected) });
             if (!names.includes(expected)) throw new Error(`暂存搜索不符合预期：${query} -> ${names.join(', ')}`);
         }
-        const move = await client.operationIndex({ indexName: staging, operationIndexParams: { operation: 'move', destination: INDEX } });
         // 发出 move 后若网络中断，保留现场，由操作者核对状态。
         published = true;
+        const move = await client.operationIndex({ indexName: staging, operationIndexParams: { operation: 'move', destination: INDEX } });
         await wait(INDEX, move);
         const live = await client.searchSingleIndex({ indexName: INDEX, searchParams: { query: '', hitsPerPage: 0, distinct: false } });
         if (live.nbHits !== records.length) throw new Error(`线上记录数不符：${live.nbHits}/${records.length}`);
         Object.assign(report, { status: 'published', published_at: new Date().toISOString(), task_id: move.taskID });
+        delete report.staging_index;
         await writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
         console.log(`线上索引已原子替换：${records.length} 条记录，${report.annotations} 条独立标注；旧记录已移除。`);
     } catch (error) {

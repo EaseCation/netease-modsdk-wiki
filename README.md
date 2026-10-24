@@ -106,7 +106,7 @@ npm run docs:algolia -- --dry-run
 npm run docs:algolia
 ```
 
-上传需要 `ALGOLIA_APP_ID`、`ALGOLIA_ADMIN_KEY`。脚本只扫描文档源码，按 VitePress 的真实标题锚点生成 `https://mcwiki.easecation.net` 链接，完整 JSON 记录不超过 8,000 字节；超长正文完整切块，不截断段落。结果按 URL 去重，避免同一章节的多个分块挤占结果。
+上传需要 `ALGOLIA_APP_ID`、`ALGOLIA_ADMIN_KEY`。脚本只扫描文档源码，按 VitePress 的真实标题锚点生成 `https://mcwiki.easecation.net` 链接，完整 JSON 记录不超过 8,000 字节；超长正文完整切块，不截断段落。结果按 URL 去重，避免同一章节的多个分块挤占结果。网页搜索默认排除 Preset；输入“预设 SetAttrValue”或“Preset SetAttrValue”可明确切换预设范围，“不要预设”仍保持排除。
 
 上传先创建独立暂存索引，保留线上人工同义词和规则，更新字段权重并等待每批入库；核对记录总数及真实搜索结果后原子替换正式索引，同时清除旧文档残留。替换前失败不改动线上索引，命令以非零状态退出；回执覆盖保存到 Git 目录的 `algolia-upload-report.json`。网站部署与 Algolia 更新是两个独立步骤，修改标注后需执行搜索更新。
 
