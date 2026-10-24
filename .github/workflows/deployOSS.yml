@@ -37,7 +37,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+          # 自托管 runner 保留本地 npm 缓存，避免从 GitHub 恢复大体积缓存。
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
