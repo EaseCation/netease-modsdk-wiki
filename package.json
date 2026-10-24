@@ -8,7 +8,12 @@
     "docs:build": "node --max_old_space_size=8192 node_modules/.bin/vitepress build docs",
     "docs:check-links": "python3 scripts/check-doc-links.py",
     "docs:algolia": "node scripts/algolia-upload.mjs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "api:build": "python3 scripts/api_knowledge.py build",
+    "api:query": "python3 scripts/api_knowledge.py",
+    "predocs:build": "npm run api:build",
+    "predocs:dev": "npm run api:build",
+    "api:evaluate": "python3 scripts/evaluate-retrieval.py"
   },
   "author": "boybook",
   "license": "ISC",

@@ -19,3 +19,15 @@
 .vp-full-width .VPDoc {
     background-color: var(--vp-c-bg-alt);
 }
+.api-developer-note { margin: .75rem 0; border: 1px solid var(--vp-c-divider); border-radius: 6px; font-size: .88rem; }
+.api-developer-note > summary { display: flex; align-items: center; gap: .6rem; padding: .45rem .7rem; cursor: pointer; list-style: none; }
+.api-developer-note > summary::-webkit-details-marker { display: none; }
+.api-developer-note > summary::before { content: '▸'; color: var(--vp-c-text-3); }
+.api-developer-note[open] > summary::before { content: '▾'; }
+.api-developer-note > summary:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; border-radius: 6px; }
+.api-note-tags { display: inline-flex; flex-wrap: wrap; gap: .3rem; }
+.api-note-tags span { padding: 0 .45rem; border-radius: 4px; background: var(--vp-c-default-soft); color: var(--vp-c-text-2); }
+.api-note-toggle { margin-left: auto; flex-shrink: 0; color: var(--vp-c-text-3); font-size: .8rem; }
+.api-note-body { padding: .4rem .9rem .8rem; border-top: 1px solid var(--vp-c-divider); }
+.api-note-body p { margin: .5rem 0; }
+.api-note-body small { color: var(--vp-c-text-2); }

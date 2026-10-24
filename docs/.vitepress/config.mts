@@ -5,6 +5,7 @@ import { resolve, dirname } from 'node:path'
 import generateSidebar from '../../scripts/sidebar.js';
 import { withMermaid } from "vitepress-plugin-mermaid";
 import { docLinks } from '../../scripts/doc-links';
+import { apiNotes } from '../../scripts/api-notes';
 
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
@@ -12,7 +13,10 @@ export default withMermaid({
   title: "我的世界中国版 Wiki",
   description: "ModSDK 开发者文档 镜像，但提供更优质的搜索",
   ignoreDeadLinks: false,
-  markdown: { config: docLinks(fileURLToPath(new URL('..', import.meta.url))) },
+  markdown: { config(md) {
+    docLinks(fileURLToPath(new URL('..', import.meta.url)))(md);
+    apiNotes(fileURLToPath(new URL('../..', import.meta.url)))(md);
+  } },
   // 替换原生搜索组件，自定义展示的搜索结果内容
   vite: {
     plugins: [

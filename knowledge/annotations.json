@@ -1,0 +1,3243 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
+      "source_sha256": "5b3db33c145a43c24d9ed65c85c47cf8b9658999e4b2634329a1fc1bd9afeaa7",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体属性",
+        "属性读取",
+        "生命值",
+        "移动速度",
+        "攻击力"
+      ],
+      "aliases": [
+        "当前生命值",
+        "当前血量",
+        "回血前读血量",
+        "读取实体属性",
+        "获取移动速度",
+        "读取攻击属性",
+        "读取玩家血量",
+        "查看当前血量",
+        "获取玩家生命值",
+        "查询玩家还有多少血"
+      ],
+      "questions": [],
+      "usage": "属性面板可读取生命值、移速或攻击力等当前值；治疗计算可先读取当前生命值，再另行写入目标值。",
+      "cautions": [
+        "属性不存在时返回 -1，不能把所有负值都判为缺失；部分属性在客户端只读到默认值。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue",
+        "modsdk:enum:common:AttrType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue",
+      "source_sha256": "6a55a1342c0a717d2b97fbe994b417afc512771d610990447831de22aaf80754",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体属性",
+        "属性上限",
+        "生命值",
+        "移动速度"
+      ],
+      "aliases": [
+        "最大血量",
+        "满血上限",
+        "最大生命值",
+        "生命值上限",
+        "属性最大值",
+        "移动速度上限"
+      ],
+      "questions": [],
+      "usage": "血条显示可读取生命上限作为分母；属性配置面板可查询移速等属性上限，与当前值分开展示。",
+      "cautions": [
+        "不支持查询护甲最大值；部分属性应从服务端读取准确值。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrMaxValue",
+        "modsdk:enum:common:AttrType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+      "source_sha256": "ea7e02f0a01f4a0e50a9863520c590bf7d1fc930ef07bda21e8f58a6cd4fab7a",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体属性",
+        "属性赋值",
+        "生命值",
+        "移动速度",
+        "攻击力",
+        "护甲"
+      ],
+      "aliases": [
+        "补血",
+        "恢复血量",
+        "治疗玩家",
+        "修改当前生命值",
+        "修改移速",
+        "修改攻击力",
+        "设置饥饿值",
+        "修改实体属性",
+        "调整移动速度",
+        "设置攻击力",
+        "增加额外护甲",
+        "按实际伤害治疗攻击者",
+        "给玩家加血",
+        "给玩家扣血",
+        "增加血量",
+        "减少血量",
+        "修改玩家血量"
+      ],
+      "questions": [],
+      "usage": "用于精英怪属性强化、治疗道具的生命值写入或移速增益；增量计算、持续时间和恢复原值由业务处理。",
+      "cautions": [
+        "超过当前上限会截断；setDefault 默认会改默认值，饥饿度与饱和度例外。",
+        "各属性适用对象、原版范围和护甲覆盖规则以原文及枚举为准；骑乘跳跃力不等于玩家普通跳高。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrMaxValue",
+        "modsdk:enum:common:AttrType",
+        "modsdk:event:server:ActuallyHurtServerEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrMaxValue",
+      "source_sha256": "eb30c78e8b5316ab0b9f4c9f292803dddab56978dedf13b1ae1b426ebef6fbf0",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体属性",
+        "属性上限",
+        "生命值",
+        "饥饿度"
+      ],
+      "aliases": [
+        "扩充生命上限",
+        "设置最大血量",
+        "修改属性上限",
+        "调整饥饿度上限"
+      ],
+      "questions": [],
+      "usage": "精英怪可先提高生命上限，再另行设置当前生命；也可调整饥饿度玩法的上限配置。",
+      "cautions": [
+        "设置饥饿度上限同时修改默认值；护甲上限不能通过此接口修改。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+        "modsdk:enum:common:AttrType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntityDamage",
+      "source_sha256": "f82f163e1b31ca23e7ab4ce7a7a79f9920b675215b45f30fac2bdcf641f6da87",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "攻击力",
+        "属性读取",
+        "武器加成",
+        "附魔加成"
+      ],
+      "aliases": [
+        "读取综合攻击力",
+        "武器和附魔加成后的攻击力",
+        "对指定目标的攻击力",
+        "查看战斗面板攻击值"
+      ],
+      "questions": [],
+      "usage": "战斗面板可展示含手持武器、状态效果及附魔的综合攻击力；传入目标可预览针对该类生物的附魔加成。",
+      "cautions": [
+        "返回值不是最终扣血量；抛射物及通过技能、抛射物攻击的敌对生物不在计算范围内。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
+        "modsdk:api:server:mod.server.component.hurtCompServer.HurtCompServer.Hurt"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.hurtCompServer.HurtCompServer.Hurt",
+      "source_sha256": "983026a8b2e3f382310ba1790b5ae1125f3755477ebc7a4a8aa78b6a7c6293d7",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体伤害",
+        "伤害来源",
+        "击退控制"
+      ],
+      "aliases": [
+        "对实体造成伤害",
+        "技能伤害结算",
+        "指定攻击者",
+        "伤害击退",
+        "自定义伤害来源"
+      ],
+      "questions": [],
+      "usage": "陷阱或技能结算可向目标施加指定伤害并记录来源；击退需提供攻击者实体，不能仅打开击退开关。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:DamageEvent",
+        "modsdk:event:server:MobDieEvent",
+        "modsdk:enum:common:ActorDamageCause"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:ActorDamageCause": "969131476324426992116c0bd28f6f581f4ac23b3853d987293831d0a80b8a4a"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetPos",
+      "source_sha256": "826b233e96485d2d5412664118ec43271afbcdb4e80f031da2946dc4885cec60",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体位置",
+        "坐标读取",
+        "空间定位"
+      ],
+      "aliases": [
+        "获取实体位置坐标",
+        "查询玩家所在位置",
+        "读取生物坐标",
+        "位置记录"
+      ],
+      "questions": [],
+      "usage": "距离检测或位置记录可读取实体坐标；玩家坐标受姿态偏移影响，若要与脚底传送点配对，应另查脚底坐标。",
+      "cautions": [
+        "玩家通常比脚底高 1.62，睡觉时偏移不同；不要把查询结果直接当作脚底位置。",
+        "若记录坐标后用于脚底传送，应优先使用 GetFootPos，不能直接回传玩家带高度偏移的 GetPos 结果。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
+      "source_sha256": "e9d385c8cfcf4bdf9fc13c24a8eac4678634aaf15f2aaf7fb20aae7044813d90",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体位置",
+        "脚底坐标",
+        "坐标读取"
+      ],
+      "aliases": [
+        "获取脚底坐标",
+        "读取玩家脚下位置",
+        "落脚方块检测",
+        "脚下特效定位",
+        "记录玩家位置",
+        "保存玩家当前位置",
+        "获取传送检查点坐标",
+        "记录位置之后传送回来"
+      ],
+      "questions": [],
+      "usage": "脚下粒子定位或落脚方块检测可先读取脚底坐标，再另行生成特效或查询方块。",
+      "cautions": [
+        "睡觉时不保证返回脚底位置；本接口不提供睡眠位置适配。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetPos",
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos",
+      "source_sha256": "d943a450d231a4bffae89a3fe126e2adeeadf85293ac8d369613ef82c6b6624d",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体传送",
+        "位置设置",
+        "脚底坐标"
+      ],
+      "aliases": [
+        "瞬移到指定坐标",
+        "把玩家传送回检查点",
+        "召回随从",
+        "设置实体脚底位置"
+      ],
+      "questions": [],
+      "usage": "关卡重置或随从召回可将实体瞬移到指定脚底坐标；返回原位置时应使用同一坐标基准。",
+      "cautions": [
+        "在床上调用会返回 False。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
+        "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.GetRot",
+      "source_sha256": "a22fb953166910068a655ea9ca6c79a9a69af1f7857af4a8aa20361b8a618ff2",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体朝向",
+        "角度读取",
+        "俯仰角",
+        "偏航角"
+      ],
+      "aliases": [
+        "获取头部朝向",
+        "玩家看向哪里",
+        "读取俯仰角",
+        "读取偏航角"
+      ],
+      "questions": [],
+      "usage": "瞄准或前方探测可读取头部俯仰角与偏航角，再另行转换方向向量进行计算。",
+      "cautions": [
+        "返回单位是角度，不是弧度。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.SetRot"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.SetRot",
+      "source_sha256": "d5beae3cd7765cd3a2381dc5c17e56b99feb693591640ce816e5a6f7b4f13723",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体朝向",
+        "角度设置",
+        "俯仰角",
+        "偏航角"
+      ],
+      "aliases": [
+        "设置实体朝向",
+        "调整头部角度",
+        "设置俯仰角",
+        "设置偏航角"
+      ],
+      "questions": [],
+      "usage": "过场演出或出生朝向配置可设置实体头部的俯仰角与偏航角；持续跟随目标需要另外计算和更新。",
+      "cautions": [
+        "输入单位是角度，不是弧度。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.GetRot"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetMotion",
+      "source_sha256": "e206f6bf9bdbda80d6645a72bd91737aa2b786e48435ab659d29660d6925da8c",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体运动",
+        "瞬时运动",
+        "方向向量",
+        "击退控制"
+      ],
+      "aliases": [
+        "怪物向前突进",
+        "生物冲刺",
+        "设置瞬时运动向量",
+        "自定义击退非玩家生物"
+      ],
+      "questions": [],
+      "usage": "非玩家生物的突进或自定义击退可设置瞬时运动向量；连续运动需由业务持续控制。",
+      "cautions": [
+        "服务端此接口不适用于玩家；在伤害事件中使用需关闭该回调原有击退。"
+      ],
+      "related": [
+        "modsdk:event:server:DamageEvent",
+        "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.SetRot"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineEntityByTypeStr",
+      "source_sha256": "1fb41b1e5232ea76eababc592b373ec04e11fa465d59ce82dd2b88d1c6bc354b",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体生成",
+        "实体类型",
+        "位置设置",
+        "维度选择"
+      ],
+      "aliases": [
+        "在坐标生成怪物",
+        "指定维度刷怪",
+        "创建自定义实体",
+        "创建不移动的场景角色"
+      ],
+      "questions": [],
+      "usage": "副本刷怪可按类型、位置和朝向创建生物；场景摆件可选择不移动、不转向且不存盘的角色模式。",
+      "cautions": [
+        "目标区块须已加载；全局实体仍受原生清除规则影响，并不保证永久存在。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.engineTypeCompServer.EngineTypeComponentServer.GetEngineTypeStr",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity",
+      "source_sha256": "0f970cfca04830e3d7768b6f592c28a53bad911a8b8165806bc25ed2203fd366",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体管理",
+        "实体销毁",
+        "实体清理"
+      ],
+      "aliases": [
+        "删除实体",
+        "清理临时怪物",
+        "移除召唤物",
+        "清理掉落物实体",
+        "移除临时演员",
+        "演出结束清理实体",
+        "清理召唤物",
+        "关卡结束销毁实体"
+      ],
+      "questions": [],
+      "usage": "关卡结算后可按记录的实体标识清理临时怪物或召唤物；目标收集和结算规则由业务处理。",
+      "cautions": [],
+      "related": [
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineEntityByTypeStr",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntitiesAroundByType"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.engineTypeCompServer.EngineTypeComponentServer.GetEngineTypeStr",
+      "source_sha256": "9dd47ece2bbcc00d37aef45ea68483b824579bc9e1afadba0df9ba9c1664abb3",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体类型",
+        "类型识别",
+        "标识查询"
+      ],
+      "aliases": [
+        "判断生物种类",
+        "读取实体类型名称",
+        "获取实体标识符",
+        "按实体类型分类"
+      ],
+      "questions": [],
+      "usage": "收集任务可按实体类型判断目标是否符合要求；场地统计可据类型标识分组计数。",
+      "cautions": [],
+      "related": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntitiesAroundByType"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntitiesAroundByType",
+      "source_sha256": "703d3225a8fc30d08074edda68f7d98212362b6f3769419232f8c12a9a24e489",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "范围查询",
+        "实体筛选",
+        "实体类型"
+      ],
+      "aliases": [
+        "查找附近生物",
+        "范围内筛选实体",
+        "查询附近掉落物",
+        "以玩家为中心查找目标"
+      ],
+      "questions": [],
+      "usage": "范围技能可先查找中心实体附近的指定类型目标，再另行施加效果；也可查询附近掉落物后自行清理。",
+      "cautions": [
+        "类型条件使用实体类型枚举，不能把类型名称字符串直接作为参数。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.engineTypeCompServer.EngineTypeComponentServer.GetEngineTypeStr",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity",
+        "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity",
+        "modsdk:enum:common:EntityType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:EntityType": "3cade47315bbcaff2c01856f3ff677c06b3628c3fc1c25c202fc3e7666330731"
+      }
+    },
+    {
+      "id": "modsdk:event:server:AddServerPlayerEvent",
+      "source_sha256": "5a43197322fa05cfd1e43dfccd3a7d945ca59bb1eebdcf7d2e839f034a1cec97",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "玩家加入",
+        "事件监听",
+        "在线状态"
+      ],
+      "aliases": [
+        "监听玩家加入",
+        "玩家登录初始化",
+        "玩家刚上线",
+        "客户端尚未加载的加入事件",
+        "刚加入服务器",
+        "玩家登录时发送欢迎",
+        "监听玩家登录"
+      ],
+      "questions": [],
+      "usage": "玩家加入时可登记服务端在线名单、初始化业务状态；客户端欢迎界面应等客户端加载完成后再通知。",
+      "cautions": [
+        "此时客户端模组和玩家实体尚未加载完毕，不应立即发送客户端事件或切换维度。",
+        "切服、重连等字段的 Apollo 适用范围见参数说明。"
+      ],
+      "related": [
+        "modsdk:event:server:DelServerPlayerEvent",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage"
+      ]
+    },
+    {
+      "id": "modsdk:event:server:DelServerPlayerEvent",
+      "source_sha256": "a9c980186a5f47b00ac1c4c2a49eb3c0f24f30ecb65e0baa30a567bab48a3abc",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "玩家退出",
+        "事件监听",
+        "生命周期"
+      ],
+      "aliases": [
+        "离线清理",
+        "退服取消计时",
+        "监听玩家退出",
+        "玩家离开清理",
+        "退服移除在线名单",
+        "离线清理业务缓存"
+      ],
+      "questions": [],
+      "usage": "玩家离开时可清理在线名单、业务缓存和已保存的定时器引用；转服标记仅按其平台适用范围使用。",
+      "cautions": [
+        "此事件标识玩家的字段是 id；它不自动取消业务定时器。"
+      ],
+      "related": [
+        "modsdk:event:server:AddServerPlayerEvent",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CancelTimer"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SpawnItemToPlayerInv",
+      "source_sha256": "ec18c231cc602420294aeeafa752af7bc79806104680661f7226cfb1e2fde31f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品生成",
+        "背包操作",
+        "物品堆叠",
+        "槽位分配"
+      ],
+      "aliases": [
+        "发放奖励",
+        "发到背包",
+        "给予物品",
+        "发奖到背包",
+        "给予玩家物品",
+        "新手礼包发放",
+        "商店商品交付",
+        "物品发放失败部分入包"
+      ],
+      "questions": [],
+      "usage": "任务奖励、新手礼包或商店交付可将物品生成到玩家背包；不指定槽位时按接口规则堆叠和使用空闲槽。",
+      "cautions": [
+        "返回失败也可能已有部分物品入包；重发或转为地面掉落前应核对实际结果。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineItemEntity"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+      "source_sha256": "e99813b7a895e8f008533a85335c6acf1d5722ed4db0326ef447addcd29f0f8f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品读取",
+        "背包查询",
+        "装备查询",
+        "手持物品"
+      ],
+      "aliases": [
+        "查询主手",
+        "读副手",
+        "读背包槽位",
+        "查看背包材料",
+        "查询主手物品",
+        "读取副手物品",
+        "检查装备槽位",
+        "核对入包结果",
+        "读取背包物品",
+        "获取玩家背包物品",
+        "读取指定槽位材料",
+        "查看玩家物品",
+        "查询背包中有什么"
+      ],
+      "questions": [],
+      "usage": "技能触发可检查主副手物品；商店扣除材料前可读取背包槽位，配装界面可读取盔甲栏。",
+      "cautions": [
+        "无物品返回 None；需要物品附加数据时应明确开启 getUserData。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SpawnItemToPlayerInv",
+        "modsdk:enum:common:ItemPosType",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
+      "source_sha256": "5bceaac47d2fd6013cfb79b7faf71ca55cc033ab043b3dd37b8b5484b89eda30",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "背包操作",
+        "物品数量",
+        "槽位修改",
+        "物品清除"
+      ],
+      "aliases": [
+        "修改背包物品数量",
+        "扣除指定格子材料",
+        "清空背包槽位",
+        "消耗物品数量",
+        "按种类扣除背包材料",
+        "消耗指定数量物品",
+        "扣掉背包材料"
+      ],
+      "questions": [],
+      "usage": "材料消耗可先读取原数量，再把指定槽位设为扣除后的数量；清理该槽时可将数量设为零。",
+      "cautions": [
+        "这是数量赋值，不是原子扣减；物品匹配、数量核对与扣减计算由业务处理。",
+        "按种类消耗前需先遍历并匹配槽位，再计算和写回；本接口不会自动查找目标物品。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineItemEntity",
+      "source_sha256": "cee697cae6bf402f44f1953ce5f223f58f371fdedf04b3d2658f86d2dd867756",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品生成",
+        "掉落物",
+        "实体生成",
+        "位置设置"
+      ],
+      "aliases": [
+        "在地上生成掉落物",
+        "指定坐标掉奖励",
+        "世界掉落",
+        "生成地面掉落物",
+        "把奖励掉到地上",
+        "指定坐标创建物品实体",
+        "地图拾取物"
+      ],
+      "questions": [],
+      "usage": "怪物奖励或地图拾取点可在指定维度坐标生成物品实体；该操作不会直接把物品放入玩家背包。",
+      "cautions": [
+        "返回实体标识或 None，后续追踪应先确认创建成功。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SpawnItemToPlayerInv",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetContainerItem",
+      "source_sha256": "61e4c33cecee442b938b16384be25c6ebbb85ffaa9df962b35511731a3afee71",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品读取",
+        "容器查询",
+        "槽位查询"
+      ],
+      "aliases": [
+        "读取箱子物品",
+        "查询漏斗库存",
+        "容器指定槽位",
+        "仓库物资统计"
+      ],
+      "questions": [],
+      "usage": "仓库界面或物资任务可按维度、方块坐标和槽位读取容器库存，再自行展示或统计。",
+      "cautions": [
+        "仅适用于原文列举的容器，不支持末影箱；需要附加数据时开启 getUserData。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetPlayerAllItems",
+      "source_sha256": "ed630ef35828ddd68bc284a19985deb7b537479c453bf7a50f79d884d474488c",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "背包操作",
+        "装备设置",
+        "批量写入",
+        "槽位修改"
+      ],
+      "aliases": [
+        "批量设置背包槽位",
+        "初始化职业套装",
+        "切换玩家配装",
+        "逐槽位设置物品"
+      ],
+      "questions": [],
+      "usage": "职业套装初始化或配装切换可按位置类型和槽位批量写入物品；未成功的槽位需分别处理。",
+      "cautions": [
+        "返回的是逐槽位结果，不保证所有槽位一起成功或自动回滚。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum"
+      ]
+    },
+    {
+      "id": "modsdk:event:server:ServerItemTryUseEvent",
+      "source_sha256": "a9feb85fdcb5dca6105868f27d16f7af2b565749a7f2d166b55ea3826e0eebf3",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品使用",
+        "事件监听",
+        "行为拦截"
+      ],
+      "aliases": [
+        "右键道具",
+        "点一下法杖",
+        "使用治疗道具",
+        "使用物品",
+        "使用道具",
+        "监听右键道具",
+        "尝试使用手持物品",
+        "取消一般物品使用",
+        "触发法杖技能"
+      ],
+      "questions": [],
+      "usage": "治疗法杖或菜单道具可用此事件识别使用尝试，再按物品信息处理效果；一般物品使用可通过事件字段取消。",
+      "cautions": [
+        "不能取消对方块使用物品；客户端对应事件取消后，本服务端事件不触发。"
+      ],
+      "related": [
+        "modsdk:event:server:ServerItemUseOnEvent",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem"
+      ]
+    },
+    {
+      "id": "modsdk:event:server:ServerItemUseOnEvent",
+      "source_sha256": "6321edacd42da108e759afaf6cd7254b8a37e912b5947395fb2a8e22466d9a59",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品使用",
+        "方块交互",
+        "事件监听",
+        "行为拦截"
+      ],
+      "aliases": [
+        "阻止水桶倒水",
+        "阻止打火石点火",
+        "对着方块使用物品",
+        "对方块使用物品",
+        "读取方块点击位置"
+      ],
+      "questions": [],
+      "usage": "领地规则可在玩家对方块使用物品前决定是否拦截倒水、点火等行为；使用 ret 取消。",
+      "cautions": [
+        "玩家字段为 entityId；原生带使用功能的方块需另查方块使用事件。"
+      ],
+      "related": [
+        "modsdk:event:server:ServerItemTryUseEvent",
+        "modsdk:event:server:ServerBlockUseEvent",
+        "modsdk:enum:common:Facing"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      }
+    },
+    {
+      "id": "modsdk:event:server:ServerBlockUseEvent",
+      "source_sha256": "aee1ccc4713b4bf1541143ee05a2d777e472351db49c5e404c2d962f668b3b8d",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块交互",
+        "事件监听",
+        "行为拦截"
+      ],
+      "aliases": [
+        "右键自定义方块",
+        "监听原生方块交互",
+        "拦截方块使用",
+        "交互方块打开菜单"
+      ],
+      "questions": [],
+      "usage": "自定义交互方块可触发菜单或机关；原生方块需先加入监听，再按事件决定是否允许交互。",
+      "cautions": [
+        "事件可按 tick 触发，业务需避免重复执行；锹犁地等行为仅设置 cancel 未必足够。"
+      ],
+      "related": [
+        "modsdk:event:server:ServerItemUseOnEvent",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:enum:common:Facing"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      }
+    },
+    {
+      "id": "modsdk:event:server:ServerPlayerTryDestroyBlockEvent",
+      "source_sha256": "eb170675c68f847690bf0a5a5deb6ddda11ab213503d05914ecdd4c72a2a7a4c",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块破坏",
+        "事件监听",
+        "行为拦截",
+        "掉落控制"
+      ],
+      "aliases": [
+        "禁止玩家挖方块",
+        "领地破坏保护",
+        "取消采集掉落物",
+        "拦截方块破坏"
+      ],
+      "questions": [],
+      "usage": "领地保护可拦截玩家即将破坏的方块；自定义采集玩法可控制原生掉落，另行结算奖励。",
+      "cautions": [
+        "床、旗帜、箱子等特殊方块需配合客户端对应事件；与开始挖掘事件的先后因破坏时间而异。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineItemEntity",
+        "modsdk:enum:common:Facing",
+        "modsdk:event:server:ServerEntityTryPlaceBlockEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      }
+    },
+    {
+      "id": "modsdk:event:server:DamageEvent",
+      "source_sha256": "19a3b0cf381c06915226f12ab98df2876129bbb0e61e9ea3bc85dc1671c37256",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "伤害事件",
+        "伤害修改",
+        "击退控制",
+        "伤害来源"
+      ],
+      "aliases": [
+        "修改伤害值",
+        "取消友方伤害",
+        "伤害事件关闭击退",
+        "读取伤害源"
+      ],
+      "questions": [],
+      "usage": "护盾或友伤规则可在此调整伤害源数值；自定义击退可修改击退标记，并另行施加运动。",
+      "cautions": [
+        "这里不是最终扣血量；伤害设为零并不会同时取消击退或点燃带来的伤害。",
+        "药水和状态伤害不触发本事件；ignite 设为 false 不能据此取消点燃。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.hurtCompServer.HurtCompServer.Hurt",
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetMotion",
+        "modsdk:enum:common:AttrType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      }
+    },
+    {
+      "id": "modsdk:event:server:MobDieEvent",
+      "source_sha256": "cba90db8c1215fa1d6113290640a85d9739382345adf99741b7f34851c4f7bf1",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体死亡",
+        "事件监听",
+        "伤害来源"
+      ],
+      "aliases": [
+        "监听怪物死亡",
+        "击杀任务计数",
+        "怪物波次死亡统计",
+        "死亡伤害来源"
+      ],
+      "questions": [],
+      "usage": "击杀任务或波次结束判定可在死亡事件中记录实体和伤害来源，再由业务累计进度或发奖。",
+      "cautions": [
+        "不要在该回调中修改原文所指玩家的手持物品；奖励流程需按接口时机安排。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.hurtCompServer.HurtCompServer.Hurt",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineItemEntity"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer",
+      "source_sha256": "63a26eaaab87ee73e8136972561663bd7639d1f4adb81834ff77b93b5c18bf2a",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "任务调度",
+        "延迟执行",
+        "单次执行"
+      ],
+      "aliases": [
+        "五秒后解锁",
+        "延时回调",
+        "冷却结束",
+        "几秒后执行一次",
+        "延迟结算技能",
+        "开局延迟刷怪",
+        "技能冷却计时",
+        "等待数秒后执行",
+        "过一会再调用",
+        "使用后延后执行",
+        "计时结束回调",
+        "延时清理实体",
+        "定时移除召唤物"
+      ],
+      "questions": [],
+      "usage": "延时传送、技能结算或限时清理可安排一次回调；冷却状态、目标引用和触发条件由业务另行维护。",
+      "cautions": [],
+      "related": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddRepeatedTimer",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CancelTimer"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddRepeatedTimer",
+      "source_sha256": "d432b1aa12c1adce7dd2bbf8fb6a8cfc501f466604862a998fc83a6810c081c7",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "任务调度",
+        "周期执行",
+        "重复执行"
+      ],
+      "aliases": [
+        "每秒执行",
+        "周期性检查",
+        "定时轮询",
+        "周期执行任务",
+        "每秒刷新倒计时",
+        "重复定时回调",
+        "定时区域巡检"
+      ],
+      "questions": [],
+      "usage": "倒计时刷新或区域巡检可周期执行回调；任务结束时应保存并使用计时器实例主动取消。",
+      "cautions": [],
+      "related": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CancelTimer"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CancelTimer",
+      "source_sha256": "9789328bbaca7fbd7d534b6be3a2f7594bd65864d1e8a802d3b3936e50d0abbe",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "任务调度",
+        "任务取消",
+        "生命周期"
+      ],
+      "aliases": [
+        "取消轮询",
+        "停止循环任务",
+        "销毁时停止计时",
+        "停止定时任务",
+        "取消周期回调",
+        "离开时清理计时器",
+        "取消延时任务"
+      ],
+      "questions": [],
+      "usage": "玩家退出或关卡结束时，可用创建时保存的计时器实例停止后续调度，避免遗留回调。",
+      "cautions": [
+        "仅取消指定计时器，不会回滚已发生的业务效果。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddRepeatedTimer",
+        "modsdk:event:server:DelServerPlayerEvent"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+      "source_sha256": "15b484086d5eaf69db79a7726a9244bac239da99156b8aeee94ffc4f3b1811b1",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "自定义数据",
+        "键值读取",
+        "世界数据",
+        "实体数据"
+      ],
+      "aliases": [
+        "读取世界进度",
+        "获取自定义键值",
+        "读取实体业务数据",
+        "恢复任务进度数据"
+      ],
+      "questions": [],
+      "usage": "任务进度或世界阶段恢复时，可按自定义键读取之前保存的业务值，再由业务判断如何恢复。",
+      "cautions": [
+        "世界数据用 levelId 创建组件，实体数据用对应实体标识；未设置键的返回行为不作额外保证。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SaveExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+      "source_sha256": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "自定义数据",
+        "键值写入",
+        "世界数据",
+        "实体数据"
+      ],
+      "aliases": [
+        "保存任务进度",
+        "写入世界自定义数据",
+        "批量设置键值",
+        "保存实体业务状态"
+      ],
+      "questions": [],
+      "usage": "任务进度或世界活动状态可保存为键值数据；批量写入时可关闭逐次自动保存，结束后统一保存。",
+      "cautions": [
+        "值支持 Python 基本数据类型；关闭 autoSave 后需调用保存接口。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SaveExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SaveExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+      "source_sha256": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "自定义数据",
+        "数据保存",
+        "世界数据",
+        "实体数据"
+      ],
+      "aliases": [
+        "批量写入后保存数据",
+        "保存世界进度数据",
+        "提交自定义数据保存",
+        "关闭自动保存后手动保存"
+      ],
+      "questions": [],
+      "usage": "一批业务状态写入且关闭自动保存后，可统一保存该组件绑定对象的自定义数据。",
+      "cautions": [
+        "此接口只保存已有自定义数据，不负责创建或修改键值。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew",
+      "source_sha256": "ff481a38502792c4d3732574606b89d723c9e17c60f7b952393aa63d6e74855f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块设置",
+        "方块替换",
+        "方块状态",
+        "邻居更新"
+      ],
+      "aliases": [
+        "替换指定坐标方块",
+        "放置方块",
+        "改方块状态",
+        "替换方块",
+        "地图机关改方块",
+        "控制相邻方块更新",
+        "同类容器重设清空物品"
+      ],
+      "questions": [],
+      "usage": "地图机关或建造工具可在指定维度放置、替换方块，并选择是否触发邻居更新；后续关联表现操作宜安排到下一帧。",
+      "cautions": [
+        "仅能操作已加载地形；同类容器方块重设可能清空物品，即使返回 False 也不能视为没有副作用。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockAuxValueFromStates",
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.SetBlockStates"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+      "source_sha256": "17346fd8a45c67cdc18f5018aa8bd5c08a5ec855babfe4467d5ffb89accfab41",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块查询",
+        "方块类型",
+        "方块数据"
+      ],
+      "aliases": [
+        "查询坐标方块类型",
+        "读取脚下方块",
+        "检测已加载方块信息",
+        "获取方块数据"
+      ],
+      "questions": [],
+      "usage": "采集条件或机关检测可读取指定位置的方块信息；遇到多状态方块，优先另查状态字典再作判断。",
+      "cautions": [
+        "仅能读取已加载地形，含相应维度常加载区块。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates",
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates",
+      "source_sha256": "05e05752df40e55381ba035290655b9c74fde96e0ae6b28587a06115e5347a11",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块查询",
+        "方块状态",
+        "状态读取"
+      ],
+      "aliases": [
+        "读取方块状态字典",
+        "查询方块支持的状态",
+        "读取已加载方块状态",
+        "方块状态为空"
+      ],
+      "questions": [],
+      "usage": "机关逻辑或建造预览可读取方块的状态字典，再按该方块实际支持的状态判断朝向等属性。",
+      "cautions": [
+        "只读已加载区块；新版本拆分后的方块可能没有旧状态，空状态字典不等同查询异常。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.SetBlockStates"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockAuxValueFromStates",
+      "source_sha256": "f092b354656255eec61c0ae44297c6125e69c14c651bd33b057dfdc3ead482d6",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块状态",
+        "数据转换",
+        "附加值"
+      ],
+      "aliases": [
+        "方块状态转附加值",
+        "按状态计算方块数据值",
+        "放置方块前换算附加值",
+        "转换方块状态配置"
+      ],
+      "questions": [],
+      "usage": "建造工具可将方块名称与状态字典换算为附加值，再供方块设置使用；可缓存已确认的配置结果。",
+      "cautions": [
+        "这只是转换，不会放置方块；旧版本状态未必适用于拆分后的新方块类型，异常返回 -1。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew",
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetTopBlockHeight",
+      "source_sha256": "505ea87d3996a2ef753b41543db683e30e0204477f2e8f0d13bdf3f003e8727c",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "高度查询",
+        "方块查询",
+        "地形定位"
+      ],
+      "aliases": [
+        "最高非空气方块高度",
+        "查询一列地形高度",
+        "地表生成点高度参考",
+        "获取顶部方块高度"
+      ],
+      "questions": [],
+      "usage": "地表标记或随机生成点可先查询某列最高非空气方块的高度，再检查其方块类型和上方空间。",
+      "cautions": [
+        "最高方块不等于安全落脚点，也可能是树冠或屋顶；区块未加载返回 None。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.SetBlockStates",
+      "source_sha256": "93fc728c314e56db55a726535e67d9e772cdae9dcbe0474d0f7406c34d4d6d03",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块状态",
+        "状态设置",
+        "方块修改"
+      ],
+      "aliases": [
+        "修改方块状态字典",
+        "机关切换方块状态",
+        "调整方块朝向状态",
+        "设置已加载方块状态"
+      ],
+      "questions": [],
+      "usage": "机关切换或建筑朝向调整可写入方块实际支持的状态；颜色已拆成独立类型的方块应另行更换类型。",
+      "cautions": [
+        "只操作已加载区块；不能给无对应状态的新方块硬设旧版本状态。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates",
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer",
+      "source_sha256": "50ada1d1cc000b0265310965547a7d1958220b3a1abc1dd377369c40de277742",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "客户端通信",
+        "事件发送",
+        "数据传递"
+      ],
+      "aliases": [
+        "客户端发请求",
+        "UI通知服务端",
+        "按钮请求服务器",
+        "界面按钮请求服务端",
+        "客户端上报技能操作",
+        "发送配装选择",
+        "客户端通知服务器"
+      ],
+      "questions": [],
+      "usage": "技能按钮或配装界面可把操作请求和参数发给服务端，再由服务端监听、验证并执行业务。",
+      "cautions": [
+        "发送事件不代表服务端已经接受或执行成功。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent",
+        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.CreateEventData",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient",
+      "source_sha256": "f6ce1485dbcc8da10e2148f5daba24ffbf201e3029edef954674efab8cde40b0",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "服务端通信",
+        "定向发送",
+        "事件通知"
+      ],
+      "aliases": [
+        "通知指定玩家客户端",
+        "发送个人任务数据",
+        "推送个人结算事件",
+        "单客户端数据通知"
+      ],
+      "questions": [],
+      "usage": "个人任务进度或结算界面可把数据发送给指定玩家的客户端，再由客户端监听并更新显示。",
+      "cautions": [
+        "应在目标客户端具备接收条件后发送；本接口不直接创建或刷新界面。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.BroadcastToAllClient",
+        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:AddServerPlayerEvent": "5a43197322fa05cfd1e43dfccd3a7d945ca59bb1eebdcf7d2e839f034a1cec97"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.BroadcastToAllClient",
+      "source_sha256": "0e9e49922f9fb40b94ef7911528ff1231adaa42f69301b7a4812ab08e181de1f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "服务端通信",
+        "事件广播",
+        "数据传递"
+      ],
+      "aliases": [
+        "向所有客户端广播",
+        "同步全场倒计时事件",
+        "通知所有玩家阶段变化",
+        "服务器广播事件"
+      ],
+      "questions": [],
+      "usage": "全场倒计时或公共阶段切换可向所有客户端广播业务事件；各客户端另行更新显示或播放效果。",
+      "cautions": [
+        "广播范围是所有客户端；仅一名玩家可见的数据应改用定向发送。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient",
+        "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent",
+        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent",
+      "source_sha256": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "事件监听",
+        "回调注册",
+        "事件处理"
+      ],
+      "aliases": [
+        "注册事件监听",
+        "服务端监听客户端请求",
+        "监听引擎事件",
+        "绑定事件回调"
+      ],
+      "questions": [],
+      "usage": "系统初始化时可注册引擎事件或客户端业务事件的回调，用于聊天处理、技能请求等逻辑。",
+      "cautions": [
+        "监听的是指定来源系统；服务端收到客户端系统事件时可从回调的 __id__ 识别来源玩家。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.UnListenForEvent",
+        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.UnListenForEvent",
+      "source_sha256": "5b966cdc9954e7da7da59f88dc420a44348200cf2e1d817e23db99e03d53c114",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "事件监听",
+        "取消监听",
+        "生命周期"
+      ],
+      "aliases": [
+        "取消事件监听",
+        "反注册回调",
+        "关闭玩法时解绑事件",
+        "撤销监听器"
+      ],
+      "questions": [],
+      "usage": "玩法关闭或系统清理时可撤销相应回调，停止该监听器处理后续事件。",
+      "cautions": [
+        "使用与注册相对应的事件来源、实例及回调；取消监听不是取消已经发生的事件。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.CreateEventData",
+      "source_sha256": "4a814913e14a8c42df1bfab3dccdfb9847dbef172a3234c3f72b089482b1a407",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "事件数据",
+        "数据封装",
+        "自定义事件"
+      ],
+      "aliases": [
+        "创建事件参数字典",
+        "封装自定义事件数据",
+        "界面请求参数",
+        "事件嵌套字典列表"
+      ],
+      "questions": [],
+      "usage": "界面提交选择或技能请求时可先创建事件数据字典，填入编号和参数后再调用发送接口。",
+      "cautions": [
+        "支持嵌套字典、列表和基本数据类型，不支持元组；创建数据本身不会发送事件。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.scrollViewUIControl.ScrollViewUIControl.GetScrollViewContentPath",
+      "source_sha256": "a9c29161a1e79a439f3789d02823b5980c336ea17e93d04589c82aae2f435364",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "滚动视图",
+        "控件定位",
+        "路径读取",
+        "输入适配"
+      ],
+      "aliases": [
+        "手机列表路径",
+        "切换键鼠控件失效",
+        "动态内容路径",
+        "滚动列表内容路径",
+        "切换触控键鼠后路径变化",
+        "任务列表子控件定位",
+        "刷新列表前重取路径"
+      ],
+      "questions": [],
+      "usage": "任务列表或商店列表刷新前可获取内容容器路径，再另行操作子控件；触控与键鼠切换后不能沿用旧路径。",
+      "cautions": [
+        "每次使用滚动视图及其子控件路径时重新获取，不只是界面打开时获取一次。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchUpCallback",
+      "source_sha256": "01cb7f8abe86445de5ec411dc0ddebdcc25605ea367f7c72125f2df6ee6fdba7",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "按钮输入",
+        "触控释放",
+        "事件回调"
+      ],
+      "aliases": [
+        "按钮点击回调",
+        "松开按钮",
+        "点击购买按钮",
+        "按钮范围内抬起回调",
+        "点击确认按钮",
+        "购买按钮响应",
+        "触控释放事件"
+      ],
+      "questions": [],
+      "usage": "购买或确认按钮可在触控于按钮范围内弹起时执行业务回调，需要服务端处理时再发送请求。",
+      "cautions": [
+        "先开启按钮回调功能；callbackFunc 按原文要求是界面的类函数。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer",
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchDownCallback",
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams"
+      ],
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchDownCallback": "787ed4104c8012b90c2b16738f0d3271c86258c999064d4dce1423bcfa9e3d6a",
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams": "91ea4bb0acce0aa598a471e907e87d47cedbdd60194d3692aeec574a25f63756"
+      }
+    },
+    {
+      "id": "modsdk:api:client:mod.client.extraClientApi.CreateUI",
+      "source_sha256": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "界面创建",
+        "界面节点",
+        "实体绑定",
+        "空间绑定"
+      ],
+      "aliases": [
+        "创建自定义界面",
+        "创建状态面板",
+        "实体头顶界面",
+        "世界坐标绑定界面"
+      ],
+      "questions": [],
+      "usage": "状态面板、实体头顶信息或空间标记可创建界面节点；业务数据、控件内容及销毁时机另行管理。",
+      "cautions": [
+        "创建标识须唯一；层级、绑定与自动缩放有配置要求，不要直接套用堆栈界面的参数。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.extraClientApi.PushScreen",
+        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.extraClientApi.PushScreen",
+      "source_sha256": "e86e4bbbef985f1442d8f116c4bf37070fda0ea921d6285e8648ec52861b75c0",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "界面创建",
+        "界面堆栈",
+        "菜单管理"
+      ],
+      "aliases": [
+        "打开堆栈菜单",
+        "创建多层菜单",
+        "压入界面",
+        "商店详情界面"
+      ],
+      "questions": [],
+      "usage": "商店详情或多层设置菜单可按堆栈打开界面，再用对应关闭接口实现返回操作。",
+      "cautions": [
+        "界面需配置 is_showing_menu 为 True；创建参数不支持照搬 CreateUI 的专用参数。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.extraClientApi.PopScreen",
+        "modsdk:api:client:mod.client.extraClientApi.CreateUI"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.extraClientApi.PopScreen",
+      "source_sha256": "5f40376aef74057f9a2dbf9265c35221f1382f8d191739b757f4e91a9f738c10",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "界面关闭",
+        "界面堆栈",
+        "菜单管理"
+      ],
+      "aliases": [
+        "关闭当前堆栈菜单",
+        "返回上一层界面",
+        "弹出菜单",
+        "关闭堆栈创建的界面"
+      ],
+      "questions": [],
+      "usage": "确认或返回按钮可关闭当前由堆栈方式创建的菜单，用于多层界面返回流程。",
+      "cautions": [
+        "仅关闭 PushScreen 创建的界面，不能用它关闭任意原生界面。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.extraClientApi.PushScreen",
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchUpCallback"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText",
+      "source_sha256": "8f429c4908d0f6128a5de0749717cb8918853ee60efde56e5dd7ea7625ce762c",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "文本显示",
+        "文本更新",
+        "文字样式",
+        "尺寸同步"
+      ],
+      "aliases": [
+        "更新界面文字",
+        "显示任务进度文本",
+        "修改倒计时文字",
+        "文本框尺寸随文字更新",
+        "刷新列表条目文字",
+        "修改现有文本控件",
+        "显示剩余时间",
+        "更新文本标签"
+      ],
+      "questions": [],
+      "usage": "任务进度、倒计时或属性面板可更新标签文字；长短变化时可选择同步更新文本框大小。",
+      "cautions": [
+        "本条指标签控件的文本接口，不是绘图或文字面板组件的同名方法。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.ui.controls.scrollViewUIControl.ScrollViewUIControl.GetScrollViewContentPath",
+        "modsdk:api:client:mod.client.extraClientApi.CreateUI"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity",
+      "source_sha256": "e7fab9ceeaf6daecd028180336a083a0f0dab4d3df26b663d47ef43f83d9f7e7",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "状态效果",
+        "效果添加",
+        "持续时间",
+        "效果等级"
+      ],
+      "aliases": [
+        "添加药水状态",
+        "给实体施加增益",
+        "设置状态持续时间",
+        "添加自定义状态效果",
+        "给玩家加状态",
+        "添加限时药水效果",
+        "施加指定等级的状态效果"
+      ],
+      "questions": [],
+      "usage": "药水道具或区域增益可给实体添加指定状态；持续时间和等级按接口参数配置。",
+      "cautions": [
+        "已有效果按等级、剩余时长规则更新，不会无条件覆盖；效果第一级对应额外等级 0。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.RemoveEffectFromEntity",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntitiesAroundByType"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.RemoveEffectFromEntity",
+      "source_sha256": "b023e5c263985544e157496769df6567bbe17c4e8d9e265c75415b6efbd41b65",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "状态效果",
+        "效果移除",
+        "实体状态"
+      ],
+      "aliases": [
+        "净化指定状态效果",
+        "移除药水效果",
+        "删除指定增益",
+        "清除某个实体状态"
+      ],
+      "questions": [],
+      "usage": "净化道具或区域规则可移除目标身上的某个指定状态效果；需要清除多种状态时由业务逐项处理。",
+      "cautions": [],
+      "related": [
+        "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetOnePopupNotice",
+      "source_sha256": "3d67df7982ca4e8400ea7b588d2a68ce4e7eb54d79700b4e1ce626936bbb19ba",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "消息提示",
+        "定向通知",
+        "快捷栏提示"
+      ],
+      "aliases": [
+        "仅自己可见提示",
+        "只提示本人",
+        "个人弹出提示",
+        "物品栏上方提示",
+        "快捷栏弹出通知",
+        "技能不可用短提示"
+      ],
+      "questions": [],
+      "usage": "任务完成、技能不可用或拾取反馈可只向目标玩家显示物品栏上方的短提示。",
+      "cautions": [
+        "这是弹出提示，不是聊天框消息；官方更建议使用客户端对应接口。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
+      "source_sha256": "d73dbb23b5754e0655dee547eddfef48a10823c6d1de90b9a56916adcae5f906",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "聊天消息",
+        "定向通知",
+        "文字样式"
+      ],
+      "aliases": [
+        "私有提示",
+        "只给一个玩家发消息",
+        "冷却聊天提示",
+        "给一个玩家发聊天消息",
+        "个人任务聊天提示",
+        "定向聊天通知",
+        "彩色聊天消息"
+      ],
+      "questions": [],
+      "usage": "任务反馈或指令执行结果可发送到指定玩家的聊天框，并按需要配置颜色。",
+      "cautions": [],
+      "related": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetOnePopupNotice",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.PlayCustomMusic",
+      "source_sha256": "664cb5c5e9302ff2c3d7d9525772199463e122247e7866f783028dea02bba9da",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "场景音效",
+        "位置播放",
+        "循环播放",
+        "实体绑定"
+      ],
+      "aliases": [
+        "播放循环场景音效",
+        "跟随实体播放声音",
+        "在指定坐标播放音效",
+        "机关环境声"
+      ],
+      "questions": [],
+      "usage": "机关环境声可在客户端按位置循环播放；跟随实体的音效可绑定实体，此时位置参数是相对偏移。",
+      "cautions": [
+        "未绑定实体且距离本地玩家超过 16 格会跳过；流式音频多次调用会从头播放，不能同时开多个实例。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension",
+      "source_sha256": "f7e03dae1ce14d75a4d964b4cb9683d458e7e27541e23ce0ba4664202698db24",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "玩家传送",
+        "维度切换",
+        "位置设置"
+      ],
+      "aliases": [
+        "玩家跨维度传送",
+        "副本退出传送",
+        "切换主世界下界末地",
+        "玩家维度入口"
+      ],
+      "questions": [],
+      "usage": "维度入口或副本离场可把玩家送到目标维度坐标；传送点需要按此接口的玩家头部坐标基准设置。",
+      "cautions": [
+        "成功切换维度时玩家脚底比传入位置低 1.62，不应直接复用脚底传送坐标。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos",
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos"
+      ]
+    },
+    {
+      "id": "modsdk:event:server:ActuallyHurtServerEvent",
+      "source_sha256": "755ca20bfa89cf0f0145bd8ebced5d2bbc75702ea030e60092b86c21ad8cc3f0",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "伤害事件",
+        "实际伤害",
+        "伤害修改",
+        "伤害来源"
+      ],
+      "aliases": [
+        "实际扣血事件",
+        "真正受到的伤害",
+        "吸血武器结算",
+        "护甲减伤后的伤害",
+        "受伤后的实际伤害值"
+      ],
+      "questions": [],
+      "usage": "吸血或伤害结算可读取经过护甲等计算的伤害及来源，再另行治疗攻击者或记录业务统计。",
+      "cautions": [
+        "伤害仍允许修改，不能当成不可更改的历史记录；药水和状态效果伤害不触发。",
+        "受击保护期间可能只报告超过上次伤害的部分，需核对剩余保护帧和上次伤害。"
+      ],
+      "related": [
+        "modsdk:event:server:DamageEvent",
+        "modsdk:event:server:ActorHurtServerEvent",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue"
+      ]
+    },
+    {
+      "id": "modsdk:event:server:ActorHurtServerEvent",
+      "source_sha256": "7042b7ad0f5c30f168d903d03b0798ea15f9ed1972e8f8015da537aa3a49c31f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "受伤通知",
+        "实际伤害",
+        "事件监听",
+        "伤害吸收"
+      ],
+      "aliases": [
+        "只读受伤事件",
+        "记录生物受到伤害",
+        "读取不可修改的伤害",
+        "药水状态伤害通知",
+        "黄心吸收伤害统计"
+      ],
+      "questions": [],
+      "usage": "受伤提示或伤害统计可读取吸收后的伤害与被吸收量；处理状态伤害时可作为相应事件入口。",
+      "cautions": [
+        "此事件的 damage 不可修改；没有攻击者字段，不能仅凭本事件完成吸血归属判断。"
+      ],
+      "related": [
+        "modsdk:event:server:ActuallyHurtServerEvent",
+        "modsdk:event:server:DamageEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:ActuallyHurtServerEvent": "755ca20bfa89cf0f0145bd8ebced5d2bbc75702ea030e60092b86c21ad8cc3f0"
+      }
+    },
+    {
+      "id": "modsdk:event:server:ServerEntityTryPlaceBlockEvent",
+      "source_sha256": "c127b283fc7e0cb76f5d1b80c0849ed99a148cd0c0c698cf8699484b0dde7e93",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "方块放置",
+        "事件监听",
+        "行为拦截",
+        "放置信息"
+      ],
+      "aliases": [
+        "放方块前的事件",
+        "取消玩家放置方块",
+        "阻止领地内摆放方块",
+        "监听生物尝试放置",
+        "修改即将放置的方块"
+      ],
+      "questions": [],
+      "usage": "领地规则可拦截一般方块放置；建造玩法可修改事件中允许调整的方块类型和位置。",
+      "cautions": [
+        "床、门等部分特殊方块及台阶叠加不触发，不能据此保证全类型保护。",
+        "放置者是生物标识，玩家规则应另行判断对象类型；修改特殊方块信息也有限制。"
+      ],
+      "related": [
+        "modsdk:event:server:ServerPlayerTryDestroyBlockEvent",
+        "modsdk:event:server:ServerItemUseOnEvent",
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew",
+        "modsdk:enum:common:Facing"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      }
+    },
+    {
+      "id": "modsdk:event:server:PlayerRespawnFinishServerEvent",
+      "source_sha256": "87748d6db808ce62c00127992c32373f4e358259a935e7eb96ebbc5363d00b9f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "玩家重生",
+        "复活完成",
+        "事件监听",
+        "生命周期"
+      ],
+      "aliases": [
+        "玩家复活完成",
+        "重生后恢复配装",
+        "复活完毕再传送",
+        "玩家重生后初始化"
+      ],
+      "questions": [],
+      "usage": "竞技场可在复活完成后恢复已保存的配装或安排传送；死亡前的数据保存由业务另行处理。",
+      "cautions": [
+        "从末地传送门返回主世界也会触发，不能把每次触发都当成死亡复活。"
+      ],
+      "related": [
+        "modsdk:event:server:PlayerRespawnEvent",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetPlayerAllItems",
+        "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension"
+      ]
+    },
+    {
+      "id": "modsdk:event:server:PlayerRespawnEvent",
+      "source_sha256": "8281787495ab0af8fd978de3c19b49e73cc76cf55ceb5008bb79ca424bcb9883",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "玩家重生",
+        "重生请求",
+        "事件监听"
+      ],
+      "aliases": [
+        "点击复活按钮",
+        "玩家请求重生",
+        "复活尚未完成",
+        "区分开始重生与复活完成"
+      ],
+      "questions": [],
+      "usage": "可记录玩家点击重生按钮的时机；需要恢复生命或切换维度的逻辑应等待复活完成事件。",
+      "cautions": [
+        "触发时玩家可能尚未重生完毕，不应在这里设置生命值或切换维度。"
+      ],
+      "related": [
+        "modsdk:event:server:PlayerRespawnFinishServerEvent"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.projectileCompServer.ProjectileComponentServer.CreateProjectileEntity",
+      "source_sha256": "b92c40469daf2ae4efe50a0891576b3d514272d254c7f010c66d4a384457c004",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "投射物生成",
+        "投射物发射",
+        "方向设置",
+        "目标追踪"
+      ],
+      "aliases": [
+        "生成抛射物",
+        "发射自定义火球",
+        "射出飞弹",
+        "创建魔法弹",
+        "投射物指定初始方向",
+        "发射跟踪弹"
+      ],
+      "questions": [],
+      "usage": "火球或魔法弹技能可按已配置的实体类型创建并直接发射投射物；可指定位置、方向或追踪目标。",
+      "cautions": [
+        "自定义投射物需预先配置实体资源；创建失败返回字符串 -1。",
+        "是否伤害创建者等行为应按参数设置，命中结算另查碰撞事件。"
+      ],
+      "related": [
+        "modsdk:event:server:ProjectileDoHitEffectEvent",
+        "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.GetRot"
+      ]
+    },
+    {
+      "id": "modsdk:event:server:ProjectileDoHitEffectEvent",
+      "source_sha256": "109dd26ababfca0fa9ec58ce651f407783d2aa5e3c3237fe25f304ec78f8ec54",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "投射物碰撞",
+        "命中检测",
+        "目标识别",
+        "事件监听"
+      ],
+      "aliases": [
+        "火球命中事件",
+        "飞弹打中实体或方块",
+        "抛射物碰撞回调",
+        "魔法弹命中位置",
+        "读取投射物创建者"
+      ],
+      "questions": [],
+      "usage": "火球命中后可按目标类型区分实体与方块，再结算效果；碰撞位置、目标和创建者信息可用于归属判断。",
+      "cautions": [
+        "碰撞事件不等于已造成伤害；实体与方块目标的字段含义不同，应先检查目标类型。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.projectileCompServer.ProjectileComponentServer.CreateProjectileEntity",
+        "modsdk:api:server:mod.server.component.hurtCompServer.HurtCompServer.Hurt",
+        "modsdk:enum:common:Facing"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetItemDurability",
+      "source_sha256": "e1ef74851103063516d963bfca955e6811b25741333c1cccc1ebb2c0f11d6b84",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品耐久",
+        "耐久读取",
+        "槽位查询"
+      ],
+      "aliases": [
+        "读取工具耐久",
+        "当前装备耐久值",
+        "查询背包槽位耐久",
+        "物品使用前剩余耐久"
+      ],
+      "questions": [],
+      "usage": "工具额外消耗或修理前可读取指定物品位置的耐久，再由业务计算新的数值。",
+      "cautions": [
+        "槽位对背包和盔甲栏才有意义；读取当前耐久不等于读取最大耐久。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetItemDurability",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:enum:common:ItemPosType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetItemDurability",
+      "source_sha256": "2e475d9c4b742a5fdbfc35d6d93d2249e1c5639f8635fb618f4a39f46a90443f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "物品耐久",
+        "耐久设置",
+        "槽位修改"
+      ],
+      "aliases": [
+        "工具额外消耗耐久",
+        "修理物品耐久",
+        "写入装备耐久值",
+        "修改背包槽位耐久"
+      ],
+      "questions": [],
+      "usage": "修理或额外磨损可先读取耐久，再写入计算后的目标值；使用物品事件中的写入宜延后执行。",
+      "cautions": [
+        "这是赋值而非自动扣减；数值会限制在零至最大耐久之间。",
+        "原文建议在使用物品事件中通过 AddTimer 延迟设置，否则可能失效。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetItemDurability",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer",
+        "modsdk:enum:common:ItemPosType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining",
+      "source_sha256": "a4dca0ed816ea0f7d6dc4bc6964c249363968a753dce945375e28e134613b8e8",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "天气控制",
+        "降雨强度",
+        "天气时长"
+      ],
+      "aliases": [
+        "切换晴天和雨天",
+        "控制晴雨天气",
+        "设置下雨强度",
+        "剧情阶段改变天气"
+      ],
+      "questions": [],
+      "usage": "剧情阶段可调整世界降雨强度并设置持续时间；仅控制降雨，雷暴等其他天气能力需另查接口。",
+      "cautions": [
+        "时长单位为帧，一秒 20 帧；时长需开启天气更替才生效，结束后会转为相反天气。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTimeOfDay"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTime",
+      "source_sha256": "16150ac364b1a9bd72bf559b934d21d8724b733320ab476d3402b2f96c32f32f",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "世界时间",
+        "累计时间",
+        "时间设置"
+      ],
+      "aliases": [
+        "修改存档累计时间",
+        "设置经过的世界帧数",
+        "调整世界天数和时间"
+      ],
+      "questions": [],
+      "usage": "需要同时处理存档天数与时刻的玩法可设置累计时间；只想切到白天或夜晚时优先查看日内时间接口。",
+      "cautions": [
+        "单位为帧，值表示存档建立以来的累计时间，不能直接当作当天时刻。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTimeOfDay"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTimeOfDay",
+      "source_sha256": "caf66b647b44cc5fbab0043b5cb9d29571dfbd3032d21ee956f837833dad5a68",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "世界时间",
+        "日内时间",
+        "昼夜控制"
+      ],
+      "aliases": [
+        "把世界切到夜晚",
+        "设置白天时刻",
+        "调整一天内时间",
+        "剧情切换昼夜"
+      ],
+      "questions": [],
+      "usage": "剧情地图可把世界推进到指定日内时刻，如夜晚或黎明；后续是否继续流逝需另行管理。",
+      "cautions": [
+        "范围为 0–24000 帧；目标早于当前时刻时会推进到次日，不是回拨当天时间。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTime",
+        "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent",
+      "source_sha256": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "事件监听",
+        "回调注册",
+        "事件接收"
+      ],
+      "aliases": [
+        "客户端接收服务器事件",
+        "监听倒计时广播",
+        "客户端收到数据后刷新界面",
+        "注册客户端事件回调"
+      ],
+      "questions": [],
+      "usage": "客户端可监听服务端推送的倒计时或任务数据，再更新界面控件；监听需指定正确的事件来源系统。",
+      "cautions": [
+        "发送事件和注册接收回调是不同职责；原文的 __id__ 自动字段说明针对服务端接收客户端事件。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.BroadcastToAllClient",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient",
+        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText"
+      ]
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams",
+      "source_sha256": "91ea4bb0acce0aa598a471e907e87d47cedbdd60194d3692aeec574a25f63756",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "按钮输入",
+        "回调启用",
+        "事件拦截"
+      ],
+      "aliases": [
+        "开启按钮回调",
+        "按钮没有响应点击",
+        "防止界面点击穿透世界",
+        "设置按钮吞噬触控"
+      ],
+      "questions": [],
+      "usage": "界面购买或技能按钮应先开启回调，再绑定按下或弹起处理；可通过事件吞噬避免操作穿透到世界。",
+      "cautions": [
+        "未调用本接口按钮无回调；开启回调不等于已绑定具体业务处理函数。"
+      ],
+      "related": [
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchUpCallback"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.IsRaining",
+      "source_sha256": "c16387b614d76c4ffb4268d711966f0d257a840eb7d45a9d0cba05b24de46c33",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文；2026-10-24 逐条核对",
+      "tags": [
+        "天气查询",
+        "降雨状态",
+        "世界天气"
+      ],
+      "aliases": [
+        "查询是否下雨",
+        "读取当前降雨状态",
+        "判断世界晴雨",
+        "只检查天气不修改"
+      ],
+      "questions": [],
+      "usage": "雨天专属任务或环境效果可先判断当前是否下雨，再由业务决定是否触发；此接口不会修改天气。",
+      "cautions": [],
+      "related": [
+        "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.nameCompServer.NameComponentServer.GetName",
+      "source_sha256": "67474adf8b87a8943766bd3ec5fa04e5360eabcf437b730c0366e94321480cc8",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "名称读取",
+        "玩家名称",
+        "实体名称"
+      ],
+      "aliases": [
+        "获取玩家名字",
+        "读取玩家昵称",
+        "查询玩家名称",
+        "玩家叫什么名字",
+        "生物自定义名称"
+      ],
+      "questions": [],
+      "usage": "欢迎消息或名册显示可读取玩家名字；生物则返回其自定义名称，适合展示命名牌设置的名称。",
+      "cautions": [
+        "名称不是稳定的账号唯一标识；本接口只读名称，不会重命名玩家。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
+        "modsdk:event:server:AddServerPlayerEvent"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems",
+      "source_sha256": "777cb6d4f6656038be90041b686f7948000f0538059ccd8b7b260b0fccb3c973",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "背包读取",
+        "批量查询",
+        "装备查询",
+        "槽位遍历"
+      ],
+      "aliases": [
+        "读取玩家背包所有物品",
+        "获取背包全部槽位",
+        "遍历背包物品",
+        "批量读取装备栏",
+        "查询背包材料数量"
+      ],
+      "questions": [],
+      "usage": "收集任务或材料兑换可按物品位置类型批量读取槽位，再匹配物品种类并累计数量；扣除需另行写回。",
+      "cautions": [
+        "返回列表中空槽位为 None；按所选位置类型读取，不保证一次包含全部背包与装备。",
+        "读取附加数据需开启 getUserData；读取快照不是原子扣除或锁定库存。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetPlayerAllItems",
+        "modsdk:enum:common:ItemPosType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetPlayerGameType",
+      "source_sha256": "9f6cc3396659d576702c5b4f0d6f579288696c1b6f40cbd4138e4f7bfaf97066",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "游戏模式",
+        "模式读取",
+        "玩家状态"
+      ],
+      "aliases": [
+        "读取玩家游戏模式",
+        "查询当前个人模式",
+        "判断玩家是否创造模式",
+        "获取指定玩家生存模式"
+      ],
+      "questions": [],
+      "usage": "区域准入或玩法规则可先读取指定玩家的个人游戏模式，再决定是否执行相关业务。",
+      "cautions": [
+        "返回游戏模式枚举，不是世界默认模式；本接口不会切换模式。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerGameType",
+        "modsdk:enum:common:GameType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:GameType": "9e512ab83c704bcc74d4e1fd193960af4fdf9b3bc3ac25982a2257db02c9176d"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerGameType",
+      "source_sha256": "2ccbda21b68d5aade111e0594c0f243d53805f471922be5bb40355d479e0cdbc",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "游戏模式",
+        "模式设置",
+        "玩家状态"
+      ],
+      "aliases": [
+        "切到创造模式",
+        "修改玩家游戏模式",
+        "切换个人生存模式",
+        "给一个玩家设置游戏模式"
+      ],
+      "questions": [],
+      "usage": "建造区或关卡阶段可切换指定玩家的个人游戏模式；离开时是否恢复需由业务记录和处理。",
+      "cautions": [
+        "极限模式不能修改；这是个人模式接口，不应替代默认游戏模式设置。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetPlayerGameType",
+        "modsdk:enum:common:GameType"
+      ],
+      "source_dependencies": {
+        "modsdk:enum:common:GameType": "9e512ab83c704bcc74d4e1fd193960af4fdf9b3bc3ac25982a2257db02c9176d"
+      }
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.ChangePlayerFlyState",
+      "source_sha256": "53413e95ad0267ad46d0213408717c0f9b5532ab1483b52248c47ab09097728a",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "飞行能力",
+        "飞行状态",
+        "能力设置"
+      ],
+      "aliases": [
+        "允许玩家飞行",
+        "取消玩家飞行能力",
+        "允许飞行但不立即起飞",
+        "让玩家进入飞行状态"
+      ],
+      "questions": [],
+      "usage": "飞行道具可授予飞行能力，并分别决定是否立刻进入飞行状态；临时授权的撤销由业务另行安排。",
+      "cautions": [
+        "拥有飞行能力时不受摔落伤害；允许飞行与正在飞行是不同状态。",
+        "从客户端落地事件通知服务端后调用时，原文建议延后一帧处理。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerCanFly",
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerFlying",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerCanFly",
+      "source_sha256": "816b5f4c4d6b91ed7b2f44da3d4e062ccc29d91324ee19c2d8de841a5e000fb0",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "飞行能力",
+        "能力查询",
+        "玩家状态"
+      ],
+      "aliases": [
+        "玩家能否飞行",
+        "查询是否允许飞行",
+        "读取玩家飞行权限状态",
+        "检查是否拥有飞行能力"
+      ],
+      "questions": [],
+      "usage": "使用飞行道具前可检查玩家是否已有飞行能力，再决定授权或恢复业务。",
+      "cautions": [
+        "能飞不等于当前正在飞；只查询，不改变飞行能力。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.ChangePlayerFlyState",
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerFlying"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerFlying",
+      "source_sha256": "7db9997149eb6531b2969cc0926cd04ae53358b2470c7d956057c18f81db8cd7",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "飞行状态",
+        "状态查询",
+        "玩家状态"
+      ],
+      "aliases": [
+        "玩家是否正在飞行",
+        "检测当前飞行状态",
+        "检查玩家在不在飞",
+        "读取是否处于飞行中"
+      ],
+      "questions": [],
+      "usage": "飞行中的提示或玩法条件可查询玩家当前飞行状态，再由业务选择表现或规则。",
+      "cautions": [
+        "正在飞行与拥有飞行能力不同；本接口不授予飞行能力。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerCanFly",
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.ChangePlayerFlyState"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetPlayerMotion",
+      "source_sha256": "a00eb071199c1334367afa3deb5c0c51d14cd4727bf4be4735bd46e2c5f3891a",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "玩家运动",
+        "瞬时运动",
+        "方向向量",
+        "击退控制"
+      ],
+      "aliases": [
+        "服务端设置玩家运动向量",
+        "让玩家弹射",
+        "玩家冲刺运动",
+        "设置玩家瞬时速度",
+        "自定义玩家击退"
+      ],
+      "questions": [],
+      "usage": "弹射台或玩家冲刺可在服务端设置玩家瞬时运动向量；在伤害事件中自定义击退需关闭原事件击退。",
+      "cautions": [
+        "本接口针对玩家，非玩家生物另查 SetMotion；不要把速度运动器当成同一个瞬时操作。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.GetMotion",
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetMotion",
+        "modsdk:event:server:DamageEvent"
+      ]
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.GetMotion",
+      "source_sha256": "52f2beb8fa0307a94c6492864b92ee8ca5c9d640e7456279ef643c3720db9dff",
+      "authority": "curated_note",
+      "reviewed_against": "ModSDK 3.9 快照原文及引用资料；2026-10-24 逐条核对",
+      "tags": [
+        "实体运动",
+        "运动读取",
+        "方向向量"
+      ],
+      "aliases": [
+        "读取玩家瞬时速度",
+        "获取生物运动向量",
+        "查询实体移动方向向量",
+        "检测玩家当前运动"
+      ],
+      "questions": [],
+      "usage": "冲刺反馈或运动判定可读取生物及玩家的瞬时运动向量，再自行计算速度大小或方向。",
+      "cautions": [
+        "异常返回 None；本接口只读取，不设置速度。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetPlayerMotion",
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetMotion"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "label": "监听道具使用",
+      "triggers": [
+        "法杖",
+        "手持道具",
+        "使用道具",
+        "使用物品",
+        "点一下道具"
+      ],
+      "entries": [
+        "modsdk:event:server:ServerItemTryUseEvent"
+      ],
+      "pick": 1,
+      "exclude": [
+        "模拟使用",
+        "主动使用",
+        "代码使用"
+      ]
+    },
+    {
+      "label": "修改生命值",
+      "triggers": [
+        "回血",
+        "补血",
+        "治疗",
+        "恢复血量",
+        "加血",
+        "扣血",
+        "增加血量",
+        "减少血量"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue"
+      ],
+      "pick": 2,
+      "exclude": [
+        "不加血",
+        "不扣血",
+        "不回血",
+        "只显示",
+        "只读取",
+        "只查看",
+        "只查询"
+      ]
+    },
+    {
+      "label": "读取生命上限",
+      "triggers": [
+        "生命上限",
+        "血量上限",
+        "最大血量",
+        "血条",
+        "满血"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "一次延迟与冷却",
+      "triggers": [
+        "冷却",
+        "延时",
+        "延迟",
+        "几秒后"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "定向提示",
+      "triggers": [
+        "本人",
+        "自己可见",
+        "一个玩家",
+        "指定玩家提示"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetOnePopupNotice",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "提示",
+        "消息",
+        "通知",
+        "文字"
+      ]
+    },
+    {
+      "label": "对方块使用物品",
+      "triggers": [
+        "倒水",
+        "点火",
+        "对方块使用",
+        "对着方块",
+        "打火石"
+      ],
+      "entries": [
+        "modsdk:event:server:ServerItemUseOnEvent"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "背包发放",
+      "triggers": [
+        "发奖",
+        "发放奖励",
+        "背包奖励",
+        "发到背包",
+        "给予物品"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SpawnItemToPlayerInv"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "地面掉落",
+      "triggers": [
+        "掉落物",
+        "掉到地上",
+        "地面",
+        "指定坐标掉"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineItemEntity"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "周期任务",
+      "triggers": [
+        "每秒",
+        "周期",
+        "循环执行",
+        "重复执行",
+        "轮询"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddRepeatedTimer"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "取消任务",
+      "triggers": [
+        "取消",
+        "停止",
+        "销毁",
+        "退出",
+        "离开"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CancelTimer"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "定时",
+        "周期",
+        "每秒",
+        "循环",
+        "任务",
+        "timer"
+      ]
+    },
+    {
+      "label": "玩家退出清理",
+      "triggers": [
+        "玩家退出",
+        "玩家离开",
+        "退服",
+        "离线"
+      ],
+      "entries": [
+        "modsdk:event:server:DelServerPlayerEvent"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "滚动内容路径",
+      "triggers": [
+        "滚动列表",
+        "scroll_view",
+        "触屏",
+        "触控模式",
+        "键鼠",
+        "列表路径"
+      ],
+      "entries": [
+        "modsdk:api:client:mod.client.ui.controls.scrollViewUIControl.ScrollViewUIControl.GetScrollViewContentPath"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "按钮释放回调",
+      "triggers": [
+        "按钮",
+        "点击购买"
+      ],
+      "entries": [
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchUpCallback"
+      ],
+      "pick": 1,
+      "exclude": [
+        "无响应",
+        "没有响应",
+        "开启回调",
+        "启用回调",
+        "点击穿透",
+        "吞噬事件"
+      ]
+    },
+    {
+      "label": "跨端发送",
+      "triggers": [
+        "通知服务器",
+        "通知服务端",
+        "发请求",
+        "客户端请求"
+      ],
+      "entries": [
+        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "设置方块",
+      "triggers": [
+        "放置方块",
+        "替换方块",
+        "修改方块",
+        "改方块状态"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "核对入包结果",
+      "triggers": [
+        "发奖",
+        "发放",
+        "发到背包"
+      ],
+      "requires_any": [
+        "失败",
+        "装不下",
+        "部分",
+        "重发"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "实际伤害阶段",
+      "triggers": [
+        "实际伤害",
+        "实际扣血",
+        "真正扣血",
+        "吸血"
+      ],
+      "entries": [
+        "modsdk:event:server:ActuallyHurtServerEvent"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "实体清理",
+      "triggers": [
+        "清理",
+        "移除",
+        "销毁"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "实体",
+        "演员",
+        "怪物",
+        "召唤物",
+        "生物"
+      ]
+    },
+    {
+      "label": "客户端接收事件",
+      "triggers": [
+        "客户端收到",
+        "客户端接收",
+        "客户端监听",
+        "接收广播"
+      ],
+      "entries": [
+        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "事件",
+        "数据",
+        "倒计时",
+        "通知",
+        "广播"
+      ]
+    },
+    {
+      "label": "更新控件文本",
+      "triggers": [
+        "条目文字",
+        "文本控件",
+        "标签文字",
+        "更新文字",
+        "刷新文字"
+      ],
+      "entries": [
+        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "拦截方块放置",
+      "triggers": [
+        "放方块",
+        "放置方块",
+        "摆放方块"
+      ],
+      "entries": [
+        "modsdk:event:server:ServerEntityTryPlaceBlockEvent"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "拦截",
+        "取消",
+        "保护",
+        "监听",
+        "阻止",
+        "禁止"
+      ]
+    },
+    {
+      "label": "投射物发射",
+      "triggers": [
+        "投射物",
+        "抛射物",
+        "火球",
+        "飞弹",
+        "魔法弹"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.projectileCompServer.ProjectileComponentServer.CreateProjectileEntity"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "生成",
+        "创建",
+        "发射",
+        "射出"
+      ]
+    },
+    {
+      "label": "投射物命中",
+      "triggers": [
+        "命中",
+        "碰撞",
+        "打中",
+        "撞击"
+      ],
+      "entries": [
+        "modsdk:event:server:ProjectileDoHitEffectEvent"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "投射物",
+        "抛射物",
+        "火球",
+        "飞弹",
+        "魔法弹"
+      ]
+    },
+    {
+      "label": "晴雨控制",
+      "triggers": [
+        "晴雨",
+        "降雨",
+        "雨天",
+        "下雨"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "控制",
+        "设置",
+        "切换",
+        "修改",
+        "改变"
+      ],
+      "exclude": [
+        "不修改",
+        "不改变",
+        "只查询",
+        "只读取",
+        "仅查询",
+        "仅检查"
+      ]
+    },
+    {
+      "label": "等待后执行",
+      "triggers": [
+        "等待",
+        "稍后",
+        "过一会"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "秒",
+        "分钟"
+      ],
+      "exclude": [
+        "循环",
+        "每隔",
+        "每秒",
+        "重复"
+      ]
+    },
+    {
+      "label": "查询降雨",
+      "triggers": [
+        "是否下雨",
+        "天气状态",
+        "降雨状态",
+        "晴雨"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.IsRaining"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "查询",
+        "读取",
+        "判断",
+        "检查"
+      ],
+      "exclude": [
+        "设置"
+      ]
+    },
+    {
+      "label": "启用按钮回调",
+      "triggers": [
+        "开启",
+        "启用",
+        "无响应",
+        "没有响应",
+        "点击穿透",
+        "吞噬"
+      ],
+      "entries": [
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "按钮",
+        "触控",
+        "回调"
+      ]
+    },
+    {
+      "label": "复活完成阶段",
+      "triggers": [
+        "复活完成",
+        "重生完成",
+        "复活完毕",
+        "重生完毕"
+      ],
+      "entries": [
+        "modsdk:event:server:PlayerRespawnFinishServerEvent"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "读取玩家名称",
+      "triggers": [
+        "玩家名字",
+        "玩家名称",
+        "玩家昵称"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.nameCompServer.NameComponentServer.GetName"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "获取",
+        "读取",
+        "查询",
+        "查看",
+        "显示"
+      ]
+    },
+    {
+      "label": "读取背包物品",
+      "triggers": [
+        "背包",
+        "库存"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem"
+      ],
+      "pick": 2,
+      "requires_any": [
+        "读取",
+        "获取",
+        "查看",
+        "查询",
+        "检查",
+        "遍历"
+      ],
+      "exclude": [
+        "手持",
+        "主手",
+        "副手"
+      ]
+    },
+    {
+      "label": "按种类扣除材料",
+      "triggers": [
+        "背包",
+        "物品"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum"
+      ],
+      "pick": 2,
+      "requires_any": [
+        "扣除",
+        "扣掉",
+        "消耗",
+        "扣材料"
+      ],
+      "exclude": [
+        "不消耗",
+        "不扣除",
+        "不扣掉",
+        "只读取",
+        "只查看",
+        "只查询"
+      ]
+    },
+    {
+      "label": "读取当前生命",
+      "triggers": [
+        "血量",
+        "生命值",
+        "多少血"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "读",
+        "查询",
+        "获取",
+        "查看",
+        "显示"
+      ],
+      "exclude": [
+        "最大血量",
+        "生命上限",
+        "血量上限"
+      ]
+    },
+    {
+      "label": "记录脚底位置",
+      "triggers": [
+        "位置",
+        "坐标"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "记录",
+        "保存",
+        "检查点",
+        "原样传"
+      ]
+    },
+    {
+      "label": "读取个人模式",
+      "triggers": [
+        "游戏模式",
+        "个人模式"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetPlayerGameType"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "读取",
+        "获取",
+        "查询",
+        "查看",
+        "判断"
+      ],
+      "exclude": [
+        "默认模式"
+      ]
+    },
+    {
+      "label": "设置个人模式",
+      "triggers": [
+        "游戏模式",
+        "个人模式",
+        "创造模式"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerGameType"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "设置",
+        "修改",
+        "切换",
+        "切到",
+        "改成",
+        "改为"
+      ],
+      "exclude": [
+        "不修改",
+        "不改变",
+        "只查询",
+        "默认模式"
+      ]
+    },
+    {
+      "label": "玩家瞬时运动",
+      "triggers": [
+        "玩家"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetPlayerMotion"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "运动向量",
+        "移动向量",
+        "瞬时速度",
+        "弹射",
+        "冲刺",
+        "击退"
+      ],
+      "exclude": [
+        "读取",
+        "获取",
+        "查询",
+        "只读",
+        "非玩家",
+        "不是玩家",
+        "不含玩家",
+        "不包括玩家",
+        "速度属性",
+        "属性值"
+      ]
+    },
+    {
+      "label": "读取瞬时运动",
+      "triggers": [
+        "运动向量",
+        "移动向量",
+        "瞬时速度"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.GetMotion"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "读取",
+        "获取",
+        "查询"
+      ]
+    },
+    {
+      "label": "设置飞行能力",
+      "triggers": [
+        "飞行"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.ChangePlayerFlyState"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "允许",
+        "给予",
+        "取消",
+        "设置",
+        "修改",
+        "进入"
+      ],
+      "exclude": [
+        "查询",
+        "读取",
+        "是否",
+        "只检查"
+      ]
+    },
+    {
+      "label": "查询飞行能力",
+      "triggers": [
+        "能否飞行",
+        "是否允许飞行",
+        "是否拥有飞行能力",
+        "能不能飞"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerCanFly"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "查询飞行状态",
+      "triggers": [
+        "是否正在飞行",
+        "当前飞行状态",
+        "在不在飞",
+        "是否处于飞行"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerFlying"
+      ],
+      "pick": 1
+    },
+    {
+      "label": "添加状态效果",
+      "triggers": [
+        "状态效果",
+        "药水效果",
+        "加状态"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity"
+      ],
+      "pick": 1,
+      "requires_any": [
+        "添加",
+        "施加",
+        "给予",
+        "加状态"
+      ],
+      "exclude": [
+        "移除",
+        "删除",
+        "清除",
+        "不添加"
+      ]
+    },
+    {
+      "label": "非玩家瞬时运动",
+      "triggers": [
+        "怪物",
+        "非玩家",
+        "生物"
+      ],
+      "requires_any": [
+        "设置",
+        "击退",
+        "突进",
+        "冲刺",
+        "运动向量",
+        "弹射"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetMotion"
+      ],
+      "pick": 1,
+      "exclude": [
+        "读取",
+        "获取",
+        "查询",
+        "只读"
+      ]
+    },
+    {
+      "label": "修改实体属性",
+      "triggers": [
+        "实体属性",
+        "速度属性",
+        "攻击力属性",
+        "生命属性"
+      ],
+      "requires_any": [
+        "设置",
+        "修改",
+        "调整",
+        "增加",
+        "减少",
+        "提高",
+        "降低"
+      ],
+      "entries": [
+        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue"
+      ],
+      "pick": 1,
+      "exclude": [
+        "不修改",
+        "不改变",
+        "只读取",
+        "只查看"
+      ]
+    }
+  ]
+}

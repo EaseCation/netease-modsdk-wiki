@@ -5,3 +5,6 @@
 /docs/.vitepress/dist
 .env
 /.idea
+/.api-index/
+/docs/public/ai/
+__pycache__/

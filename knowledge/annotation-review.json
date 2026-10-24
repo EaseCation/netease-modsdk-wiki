@@ -1,0 +1,628 @@
+{
+  "reviewed_on": "2026-10-24",
+  "method": "Codex 逐条对照官方原文直接编写与复核",
+  "count": 84,
+  "policy": "中文基础能力标签；应用场景仅在开发补充正文；默认排除 Preset",
+  "deepseek": "已按用户要求停止；本批正式内容与别名直接编写，不自动导入模型草稿",
+  "entries": [
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
+      "source_sha256": "5b3db33c145a43c24d9ed65c85c47cf8b9658999e4b2634329a1fc1bd9afeaa7",
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      },
+      "review_note": "把泛化的负值判断收窄为原文的 -1；去掉将错误返回条件当作主要应用。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue",
+      "source_sha256": "6a55a1342c0a717d2b97fbe994b417afc512771d610990447831de22aaf80754",
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      },
+      "review_note": "保留当前值与最大值区分，明确护甲例外。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+      "source_sha256": "ea7e02f0a01f4a0e50a9863520c590bf7d1fc930ef07bda21e8f58a6cd4fab7a",
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      },
+      "review_note": "标签从参数行为改为基础属性能力；保留增益恢复边界与枚举适用对象。 本轮补充同义表达或关联职责，未扩大官方行为保证。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrMaxValue",
+      "source_sha256": "eb30c78e8b5316ab0b9f4c9f292803dddab56978dedf13b1ae1b426ebef6fbf0",
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      },
+      "review_note": "把饥饿度默认值参数规则移入注意事项，不作为独立基础能力。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntityDamage",
+      "source_sha256": "f82f163e1b31ca23e7ab4ce7a7a79f9920b675215b45f30fac2bdcf641f6da87",
+      "source_dependencies": {},
+      "review_note": "去掉容易误解成单独分离武器加成的别名；保持综合值与真实伤害区分。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.hurtCompServer.HurtCompServer.Hurt",
+      "source_sha256": "983026a8b2e3f382310ba1790b5ae1125f3755477ebc7a4a8aa78b6a7c6293d7",
+      "source_dependencies": {
+        "modsdk:enum:common:ActorDamageCause": "969131476324426992116c0bd28f6f581f4ac23b3853d987293831d0a80b8a4a"
+      },
+      "review_note": "删除固定扣血的暗示；准确保留击退必须有伤害源。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetPos",
+      "source_sha256": "826b233e96485d2d5412664118ec43271afbcdb4e80f031da2946dc4885cec60",
+      "source_dependencies": {},
+      "review_note": "去掉姿态偏移这一限制型标签，避免记录后直接回传造成高度偏差。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
+      "source_sha256": "e9d385c8cfcf4bdf9fc13c24a8eac4678634aaf15f2aaf7fb20aae7044813d90",
+      "source_dependencies": {},
+      "review_note": "移除错误的睡眠位置适配标签；文档说睡觉是例外而非支持能力。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos",
+      "source_sha256": "d943a450d231a4bffae89a3fe126e2adeeadf85293ac8d369613ef82c6b6624d",
+      "source_dependencies": {},
+      "review_note": "保留瞬移与脚底基准，跨维度另用玩家维度接口。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.GetRot",
+      "source_sha256": "a22fb953166910068a655ea9ca6c79a9a69af1f7857af4a8aa20361b8a618ff2",
+      "source_dependencies": {},
+      "review_note": "统一常用中文角度概念，不把角度查询写成已完成射线检测。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.rotCompServer.RotComponentServer.SetRot",
+      "source_sha256": "d5beae3cd7765cd3a2381dc5c17e56b99feb693591640ce816e5a6f7b4f13723",
+      "source_dependencies": {},
+      "review_note": "明确只设置角度，不宣称自动寻路或持续锁定目标。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetMotion",
+      "source_sha256": "e206f6bf9bdbda80d6645a72bd91737aa2b786e48435ab659d29660d6925da8c",
+      "source_dependencies": {},
+      "review_note": "保留非玩家限制与事件击退冲突，不扩展为玩家冲刺。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineEntityByTypeStr",
+      "source_sha256": "1fb41b1e5232ea76eababc592b373ec04e11fa465d59ce82dd2b88d1c6bc354b",
+      "source_dependencies": {},
+      "review_note": "对照创建条件、角色模式和全局实体生命周期，不把全局当持久化。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity",
+      "source_sha256": "0f970cfca04830e3d7768b6f592c28a53bad911a8b8165806bc25ed2203fd366",
+      "source_dependencies": {},
+      "review_note": "原文仅保证销毁操作，不声称等同死亡事件、掉落或击杀结算。 本轮补充同义表达或关联职责，未扩大官方行为保证。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.engineTypeCompServer.EngineTypeComponentServer.GetEngineTypeStr",
+      "source_sha256": "9dd47ece2bbcc00d37aef45ea68483b824579bc9e1afadba0df9ba9c1664abb3",
+      "source_dependencies": {},
+      "review_note": "类型名称区别于实体实例标识，不据名称推断玩家身份。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntitiesAroundByType",
+      "source_sha256": "703d3225a8fc30d08074edda68f7d98212362b6f3769419232f8c12a9a24e489",
+      "source_dependencies": {
+        "modsdk:enum:common:EntityType": "3cade47315bbcaff2c01856f3ff677c06b3628c3fc1c25c202fc3e7666330731"
+      },
+      "review_note": "核对枚举中的生物与掉落物类型，仅承诺获得实体列表。"
+    },
+    {
+      "id": "modsdk:event:server:AddServerPlayerEvent",
+      "source_sha256": "5a43197322fa05cfd1e43dfccd3a7d945ca59bb1eebdcf7d2e839f034a1cec97",
+      "source_dependencies": {},
+      "review_note": "区分登录通知和客户端可通信、实体可操作的时机。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:event:server:DelServerPlayerEvent",
+      "source_sha256": "a9c980186a5f47b00ac1c4c2a49eb3c0f24f30ecb65e0baa30a567bab48a3abc",
+      "source_dependencies": {},
+      "review_note": "避免把退出处理写成自动资源回收，也不承诺离线实体可继续读写。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SpawnItemToPlayerInv",
+      "source_sha256": "ec18c231cc602420294aeeafa752af7bc79806104680661f7226cfb1e2fde31f",
+      "source_dependencies": {},
+      "review_note": "保留部分成功风险，不把发放失败解释成零副作用。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+      "source_sha256": "e99813b7a895e8f008533a85335c6acf1d5722ed4db0326ef447addcd29f0f8f",
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      },
+      "review_note": "核对支持的位置类型，不扩大为任意容器或任意生物背包。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
+      "source_sha256": "5bceaac47d2fd6013cfb79b7faf71ca55cc033ab043b3dd37b8b5484b89eda30",
+      "source_dependencies": {},
+      "review_note": "明确赋值与扣减区别，不使用丢弃来暗示会生成掉落物。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineItemEntity",
+      "source_sha256": "cee697cae6bf402f44f1953ce5f223f58f371fdedf04b3d2658f86d2dd867756",
+      "source_dependencies": {},
+      "review_note": "世界掉落与背包发放分开，不假定自动执行掉落表。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetContainerItem",
+      "source_sha256": "61e4c33cecee442b938b16384be25c6ebbb85ffaa9df962b35511731a3afee71",
+      "source_dependencies": {},
+      "review_note": "限制容器范围，读取不等于移除任务物品。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetPlayerAllItems",
+      "source_sha256": "ed630ef35828ddd68bc284a19985deb7b537479c453bf7a50f79d884d474488c",
+      "source_dependencies": {},
+      "review_note": "核对多槽位返回字典，不宣称原子事务或自动清空全部背包。"
+    },
+    {
+      "id": "modsdk:event:server:ServerItemTryUseEvent",
+      "source_sha256": "a9feb85fdcb5dca6105868f27d16f7af2b565749a7f2d166b55ea3826e0eebf3",
+      "source_dependencies": {},
+      "review_note": "使用尝试不等于使用成功；取消范围依原文收窄。"
+    },
+    {
+      "id": "modsdk:event:server:ServerItemUseOnEvent",
+      "source_sha256": "6321edacd42da108e759afaf6cd7254b8a37e912b5947395fb2a8e22466d9a59",
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      },
+      "review_note": "区分 entityId/ret 与相邻事件的 playerId/cancel，不漏原生交互例外。"
+    },
+    {
+      "id": "modsdk:event:server:ServerBlockUseEvent",
+      "source_sha256": "aee1ccc4713b4bf1541143ee05a2d777e472351db49c5e404c2d962f668b3b8d",
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      },
+      "review_note": "依据主事件原文重写，修复附带相关接口覆盖事件合同的解析错误。"
+    },
+    {
+      "id": "modsdk:event:server:ServerPlayerTryDestroyBlockEvent",
+      "source_sha256": "eb170675c68f847690bf0a5a5deb6ddda11ab213503d05914ecdd4c72a2a7a4c",
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      },
+      "review_note": "保留特殊方块配合要求，不能承诺仅服务端事件完成全部保护。 本轮补充同义表达或关联职责，未扩大官方行为保证。"
+    },
+    {
+      "id": "modsdk:event:server:DamageEvent",
+      "source_sha256": "19a3b0cf381c06915226f12ab98df2876129bbb0e61e9ea3bc85dc1671c37256",
+      "source_dependencies": {
+        "modsdk:enum:common:AttrType": "b756e95c88ae9a82fffb689a9958ece7a52d552d308e76e236aa6d6dc5eca048"
+      },
+      "review_note": "分开攻击伤害与最终扣血，保留伤害类型及点燃控制边界。"
+    },
+    {
+      "id": "modsdk:event:server:MobDieEvent",
+      "source_sha256": "cba90db8c1215fa1d6113290640a85d9739382345adf99741b7f34851c4f7bf1",
+      "source_dependencies": {},
+      "review_note": "死亡通知不提供取消能力，不将来源标识一律视为有效玩家。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer",
+      "source_sha256": "63a26eaaab87ee73e8136972561663bd7639d1f4adb81834ff77b93b5c18bf2a",
+      "source_dependencies": {},
+      "review_note": "保留秒单位与单次性质，冷却仅为组合用途。 本轮补充同义表达或关联职责，未扩大官方行为保证。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddRepeatedTimer",
+      "source_sha256": "d432b1aa12c1adce7dd2bbf8fb6a8cfc501f466604862a998fc83a6810c081c7",
+      "source_dependencies": {},
+      "review_note": "周期任务不等于游戏每帧回调，不声称自动随玩家退出取消。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CancelTimer",
+      "source_sha256": "9789328bbaca7fbd7d534b6be3a2f7594bd65864d1e8a802d3b3936e50d0abbe",
+      "source_dependencies": {},
+      "review_note": "取消对象是实例，不是函数名或玩家标识。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+      "source_sha256": "15b484086d5eaf69db79a7726a9244bac239da99156b8aeee94ffc4f3b1811b1",
+      "source_dependencies": {},
+      "review_note": "世界与实体绑定对象严格按原文，不虚构缺省返回值。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+      "source_sha256": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
+      "source_dependencies": {},
+      "review_note": "键值存储不等同跨服数据库或客户端同步。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SaveExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+      "source_sha256": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d",
+      "source_dependencies": {},
+      "review_note": "保存不扩展为强制保存整个世界或保证磁盘事务。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew",
+      "source_sha256": "ff481a38502792c4d3732574606b89d723c9e17c60f7b952393aa63d6e74855f",
+      "source_dependencies": {},
+      "review_note": "精确保留同类容器清空与下一帧时机，应用不承诺无损替换。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+      "source_sha256": "17346fd8a45c67cdc18f5018aa8bd5c08a5ec855babfe4467d5ffb89accfab41",
+      "source_dependencies": {},
+      "review_note": "普通方块信息与状态字典区分，不扩展到未加载区块。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates",
+      "source_sha256": "05e05752df40e55381ba035290655b9c74fde96e0ae6b28587a06115e5347a11",
+      "source_dependencies": {},
+      "review_note": "区分空状态与 None，不能继续用旧颜色状态处理已拆分的羊毛类型。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockAuxValueFromStates",
+      "source_sha256": "f092b354656255eec61c0ae44297c6125e69c14c651bd33b057dfdc3ead482d6",
+      "source_dependencies": {},
+      "review_note": "不将转换写成读取某坐标，不声称跨版本任意状态均可映射。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetTopBlockHeight",
+      "source_sha256": "505ea87d3996a2ef753b41543db683e30e0204477f2e8f0d13bdf3f003e8727c",
+      "source_dependencies": {},
+      "review_note": "不直接推荐为安全传送位置，保留非空气定义。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.SetBlockStates",
+      "source_sha256": "93fc728c314e56db55a726535e67d9e772cdae9dcbe0474d0f7406c34d4d6d03",
+      "source_dependencies": {},
+      "review_note": "限定可设置状态，避免声称可按颜色状态修改新版羊毛。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer",
+      "source_sha256": "50ada1d1cc000b0265310965547a7d1958220b3a1abc1dd377369c40de277742",
+      "source_dependencies": {},
+      "review_note": "方向为客户端到服务端，完成状态不能由发送动作推断。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient",
+      "source_sha256": "f6ce1485dbcc8da10e2148f5daba24ffbf201e3029edef954674efab8cde40b0",
+      "source_dependencies": {
+        "modsdk:event:server:AddServerPlayerEvent": "5a43197322fa05cfd1e43dfccd3a7d945ca59bb1eebdcf7d2e839f034a1cec97"
+      },
+      "review_note": "只发送事件，UI效果是客户端后续逻辑；接收时机与加入事件原文交叉核验。 本轮补充同义表达或关联职责，未扩大官方行为保证。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.BroadcastToAllClient",
+      "source_sha256": "0e9e49922f9fb40b94ef7911528ff1231adaa42f69301b7a4812ab08e181de1f",
+      "source_dependencies": {},
+      "review_note": "不把广播限定为附近玩家，不宣称消息到达即已渲染。 本轮补充同义表达或关联职责，未扩大官方行为保证。"
+    },
+    {
+      "id": "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent",
+      "source_sha256": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d",
+      "source_dependencies": {},
+      "review_note": "核对事件来源命名空间与系统，来源标识不替代业务合法性验证。"
+    },
+    {
+      "id": "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.UnListenForEvent",
+      "source_sha256": "5b966cdc9954e7da7da59f88dc420a44348200cf2e1d817e23db99e03d53c114",
+      "source_dependencies": {},
+      "review_note": "反注册与事件取消字段分开，不暗示能撤回既有业务。"
+    },
+    {
+      "id": "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.CreateEventData",
+      "source_sha256": "4a814913e14a8c42df1bfab3dccdfb9847dbef172a3234c3f72b089482b1a407",
+      "source_dependencies": {},
+      "review_note": "只负责数据封装，不误标成通信或序列化任意对象。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.scrollViewUIControl.ScrollViewUIControl.GetScrollViewContentPath",
+      "source_sha256": "a9c29161a1e79a439f3789d02823b5980c336ea17e93d04589c82aae2f435364",
+      "source_dependencies": {},
+      "review_note": "保留每次使用重取要求；固定路径是界面配置选择，不是本接口自动保证。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchUpCallback",
+      "source_sha256": "01cb7f8abe86445de5ec411dc0ddebdcc25605ea367f7c72125f2df6ee6fdba7",
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchDownCallback": "787ed4104c8012b90c2b16738f0d3271c86258c999064d4dce1423bcfa9e3d6a",
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams": "91ea4bb0acce0aa598a471e907e87d47cedbdd60194d3692aeec574a25f63756"
+      },
+      "review_note": "读取相关按钮接口，确认 AddTouchEventParams 是回调生效前提，不混淆按下与弹起。 本轮补充同义表达或关联职责，未扩大官方行为保证。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.extraClientApi.CreateUI",
+      "source_sha256": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456",
+      "source_dependencies": {},
+      "review_note": "保持创建UI与屏幕堆栈两种机制的参数边界，不承诺自动界面逻辑。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.extraClientApi.PushScreen",
+      "source_sha256": "e86e4bbbef985f1442d8f116c4bf37070fda0ea921d6285e8648ec52861b75c0",
+      "source_dependencies": {},
+      "review_note": "核对创建条件与参数不兼容，不误用其他UI创建方式。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.extraClientApi.PopScreen",
+      "source_sha256": "5f40376aef74057f9a2dbf9265c35221f1382f8d191739b757f4e91a9f738c10",
+      "source_dependencies": {},
+      "review_note": "限定堆栈创建来源，不承诺关闭所有类型的UI。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText",
+      "source_sha256": "8f429c4908d0f6128a5de0749717cb8918853ee60efde56e5dd7ea7625ce762c",
+      "source_dependencies": {},
+      "review_note": "严格区分同名组件，样式仅引用原文支持的格式码能力。 本轮补充同义表达或关联职责，未扩大官方行为保证。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity",
+      "source_sha256": "e7fab9ceeaf6daecd028180336a083a0f0dab4d3df26b663d47ef43f83d9f7e7",
+      "source_dependencies": {},
+      "review_note": "区分效果持续时间与定时器，明确同类效果合并规则。 补充社区迁移中常见的中文能力表达及职责边界。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.RemoveEffectFromEntity",
+      "source_sha256": "b023e5c263985544e157496769df6567bbe17c4e8d9e265c75415b6efbd41b65",
+      "source_dependencies": {},
+      "review_note": "仅删除指定效果，不夸大为自动净化全部负面状态。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetOnePopupNotice",
+      "source_sha256": "3d67df7982ca4e8400ea7b588d2a68ce4e7eb54d79700b4e1ce626936bbb19ba",
+      "source_dependencies": {},
+      "review_note": "保留提示位置与聊天框差异，不称为原生标题栏。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
+      "source_sha256": "d73dbb23b5754e0655dee547eddfef48a10823c6d1de90b9a56916adcae5f906",
+      "source_dependencies": {},
+      "review_note": "明确一名玩家与聊天框，不混为广播或客户端业务事件。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.PlayCustomMusic",
+      "source_sha256": "664cb5c5e9302ff2c3d7d9525772199463e122247e7866f783028dea02bba9da",
+      "source_dependencies": {},
+      "review_note": "按本地场景音效而非服务端全员广播解释，保留绑定与流式播放差异。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension",
+      "source_sha256": "f7e03dae1ce14d75a4d964b4cb9683d458e7e27541e23ce0ba4664202698db24",
+      "source_dependencies": {},
+      "review_note": "依据原文明确坐标基准，避免和 SetPos 脚底基准混淆。"
+    },
+    {
+      "id": "modsdk:event:server:ActuallyHurtServerEvent",
+      "source_sha256": "755ca20bfa89cf0f0145bd8ebced5d2bbc75702ea030e60092b86c21ad8cc3f0",
+      "source_dependencies": {},
+      "review_note": "核对伤害阶段、可写字段和伤害类型，不将此事件等同只读最终受伤通知。"
+    },
+    {
+      "id": "modsdk:event:server:ActorHurtServerEvent",
+      "source_sha256": "7042b7ad0f5c30f168d903d03b0798ea15f9ed1972e8f8015da537aa3a49c31f",
+      "source_dependencies": {
+        "modsdk:event:server:ActuallyHurtServerEvent": "755ca20bfa89cf0f0145bd8ebced5d2bbc75702ea030e60092b86c21ad8cc3f0"
+      },
+      "review_note": "明确只读及缺少攻击者字段；状态伤害适用性由实际伤害事件的备注交叉核对。"
+    },
+    {
+      "id": "modsdk:event:server:ServerEntityTryPlaceBlockEvent",
+      "source_sha256": "c127b283fc7e0cb76f5d1b80c0849ed99a148cd0c0c698cf8699484b0dde7e93",
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      },
+      "review_note": "区分放置前事件与主动设置方块，保留特殊方块不触发或不可修改的限制。"
+    },
+    {
+      "id": "modsdk:event:server:PlayerRespawnFinishServerEvent",
+      "source_sha256": "87748d6db808ce62c00127992c32373f4e358259a935e7eb96ebbc5363d00b9f",
+      "source_dependencies": {},
+      "review_note": "核对 playerId 与完成时机，保留末地返回触发的例外。"
+    },
+    {
+      "id": "modsdk:event:server:PlayerRespawnEvent",
+      "source_sha256": "8281787495ab0af8fd978de3c19b49e73cc76cf55ceb5008bb79ca424bcb9883",
+      "source_dependencies": {},
+      "review_note": "这是点击按钮时机而非加载完成；保留 id 与完成事件 playerId 的字段差异。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.projectileCompServer.ProjectileComponentServer.CreateProjectileEntity",
+      "source_sha256": "b92c40469daf2ae4efe50a0891576b3d514272d254c7f010c66d4a384457c004",
+      "source_dependencies": {},
+      "review_note": "中文投射物对应文档抛射物；不将接口解释为自动生成资源定义或完整武器系统。"
+    },
+    {
+      "id": "modsdk:event:server:ProjectileDoHitEffectEvent",
+      "source_sha256": "109dd26ababfca0fa9ec58ce651f407783d2aa5e3c3237fe25f304ec78f8ec54",
+      "source_dependencies": {
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+      },
+      "review_note": "明确命中与扣血的区别，不猜测取消碰撞之后的全部引擎行为。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetItemDurability",
+      "source_sha256": "e1ef74851103063516d963bfca955e6811b25741333c1cccc1ebb2c0f11d6b84",
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      },
+      "review_note": "核对位置类型和槽位适用性，不假定返回值是最大耐久或已损耗量。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetItemDurability",
+      "source_sha256": "2e475d9c4b742a5fdbfc35d6d93d2249e1c5639f8635fb618f4a39f46a90443f",
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      },
+      "review_note": "保留事件内写入的时机限制，不承诺设置为零后的破坏行为。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining",
+      "source_sha256": "a4dca0ed816ea0f7d6dc4bc6964c249363968a753dce945375e28e134613b8e8",
+      "source_dependencies": {},
+      "review_note": "保留天气时长的单位和开关前提，不将天气和世界时间混为一个操作。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTime",
+      "source_sha256": "16150ac364b1a9bd72bf559b934d21d8724b733320ab476d3402b2f96c32f32f",
+      "source_dependencies": {},
+      "review_note": "区分累计时间与日内时间，不宣称冻结昼夜流逝。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTimeOfDay",
+      "source_sha256": "caf66b647b44cc5fbab0043b5cb9d29571dfbd3032d21ee956f837833dad5a68",
+      "source_dependencies": {},
+      "review_note": "核对日内时间的跨天语义，不把时间设置解释成锁定昼夜。"
+    },
+    {
+      "id": "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent",
+      "source_sha256": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d",
+      "source_dependencies": {},
+      "review_note": "明确客户端接收方向，避免套用服务端回调附加字段。"
+    },
+    {
+      "id": "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams",
+      "source_sha256": "91ea4bb0acce0aa598a471e907e87d47cedbdd60194d3692aeec574a25f63756",
+      "source_dependencies": {},
+      "review_note": "核对回调启用前提与 isSwallow 的作用，不将其写成服务端输入校验。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.IsRaining",
+      "source_sha256": "c16387b614d76c4ffb4268d711966f0d257a840eb7d45a9d0cba05b24de46c33",
+      "source_dependencies": {},
+      "review_note": "核对 bool 返回的只读天气查询；与修改降雨的接口分开，防止把只查询意图推向修改。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.nameCompServer.NameComponentServer.GetName",
+      "source_sha256": "67474adf8b87a8943766bd3ec5fa04e5360eabcf437b730c0366e94321480cc8",
+      "source_dependencies": {},
+      "review_note": "名字与实体实例标识、账号标识分开，不把只读接口写成玩家重命名。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems",
+      "source_sha256": "777cb6d4f6656038be90041b686f7948000f0538059ccd8b7b260b0fccb3c973",
+      "source_dependencies": {
+        "modsdk:enum:common:ItemPosType": "d237fe817bd80be5e56f81a1e43ec94c4a5e208426274a69a6e0e6dea3518306"
+      },
+      "review_note": "核对位置类型和列表返回值，不把物品读取与消耗合并成同一 API。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetPlayerGameType",
+      "source_sha256": "9f6cc3396659d576702c5b4f0d6f579288696c1b6f40cbd4138e4f7bfaf97066",
+      "source_dependencies": {
+        "modsdk:enum:common:GameType": "9e512ab83c704bcc74d4e1fd193960af4fdf9b3bc3ac25982a2257db02c9176d"
+      },
+      "review_note": "区分个人模式查询与默认模式、写入操作。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerGameType",
+      "source_sha256": "2ccbda21b68d5aade111e0594c0f243d53805f471922be5bb40355d479e0cdbc",
+      "source_dependencies": {
+        "modsdk:enum:common:GameType": "9e512ab83c704bcc74d4e1fd193960af4fdf9b3bc3ac25982a2257db02c9176d"
+      },
+      "review_note": "核对个人模式和极限模式限制，不承诺绕过世界锁定。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.ChangePlayerFlyState",
+      "source_sha256": "53413e95ad0267ad46d0213408717c0f9b5532ab1483b52248c47ab09097728a",
+      "source_dependencies": {},
+      "review_note": "核对 isFly 与 enterFly，避免仅开启能力就误认为自动起飞。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerCanFly",
+      "source_sha256": "816b5f4c4d6b91ed7b2f44da3d4e062ccc29d91324ee19c2d8de841a5e000fb0",
+      "source_dependencies": {},
+      "review_note": "能力许可与当前运动状态分开，不映射为插件字符串权限节点。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerFlying",
+      "source_sha256": "7db9997149eb6531b2969cc0926cd04ae53358b2470c7d956057c18f81db8cd7",
+      "source_dependencies": {},
+      "review_note": "仅检查当前状态，不根据此返回值推断玩家永久权限。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetPlayerMotion",
+      "source_sha256": "a00eb071199c1334367afa3deb5c0c51d14cd4727bf4be4735bd46e2c5f3891a",
+      "source_dependencies": {},
+      "review_note": "核对玩家专用接口与伤害事件 knock 要求，不推荐不适用于玩家的服务端 SetMotion。"
+    },
+    {
+      "id": "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.GetMotion",
+      "source_sha256": "52f2beb8fa0307a94c6492864b92ee8ca5c9d640e7456279ef643c3720db9dff",
+      "source_dependencies": {},
+      "review_note": "确认服务端支持玩家和生物，不把移动速度属性与瞬时运动向量混淆。"
+    }
+  ],
+  "retrieval_comparison": {
+    "cases": 29,
+    "required_capabilities": 44,
+    "annotated_before": 34,
+    "annotated_after": 38,
+    "coverage_before": 39,
+    "coverage_after": 44,
+    "note": "已知场景回归，非独立盲测；原文排序与能力规则未为新场景扩充。"
+  },
+  "latest_update": {
+    "added": 9,
+    "revised": 8,
+    "reason": "Bukkit/Nukkit 迁移搜索暴露的中文表达与基础能力缺口",
+    "method": "Codex 直接按原文补充，无 DeepSeek 调用",
+    "revised_ids": [
+      "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+      "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
+      "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
+      "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+      "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
+      "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetPos",
+      "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity",
+      "modsdk:event:server:AddServerPlayerEvent"
+    ],
+    "results": {
+      "community": {
+        "symbol": {
+          "hits": 6,
+          "complete": 4
+        },
+        "named": {
+          "hits": 23,
+          "complete": 18
+        },
+        "chinese": {
+          "hits": 23,
+          "complete": 18
+        }
+      },
+      "required": 23,
+      "cases": 18,
+      "intent_checks": "8/8",
+      "legacy_capabilities": "44/44",
+      "mod_scenarios": "48/48",
+      "skill_validation": "passed",
+      "engine_unchanged": true
+    }
+  },
+  "initial_batch": {
+    "count": 60,
+    "added": 42,
+    "revised": 18
+  },
+  "previous_update": {
+    "added": 15,
+    "revised": 8,
+    "reason": "新增模组案例暴露的检索缺口",
+    "method": "Codex 对照官方原文直接编写，不调用 DeepSeek",
+    "prior_scenario_result": "39/48 初查，8/16 案例查齐；有限补查48/48",
+    "results": {
+      "fixed_scenarios_initial_before": "39/48",
+      "fixed_scenarios_initial_after": "48/48",
+      "complete_cases_before": "8/16",
+      "complete_cases_after": "16/16",
+      "search_calls_before": 39,
+      "search_calls_after": 16,
+      "search_chars_before": 68467,
+      "search_chars_after": 29804,
+      "gap_checks": "7例、10项参考能力；包含只读天气、只读受伤与复活阶段区分",
+      "note": "已用于补充标签的已知案例回归，不是盲测。"
+    }
+  }
+}

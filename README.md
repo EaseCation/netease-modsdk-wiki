@@ -121,3 +121,51 @@ npm run docs:preview
 - [我的世界中国版 ModSDK 官网](https://mc.163.com/dev/)
 - [VitePress 文档](https://vitepress.dev/)
 - [GitHub 仓库](https://github.com/EaseCation/netease-modsdk-wiki)
+
+## API 知识与查询试点
+
+原文保持在 `docs/mcdocs`、`docs/mcguide`、`docs/mconline`；人工补充独立维护于 `knowledge/annotations.json`。当前标注 84 个 API/事件，覆盖属性与伤害、移动、实体与玩家生命周期、物品与背包、交互、定时与数据保存、方块、通信、界面和状态效果。它们不是官方新增定义。
+
+每条标注用完整 API 身份（范围、种类、端侧、组件、名称）关联原文章节，并绑定 `source_sha256`；依赖枚举或其他接口的补充同时记录 `source_dependencies`。同步后章节变化、关联目标缺失都会使构建失败；维护者需阅读新原文、修订补充内容，再更新哈希，不应批量盲目刷新哈希绕过复核。搜索返回短 ID 以减少上下文，详情保留完整身份、组件和来源。
+
+```sh
+npm run api:build
+npm run api:query -- resolve '使用治疗法杖回血，显示生命上限，5秒冷却，只提示本人' --side server
+npm run api:query -- search '使用物品' --side server --strategy annotated
+npm run api:query -- detail ServerItemTryUseEvent --side server --examples 0
+npm run api:query -- detail AttrType --part raw --page-chars 6000
+```
+
+默认 `scope=modsdk` 排除 Preset API、零件以及预设教程。只有明确需要预设时传 `--scope preset`，比较两者时传 `--scope all`；关键词“预设”本身不会自动放开范围。原始页面继续保留供直接浏览。常规结构化字段剔除上游统一的零件监听尾注，`raw` 仍完整保留。
+
+当前索引提供 3.9 快照，不证明所有 API 在任意旧版本可用；`--sdk-version` 对其他版本明确报错。未给出端侧或同名组件存在歧义时，详情返回候选供选择。搜索摘要不替代合同，默认合同包含全部备注；长原文/备注/示例有显式分页，输出超预算报错而非静默截断。CLI 默认预算 18000 字符，可以在子命令前用 `--max-chars` 调整。
+
+`npm run docs:build` 和 `docs:dev` 会先生成索引。`scripts/api-notes.ts` 在 Markdown 渲染 token 中插入“开发补充”卡片，默认显示全部标签与展开入口，展开后显示用途、注意事项、常见问法和关联接口，不改写上游 MD，不需要额外浏览器脚本。开发服务期间改标注后需重新启动以刷新卡片。
+
+构建产物 `.api-index/` 与 `docs/public/ai/` 不进入 Git；部署会提供 `/ai/manifest.json` 和 `/ai/index.json.gz`，包含版本、内容哈希及原文记录，可供后续远程查询客户端复用。当前 skill/CLI 使用本机源码，不会自动联网下载或将文档发送到模型/向量服务。本地输入文件清单、大小或修改时间变化会触发重建；构建重新计算原文章节哈希。
+
+### 检索方案与当前效果
+
+三个可比较策略共用同一原文与范围筛选：`raw` 只用原文词法匹配，`annotated` 增加标签/同义问法与短语权重，`coverage` 增加带上下文条件的能力组合。避免只提高单一 API 排名却漏掉一项必要职责。词法方案可离线工作，新增成本集中在少量人工标注；向量检索和 reranker 暂未接入，需先用扩大后的案例集确认必要性。
+
+```sh
+PYTHONHASHSEED=0 python3 scripts/evaluate-retrieval.py --legacy-root /absolute/path/to/original/modsdk_mcp_server
+```
+
+不提供 `--legacy-root` 时只比较本项目三策略。固定案例在 `knowledge/retrieval-cases.json`，当前结果在 [knowledge/evaluation.md](knowledge/evaluation.md)，详细生成回执在 `.api-index/evaluation.json`。29 例涵盖复合需求、同义改写、常用能力扩展、未标注事件、错误端侧和 Preset 开关。另有 18 个冻结的实际模组与边界案例，使用 `npm run api:evaluate -- --scenarios` 通过真实 skill CLI 单独验收，记录整段查询、有限拆分补查和详情核对开销；不与旧回归混为一个满分。缺口补充后的改写和相反意图回归可运行 `npm run api:evaluate -- --gap-checks`。Bukkit／Nukkit 常见服务端需求另有20例，通过 `npm run api:evaluate -- --community` 比较社区方法名和中文能力描述，并核对接口行为差异。结果是已公开并用于迭代的回归集，不能据此保证任意需求零遗漏。字符统计不是模型 token 统计。
+
+### Skill 与 MCP 共用
+
+Skill 已拆分到公开的独立 Git 仓库 [EaseCation/netease-api-query](https://github.com/EaseCation/netease-api-query)，不再在 Wiki 内保存副本。独立 skill 通过自身 `.env` 或环境变量 `MODSDK_WIKI_ROOT` 绑定本仓库，并调用这里唯一的 `scripts/api_knowledge.py`。其安装入口支持浅克隆、partial clone、Markdown 稀疏检出和跳过 LFS 资源；只需要查询时不下载图片、视频或完整网页资源。缺少查询入口或标注的旧 Wiki 会报错，不提供兼容回退。发布时应先发布含查询功能的最新版 Wiki。
+
+本仓库检索验收通过 `MODSDK_SKILL_ROOT` 指定独立 skill 位置，默认查找同级 `netease-api-query` 或 Agent 已安装的技能目录；调用时显式绑定当前 Wiki。社区迁移需求继续先解释中文基础能力，保留对象、读写动作和生命周期时机，再核对合同。
+
+配套 `modsdk_mcp_server` 试点通过 `MODSDK_WIKI_ROOT` 加载同一实现，提供紧凑搜索、批量详情和 `resolve_api_requirement`。Skill 负责指导按需求逐步读取，MCP 保留结构化工具入口；两者可以共存，无需为了换成 skill 而复制检索逻辑。源码变更和本地校验不等于已经替换运行中的 MCP 或发布 Wiki。
+
+标注应保持简短：标签为 3–6 个中文基础能力词，不放英文 API/类型名、端侧或玩法场景；检索别名承接近义表达，具体应用放入默认折叠的用途正文，不复制完整枚举、参数或备注。复合玩法的冷却、鉴权等组合关系维护在 capabilities 中，不附着为通用属性接口的固有职责。
+
+### 标注维护方式
+
+当前由 Codex 逐条对照官方原文直接编写并复核。首批共 60 条；随后按模组缺口补充15条、按社区迁移缺口补充9条，并完善已有条目的别名及关联职责；复核说明及依据哈希见 `knowledge/annotation-review.json`。应用正文通常一至两句，重要限制精简提示，完整参数与备注仍以原文为准。页面默认展示全部标签，其余内容折叠。
+
+DeepSeek 试验已按用户要求停止，现有草稿不自动导入。历史试点结果保留在 [标注试点](knowledge/annotation-pilot.md)；`scripts/draft-api-annotations.py` 与调用 overlay 仅为历史实验工具，除非用户重新明确启用，不用于当前维护流程。
