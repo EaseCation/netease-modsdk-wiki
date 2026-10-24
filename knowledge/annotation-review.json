@@ -1,7 +1,7 @@
 {
   "reviewed_on": "2026-10-24",
-  "method": "Codex 逐条对照官方原文直接编写与复核",
-  "count": 84,
+  "method": "按组件对照官方描述与接口职责编写基础能力标注，关键歧义按参数、备注和关联原文确认",
+  "count": 1649,
   "policy": "中文基础能力标签与通用检索表达；补充正文仅说明能力、操作步骤和限制，不包含具体玩法案例或复核日期文案；默认排除 Preset",
   "deepseek": "已按用户要求停止；本批正式内容与别名直接编写，不自动导入模型草稿",
   "entries": [
@@ -563,43 +563,15 @@
     "note": "已知场景回归，非独立盲测；原文排序与能力规则未为新场景扩充。"
   },
   "latest_update": {
-    "added": 9,
-    "revised": 8,
-    "reason": "Bukkit/Nukkit 迁移搜索暴露的中文表达与基础能力缺口",
-    "method": "Codex 直接按原文补充，无 DeepSeek 调用",
-    "revised_ids": [
-      "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
-      "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
-      "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
-      "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
-      "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
-      "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetPos",
-      "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity",
-      "modsdk:event:server:AddServerPlayerEvent"
-    ],
-    "results": {
-      "community": {
-        "symbol": {
-          "hits": 6,
-          "complete": 4
-        },
-        "named": {
-          "hits": 23,
-          "complete": 18
-        },
-        "chinese": {
-          "hits": 23,
-          "complete": 18
-        }
-      },
-      "required": 23,
-      "cases": 18,
-      "intent_checks": "8/8",
-      "legacy_capabilities": "44/44",
-      "mod_scenarios": "48/48",
-      "skill_validation": "passed",
-      "engine_unchanged": true
-    }
+    "added": 1565,
+    "total_annotations": 1649,
+    "annotated_api_records": 1635,
+    "modsdk_api_records": 1636,
+    "event_annotations": 14,
+    "excluded_scope": "preset",
+    "unexpanded_api": "modsdk:api:client:mod.client.ui.screenNode.ScreenNode.GetSelf",
+    "reason": "原文仅说明零件界面自身，未扩展普通界面使用语义",
+    "method": "按组件整理中文基础能力、通用操作说明和明确的读写关联，不使用 DeepSeek，不写具体玩法案例"
   },
   "initial_batch": {
     "count": 60,
@@ -624,5 +596,6 @@
       "gap_checks": "7例、10项参考能力；包含只读天气、只读受伤与复活阶段区分",
       "note": "已用于补充标签的已知案例回归，不是盲测。"
     }
-  }
+  },
+  "entries_note": "entries 保留早期条目的具体修订说明；全部当前标注及原文章节哈希以 annotations.json 为准。"
 }

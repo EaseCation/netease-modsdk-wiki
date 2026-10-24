@@ -191,6 +191,8 @@ async function upload(records, report) {
         const cases = [
             ['治疗玩家', 'SetAttrValue'], ['属性赋值', 'SetAttrValue'],
             ['设置实体属性的目标值', 'SetAttrValue'], ['GetPlayerAllItems', 'GetPlayerAllItems'],
+            ['保持区块加载', 'SetAddArea'], ['添加属性修饰符', 'AddModifier'],
+            ['设置输入框最大长度', 'SetEditTextMaxLength'], ['物品最大堆叠数量', 'SetMaxStackSize'],
         ];
         report.queries = [];
         for (const [query, expected] of cases) {
