@@ -187,10 +187,10 @@ async function upload(records, report) {
         }
         const count = await client.searchSingleIndex({ indexName: staging, searchParams: { query: '', hitsPerPage: 0, distinct: false } });
         if (count.nbHits !== records.length) throw new Error(`暂存记录数不符：${count.nbHits}/${records.length}`);
-        // 真实搜索检查：基础能力、近义表达和应用正文，均使用站点相同的课程过滤。
+        // 真实搜索检查：基础能力、近义表达和能力说明，均使用站点相同的课程过滤。
         const cases = [
             ['治疗玩家', 'SetAttrValue'], ['属性赋值', 'SetAttrValue'],
-            ['精英怪属性强化', 'SetAttrValue'], ['GetPlayerAllItems', 'GetPlayerAllItems'],
+            ['设置实体属性的目标值', 'SetAttrValue'], ['GetPlayerAllItems', 'GetPlayerAllItems'],
         ];
         report.queries = [];
         for (const [query, expected] of cases) {
