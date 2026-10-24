@@ -1,494 +1,227 @@
-import { readFile, readdir } from 'node:fs/promises';
-import { resolve, join } from 'node:path';
+#!/usr/bin/env node
+/** 将原文与独立标注合并为搜索记录；校验暂存索引后原子替换线上索引。 */
+import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { resolve, relative, join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import matter from 'gray-matter';
+import dotenv from 'dotenv';
+import { createMarkdownRenderer } from 'vitepress';
 import { algoliasearch } from 'algoliasearch';
-import { fileURLToPath } from 'url';
-import path from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const docsDir = resolve(__dirname, '../docs');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const DOCS = join(ROOT, 'docs');
+const SITE = 'https://mcwiki.easecation.net';
+const INDEX = 'netease-modsdk';
+const MAX_BYTES = 8000;
+const args = process.argv.slice(2);
+if (args.some(arg => !['--dry-run', '--help'].includes(arg))) throw new Error('仅支持 --dry-run 或 --help');
+if (args.includes('--help')) {
+    console.log('npm run docs:algolia -- --dry-run：生成并校验，不访问 Algolia\nnpm run docs:algolia：生成、上传暂存索引、核对后替换线上索引');
+    process.exit(0);
+}
+dotenv.config({ path: join(ROOT, '.env'), quiet: true });
+const gitDir = execFileSync('git', ['rev-parse', '--absolute-git-dir'], { cwd: ROOT, encoding: 'utf8' }).trim();
+const reportPath = join(gitDir, 'algolia-upload-report.json');
+const bytes = value => Buffer.byteLength(JSON.stringify(value), 'utf8');
+const unique = values => [...new Set(values.filter(Boolean))];
 
-// 加载环境变量
-await import('dotenv').then(r => r.config());
+// 使用 VitePress 本身的标题锚点规则，包括重复标题的后缀。
+const md = await createMarkdownRenderer(DOCS);
+function textOf(tokens) {
+    return tokens.map(t => {
+        if (['fence', 'code_block', 'html_block', 'html_inline'].includes(t.type)) return '';
+        if (t.type === 'image') return t.content;
+        if (t.children) return textOf(t.children);
+        if (['text', 'code_inline'].includes(t.type)) return t.content;
+        if (['softbreak', 'hardbreak'].includes(t.type) || t.block && t.nesting === -1) return '\n';
+        return '';
+    }).join('');
+}
+const clean = text => text.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
 
-// 配置参数
-const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID;
-const ALGOLIA_API_KEY = process.env.ALGOLIA_ADMIN_KEY;
-const INDEX_NAME = 'netease-modsdk';
-const MAX_RECORD_SIZE = 8000; // 字节，保守一点小于10000的限制
-
-/**
- * 递归获取所有 Markdown 文件
- */
-async function getAllMarkdownFiles(dir, base = '') {
-    const files = [];
-    const entries = await readdir(dir, { withFileTypes: true });
-
-    for (const entry of entries) {
-        const fullPath = join(dir, entry.name);
-
-        if (entry.isDirectory()) {
-            const subPath = join(base, entry.name);
-            const subFiles = await getAllMarkdownFiles(fullPath, subPath);
-            files.push(...subFiles);
-        } else if (entry.name.endsWith('.md')) {
-            // 忽略以 _ 开头的特殊文件
-            if (entry.name.startsWith('_') || entry.name.includes('索引')) {
-                // console.log(entry.name);
-                continue;
-            }
-            // 构建路由路径
-            let routePath = join(base, entry.name.replace(/\.md$/, ''));
-            // 特殊处理 index.md 文件，转换为目录路径
-            if (entry.name === 'index.md') {
-                routePath = base;
-            }
-            // 确保路径以 / 开头
-            routePath = '/' + routePath;
-            // 规范化路径分隔符
-            routePath = routePath.replace(/\\/g, '/');
-
-            files.push({
-                filePath: fullPath,
-                path: routePath
-            });
-        }
+async function markdownFiles(dir) {
+    const result = [];
+    for (const entry of (await readdir(dir, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name, 'en'))) {
+        if (entry.name.startsWith('.') || ['node_modules', 'public'].includes(entry.name)) continue;
+        const file = join(dir, entry.name);
+        if (entry.isDirectory()) result.push(...await markdownFiles(file));
+        else if (entry.isFile() && entry.name.endsWith('.md') && !entry.name.startsWith('_')) result.push(file);
     }
-
-    return files;
+    return result;
 }
 
-import { marked } from 'marked';
-
-/**
- * 使用marked解析器按照标题(H1和H2)分割Markdown内容
- * 跳过标题为"索引"的H1部分
- */
-function splitByHeadings(content) {
-    const tokens = marked.lexer(content);
-    const sections = [];
-    let currentH1 = null;
-    let currentH2 = null;
-    let currentSection = {
-        h1Title: null,
-        h2Title: null,
-        content: '',
-        anchor: '',
-        level: 0
-    };
-    let sectionStartIndex = 0;
-    let skipSection = false; // 标记是否跳过当前区块
-
-    // 初始处理：如果内容不是以标题开始，创建初始区块
-    if (tokens.length > 0 && tokens[0].type !== 'heading') {
-        let initialContent = '';
-        let i = 0;
-
-        // 收集直到第一个标题之前的所有内容
-        while (i < tokens.length && tokens[i].type !== 'heading') {
-            if (tokens[i].type === 'paragraph') {
-                initialContent += tokens[i].text + '\n\n';
-            } else if (tokens[i].type === 'code') {
-                initialContent += '```' + tokens[i].lang + '\n' + tokens[i].text + '\n```\n\n';
-            } else {
-                initialContent += tokens[i].raw + '\n';
-            }
-            i++;
-        }
-
-        if (initialContent.trim()) {
-            sections.push({
-                h1Title: null,
-                h2Title: null,
-                content: initialContent.trim(),
-                anchor: '',
-                level: 0
-            });
-        }
-    }
-
-    // 主循环：处理所有标题并分割内容
+function sections(content, docPath) {
+    const tokens = md.parse(content, { path: join(DOCS, docPath), relativePath: docPath });
+    const result = [];
+    let h1 = '', current = { title: '', h1: '', level: 0, anchor: '', tokens: [] };
     for (let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
+        const t = tokens[i];
+        if (t.type === 'heading_open' && ['h1', 'h2'].includes(t.tag)) {
+            if (current.tokens.length) result.push(current);
+            const title = clean(textOf(tokens[i + 1].children || []));
+            if (t.tag === 'h1') h1 = title;
+            current = { title, h1, level: Number(t.tag[1]), anchor: t.attrGet('id') || '', tokens: [] };
+            i += 2;
+        } else current.tokens.push(t);
+    }
+    if (current.tokens.length || current.title) result.push(current);
+    return result;
+}
 
-        if (token.type === 'heading') {
-            // 遇到新标题，处理之前的内容
-            if (i > sectionStartIndex && !skipSection) {
-                // 如果当前内容不为空且不在跳过模式，保存当前区块
-                if (currentSection.content.trim()) {
-                    sections.push({ ...currentSection });
-                }
-            }
+// 以完整 JSON 的 UTF-8 字节数切块；长段落和转义字符都不截断。
+function chunks(record) {
+    if (bytes(record) <= MAX_BYTES) return [record];
+    const chars = Array.from(record.content);
+    const output = [];
+    let offset = 0;
+    do {
+        const base = { ...record, objectID: `${record.objectID}:chunk:${output.length}`, content: '' };
+        if (bytes(base) >= MAX_BYTES) throw new Error(`标注等元数据超过记录限制：${record.url}`);
+        let low = 0, high = chars.length - offset;
+        while (low < high) {
+            const count = Math.ceil((low + high) / 2);
+            if (bytes({ ...base, content: chars.slice(offset, offset + count).join('') }) <= MAX_BYTES) low = count;
+            else high = count - 1;
+        }
+        if (!low) throw new Error(`无法完整切分记录：${record.url}`);
+        output.push({ ...base, content: chars.slice(offset, offset + low).join('') });
+        offset += low;
+    } while (offset < chars.length);
+    if (output.map(r => r.content).join('') !== record.content) throw new Error('切块内容不完整');
+    return output;
+}
 
-            // 检查是否需要跳过此部分（标题为"索引"）
-            skipSection = token.text === "索引" || token.text.includes("索引");
-
-            // 根据标题级别更新当前上下文
-            if (!skipSection && token.depth === 1) {
-                currentH1 = token.text;
-                currentH2 = null;
-
-                if (!skipSection) {
-                    currentSection = {
-                        h1Title: token.text,
-                        h2Title: null,
-                        content: token.raw + '\n',
-                        anchor: generateAnchor(token.text),
-                        level: 1
-                    };
-                } else {
-                    console.log(`跳过索引部分: ${token.text}`);
-                    currentSection = {
-                        h1Title: null,
-                        h2Title: null,
-                        content: '',
-                        anchor: '',
-                        level: 0
-                    };
-                }
-            } else if (!skipSection && token.depth === 2) {
-                currentH2 = token.text;
-                currentSection = {
-                    h1Title: currentH1,
-                    h2Title: token.text,
-                    content: token.raw + '\n',
-                    anchor: generateAnchor(token.text),
-                    level: 2
-                };
-            }
-
-            sectionStartIndex = i;
-        } else if (!skipSection) { // 只处理非跳过模式下的内容
-            // 非标题内容，添加到当前区块
-            if (token.type === 'paragraph') {
-                currentSection.content += token.text + '\n\n';
-            } else if (token.type === 'code') {
-                currentSection.content += '```' + token.lang + '\n' + token.text + '\n```\n\n';
-            } else {
-                currentSection.content += token.raw + '\n';
-            }
+async function generate() {
+    // 复用唯一标注构建入口，先核验原文章节哈希，避免上传过期标注。
+    execFileSync(process.env.PYTHON || 'python3', ['scripts/api_knowledge.py', 'build'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'inherit'] });
+    const index = JSON.parse(await readFile(join(ROOT, '.api-index/index.json'), 'utf8'));
+    const notes = Object.values(JSON.parse(await readFile(join(ROOT, '.api-index/notes.json'), 'utf8')));
+    const bySection = new Map();
+    for (const entry of index.records) {
+        const key = `${entry.doc_path}#${entry.anchor}`;
+        bySection.set(key, [...(bySection.get(key) || []), entry]);
+    }
+    const records = [], joined = new Set();
+    let sectionCount = 0;
+    for (const file of await markdownFiles(DOCS)) {
+        const docPath = relative(DOCS, file).split('\\').join('/');
+        const { content, data } = matter(await readFile(file, 'utf8'));
+        const rootType = docPath.split('/')[0];
+        const pageTitle = docPath.replace(/\.md$/, '').split('/').map(p => p.replace(/^\d+-/, '')).join(' / ');
+        for (const section of sections(content, docPath)) {
+            const entries = bySection.get(`${docPath}#${section.anchor}`) || [];
+            const annotations = entries.flatMap(e => e.annotation ? [e.annotation] : []);
+            for (const note of annotations) joined.add(note.id);
+            const body = clean(textOf(section.tokens));
+            if (!body && !section.title) continue;
+            const url = `${SITE}/${docPath.replace(/\.md$/, '.html').split('/').map(encodeURIComponent).join('/')}${section.anchor ? '#' + encodeURIComponent(section.anchor) : ''}`;
+            const hierarchy = { lvl0: pageTitle, lvl1: section.h1 || data.title || pageTitle };
+            if (section.level === 2) hierarchy.lvl2 = section.title;
+            const record = {
+                objectID: createHash('sha256').update(`${docPath}#${section.anchor}`).digest('hex').slice(0, 24),
+                url, type: section.level ? `lvl${section.level}` : 'content', hierarchy,
+                apiName: unique(entries.filter(e => e.kind !== 'document').map(e => e.name)),
+                description: unique(entries.map(e => e.description)).join('；'),
+                content: body,
+                tags: unique(annotations.flatMap(a => a.tags || [])),
+                aliases: unique(annotations.flatMap(a => a.aliases || [])),
+                questions: unique(annotations.flatMap(a => a.questions || [])),
+                usage: unique(annotations.map(a => a.usage)).join('\n'),
+                cautions: unique(annotations.flatMap(a => a.cautions || [])),
+                annotationIds: annotations.map(a => a.id),
+                side: unique(entries.map(e => e.side)),
+                scope: entries.some(e => e.scope === 'preset') || /预设|preset/i.test(docPath) ? 'preset' : 'modsdk',
+                lang: 'zh-CN', _tags: ['zh-CN'], rootType,
+                priority: { mcdocs: 3, mcguide: 2, mconline: 1 }[rootType] || 0,
+                contentLength: body.length,
+            };
+            records.push(...chunks(record));
+            sectionCount++;
         }
     }
-
-    // 添加最后一个区块（如果不在跳过模式）
-    if (currentSection.content.trim() && !skipSection) {
-        sections.push(currentSection);
-    }
-
-    return sections;
+    const missing = notes.filter(n => !joined.has(n.id)).map(n => n.id);
+    if (missing.length) throw new Error(`有标注未关联到网页章节：${missing.join(', ')}`);
+    if (!records.length || new Set(records.map(r => r.objectID)).size !== records.length) throw new Error('索引为空或 objectID 重复');
+    if (records.some(r => bytes(r) > MAX_BYTES)) throw new Error('存在超大记录');
+    const report = { index: INDEX, corpus_sha256: index.corpus_sha256, records: records.length,
+        sections: sectionCount, annotations: joined.size, max_record_bytes: Math.max(...records.map(bytes)),
+        records_sha256: createHash('sha256').update(JSON.stringify(records)).digest('hex'),
+        generated_at: new Date().toISOString(), status: 'validated' };
+    await writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
+    console.log(JSON.stringify(report, null, 2));
+    return { records, report };
 }
 
-/**
- * 生成VitePress兼容的锚点链接
- */
-function generateAnchor(text) {
-    return `#${text
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w\u4e00-\u9fa5-]/g, '')}`;
-}
+const SETTINGS = {
+    searchableAttributes: ['unordered(apiName)', 'unordered(tags)', 'unordered(aliases)', 'unordered(description)',
+        'unordered(hierarchy.lvl2)', 'unordered(hierarchy.lvl1)', 'unordered(questions)', 'unordered(usage)',
+        'unordered(cautions)', 'unordered(content)', 'unordered(hierarchy.lvl0)'],
+    attributesForFaceting: ['lang', 'type', 'rootType', 'scope', 'side', 'tags'],
+    attributesToHighlight: ['hierarchy.lvl0', 'hierarchy.lvl1', 'hierarchy.lvl2', 'content', 'tags', 'description'],
+    attributesToSnippet: ['content:50', 'description:40'],
+    attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'lang', 'priority', 'rootType', 'scope', 'side', 'tags', 'apiName'],
+    customRanking: ['desc(priority)', 'asc(contentLength)'],
+    attributeForDistinct: 'url', distinct: 1,
+    indexLanguages: ['zh'], queryLanguages: ['zh'],
+};
 
-/**
- * 清理内容，移除代码块等
- */
-function cleanContent(content) {
-    // 移除代码块
-    return content.replace(/```[\s\S]*?```/g, '');
-}
-
-/**
- * 获取目录的优先级
- * mcdocs - 最高优先级
- * mcguide - 中等优先级
- * mconline - 最低优先级
- */
-function getDirectoryPriority(path) {
-    const firstDir = path.split('/').filter(Boolean)[0];
-    
-    switch (firstDir) {
-        case 'mcdocs':
-            return 3; // 最高优先级
-        case 'mcguide':
-            return 2; // 中等优先级
-        case 'mconline':
-            return 1; // 较低优先级
-        default:
-            return 0; // 默认优先级
-    }
-}
-
-/**
- * 获取目录的优先级
- * mcdocs - 最高优先级
- * mcguide - 中等优先级
- * mconline - 最低优先级
- */
-function getDirectoryRootType(path) {
-    const firstDir = path.split('/').filter(Boolean)[0];
-    return firstDir;
-}
-
-/**
- * 从正文中提取"描述"的内容
- * @param {string} content Markdown内容
- * @return {string} 提取的描述文本
- */
-function extractAPIDescription(content) {
-    // 匹配"- 描述"部分，直到下一个部分标题(如"- 参数"、"- 返回值"等)或文档结束
-    const descriptionRegex = /-\s*描述\s*\n([\s\S]*?)(?=\n\s*-\s*(?:参数|返回值|备注|示例)|$)/;
-    const match = content.match(descriptionRegex);
-
-    if (match && match[1]) {
-        // 提取第一行并进行清理：
-        // 1. 移除缩进
-        // 2. 移除 Markdown 符号如 "-", "*", ">", 数字列表前缀 "1." 等
-        const firstLine = match[1].split('\n')[0].trim();
-        return firstLine
-            .replace(/^[\s>*-]*\s*/, '')         // 移除开头的 >, *, - 等符号
-            .replace(/^\d+\.\s*/, '')            // 移除数字列表前缀，如 "1. "
-            .replace(/^\[.*?\]\s*/, '')          // 移除可能的 [xxx] 标记
-            .trim();
-    }
-
-    return ''; // 如果没有找到描述，返回空字符串
-}
-
-/**
- * 生成符合VitePress的Algolia索引记录
- */
-async function generateAlgoliaRecords() {
-    // 获取所有 Markdown 文件
-    const pages = await getAllMarkdownFiles(docsDir);
-    const records = [];
-
-    for (const page of pages) {
-        try {
-            const rawContent = await readFile(page.filePath, 'utf8');
-            const { data: frontmatter, content } = matter(rawContent);
-            const pageTitle = page.path
-                .replaceAll("/mcdocs", "API文档")
-                .replaceAll("/mcguide", "开发指南")
-                .replaceAll("/mconline", "教学课程")
-                .split('/')
-                .map(s => s.split("-").pop())
-                .join("/");
-
-            // 确定这个页面的优先级
-            const priority = getDirectoryPriority(page.path);
-            const rootType = getDirectoryRootType(page.path);
-
-            // 按标题分割内容
-            const sections = splitByHeadings(content);
-
-            for (const section of sections) {
-                const { h1Title, h2Title, content: sectionContent, anchor, level } = section;
-                const cleanedContent = cleanContent(sectionContent);
-
-                // 构建这个部分的层次结构
-                const hierarchy = {
-                    lvl0: pageTitle,
-                    lvl1: h1Title || pageTitle,
-                };
-
-                // 如果有H2标题，添加到层次结构
-                if (h2Title) {
-                    hierarchy.lvl2 = h2Title;
-                }
-
-                // 构建唯一ID和URL
-                const objectID = `${page.path}${anchor}`;
-                const url = `https://modsdk.easecation.net${page.path}${anchor}`;
-
-                const description = extractAPIDescription(cleanedContent);
-                
-                // 创建记录
-                const record = {
-                    objectID,
-                    url,
-                    type: level ? `lvl${level}` : 'content', // 标识这是什么级别的标题
-                    hierarchy,
-                    content: cleanedContent,
-                    description,
-                    _tags: ['zh-CN'],
-                    lang: "zh-CN",
-                    priority: priority, // 添加优先级字段
-                    rootType: rootType
-                };
-
-                // 如果记录太大，则需要分割
-                const recordSize = Buffer.byteLength(JSON.stringify(record), 'utf8');
-                if (recordSize <= MAX_RECORD_SIZE) {
-                    records.push(record);
-                } else {
-                    // console.log(`部分内容过大，需要进一步分割: ${objectID}`);
-
-                    // 按段落分割大内容
-                    const paragraphs = cleanedContent.split(/\n\s*\n/);
-                    let currentChunk = '';
-                    let chunkIndex = 0;
-
-                    for (const paragraph of paragraphs) {
-                        if (Buffer.byteLength(currentChunk + paragraph, 'utf8') > MAX_RECORD_SIZE / 2) {
-                            // 当前块足够大，保存并开始新块
-                            if (currentChunk) {
-                                records.push({
-                                    ...record,
-                                    objectID: `${objectID}-chunk-${chunkIndex}`,
-                                    content: currentChunk,
-                                    _tags: [...(record._tags || []), 'chunked'],
-                                    priority: record.priority // 确保保留优先级
-                                });
-                                chunkIndex++;
-                                currentChunk = paragraph;
-                            } else {
-                                // 单个段落过大，需要硬分割
-                                currentChunk = paragraph.substring(0, 1000) + '...';
-                                records.push({
-                                    ...record,
-                                    objectID: `${objectID}-chunk-${chunkIndex}`,
-                                    content: currentChunk,
-                                    _tags: [...(record._tags || []), 'chunked'],
-                                    priority: record.priority // 确保保留优先级
-                                });
-                                chunkIndex++;
-                                currentChunk = '';
-                            }
-                        } else {
-                            currentChunk += (currentChunk ? '\n\n' : '') + paragraph;
-                        }
-                    }
-
-                    // 添加最后一个块
-                    if (currentChunk) {
-                        records.push({
-                            ...record,
-                            objectID: `${objectID}-chunk-${chunkIndex}`,
-                            content: currentChunk,
-                            _tags: [...(record._tags || []), 'chunked'],
-                        });
-                    }
-                }
-            }
-        } catch (error) {
-            console.warn(`无法处理文件 ${page.filePath}: ${error.message}`);
-        }
-    }
-
-    return records;
-}
-
-/**
- * 上传数据到 Algolia
- */
-async function uploadToAlgolia(records) {
-    if (!ALGOLIA_APP_ID || !ALGOLIA_API_KEY) {
-        console.error('❌ 缺少 Algolia 凭据。请检查环境变量 ALGOLIA_APP_ID 和 ALGOLIA_ADMIN_KEY');
-        return;
-    }
-
-    const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
-
+async function upload(records, report) {
+    if (!process.env.ALGOLIA_APP_ID || !process.env.ALGOLIA_ADMIN_KEY) throw new Error('缺少 ALGOLIA_APP_ID 或 ALGOLIA_ADMIN_KEY');
+    const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
+    const staging = `${INDEX}_staging_${Date.now()}`;
+    const wait = (indexName, result) => client.waitForTask({ indexName, taskID: result.taskID });
+    let published = false;
     try {
-        console.log(`开始上传 ${records.length} 条记录到 Algolia...`);
-
-        // 分批上传记录以避免请求过大
-        const batchSize = 50; // 每批次处理的记录数
-        let successCount = 0;
-        let failureCount = 0;
-
-        for (let i = 0; i < records.length; i += batchSize) {
-            const batch = records.slice(i, i + batchSize);
-            try {
-                const operations = batch.map(record => ({
-                    action: 'updateObject',
-                    indexName: INDEX_NAME,
-                    body: record
-                }));
-
-                await client.multipleBatch({ requests: operations });
-                successCount += batch.length;
-                console.log(`✅ 批次 ${Math.floor(i / batchSize) + 1}/${Math.ceil(records.length / batchSize)} 已上传 (${successCount}/${records.length})`);
-            } catch (batchError) {
-                console.error(`❌ 批次 ${Math.floor(i / batchSize) + 1} 上传失败:`, batchError.message);
-                failureCount += batch.length;
-
-                // 尝试逐条上传这个批次，以识别有问题的记录
-                for (const record of batch) {
-                    try {
-                        await client.addOrUpdateObject({
-                            indexName: INDEX_NAME,
-                            objectID: record.objectID,
-                            body: record
-                        });
-                        successCount += 1;
-                        failureCount -= 1;
-                    } catch (recordError) {
-                        console.error(`❌ 记录上传失败 (objectID: ${record.objectID}):`, recordError.message);
-                        console.error(`记录大小: ${Buffer.byteLength(JSON.stringify(record), 'utf8')} 字节`);
-                    }
-                }
-            }
+        // 保留现有人工同义词和规则。上传失败时不改动线上记录或设置。
+        const copy = await client.operationIndex({ indexName: INDEX, operationIndexParams: {
+            operation: 'copy', destination: staging, scope: ['settings', 'rules', 'synonyms'] } });
+        await wait(staging, copy);
+        await wait(staging, await client.setSettings({ indexName: staging, indexSettings: SETTINGS }));
+        for (let offset = 0; offset < records.length; offset += 500) {
+            await client.saveObjects({ indexName: staging, objects: records.slice(offset, offset + 500), waitForTasks: true });
+            console.log(`暂存上传 ${Math.min(offset + 500, records.length)}/${records.length}`);
         }
-
-        console.log(`✅ 完成上传 - 成功: ${successCount}, 失败: ${failureCount}`);
+        const count = await client.searchSingleIndex({ indexName: staging, searchParams: { query: '', hitsPerPage: 0, distinct: false } });
+        if (count.nbHits !== records.length) throw new Error(`暂存记录数不符：${count.nbHits}/${records.length}`);
+        // 真实搜索检查：基础能力、近义表达和应用正文，均使用站点相同的课程过滤。
+        const cases = [
+            ['治疗玩家', 'SetAttrValue'], ['属性赋值', 'SetAttrValue'],
+            ['精英怪属性强化', 'SetAttrValue'], ['GetPlayerAllItems', 'GetPlayerAllItems'],
+        ];
+        report.queries = [];
+        for (const [query, expected] of cases) {
+            const result = await client.searchSingleIndex({ indexName: staging, searchParams: {
+                query, hitsPerPage: 5, facetFilters: ['rootType:-mconline'], attributesToRetrieve: ['apiName', 'url', 'tags'] } });
+            const names = result.hits.flatMap(h => h.apiName || []);
+            report.queries.push({ query, expected, names, passed: names.includes(expected) });
+            if (!names.includes(expected)) throw new Error(`暂存搜索不符合预期：${query} -> ${names.join(', ')}`);
+        }
+        const move = await client.operationIndex({ indexName: staging, operationIndexParams: { operation: 'move', destination: INDEX } });
+        // 发出 move 后若网络中断，保留现场，由操作者核对状态。
+        published = true;
+        await wait(INDEX, move);
+        const live = await client.searchSingleIndex({ indexName: INDEX, searchParams: { query: '', hitsPerPage: 0, distinct: false } });
+        if (live.nbHits !== records.length) throw new Error(`线上记录数不符：${live.nbHits}/${records.length}`);
+        Object.assign(report, { status: 'published', published_at: new Date().toISOString(), task_id: move.taskID });
+        await writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
+        console.log(`线上索引已原子替换：${records.length} 条记录，${report.annotations} 条独立标注；旧记录已移除。`);
     } catch (error) {
-        console.error('❌ 上传失败:', error);
-        if (error.message) console.error('错误信息:', error.message);
-        if (error.status) console.error('状态码:', error.status);
+        Object.assign(report, { status: published ? 'verify_required' : 'failed_before_publish', staging_index: staging, error: error.message });
+        await writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
+        if (!published) {
+            try { await wait(staging, await client.deleteIndex({ indexName: staging })); }
+            catch { console.error(`暂存索引清理未完成：${staging}`); }
+        }
+        throw error;
     }
 }
 
-async function settingAlgolia() {
-    if (!ALGOLIA_APP_ID || !ALGOLIA_API_KEY) {
-        console.error('❌ 缺少 Algolia 凭据。请检查环境变量 ALGOLIA_APP_ID 和 ALGOLIA_ADMIN_KEY');
-        return;
-    }
-
-    const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
-
-    try {
-        const response = await client.setSettings({
-            indexName: INDEX_NAME,
-            indexSettings: {
-                attributesForFaceting: ['lang', 'type', 'rootType'],
-                attributesToHighlight: ['hierarchy.lvl0', 'hierarchy.lvl1', 'hierarchy.lvl2', 'content'],
-                attributesToSnippet: ['content:50'],
-                attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'lang', 'priority', 'rootType'],
-                searchableAttributes: [
-                    'hierarchy.lvl0',
-                    'hierarchy.lvl1',
-                    'hierarchy.lvl2',
-                    'content'
-                ],
-                // 已经在网页上设置了，这边设置会重复
-                customRanking: [
-                    'desc(priority)', // 首先按优先级降序排列（值越高排越前）
-                    'asc(content.length)' // 其次按内容长度升序（简短内容优先）
-                ]
-            },
-            forwardToReplicas: true,
-        });
-        console.log('✅ 索引设置已更新');
-    } catch (error) {
-        console.error('❌ 设置失败:', error);
-    }
-}
-
-// 执行流程
 try {
-    console.log('设置全局配置...');
-    await settingAlgolia();
-
-    console.log('开始生成 Algolia 索引数据...');
-    const records = await generateAlgoliaRecords();
-    console.log(`生成了 ${records.length} 条记录`);
-
-    if (records.length > 0) {
-        await uploadToAlgolia(records);
-    } else {
-        console.warn('⚠️ 没有找到文档，跳过上传');
-    }
+    const { records, report } = await generate();
+    if (!args.includes('--dry-run')) await upload(records, report);
 } catch (error) {
-    console.error('❌ 处理失败:', error);
+    console.error(`搜索索引更新失败：${error.message}`);
+    process.exitCode = 1;
 }

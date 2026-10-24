@@ -195,6 +195,8 @@ export default withMermaid({
         apiKey: 'ccaf9255472c593d8a8b0724a940bb29',
         indexName: 'netease-modsdk',
         searchParameters: {
+          // DocSearch 默认请求会覆盖服务端字段设置，显式保留结构化描述与标签。
+          attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'tags', 'apiName'],
           // 筛选掉 rootType 为 mconline 的项目
           facetFilters: ['rootType:-mconline']
         },

@@ -94,6 +94,22 @@ npm run docs:check-links
 
 该命令需要 Python 3（仅使用标准库），发现缺失路径或锚点时返回非零退出码。当前清单保存在 Git 目录的 `docs-link-report.md` 和 `docs-link-report.json`，每次覆盖更新；它检查站内产物，不将外部网站的访问限制误报为本地死链。
 
+### 更新网站全局搜索（Algolia）
+
+网站搜索和 AI skill 使用同一份 `knowledge/annotations.json`，但执行不同的检索算法。上传脚本先调用 API 索引构建器核验原文哈希，再按文档路径和标题锚点关联标注；全部标注必须成功关联。搜索字段包括 API 名称、中文基础标签、别名、官方描述、常见问法、应用说明和注意事项，按上述优先级检索，原始 Markdown 不会被修改。
+
+```bash
+# 只生成并检查，不访问搜索服务，也不需要凭据
+npm run docs:algolia -- --dry-run
+
+# 更新线上搜索；从本仓库 .env 或进程环境读取凭据
+npm run docs:algolia
+```
+
+上传需要 `ALGOLIA_APP_ID`、`ALGOLIA_ADMIN_KEY`。脚本只扫描文档源码，按 VitePress 的真实标题锚点生成 `https://mcwiki.easecation.net` 链接，完整 JSON 记录不超过 8,000 字节；超长正文完整切块，不截断段落。结果按 URL 去重，避免同一章节的多个分块挤占结果。
+
+上传先创建独立暂存索引，保留线上人工同义词和规则，更新字段权重并等待每批入库；核对记录总数及真实搜索结果后原子替换正式索引，同时清除旧文档残留。替换前失败不改动线上索引，命令以非零状态退出；回执覆盖保存到 Git 目录的 `algolia-upload-report.json`。网站部署与 Algolia 更新是两个独立步骤，修改标注后需执行搜索更新。
+
 ### 预览构建结果
 
 ```bash
