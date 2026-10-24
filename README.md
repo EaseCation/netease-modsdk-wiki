@@ -164,6 +164,8 @@ npm run api:query -- detail AttrType --part raw --page-chars 6000
 
 协议 2 提供 `raw` 原文词法检索和 `annotated` 标注增强检索。多职责需求由 Agent 拆成结构化计划，`resolve --plan-file` 先给每项分配候选，再补必要前置和额外候选。对象、读写、范围和否定约束独立处理；事件使用单独通道。限制文本命中单独放入 `limitations`，不能作为能力成立的证据。
 
+Bukkit 常用能力的对应关系也保存在独立标注中：系统聊天、模拟玩家发言、中央标题、动作栏、Tip/Popup、记分板读写分别定位；需要原生命令或多步组合时明确说明。消息接口的玩家对象及单人/全体范围经过复核，避免仅因文档位于“世界”分类就漏掉玩家筛选结果。
+
 事件阶段用于优先排序，不把添加前、获得时、刷新和移除等关联事件全部滤掉。`results` 是主候选，`related` 返回关联阶段供理解生命周期；主候选阶段不匹配时保留 `timing_review`，不宣称满足当前职责。原文只写“变化时”的事件不擅自认定为“变化后”。
 
 固定回归题库与执行入口统一维护在独立 [Skill 仓库](https://github.com/EaseCation/netease-modsdk-skill/tree/main/evals)，覆盖产品需求、相反意图、支持边界、关联阶段和协议拒绝。Wiki 部署前调用该题库并显式绑定当前 Wiki；本地执行：

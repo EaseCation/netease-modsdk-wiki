@@ -563,12 +563,18 @@
     "note": "已知场景回归，非独立盲测；原文排序与能力规则未为新场景扩充。"
   },
   "latest_update": {
-    "method": "关键事件按原文的触发时机、参数和限制补充；检索协议升级为 2",
-    "new_events": 60,
+    "method": "从 Bukkit 基础需求复核消息、标题、动作栏、记分板及玩家操作；补充中文能力标签、检索别名、实现边界和对象/作用范围事实",
+    "updated_annotations": 33,
+    "total_annotations": 1709,
     "api_annotations": 1635,
     "event_annotations": 74,
-    "total_annotations": 1709,
-    "relationships": "同一事件族的关联阶段一起返回，主候选按所需阶段排序；变化时不擅自归类为变化后",
+    "command_reference_commit": "b9b196e3c9fa05e7c742d07086ebe77fd4ad37fe",
+    "command_references": [
+      "https://github.com/MicrosoftDocs/minecraft-creator/blob/b9b196e3c9fa05e7c742d07086ebe77fd4ad37fe/creator/Commands/commands/title.md",
+      "https://github.com/MicrosoftDocs/minecraft-creator/blob/b9b196e3c9fa05e7c742d07086ebe77fd4ad37fe/creator/Commands/commands/titleraw.md",
+      "https://github.com/MicrosoftDocs/minecraft-creator/blob/b9b196e3c9fa05e7c742d07086ebe77fd4ad37fe/creator/Commands/commands/tellraw.md",
+      "https://github.com/MicrosoftDocs/minecraft-creator/blob/b9b196e3c9fa05e7c742d07086ebe77fd4ad37fe/creator/Commands/commands/scoreboard.md"
+    ],
     "regression_bank": "https://github.com/EaseCation/netease-modsdk-skill/tree/main/evals"
   },
   "initial_batch": {

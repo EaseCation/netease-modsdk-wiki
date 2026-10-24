@@ -22,7 +22,10 @@
         "读取玩家血量",
         "查看当前血量",
         "获取玩家生命值",
-        "查询玩家还有多少血"
+        "查询玩家还有多少血",
+        "getHealth",
+        "getFoodLevel",
+        "读取玩家饱食度"
       ],
       "questions": [],
       "usage": "读取实体属性的当前值；需要增减属性时，先读取再计算目标值并另行写入。",
@@ -99,13 +102,17 @@
         "给玩家扣血",
         "增加血量",
         "减少血量",
-        "修改玩家血量"
+        "修改玩家血量",
+        "setHealth",
+        "setFoodLevel",
+        "设置玩家饱食度"
       ],
       "questions": [],
       "usage": "设置实体属性的目标值；增量计算、持续时间和恢复原值需另行处理。",
       "cautions": [
         "超过当前上限会截断；setDefault 默认会改默认值，饥饿度与饱和度例外。",
-        "各属性适用对象、原版范围和护甲覆盖规则以原文及枚举为准；骑乘跳跃力不等于玩家普通跳高。"
+        "各属性适用对象、原版范围和护甲覆盖规则以原文及枚举为准；骑乘跳跃力不等于玩家普通跳高。",
+        "生命值、饥饿度、饱和度由 AttrType 区分；SetPlayerHealthLevel/SetPlayerStarveLevel 修改的是回血或饥饿判定阈值。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
@@ -245,12 +252,16 @@
         "记录玩家位置",
         "保存玩家当前位置",
         "获取传送位置坐标",
-        "记录位置之后传送回来"
+        "记录位置之后传送回来",
+        "getLocation",
+        "玩家脚底位置",
+        "读取玩家站立坐标"
       ],
       "questions": [],
       "usage": "读取实体脚底坐标；查询所在方块时还需将坐标转换为方块位置。",
       "cautions": [
-        "睡觉时不保证返回脚底位置；本接口不提供睡眠位置适配。"
+        "睡觉时不保证返回脚底位置；本接口不提供睡眠位置适配。",
+        "玩家 Location 的脚底语义应使用此接口；GetPos 的玩家坐标可能包含姿态偏移。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetPos",
@@ -539,12 +550,15 @@
         "给予玩家物品",
         "向玩家背包生成物品",
         "给予玩家指定物品",
-        "物品发放失败部分入包"
+        "物品发放失败部分入包",
+        "背包addItem",
+        "向背包发放物品"
       ],
       "questions": [],
       "usage": "向玩家背包生成物品；未指定槽位时按接口规则堆叠并使用空闲槽位。",
       "cautions": [
-        "返回失败也可能已有部分物品入包；重发或转为地面掉落前应核对实际结果。"
+        "返回失败也可能已有部分物品入包；重发或转为地面掉落前应核对实际结果。",
+        "接口返回 False 不保证没有放入物品，不能直接整批重试；应按实际槽位变化处理剩余数量。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
@@ -1545,12 +1559,15 @@
         "添加自定义状态效果",
         "给玩家加状态",
         "添加限时药水效果",
-        "施加指定等级的状态效果"
+        "施加指定等级的状态效果",
+        "addPotionEffect",
+        "添加药水状态效果"
       ],
       "questions": [],
       "usage": "向实体添加指定状态效果，并设置持续时间和等级。",
       "cautions": [
-        "已有效果按等级、剩余时长规则更新，不会无条件覆盖；效果第一级对应额外等级 0。"
+        "已有效果按等级、剩余时长规则更新，不会无条件覆盖；效果第一级对应额外等级 0。",
+        "duration 使用秒；迁移以游戏 tick 表示的持续时间时先换算。amplifier 从 0 起算，已有更高等级效果不会被较低等级覆盖。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.RemoveEffectFromEntity",
@@ -1594,17 +1611,26 @@
         "个人弹出提示",
         "物品栏上方提示",
         "快捷栏弹出通知",
-        "向玩家显示短提示"
+        "向玩家显示短提示",
+        "给单个玩家发送快捷栏popup提示",
+        "指定玩家popup通知"
       ],
       "questions": [],
       "usage": "仅向指定玩家显示物品栏上方的弹出提示。",
       "cautions": [
-        "这是弹出提示，不是聊天框消息；官方更建议使用客户端对应接口。"
+        "这是弹出提示，不是聊天框消息；官方更建议使用客户端对应接口。",
+        "此处是快捷栏上方的 popup 通知；屏幕中央 title 或原生 actionbar 需求应核对 title/titleraw 命令。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
         "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
-      ]
+      ],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "single"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
@@ -1612,6 +1638,7 @@
       "authority": "curated_note",
       "tags": [
         "聊天消息",
+        "系统通知",
         "定向通知",
         "文字样式"
       ],
@@ -1622,15 +1649,34 @@
         "给一个玩家发聊天消息",
         "指定玩家聊天提示",
         "定向聊天通知",
-        "彩色聊天消息"
+        "彩色聊天消息",
+        "sendMessage",
+        "给玩家发送系统聊天消息",
+        "单个玩家聊天框文字",
+        "不冒充玩家的聊天通知"
       ],
       "questions": [],
-      "usage": "向指定玩家发送聊天框消息，并可设置文字颜色。",
-      "cautions": [],
+      "usage": "向指定玩家的聊天框发送系统文字，可设置颜色；可承接常见 sendMessage 需求。向全部在线玩家发送同类消息时，先取得玩家列表再逐个发送。",
+      "cautions": [
+        "SendMsg/SendMsgToPlayer 带模拟玩家发言语义，不能仅凭名称把它们当成此接口的替代。"
+      ],
       "related": [
         "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetOnePopupNotice",
-        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
-      ]
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient",
+        "modsdk:api:server:mod.server.extraServerApi.GetPlayerList",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.SendMsgToPlayer"
+      ],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "single",
+        "operation": "write"
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.extraServerApi.GetPlayerList": "a7521f333fc12b558280c141775393db55eb61a20b11d632be3c7d11a9649434",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.SendMsgToPlayer": "1213305fe0740f923a1e076edeb17b05839195e86f37a9433bdc38a42bf98614"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.PlayCustomMusic",
@@ -1646,12 +1692,16 @@
         "播放循环场景音效",
         "跟随实体播放声音",
         "在指定坐标播放音效",
-        "循环播放位置音效"
+        "循环播放位置音效",
+        "playSound",
+        "播放原版音效",
+        "给本地玩家播放声音"
       ],
       "questions": [],
       "usage": "按位置播放客户端音效，可设置循环或绑定实体；绑定实体时位置参数表示相对偏移。",
       "cautions": [
-        "未绑定实体且距离本地玩家超过 16 格会跳过；流式音频多次调用会从头播放，不能同时开多个实例。"
+        "未绑定实体且距离本地玩家超过 16 格会跳过；流式音频多次调用会从头播放，不能同时开多个实例。",
+        "名字带 CustomMusic 但也支持原版场景音效；接口仅在客户端播放，服务端定向请求需通知对应客户端。"
       ],
       "related": [
         "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
@@ -1670,17 +1720,26 @@
         "玩家跨维度传送",
         "指定目标维度传送",
         "切换主世界下界末地",
-        "设置玩家目标维度"
+        "设置玩家目标维度",
+        "跨世界传送玩家",
+        "跨维度teleport"
       ],
       "questions": [],
       "usage": "将玩家传送到目标维度的指定位置；位置需按接口要求的头部坐标基准传入。",
       "cautions": [
-        "成功切换维度时玩家脚底比传入位置低 1.62，不应直接复用脚底传送坐标。"
+        "成功切换维度时玩家脚底比传入位置低 1.62，不应直接复用脚底传送坐标。",
+        "此接口成功切维度时 pos 是玩家头部位置，脚底会比给定位置低 1.62；与同维度脚底传送的坐标基准不同。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos",
-        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos"
-      ]
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetFootPos",
+        "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangeEntityDimension"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetFootPos": "81ebc7743ab03518e4dd851b80f8651c42af7a568036343f64929908d8fa4fc1",
+        "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangeEntityDimension": "c14511f40cab3f45b9e6168bf8cee2d109eafdc2dec30e8563ceaed265cb7610"
+      }
     },
     {
       "id": "modsdk:event:server:ActuallyHurtServerEvent",
@@ -2302,12 +2361,15 @@
         "让玩家弹射",
         "玩家冲刺运动",
         "设置玩家瞬时速度",
-        "自定义玩家击退"
+        "自定义玩家击退",
+        "setVelocity",
+        "设置玩家速度向量"
       ],
       "questions": [],
       "usage": "在服务端设置玩家瞬时运动向量；伤害事件中使用自定义击退时需关闭原事件击退。",
       "cautions": [
-        "本接口针对玩家，非玩家生物另查 SetMotion；不要把速度运动器当成同一个瞬时操作。"
+        "本接口针对玩家，非玩家生物另查 SetMotion；不要把速度运动器当成同一个瞬时操作。",
+        "面向玩家使用此接口；SetMotion 面向非玩家生物，不能因名称类似而替换。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.GetMotion",
@@ -3606,17 +3668,33 @@
       "source_sha256": "a7521f333fc12b558280c141775393db55eb61a20b11d632be3c7d11a9649434",
       "authority": "curated_note",
       "tags": [
-        "玩家枚举",
         "在线玩家",
-        "玩家标识"
+        "玩家枚举",
+        "跨维度",
+        "全体玩家"
       ],
       "aliases": [
-        "获取在线玩家列表"
+        "获取在线玩家列表",
+        "getOnlinePlayers",
+        "当前在线玩家列表",
+        "跨维度全部玩家",
+        "全服系统消息的接收者列表"
       ],
       "questions": [],
-      "usage": "读取玩家标识列表，供逐个玩家操作使用。",
+      "usage": "读取全部维度中的在线玩家 ID；可逐个调用定向消息或玩家操作接口。列表元素是引擎玩家 ID，不是 Bukkit Player 对象。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage"
+      ],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "global"
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage": "d73dbb23b5754e0655dee547eddfef48a10823c6d1de90b9a56916adcae5f906"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.extraClientApi.GetPlayerList",
@@ -3850,18 +3928,53 @@
       "source_sha256": "a45ab6f16fb3bb710f049d800d8901157da1e4eba9051f42e5e881d2893a07fb",
       "authority": "curated_note",
       "tags": [
-        "命令执行",
-        "指令调用",
+        "原生命令",
+        "屏幕标题",
+        "动作栏",
+        "结构化文本",
+        "记分板",
         "执行上下文"
       ],
       "aliases": [
         "运行游戏命令",
-        "执行指令"
+        "执行指令",
+        "sendTitle",
+        "resetTitle",
+        "sendActionBar",
+        "屏幕中央大标题",
+        "主标题和副标题",
+        "标题淡入停留淡出",
+        "清除屏幕标题并重置时间",
+        "发送原生动作栏消息",
+        "发送结构化JSON聊天文本",
+        "创建记分板目标",
+        "侧边栏显示分数",
+        "写入玩家记分板分数"
       ],
       "questions": [],
-      "usage": "执行游戏内命令；执行位置、实体和结果回调按参数配置。",
-      "cautions": [],
-      "related": []
+      "usage": "执行原生命令：屏幕中央标题用 title/titleraw 的 title、subtitle、times、clear、reset；动作栏用 actionbar；结构化聊天用 tellraw；记分板创建、显示与分数写入用 scoreboard。普通定向聊天可直接使用 NotifyOneMessage。",
+      "cautions": [
+        "只作用于一个玩家时明确传入该玩家 entityId 并使用 @s；省略执行者会随机选择玩家。@a 表示全部玩家，执行者和接收者是两个概念。",
+        "标题 times 的时间单位为游戏 tick；先设置显示时间与副标题，再显示主标题。Tip/Popup 的位置与样式不等同于屏幕中央标题或原生 actionbar。",
+        "JSON 文本使用序列化生成 rawtext，目标选择器和命令结构单独确定；不能直接套用 Java 版聊天组件格式。",
+        "title、titleraw、scoreboard 的权限/作弊条件需按目标包体核验；SetCommand 返回的是执行结果，不是 Bukkit 的标题或记分板对象。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetAllPlayerScoreboardObjects",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetAllScoreboardObjects"
+      ],
+      "retrieval": {
+        "targets": [
+          "world",
+          "player"
+        ]
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage": "d73dbb23b5754e0655dee547eddfef48a10823c6d1de90b9a56916adcae5f906",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetAllPlayerScoreboardObjects": "0f8764e189e5f11ad019bdd61749903d134dac90dca3a10c86318fca5c442d4f",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetAllScoreboardObjects": "273d7f12c951472c35083512c6cf1213eae916c6f0053b6c61bfc15c9770eab5"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommandPermissionLevel",
@@ -4462,12 +4575,31 @@
         "玩家身份"
       ],
       "aliases": [
-        "全服聊天广播"
+        "全服聊天广播",
+        "模拟玩家向所有人说话",
+        "以玩家身份全服发言",
+        "Player.chat"
       ],
       "questions": [],
-      "usage": "模拟玩家向所有人发送聊天消息。",
-      "cautions": [],
-      "related": []
+      "usage": "以已有玩家名字模拟向全体玩家发聊天消息；用于玩家身份发言。系统聊天公告可逐个调用 NotifyOneMessage。",
+      "cautions": [
+        "传入不存在的玩家名会随机找玩家发言；name 不是任意系统前缀。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.SendMsgToPlayer"
+      ],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "global",
+        "operation": "write"
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage": "d73dbb23b5754e0655dee547eddfef48a10823c6d1de90b9a56916adcae5f906",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.SendMsgToPlayer": "1213305fe0740f923a1e076edeb17b05839195e86f37a9433bdc38a42bf98614"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.SendMsgToPlayer",
@@ -4479,12 +4611,28 @@
         "玩家身份"
       ],
       "aliases": [
-        "发送私聊消息"
+        "发送私聊消息",
+        "模拟玩家给另一个玩家私聊",
+        "玩家之间定向聊天"
       ],
       "questions": [],
-      "usage": "模拟玩家向指定玩家发送聊天消息。",
+      "usage": "模拟 fromEntityId 玩家向 toEntityId 玩家发送聊天消息；系统对单个玩家的文字提示使用 NotifyOneMessage。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.SendMsg"
+      ],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "single",
+        "operation": "write"
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage": "d73dbb23b5754e0655dee547eddfef48a10823c6d1de90b9a56916adcae5f906",
+        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.SendMsg": "062809b9f5a8219452a0560e4d149a16258ca56fe49a9ccc37a9391567c4beed"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.textNotifyCompClient.TextNotifyComponet.SetLeftCornerNotify",
@@ -4496,12 +4644,20 @@
         "文字显示"
       ],
       "aliases": [
-        "左上角提示"
+        "左上角提示",
+        "本地左上角文字通知",
+        "左上角提示文字"
       ],
       "questions": [],
       "usage": "在客户端左上角显示通知文字。",
       "cautions": [],
-      "related": []
+      "related": [],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "single"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetNotifyMsg",
@@ -4530,12 +4686,22 @@
         "文字显示"
       ],
       "aliases": [
-        "给一个玩家发送快捷栏提示"
+        "给一个玩家发送快捷栏提示",
+        "给单个玩家发送快捷栏tip提示",
+        "指定玩家tip通知"
       ],
       "questions": [],
       "usage": "向指定玩家显示物品栏上方的提示文字。",
-      "cautions": [],
-      "related": []
+      "cautions": [
+        "此处是快捷栏上方的 tip 通知；屏幕中央 title 或原生 actionbar 需求应核对 title/titleraw 命令。"
+      ],
+      "related": [],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "single"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetPopupNotice",
@@ -4547,12 +4713,22 @@
         "文字显示"
       ],
       "aliases": [
-        "弹出文字提示"
+        "弹出文字提示",
+        "所有玩家快捷栏popup提示",
+        "广播popup通知"
       ],
       "questions": [],
       "usage": "显示物品栏上方的弹出通知；服务端面向所有玩家，客户端仅面向本地玩家。",
-      "cautions": [],
-      "related": []
+      "cautions": [
+        "该端接口作用于所有玩家；位置为快捷栏上方的 popup 区域，不当作中央标题或原生 actionbar 的等价实现。"
+      ],
+      "related": [],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "global"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.SetPopupNotice",
@@ -4564,12 +4740,22 @@
         "文字显示"
       ],
       "aliases": [
-        "弹出文字提示"
+        "弹出文字提示",
+        "本地玩家快捷栏popup提示",
+        "本地显示popup通知"
       ],
       "questions": [],
       "usage": "显示物品栏上方的弹出通知；服务端面向所有玩家，客户端仅面向本地玩家。",
-      "cautions": [],
-      "related": []
+      "cautions": [
+        "该端接口作用于本地玩家；位置为快捷栏上方的 popup 区域，不当作中央标题或原生 actionbar 的等价实现。"
+      ],
+      "related": [],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "single"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.SetPopupState",
@@ -4598,12 +4784,22 @@
         "消息通知"
       ],
       "aliases": [
-        "快捷栏文字提示"
+        "快捷栏文字提示",
+        "所有玩家快捷栏tip提示",
+        "广播tip通知"
       ],
       "questions": [],
       "usage": "显示物品栏上方的提示；服务端面向所有玩家，客户端面向本地玩家。",
-      "cautions": [],
-      "related": []
+      "cautions": [
+        "该端接口作用于所有玩家；位置为快捷栏上方的 tip 区域，不当作中央标题或原生 actionbar 的等价实现。"
+      ],
+      "related": [],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "global"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.SetTipMessage",
@@ -4615,12 +4811,22 @@
         "消息通知"
       ],
       "aliases": [
-        "快捷栏文字提示"
+        "快捷栏文字提示",
+        "本地玩家快捷栏tip提示",
+        "本地显示tip通知"
       ],
       "questions": [],
       "usage": "显示物品栏上方的提示；服务端面向所有玩家，客户端面向本地玩家。",
-      "cautions": [],
-      "related": []
+      "cautions": [
+        "该端接口作用于本地玩家；位置为快捷栏上方的 tip 区域，不当作中央标题或原生 actionbar 的等价实现。"
+      ],
+      "related": [],
+      "retrieval": {
+        "targets": [
+          "player"
+        ],
+        "extent": "single"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.skyRenderCompClient.SkyRenderCompClient.GetAmbientBrightness",
@@ -5924,11 +6130,20 @@
         "玩家分数",
         "记分项查询"
       ],
-      "aliases": [],
+      "aliases": [
+        "读取玩家记分板分数",
+        "查询玩家各记分项目标",
+        "读取玩家scoreboard分数"
+      ],
       "questions": [],
-      "usage": "读取指定玩家的记分项；不创建或修改记分目标。",
+      "usage": "读取所绑定玩家的记分项及分数；与全部目标定义的枚举区分。创建目标、设置分数和显示侧边栏走原生 scoreboard 命令。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand": "a45ab6f16fb3bb710f049d800d8901157da1e4eba9051f42e5e881d2893a07fb"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.GetAllPlayerScoreboardObjects",
@@ -5939,11 +6154,20 @@
         "玩家分数",
         "记分项查询"
       ],
-      "aliases": [],
+      "aliases": [
+        "读取玩家记分板分数",
+        "查询玩家各记分项目标",
+        "读取玩家scoreboard分数"
+      ],
       "questions": [],
-      "usage": "读取指定玩家的记分项；不创建或修改记分目标。",
+      "usage": "读取所绑定玩家的记分项及分数；与全部目标定义的枚举区分。创建目标、设置分数和显示侧边栏走原生 scoreboard 命令。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand": "a45ab6f16fb3bb710f049d800d8901157da1e4eba9051f42e5e881d2893a07fb"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetAllScoreboardObjects",
@@ -5954,11 +6178,21 @@
         "记分项枚举",
         "分数查询"
       ],
-      "aliases": [],
+      "aliases": [
+        "枚举记分板目标",
+        "读取scoreboard目标定义"
+      ],
       "questions": [],
-      "usage": "读取全部记分板项；写入操作需另行处理。",
+      "usage": "枚举记分板目标定义；读取某个玩家的分数使用 GetAllPlayerScoreboardObjects，修改目标或显示方式使用 scoreboard 命令。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetAllPlayerScoreboardObjects"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand": "a45ab6f16fb3bb710f049d800d8901157da1e4eba9051f42e5e881d2893a07fb",
+        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetAllPlayerScoreboardObjects": "0f8764e189e5f11ad019bdd61749903d134dac90dca3a10c86318fca5c442d4f"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.GetAllScoreboardObjects",
@@ -5969,11 +6203,21 @@
         "记分项枚举",
         "分数查询"
       ],
-      "aliases": [],
+      "aliases": [
+        "枚举记分板目标",
+        "读取scoreboard目标定义"
+      ],
       "questions": [],
-      "usage": "读取全部记分板项；写入操作需另行处理。",
+      "usage": "枚举记分板目标定义；读取某个玩家的分数使用 GetAllPlayerScoreboardObjects，修改目标或显示方式使用 scoreboard 命令。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand",
+        "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.GetAllPlayerScoreboardObjects"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.commandCompServer.CommandCompServer.SetCommand": "a45ab6f16fb3bb710f049d800d8901157da1e4eba9051f42e5e881d2893a07fb",
+        "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.GetAllPlayerScoreboardObjects": "f49557a61840c2f628e5347d89ab345e5312e95aad7130aab06fd017d8e73b8b"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.recipeCompServer.RecipeCompServer.AddBrewingRecipes",
@@ -7779,11 +8023,15 @@
       ],
       "aliases": [
         "增加经验值",
-        "扣除当前等级经验"
+        "扣除当前等级经验",
+        "giveExp",
+        "增加经验点数"
       ],
       "questions": [],
       "usage": "调整玩家当前等级内的经验值；负数超过现有经验不会使等级下降。",
-      "cautions": [],
+      "cautions": [
+        "负数扣减超过当前等级已有经验时只将本级经验清空，不会继续降级；扣总经验需先明确总经验语义。"
+      ],
       "related": []
     },
     {
@@ -7792,14 +8040,23 @@
       "authority": "curated_note",
       "tags": [
         "玩家等级",
-        "等级修改",
+        "等级增减",
         "经验等级"
       ],
-      "aliases": [],
+      "aliases": [
+        "giveExpLevels",
+        "增减玩家等级",
+        "设置目标等级的差值调整"
+      ],
       "questions": [],
-      "usage": "修改玩家等级；与直接设置总经验值区分。",
+      "usage": "按变更量调整玩家等级；需要设为绝对目标等级时，先用 GetPlayerLevel 读当前等级，再计算差值调用。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.levelCompServer.LevelComponentServer.GetPlayerLevel"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.levelCompServer.LevelComponentServer.GetPlayerLevel": "d31bd7f62d2a3edbd0b4adcae3a6e05d3fae7a8bff31d95963485b837e444288"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.CollectOnlineClientData",
@@ -7869,14 +8126,25 @@
       "authority": "curated_note",
       "tags": [
         "玩家经验",
-        "当前等级",
+        "经验进度",
         "经验读取"
       ],
-      "aliases": [],
+      "aliases": [
+        "经验条进度",
+        "当前等级经验",
+        "getExp"
+      ],
       "questions": [],
-      "usage": "读取当前等级内已获得的经验值。",
-      "cautions": [],
-      "related": []
+      "usage": "读取当前等级内的经验；isPercent 决定返回百分比或该等级的经验绝对值。总经验另用 GetPlayerTotalExp。",
+      "cautions": [
+        "原文将 isPercent=True 的结果称为百分比，但未明确数值范围；对接 Bukkit 经验条比例前需核验范围。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.GetPlayerTotalExp"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.GetPlayerTotalExp": "fdf1c177cf79a1bb48bbee83fd1c78403d90387c0ce8f7ce79f37c31546fbcc5"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.GetPlayerExp",
@@ -7902,11 +8170,19 @@
         "等级读取",
         "属性查询"
       ],
-      "aliases": [],
+      "aliases": [
+        "getLevel",
+        "读取玩家当前经验等级"
+      ],
       "questions": [],
       "usage": "读取玩家当前等级。",
       "cautions": [],
-      "related": []
+      "related": [
+        "modsdk:api:server:mod.server.component.levelCompServer.LevelComponentServer.AddPlayerLevel"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.levelCompServer.LevelComponentServer.AddPlayerLevel": "92c40a6168f4a6ab016fa64f81ea53603cfe40710401f20e1d997943d0f35687"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.GetPlayerTotalExp",
@@ -7917,13 +8193,22 @@
         "累计经验",
         "经验读取"
       ],
-      "aliases": [],
+      "aliases": [
+        "累计总经验点数",
+        "getTotalExperience"
+      ],
       "questions": [],
-      "usage": "读取玩家总经验值，与当前等级内经验区分。",
+      "usage": "读取玩家累计总经验点数，区别于等级和当前等级内的经验条进度。",
       "cautions": [],
       "related": [
-        "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.SetPlayerTotalExp"
-      ]
+        "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.SetPlayerTotalExp",
+        "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.GetPlayerExp",
+        "modsdk:api:server:mod.server.component.levelCompServer.LevelComponentServer.GetPlayerLevel"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.GetPlayerExp": "abbbce177dbde12d843626e6a8fb5970707d3da12417a8d6a0e132a9d4cff86f",
+        "modsdk:api:server:mod.server.component.levelCompServer.LevelComponentServer.GetPlayerLevel": "d31bd7f62d2a3edbd0b4adcae3a6e05d3fae7a8bff31d95963485b837e444288"
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.GetPlayerTotalExp",
@@ -8101,10 +8386,15 @@
         "累计经验",
         "经验设置"
       ],
-      "aliases": [],
+      "aliases": [
+        "设定累计经验点数",
+        "setTotalExperience"
+      ],
       "questions": [],
       "usage": "设置玩家总经验值。",
-      "cautions": [],
+      "cautions": [
+        "设置总经验会重新计算等级，不能直接等同于仅调整当前等级经验条的操作。"
+      ],
       "related": [
         "modsdk:api:server:mod.server.component.expCompServer.ExpComponentServer.GetPlayerTotalExp"
       ]
@@ -11800,13 +12090,24 @@
         "脚底坐标",
         "位置设置"
       ],
-      "aliases": [],
+      "aliases": [
+        "玩家同维度传送",
+        "teleport脚底坐标"
+      ],
       "questions": [],
       "usage": "按脚底坐标设置实体位置。",
-      "cautions": [],
+      "cautions": [
+        "服务端 SetPos 与此接口的写入脚底行为等价；不要把 GetPos 的读取基准差异套到 SetPos。"
+      ],
       "related": [
-        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos"
-      ]
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos",
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos",
+        "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos": "d943a450d231a4bffae89a3fe126e2adeeadf85293ac8d369613ef82c6b6624d",
+        "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension": "f7e03dae1ce14d75a4d964b4cb9683d458e7e27541e23ce0ba4664202698db24"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.nameCompServer.NameComponentServer.SetName",
@@ -14133,7 +14434,11 @@
         "实体保护",
         "状态设置"
       ],
-      "aliases": [],
+      "aliases": [
+        "setInvulnerable",
+        "实体无敌",
+        "玩家免疫伤害"
+      ],
       "questions": [],
       "usage": "控制实体是否免疫伤害；该状态会存档。",
       "cautions": [],
@@ -14452,10 +14757,16 @@
         "燃烧状态",
         "状态设置"
       ],
-      "aliases": [],
+      "aliases": [
+        "setFireTicks",
+        "设置燃烧时长",
+        "熄灭实体火焰"
+      ],
       "questions": [],
       "usage": "设置实体燃烧状态及相关参数。",
-      "cautions": [],
+      "cautions": [
+        "seconds 是整数秒，不是 Bukkit 的游戏 tick；转换时明确取整策略。seconds 小于等于 0 用于灭火。"
+      ],
       "related": []
     },
     {
