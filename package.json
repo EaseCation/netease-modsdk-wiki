@@ -12,8 +12,7 @@
     "api:build": "python3 scripts/api_knowledge.py build",
     "api:query": "python3 scripts/api_knowledge.py",
     "predocs:build": "npm run api:build",
-    "predocs:dev": "npm run api:build",
-    "api:evaluate": "python3 scripts/evaluate-retrieval.py"
+    "predocs:dev": "npm run api:build"
   },
   "author": "boybook",
   "license": "ISC",

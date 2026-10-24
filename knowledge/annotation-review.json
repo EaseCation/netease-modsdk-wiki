@@ -1,7 +1,7 @@
 {
   "reviewed_on": "2026-10-24",
   "method": "按组件对照官方描述与接口职责编写基础能力标注，关键歧义按参数、备注和关联原文确认",
-  "count": 1649,
+  "count": 1709,
   "policy": "中文基础能力标签与通用检索表达；补充正文仅说明能力、操作步骤和限制，不包含具体玩法案例或复核日期文案；默认排除 Preset",
   "deepseek": "已按用户要求停止；本批正式内容与别名直接编写，不自动导入模型草稿",
   "entries": [
@@ -563,15 +563,13 @@
     "note": "已知场景回归，非独立盲测；原文排序与能力规则未为新场景扩充。"
   },
   "latest_update": {
-    "added": 1565,
-    "total_annotations": 1649,
-    "annotated_api_records": 1635,
-    "modsdk_api_records": 1636,
-    "event_annotations": 14,
-    "excluded_scope": "preset",
-    "unexpanded_api": "modsdk:api:client:mod.client.ui.screenNode.ScreenNode.GetSelf",
-    "reason": "原文仅说明零件界面自身，未扩展普通界面使用语义",
-    "method": "按组件整理中文基础能力、通用操作说明和明确的读写关联，不使用 DeepSeek，不写具体玩法案例"
+    "method": "关键事件按原文的触发时机、参数和限制补充；检索协议升级为 2",
+    "new_events": 60,
+    "api_annotations": 1635,
+    "event_annotations": 74,
+    "total_annotations": 1709,
+    "relationships": "同一事件族的关联阶段一起返回，主候选按所需阶段排序；变化时不擅自归类为变化后",
+    "regression_bank": "https://github.com/EaseCation/netease-modsdk-skill/tree/main/evals"
   },
   "initial_batch": {
     "count": 60,

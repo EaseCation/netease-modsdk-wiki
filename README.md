@@ -140,13 +140,13 @@ npm run docs:preview
 
 ## API 知识与查询试点
 
-原文保持在 `docs/mcdocs`、`docs/mcguide`、`docs/mconline`；人工补充独立维护于 `knowledge/annotations.json`。当前共 1,649 条独立标注：普通 ModSDK 的 1,636 个 API 索引条目中覆盖 1,635 个（99.9%，按端侧和文档变体计），另有 14 条事件标注。覆盖世界、实体、玩家、方块、物品、UI、输入、模型、特效、物理及通用工具。唯一未扩写的 API 条目是原文只说明零件界面的 `GetSelf`；Preset 范围不参与这项覆盖率。它们不是官方新增定义。
+原文保持在 `docs/mcdocs`、`docs/mcguide`、`docs/mconline`；人工补充独立维护于 `knowledge/annotations.json`。当前共 1,709 条独立标注：普通 ModSDK 的 1,636 个 API 索引条目中覆盖 1,635 个（99.9%，按端侧和文档变体计），另有 74 条事件标注（298 个普通事件的 24.8%）。覆盖世界、实体、玩家、方块、物品、UI、输入、模型、特效、物理及通用工具。唯一未扩写的 API 条目是原文只说明零件界面的 `GetSelf`；Preset 范围不参与这项覆盖率。它们不是官方新增定义。
 
 每条标注用完整 API 身份（范围、种类、端侧、组件、名称）关联原文章节，并绑定 `source_sha256`；依赖枚举或其他接口的补充同时记录 `source_dependencies`。同步后章节变化、关联目标缺失都会使构建失败；维护者需阅读新原文、修订补充内容，再更新哈希，不应批量盲目刷新哈希绕过复核。搜索返回短 ID 以减少上下文，详情保留完整身份、组件和来源。
 
 ```sh
 npm run api:build
-npm run api:query -- resolve '使用治疗法杖回血，显示生命上限，5秒冷却，只提示本人' --side server
+npm run api:query -- resolve --plan-file /path/to/plan.json --limit 8
 npm run api:query -- search '使用物品' --side server --strategy annotated
 npm run api:query -- detail ServerItemTryUseEvent --side server --examples 0
 npm run api:query -- detail AttrType --part raw --page-chars 6000
@@ -162,27 +162,31 @@ npm run api:query -- detail AttrType --part raw --page-chars 6000
 
 ### 检索方案与当前效果
 
-三个可比较策略共用同一原文与范围筛选：`raw` 只用原文词法匹配，`annotated` 增加标签/同义问法与短语权重，`coverage` 增加带上下文条件的能力组合。避免只提高单一 API 排名却漏掉一项必要职责。词法方案可离线工作，新增成本集中在少量人工标注；向量检索和 reranker 暂未接入，需先用扩大后的案例集确认必要性。
+协议 2 提供 `raw` 原文词法检索和 `annotated` 标注增强检索。多职责需求由 Agent 拆成结构化计划，`resolve --plan-file` 先给每项分配候选，再补必要前置和额外候选。对象、读写、范围和否定约束独立处理；事件使用单独通道。限制文本命中单独放入 `limitations`，不能作为能力成立的证据。
+
+事件阶段用于优先排序，不把添加前、获得时、刷新和移除等关联事件全部滤掉。`results` 是主候选，`related` 返回关联阶段供理解生命周期；主候选阶段不匹配时保留 `timing_review`，不宣称满足当前职责。原文只写“变化时”的事件不擅自认定为“变化后”。
+
+固定回归题库与执行入口统一维护在独立 [Skill 仓库](https://github.com/EaseCation/netease-modsdk-skill/tree/main/evals)，覆盖产品需求、相反意图、支持边界、关联阶段和协议拒绝。Wiki 部署前调用该题库并显式绑定当前 Wiki；本地执行：
 
 ```sh
-PYTHONHASHSEED=0 python3 scripts/evaluate-retrieval.py --legacy-root /absolute/path/to/original/modsdk_mcp_server
+MODSDK_WIKI_ROOT="$PWD" python3 ../netease-modsdk-skill/scripts/evaluate.py
 ```
 
-不提供 `--legacy-root` 时只比较本项目三策略。固定案例在 `knowledge/retrieval-cases.json`，当前结果在 [knowledge/evaluation.md](knowledge/evaluation.md)，详细生成回执在 `.api-index/evaluation.json`。29 例涵盖复合需求、同义改写、常用能力扩展、未标注事件、错误端侧和 Preset 开关。另有 18 个冻结的实际模组与边界案例，使用 `npm run api:evaluate -- --scenarios` 通过真实 skill CLI 单独验收，记录整段查询、有限拆分补查和详情核对开销；不与旧回归混为一个满分。缺口补充后的改写和相反意图回归可运行 `npm run api:evaluate -- --gap-checks`。Bukkit／Nukkit 常见服务端需求另有20例，通过 `npm run api:evaluate -- --community` 比较社区方法名和中文能力描述，并核对接口行为差异。结果是已公开并用于迭代的回归集，不能据此保证任意需求零遗漏。字符统计不是模型 token 统计。
+这些检查使用冻结语义计划，不等于 Agent 自动拆解需求的盲测。历史对照结果在 [knowledge/evaluation.md](knowledge/evaluation.md)，旧题库和旧执行器封存在 Git 提交 `2ae0d396c1f4e079b685e73e45245e73a515a9a7`；不再维护两个活跃评估入口。字符统计不是模型 token 统计。
 
 ### Skill 与 MCP 共用
 
 Skill 已拆分到公开的独立 Git 仓库 [EaseCation/netease-modsdk-skill](https://github.com/EaseCation/netease-modsdk-skill)，不再在 Wiki 内保存副本。独立 skill 通过自身 `.env` 或环境变量 `MODSDK_WIKI_ROOT` 绑定本仓库，并调用这里唯一的 `scripts/api_knowledge.py`。其安装入口支持浅克隆、partial clone、Markdown 稀疏检出和跳过 LFS 资源；只需要查询时不下载图片、视频或完整网页资源。缺少查询入口或标注的旧 Wiki 会报错，不提供兼容回退。发布时应先发布含查询功能的最新版 Wiki。
 
-本仓库检索验收通过 `MODSDK_SKILL_ROOT` 指定独立 skill 位置，默认查找同级 `netease-modsdk-skill` 或 Agent 已安装的技能目录；调用时显式绑定当前 Wiki。社区迁移需求继续先解释中文基础能力，保留对象、读写动作和生命周期时机，再核对合同。
+本仓库部署检索验收会检出独立 Skill；调用时通过 `MODSDK_WIKI_ROOT` 显式绑定当前 Wiki。社区迁移需求继续先解释中文基础能力，保留对象、读写动作和生命周期时机，再核对合同。
 
 配套 `modsdk_mcp_server` 试点通过 `MODSDK_WIKI_ROOT` 加载同一实现，提供紧凑搜索、批量详情和 `resolve_api_requirement`。Skill 负责指导按需求逐步读取，MCP 保留结构化工具入口；两者可以共存，无需为了换成 skill 而复制检索逻辑。源码变更和本地校验不等于已经替换运行中的 MCP 或发布 Wiki。
 
-标注应保持简短：标签为 3–6 个中文基础能力词，不放英文 API/类型名、端侧或玩法场景；检索别名承接近义表达，补充正文只说明能力、操作步骤和限制，不加入具体玩法、道具或虚构业务案例，也不显示复核日期等编辑记录，不复制完整枚举、参数或备注。复合玩法的冷却、鉴权等组合关系维护在 capabilities 中，不附着为通用属性接口的固有职责。
+标注应保持简短：标签为 3–6 个中文基础能力词，不放英文 API/类型名、端侧或玩法场景；检索别名承接近义表达，补充正文只说明能力、操作步骤和限制，不加入具体玩法、道具或虚构业务案例，也不显示复核日期等编辑记录，不复制完整枚举、参数或备注。复合需求的组合关系在查询计划中表达，不附着为通用接口的固有职责。
 
 ### 标注维护方式
 
-当前由 Codex 逐条对照官方原文直接编写并复核。在原有 84 条基础上，本轮按组件补充 1,565 条 API 标注，并为同文档、同组件、同端侧的明确读写对添加关联。来源哈希保存在每条标注中，维护范围见 `knowledge/annotation-review.json`。能力说明通常一至两句，重要限制精简提示，完整参数与备注仍以原文为准。页面默认展示全部标签，其余内容折叠。
+当前由 Codex 逐条对照官方原文直接编写并复核。在原有 84 条基础上，按组件补充 1,565 条 API 标注，再补充 60 条关键事件标注，并为同文档、同组件、同端侧的明确读写对添加关联。来源哈希保存在每条标注中，维护范围见 `knowledge/annotation-review.json`。能力说明通常一至两句，重要限制精简提示，完整参数与备注仍以原文为准。页面默认展示全部标签，其余内容折叠。
 
 DeepSeek 试验已按用户要求停止，现有草稿不自动导入。历史试点结果保留在 [标注试点](knowledge/annotation-pilot.md)；`scripts/draft-api-annotations.py` 与调用 overlay 仅为历史实验工具，除非用户重新明确启用，不用于当前维护流程。
 

@@ -45,6 +45,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
+      - name: Checkout retrieval Skill
+        uses: actions/checkout@v4
+        with:
+          repository: EaseCation/netease-modsdk-skill
+          # 固定已复核的题库和执行器；升级时显式更新此提交。
+          ref: 8e9f9dd8062d2fb82bbd75aa0b8cfea21009890d
+          path: .retrieval-skill
+          persist-credentials: false
+
+      - name: Check retrieval regressions
+        env:
+          MODSDK_WIKI_ROOT: ${{ github.workspace }}
+        run: python3 .retrieval-skill/scripts/evaluate.py
+
       - name: Build with VitePress
         run: npm run docs:build
 

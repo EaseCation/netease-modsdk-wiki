@@ -1,3 +1,5 @@
+> 本文为协议 1 的历史结果。旧题库和执行器位于 Git 提交 `2ae0d396c1f4e079b685e73e45245e73a515a9a7`，文中旧命令仅适用于该快照。当前协议 2 的固定题库与入口见 [Skill evals](https://github.com/EaseCation/netease-modsdk-skill/tree/main/evals)。
+
 # 检索试点当前结果
 
 固定文档检索比较，非游戏功能验收；改写样本仍与试点领域相关，不是独立盲测。

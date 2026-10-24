@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "entries": [
     {
       "id": "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue",
@@ -728,8 +728,12 @@
       ],
       "related": [
         "modsdk:event:server:ServerItemUseOnEvent",
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem"
-      ]
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+        "modsdk:event:server:ItemUseAfterServerEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:ItemUseAfterServerEvent": "fa8092d85a9eb515d12e30c205d37f946ebda772c268dd4e0ea1e806dca02e89"
+      }
     },
     {
       "id": "modsdk:event:server:ServerItemUseOnEvent",
@@ -756,10 +760,12 @@
       "related": [
         "modsdk:event:server:ServerItemTryUseEvent",
         "modsdk:event:server:ServerBlockUseEvent",
-        "modsdk:enum:common:Facing"
+        "modsdk:enum:common:Facing",
+        "modsdk:event:server:ItemUseOnAfterServerEvent"
       ],
       "source_dependencies": {
-        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3"
+        "modsdk:enum:common:Facing": "004d4420bb69b16156bc4c26519df568c88efafbcf3916f40d8bf921cd4405e3",
+        "modsdk:event:server:ItemUseOnAfterServerEvent": "f5571b21e436c0c159b5105e76f72f71c1699bd2742e1594566d8fe5e508ec4f"
       }
     },
     {
@@ -1794,7 +1800,10 @@
         "modsdk:event:server:PlayerRespawnEvent",
         "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetPlayerAllItems",
         "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension"
-      ]
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:PlayerRespawnEvent": "8281787495ab0af8fd978de3c19b49e73cc76cf55ceb5008bb79ca424bcb9883"
+      }
     },
     {
       "id": "modsdk:event:server:PlayerRespawnEvent",
@@ -1818,7 +1827,10 @@
       ],
       "related": [
         "modsdk:event:server:PlayerRespawnFinishServerEvent"
-      ]
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:PlayerRespawnFinishServerEvent": "87748d6db808ce62c00127992c32373f4e358259a935e7eb96ebbc5363d00b9f"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.projectileCompServer.ProjectileComponentServer.CreateProjectileEntity",
@@ -2516,7 +2528,10 @@
       "questions": [],
       "usage": "读取全部常加载区域的名称。",
       "cautions": [],
-      "related": []
+      "related": [],
+      "retrieval": {
+        "extent": "global"
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.biomeCompServer.BiomeCompServer.GetBiomeInfo",
@@ -8843,7 +8858,15 @@
       "questions": [],
       "usage": "设置摄像机中心的独立位置；恢复跟随需使用对应重置接口。",
       "cautions": [],
-      "related": []
+      "related": [],
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.DepartCamera": "f6439aef234fe48dec54142c84431387740a8355ba3381784009eae775ea0a7d"
+      },
+      "retrieval": {
+        "required_before": [
+          "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.DepartCamera"
+        ]
+      }
     },
     {
       "id": "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.SetCameraRotation",
@@ -9134,7 +9157,14 @@
       "questions": [],
       "usage": "设置玩家的访客、成员、操作员或自定义权限身份；不是字符串权限节点系统。",
       "cautions": [],
-      "related": []
+      "related": [],
+      "retrieval": {
+        "unsupported_features": [
+          "字符串权限节点",
+          "权限继承",
+          "否定权限节点"
+        ]
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerMute",
@@ -9584,7 +9614,10 @@
       "questions": [],
       "usage": "按位置类型批量读取物品；客户端背包读取仅支持本地玩家。",
       "cautions": [],
-      "related": []
+      "related": [],
+      "retrieval": {
+        "local_inventory_only": true
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerFishHookEntity",
@@ -9659,7 +9692,10 @@
       "questions": [],
       "usage": "读取指定位置类型与槽位的物品；客户端背包读取仅支持本地玩家。",
       "cautions": [],
-      "related": []
+      "related": [],
+      "retrieval": {
+        "local_inventory_only": true
+      }
     },
     {
       "id": "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetSelectSlotId",
@@ -26789,820 +26825,1024 @@
       "usage": "停止虚拟相机移动动画。",
       "cautions": [],
       "related": []
-    }
-  ],
-  "capabilities": [
+    },
     {
-      "label": "监听道具使用",
-      "triggers": [
-        "手持道具",
-        "使用道具",
-        "使用物品",
-        "点一下道具"
+      "id": "modsdk:event:server:AddEntityServerEvent",
+      "source_sha256": "5d7795a0f18ca867c2def0ae151d35cde855c60c87244300e3b724e248d4b8a4",
+      "authority": "curated_note",
+      "tags": [
+        "实体创建",
+        "存档加载",
+        "事件通知"
       ],
-      "entries": [
+      "aliases": [
+        "监听实体生成",
+        "实体加载事件"
+      ],
+      "questions": [],
+      "usage": "实体在服务端创建或从存档加载时通知；玩家创建不触发。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:AddEntityClientEvent",
+      "source_sha256": "4b7587cf16c5bcedce4615fae130565e9a6482667483dd2b7861e9fe59b1733b",
+      "authority": "curated_note",
+      "tags": [
+        "实体创建",
+        "客户端实体",
+        "事件通知"
+      ],
+      "aliases": [
+        "客户端实体出现"
+      ],
+      "questions": [],
+      "usage": "客户端接收到新实体时通知；玩家创建不触发。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:RemoveEntityClientEvent",
+      "source_sha256": "ab0bf7d92c094c9c1ff7abf5930e324faf9581727407ea41e09bb8c8029de2f9",
+      "authority": "curated_note",
+      "tags": [
+        "实体移除",
+        "可见范围",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端实体被移除时通知，不等同于实体在服务端死亡。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:EntityRemoveEvent",
+      "source_sha256": "e804618dfac5b6bcac2262da6269af7f5fbdc874271202dee1fd56ab0586f066",
+      "authority": "curated_note",
+      "tags": [
+        "实体删除",
+        "生命周期",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "实体被删除时通知；随区块卸载不触发此事件。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:AddPlayerAOIClientEvent",
+      "source_sha256": "b59aa4b94ab50340cc944e579f9e484c48b3460c4be4d955cae6641c96d6b844",
+      "authority": "curated_note",
+      "tags": [
+        "玩家视野",
+        "进入范围",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家进入当前客户端视野范围时通知；此时渲染资源可能尚未就绪。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:RemovePlayerAOIClientEvent",
+      "source_sha256": "46ecdca8f5610352bbb8b195f18df7a91e329d6d5fca6eab40b3fb48fac163a9",
+      "authority": "curated_note",
+      "tags": [
+        "玩家视野",
+        "离开范围",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "其他玩家离开当前客户端视野范围时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:ClientLoadAddonsFinishServerEvent",
+      "source_sha256": "dfac72312d227fb1bab20ac82722fca40879d28457772d5d6a5bbf20a0f1fb85",
+      "authority": "curated_note",
+      "tags": [
+        "客户端就绪",
+        "加载完成",
+        "服务端通知"
+      ],
+      "aliases": [
+        "玩家客户端初始化完成"
+      ],
+      "questions": [],
+      "usage": "客户端模组加载完成后通知服务端，可据此初始化跨端数据。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:LoadClientAddonScriptsAfter",
+      "source_sha256": "3eb5df0f2f85dcdef61dddd623dad71ad2be8701775b533152433b69bd65f823",
+      "authority": "curated_note",
+      "tags": [
+        "脚本加载",
+        "客户端就绪",
+        "生命周期"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端模组脚本加载完成时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:LoadServerAddonScriptsAfter",
+      "source_sha256": "51e80f5f3081f3e489617aa892249f78876cc9183fb338c9198ec6d3c6470a09",
+      "authority": "curated_note",
+      "tags": [
+        "脚本加载",
+        "服务端就绪",
+        "生命周期"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "服务端模组脚本加载完成时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:OnLocalPlayerStopLoading",
+      "source_sha256": "2be4060b46a497054b14cab98411714de19673489b1cc6f0865dd361d20f3296",
+      "authority": "curated_note",
+      "tags": [
+        "地形加载",
+        "本地玩家",
+        "加载完成"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "本地玩家出生点地形加载完成时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:PlayerIntendLeaveServerEvent",
+      "source_sha256": "f9d2fc02e6620f70554dcc1a174cb99380fd37c2890cb0818702526aac65e559",
+      "authority": "curated_note",
+      "tags": [
+        "玩家退出",
+        "退出之前",
+        "状态读取"
+      ],
+      "aliases": [
+        "离线前保存玩家数据"
+      ],
+      "questions": [],
+      "usage": "玩家即将被删除时通知，此时仍能读取玩家状态。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:ChunkLoadedClientEvent",
+      "source_sha256": "12a889ac035efe0210e4c3aed6c010e08f9c08164619ec35090d8e62c84309cb",
+      "authority": "curated_note",
+      "tags": [
+        "区块加载",
+        "加载完成",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端区块加载完成时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:ChunkLoadedServerEvent",
+      "source_sha256": "079ca3ef5820e79bf246f9c07bf33b282481b662c918e5c62164c524a95281fa",
+      "authority": "curated_note",
+      "tags": [
+        "区块加载",
+        "加载完成",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "服务端区块加载完成时通知；不代表客户端方块实体已就绪。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:ServerChatEvent",
+      "source_sha256": "682efeb7a4e802444163d7b86401034e34726adbb50f72d88fbffda7240d9a7c",
+      "authority": "curated_note",
+      "tags": [
+        "玩家聊天",
+        "消息输入",
+        "事件监听"
+      ],
+      "aliases": [
+        "监听聊天消息",
+        "玩家发言事件"
+      ],
+      "questions": [],
+      "usage": "玩家发送聊天信息时通知，可按事件字段修改或取消消息。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:OnNewArmorExchangeServerEvent",
+      "source_sha256": "76eb0a02dc4b964869685c06fc421c9f90b0bf9cf87b15e95f6c1840cfbfdc95",
+      "authority": "curated_note",
+      "tags": [
+        "盔甲变化",
+        "装备槽位",
+        "事件通知"
+      ],
+      "aliases": [
+        "玩家更换盔甲",
+        "装备栏变更事件",
+        "切换护甲"
+      ],
+      "questions": [],
+      "usage": "玩家更换盔甲时提供槽位及前后物品；登录时同一槽位会重复通知。",
+      "cautions": [
+        "登录时每个槽位会触发两次；回调内修改盔甲栏可能递归触发。"
+      ],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:OnCarriedNewItemChangedServerEvent",
+      "source_sha256": "3cbfcfc55ca814dfb3eaa11d6fd2b14c1af49e5f3e25daa9ca1695887fb9baee",
+      "authority": "curated_note",
+      "tags": [
+        "主手物品",
+        "物品切换",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家切换主手物品时通知；仅耐久不同的同类物品切换不触发。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:OnCarriedNewItemChangedClientEvent",
+      "source_sha256": "43c62aa1e0fe0053d5a14a9e87e0c288fbe87f3f031c48567cdaa24bc95b915b",
+      "authority": "curated_note",
+      "tags": [
+        "主手物品",
+        "物品变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端手持物品变化时通知；仅数量变化不触发。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:OnOffhandItemChangedServerEvent",
+      "source_sha256": "083a2936f66fe2017eaec8822fd0d319f9eae84eecb482b52f6d9a273eeddc54",
+      "authority": "curated_note",
+      "tags": [
+        "副手物品",
+        "物品切换",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家副手物品改变时提供前后物品信息。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:InventoryItemChangedServerEvent",
+      "source_sha256": "dade8147e0a271d02c2f7e3476c50e9c716481a460ef1712e7ec1c6eb5fb99d4",
+      "authority": "curated_note",
+      "tags": [
+        "玩家背包",
+        "槽位变化",
+        "事件通知"
+      ],
+      "aliases": [
+        "监听玩家背包变化"
+      ],
+      "questions": [],
+      "usage": "背包槽位变化时提供前后物品；合堆与移动可能产生多次无序通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:InventoryItemChangedClientEvent",
+      "source_sha256": "1902ee9ef9d7e7acfd74f7263b0861f71b1fd3bd7a5fcc23456e4b3c7609a38e",
+      "authority": "curated_note",
+      "tags": [
+        "玩家背包",
+        "槽位变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端背包槽位变化时通知；事件时槽位仍为变化前状态。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:ContainerItemChangedServerEvent",
+      "source_sha256": "cd3ab21cedb1e78d58f805ec05d8b7368ac3601f61f863e84d8f6bcb7248827b",
+      "authority": "curated_note",
+      "tags": [
+        "方块容器",
+        "槽位变化",
+        "事件通知"
+      ],
+      "aliases": [
+        "箱子物品改变事件"
+      ],
+      "questions": [],
+      "usage": "储物及受支持方块容器物品变化时通知；合成容器使用另一事件。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:UIContainerItemChangedServerEvent",
+      "source_sha256": "023273cfcfb75e672ba057dccdd105ad2b5436f45662d83165ba175191b56c08",
+      "authority": "curated_note",
+      "tags": [
+        "合成容器",
+        "输入变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "合成容器输入物品变化时通知，不包含产物槽生成。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:ItemUseAfterServerEvent",
+      "source_sha256": "fa8092d85a9eb515d12e30c205d37f946ebda772c268dd4e0ea1e806dca02e89",
+      "authority": "curated_note",
+      "tags": [
+        "物品使用",
+        "使用之后",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家做出使用物品动作后通知；蓄力物品的实际生效可能更晚。",
+      "cautions": [],
+      "related": [
         "modsdk:event:server:ServerItemTryUseEvent"
       ],
-      "pick": 1,
-      "exclude": [
-        "模拟使用",
-        "主动使用",
-        "代码使用"
-      ]
+      "source_dependencies": {
+        "modsdk:event:server:ServerItemTryUseEvent": "a9feb85fdcb5dca6105868f27d16f7af2b565749a7f2d166b55ea3826e0eebf3"
+      }
     },
     {
-      "label": "修改生命值",
-      "triggers": [
-        "回血",
-        "补血",
-        "治疗",
-        "恢复血量",
-        "加血",
-        "扣血",
-        "增加血量",
-        "减少血量"
+      "id": "modsdk:event:server:ItemUseOnAfterServerEvent",
+      "source_sha256": "f5571b21e436c0c159b5105e76f72f71c1699bd2742e1594566d8fe5e508ec4f",
+      "authority": "curated_note",
+      "tags": [
+        "物品使用",
+        "方块交互",
+        "使用之后"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
-        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue"
-      ],
-      "pick": 2,
-      "exclude": [
-        "不加血",
-        "不扣血",
-        "不回血",
-        "只显示",
-        "只读取",
-        "只查看",
-        "只查询"
-      ]
-    },
-    {
-      "label": "读取生命上限",
-      "triggers": [
-        "生命上限",
-        "血量上限",
-        "最大血量",
-        "血条",
-        "满血"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "一次延迟与冷却",
-      "triggers": [
-        "冷却",
-        "延时",
-        "延迟",
-        "几秒后"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "定向提示",
-      "triggers": [
-        "本人",
-        "自己可见",
-        "一个玩家",
-        "指定玩家提示"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetOnePopupNotice",
-        "modsdk:api:server:mod.server.component.msgCompServer.MsgComponentServer.NotifyOneMessage"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "提示",
-        "消息",
-        "通知",
-        "文字"
-      ]
-    },
-    {
-      "label": "对方块使用物品",
-      "triggers": [
-        "倒水",
-        "点火",
-        "对方块使用",
-        "对着方块",
-        "打火石"
-      ],
-      "entries": [
+      "aliases": [],
+      "questions": [],
+      "usage": "对方块使用物品之后通知，包含方块和点击位置。",
+      "cautions": [],
+      "related": [
         "modsdk:event:server:ServerItemUseOnEvent"
       ],
-      "pick": 1
+      "source_dependencies": {
+        "modsdk:event:server:ServerItemUseOnEvent": "6321edacd42da108e759afaf6cd7254b8a37e912b5947395fb2a8e22466d9a59"
+      }
     },
     {
-      "label": "背包发放",
-      "triggers": [
-        "发放物品",
-        "背包物品",
-        "发到背包",
-        "给予物品"
+      "id": "modsdk:event:server:PlayerDropItemServerEvent",
+      "source_sha256": "e9a557b1a317f95ed9964324f773bc7ec3723989fd3577f82000fa76107bb7a3",
+      "authority": "curated_note",
+      "tags": [
+        "物品丢弃",
+        "玩家物品",
+        "事件通知"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SpawnItemToPlayerInv"
-      ],
-      "pick": 1
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家丢弃物品后通知，并提供对应物品实体。",
+      "cautions": [],
+      "related": []
     },
     {
-      "label": "地面掉落",
-      "triggers": [
-        "掉落物",
-        "掉到地上",
-        "地面",
-        "指定坐标生成掉落物"
+      "id": "modsdk:event:server:ServerPlayerTryTouchEvent",
+      "source_sha256": "1d860045244434c8c67e4c01aa74eb096abef85fb1c0dd8c096b1feca8b83f89",
+      "authority": "curated_note",
+      "tags": [
+        "物品拾取",
+        "拾取之前",
+        "行为拦截"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.CreateEngineItemEntity"
-      ],
-      "pick": 1
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家即将拾取物品时通知，可按事件字段取消拾取。",
+      "cautions": [],
+      "related": []
     },
     {
-      "label": "周期任务",
-      "triggers": [
-        "每秒",
-        "周期",
-        "循环执行",
-        "重复执行",
-        "轮询"
+      "id": "modsdk:event:server:EntityPickupItemServerEvent",
+      "source_sha256": "a2916fdf4fe208a23eac52b2c93eaa01dfb817dfa0a86f1f8badd0c491479ef3",
+      "authority": "curated_note",
+      "tags": [
+        "生物拾取",
+        "物品信息",
+        "事件通知"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddRepeatedTimer"
-      ],
-      "pick": 1
+      "aliases": [],
+      "questions": [],
+      "usage": "具有拾取行为的生物拾取物品时通知。",
+      "cautions": [],
+      "related": []
     },
     {
-      "label": "取消任务",
-      "triggers": [
-        "取消",
-        "停止",
-        "销毁",
-        "退出",
-        "离开"
+      "id": "modsdk:event:server:PlayerDieEvent",
+      "source_sha256": "7d45c79d02a12299c0f9f50d72a8a2bfaf83e34e01454eafb6d2b5cd1fb3d069",
+      "authority": "curated_note",
+      "tags": [
+        "玩家死亡",
+        "死亡来源",
+        "事件通知"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CancelTimer"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "定时",
-        "周期",
-        "每秒",
-        "循环",
-        "任务",
-        "timer"
-      ]
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家死亡时通知，并提供伤害来源信息。",
+      "cautions": [],
+      "related": []
     },
     {
-      "label": "玩家退出清理",
-      "triggers": [
-        "玩家退出",
-        "玩家离开",
-        "退服",
-        "离线"
+      "id": "modsdk:event:server:HealthChangeBeforeServerEvent",
+      "source_sha256": "17b894a770ac9ea7e4351af25d446c8bedc4b78de11b55b460814d384b54b9fb",
+      "authority": "curated_note",
+      "tags": [
+        "生命变化",
+        "变化之前",
+        "行为拦截"
       ],
-      "entries": [
-        "modsdk:event:server:DelServerPlayerEvent"
+      "aliases": [],
+      "questions": [],
+      "usage": "生物生命值或上限变化前通知，可通过取消字段拦截变化。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:HealthChangeServerEvent"
       ],
-      "pick": 1
+      "source_dependencies": {
+        "modsdk:event:server:HealthChangeServerEvent": "d7a4c848ad74423df4903b805a9146f0b3663111507f364af0462cad58fcff4b"
+      }
     },
     {
-      "label": "滚动内容路径",
-      "triggers": [
-        "滚动列表",
-        "scroll_view",
-        "触屏",
-        "触控模式",
-        "键鼠",
-        "列表路径"
+      "id": "modsdk:event:server:HealthChangeServerEvent",
+      "source_sha256": "d7a4c848ad74423df4903b805a9146f0b3663111507f364af0462cad58fcff4b",
+      "authority": "curated_note",
+      "tags": [
+        "生命变化",
+        "属性通知",
+        "事件监听"
       ],
-      "entries": [
-        "modsdk:api:client:mod.client.ui.controls.scrollViewUIControl.ScrollViewUIControl.GetScrollViewContentPath"
+      "aliases": [],
+      "questions": [],
+      "usage": "生物生命值发生变化时通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:HealthChangeBeforeServerEvent"
       ],
-      "pick": 1
+      "source_dependencies": {
+        "modsdk:event:server:HealthChangeBeforeServerEvent": "17b894a770ac9ea7e4351af25d446c8bedc4b78de11b55b460814d384b54b9fb"
+      }
     },
     {
-      "label": "按钮释放回调",
-      "triggers": [
-        "按钮"
+      "id": "modsdk:event:client:HealthChangeClientEvent",
+      "source_sha256": "20f037948c6ac1fb08176a7dd94fcc6d007f54478f275cf7e4dc5f0109baf586",
+      "authority": "curated_note",
+      "tags": [
+        "生命变化",
+        "客户端状态",
+        "事件通知"
       ],
-      "entries": [
-        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchUpCallback"
-      ],
-      "pick": 1,
-      "exclude": [
-        "无响应",
-        "没有响应",
-        "开启回调",
-        "启用回调",
-        "点击穿透",
-        "吞噬事件"
-      ]
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端收到生物生命值变化时通知。",
+      "cautions": [],
+      "related": []
     },
     {
-      "label": "跨端发送",
-      "triggers": [
-        "通知服务器",
-        "通知服务端",
-        "发请求",
-        "客户端请求"
+      "id": "modsdk:event:server:PlayerHurtEvent",
+      "source_sha256": "9e8804a06e7c16133acf0f4a8569862818f283b8acc62c69e45cc7247f56ba92",
+      "authority": "curated_note",
+      "tags": [
+        "玩家受伤",
+        "受伤之前",
+        "伤害来源"
       ],
-      "entries": [
-        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer"
-      ],
-      "pick": 1
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家受到伤害前通知；可用字段与可修改范围以原文为准。",
+      "cautions": [],
+      "related": []
     },
     {
-      "label": "设置方块",
-      "triggers": [
-        "放置方块",
-        "替换方块",
-        "修改方块",
-        "改方块状态"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "核对入包结果",
-      "triggers": [
-        "发放物品",
-        "发放",
-        "发到背包"
-      ],
-      "requires_any": [
-        "失败",
-        "装不下",
-        "部分",
-        "重发"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "实际伤害阶段",
-      "triggers": [
-        "实际伤害",
-        "实际扣血",
-        "真正扣血"
-      ],
-      "entries": [
-        "modsdk:event:server:ActuallyHurtServerEvent"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "实体清理",
-      "triggers": [
-        "清理",
-        "移除",
-        "销毁"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "实体",
-        "怪物",
-        "生物"
-      ]
-    },
-    {
-      "label": "客户端接收事件",
-      "triggers": [
-        "客户端收到",
-        "客户端接收",
-        "客户端监听",
-        "接收广播"
-      ],
-      "entries": [
-        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "事件",
-        "数据",
-        "倒计时",
-        "通知",
-        "广播"
-      ]
-    },
-    {
-      "label": "更新控件文本",
-      "triggers": [
-        "条目文字",
-        "文本控件",
-        "标签文字",
-        "更新文字",
-        "刷新文字"
-      ],
-      "entries": [
-        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "拦截方块放置",
-      "triggers": [
-        "放方块",
-        "放置方块",
-        "摆放方块"
-      ],
-      "entries": [
-        "modsdk:event:server:ServerEntityTryPlaceBlockEvent"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "拦截",
-        "取消",
-        "保护",
-        "监听",
-        "阻止",
-        "禁止"
-      ]
-    },
-    {
-      "label": "投射物发射",
-      "triggers": [
-        "投射物",
-        "抛射物"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.projectileCompServer.ProjectileComponentServer.CreateProjectileEntity"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "生成",
-        "创建",
-        "发射",
-        "射出"
-      ]
-    },
-    {
-      "label": "投射物命中",
-      "triggers": [
-        "命中",
-        "碰撞",
-        "打中",
-        "撞击"
-      ],
-      "entries": [
-        "modsdk:event:server:ProjectileDoHitEffectEvent"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "投射物",
-        "抛射物"
-      ]
-    },
-    {
-      "label": "晴雨控制",
-      "triggers": [
-        "晴雨",
-        "降雨",
-        "雨天",
-        "下雨"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "控制",
-        "设置",
-        "切换",
-        "修改",
-        "改变"
-      ],
-      "exclude": [
-        "不修改",
-        "不改变",
-        "只查询",
-        "只读取",
-        "仅查询",
-        "仅检查"
-      ]
-    },
-    {
-      "label": "等待后执行",
-      "triggers": [
-        "等待",
-        "稍后",
-        "过一会"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "秒",
-        "分钟"
-      ],
-      "exclude": [
-        "循环",
-        "每隔",
-        "每秒",
-        "重复"
-      ]
-    },
-    {
-      "label": "查询降雨",
-      "triggers": [
-        "是否下雨",
-        "天气状态",
-        "降雨状态",
-        "晴雨"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.IsRaining"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "查询",
-        "读取",
-        "判断",
-        "检查"
-      ],
-      "exclude": [
-        "设置"
-      ]
-    },
-    {
-      "label": "启用按钮回调",
-      "triggers": [
-        "开启",
-        "启用",
-        "无响应",
-        "没有响应",
-        "点击穿透",
-        "吞噬"
-      ],
-      "entries": [
-        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "按钮",
-        "触控",
-        "回调"
-      ]
-    },
-    {
-      "label": "复活完成阶段",
-      "triggers": [
-        "复活完成",
-        "重生完成",
-        "复活完毕",
-        "重生完毕"
-      ],
-      "entries": [
-        "modsdk:event:server:PlayerRespawnFinishServerEvent"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "读取玩家名称",
-      "triggers": [
-        "玩家名字",
-        "玩家名称",
-        "玩家昵称"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.nameCompServer.NameComponentServer.GetName"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "获取",
-        "读取",
-        "查询",
-        "查看",
-        "显示"
-      ]
-    },
-    {
-      "label": "读取背包物品",
-      "triggers": [
-        "背包",
-        "库存"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems",
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem"
-      ],
-      "pick": 2,
-      "requires_any": [
-        "读取",
-        "获取",
-        "查看",
-        "查询",
-        "检查",
-        "遍历"
-      ],
-      "exclude": [
-        "手持",
-        "主手",
-        "副手"
-      ]
-    },
-    {
-      "label": "按种类扣除材料",
-      "triggers": [
-        "背包",
-        "物品"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems",
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum"
-      ],
-      "pick": 2,
-      "requires_any": [
-        "扣除",
-        "扣掉",
-        "消耗",
-        "扣材料"
-      ],
-      "exclude": [
-        "不消耗",
-        "不扣除",
-        "不扣掉",
-        "只读取",
-        "只查看",
-        "只查询"
-      ]
-    },
-    {
-      "label": "读取当前生命",
-      "triggers": [
-        "血量",
-        "生命值",
-        "多少血"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "读",
-        "查询",
-        "获取",
-        "查看",
-        "显示"
-      ],
-      "exclude": [
-        "最大血量",
-        "生命上限",
-        "血量上限"
-      ]
-    },
-    {
-      "label": "记录脚底位置",
-      "triggers": [
-        "位置",
-        "坐标"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "记录",
-        "保存",
-        "原样传"
-      ]
-    },
-    {
-      "label": "读取个人模式",
-      "triggers": [
-        "游戏模式",
-        "个人模式"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetPlayerGameType"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "读取",
-        "获取",
-        "查询",
-        "查看",
-        "判断"
-      ],
-      "exclude": [
-        "默认模式"
-      ]
-    },
-    {
-      "label": "设置个人模式",
-      "triggers": [
-        "游戏模式",
-        "个人模式",
-        "创造模式"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerGameType"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "设置",
-        "修改",
-        "切换",
-        "切到",
-        "改成",
-        "改为"
-      ],
-      "exclude": [
-        "不修改",
-        "不改变",
-        "只查询",
-        "默认模式"
-      ]
-    },
-    {
-      "label": "玩家瞬时运动",
-      "triggers": [
-        "玩家"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetPlayerMotion"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "运动向量",
-        "移动向量",
-        "瞬时速度",
-        "弹射",
-        "冲刺",
-        "击退"
-      ],
-      "exclude": [
-        "读取",
-        "获取",
-        "查询",
-        "只读",
-        "非玩家",
-        "不是玩家",
-        "不含玩家",
-        "不包括玩家",
-        "速度属性",
-        "属性值"
-      ]
-    },
-    {
-      "label": "读取瞬时运动",
-      "triggers": [
-        "运动向量",
-        "移动向量",
-        "瞬时速度"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.GetMotion"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "读取",
-        "获取",
-        "查询"
-      ]
-    },
-    {
-      "label": "设置飞行能力",
-      "triggers": [
-        "飞行"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.ChangePlayerFlyState"
-      ],
-      "pick": 1,
-      "requires_any": [
-        "允许",
-        "给予",
-        "取消",
-        "设置",
-        "修改",
-        "进入"
-      ],
-      "exclude": [
-        "查询",
-        "读取",
-        "是否",
-        "只检查"
-      ]
-    },
-    {
-      "label": "查询飞行能力",
-      "triggers": [
-        "能否飞行",
-        "是否允许飞行",
-        "是否拥有飞行能力",
-        "能不能飞"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerCanFly"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "查询飞行状态",
-      "triggers": [
-        "是否正在飞行",
-        "当前飞行状态",
-        "在不在飞",
-        "是否处于飞行"
-      ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerFlying"
-      ],
-      "pick": 1
-    },
-    {
-      "label": "添加状态效果",
-      "triggers": [
+      "id": "modsdk:event:server:WillAddEffectServerEvent",
+      "source_sha256": "08d2df8c2ae6d264c19b0670e1150ed58d0dce308b0e768eccc15ef22c034e16",
+      "authority": "curated_note",
+      "tags": [
         "状态效果",
-        "药水效果",
-        "加状态"
+        "添加之前",
+        "行为拦截"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.effectCompServer.EffectComponentServer.AddEffectToEntity"
+      "aliases": [],
+      "questions": [],
+      "usage": "实体即将获得状态效果时通知，可按字段取消添加。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:AddEffectServerEvent",
+        "modsdk:event:server:RefreshEffectServerEvent",
+        "modsdk:event:server:RemoveEffectServerEvent"
       ],
-      "pick": 1,
-      "requires_any": [
-        "添加",
-        "施加",
-        "给予",
-        "加状态"
-      ],
-      "exclude": [
-        "移除",
-        "删除",
-        "清除",
-        "不添加"
-      ]
+      "source_dependencies": {
+        "modsdk:event:server:AddEffectServerEvent": "36ff644567afd506c84dff0b089136a03789fa096ca95263dccaacf3ff6ade06",
+        "modsdk:event:server:RefreshEffectServerEvent": "c434029ab443efb73268add574a21d57665a8e2a4f7a0ae686a7ca6ecca4a69e",
+        "modsdk:event:server:RemoveEffectServerEvent": "66e92b833fc857b79a4c91aa8579be1ed944d256e597600a6bf34bce51ddecae"
+      }
     },
     {
-      "label": "非玩家瞬时运动",
-      "triggers": [
-        "怪物",
-        "非玩家",
-        "生物"
+      "id": "modsdk:event:server:AddEffectServerEvent",
+      "source_sha256": "36ff644567afd506c84dff0b089136a03789fa096ca95263dccaacf3ff6ade06",
+      "authority": "curated_note",
+      "tags": [
+        "状态效果",
+        "效果添加",
+        "事件通知"
       ],
-      "requires_any": [
-        "设置",
-        "击退",
-        "突进",
-        "冲刺",
-        "运动向量",
-        "弹射"
+      "aliases": [],
+      "questions": [],
+      "usage": "实体获得状态效果时通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:RefreshEffectServerEvent",
+        "modsdk:event:server:RemoveEffectServerEvent",
+        "modsdk:event:server:WillAddEffectServerEvent"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.actorMotionCompServer.ActorMotionComponentServer.SetMotion"
-      ],
-      "pick": 1,
-      "exclude": [
-        "读取",
-        "获取",
-        "查询",
-        "只读"
-      ]
+      "source_dependencies": {
+        "modsdk:event:server:RefreshEffectServerEvent": "c434029ab443efb73268add574a21d57665a8e2a4f7a0ae686a7ca6ecca4a69e",
+        "modsdk:event:server:RemoveEffectServerEvent": "66e92b833fc857b79a4c91aa8579be1ed944d256e597600a6bf34bce51ddecae",
+        "modsdk:event:server:WillAddEffectServerEvent": "08d2df8c2ae6d264c19b0670e1150ed58d0dce308b0e768eccc15ef22c034e16"
+      }
     },
     {
-      "label": "修改实体属性",
-      "triggers": [
-        "实体属性",
-        "速度属性",
-        "攻击力属性",
-        "生命属性"
+      "id": "modsdk:event:server:RefreshEffectServerEvent",
+      "source_sha256": "c434029ab443efb73268add574a21d57665a8e2a4f7a0ae686a7ca6ecca4a69e",
+      "authority": "curated_note",
+      "tags": [
+        "状态效果",
+        "效果刷新",
+        "事件通知"
       ],
-      "requires_any": [
-        "设置",
-        "修改",
-        "调整",
-        "增加",
-        "减少",
-        "提高",
-        "降低"
+      "aliases": [],
+      "questions": [],
+      "usage": "状态等级或持续时间被更高等级或更长时间更新时通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:AddEffectServerEvent",
+        "modsdk:event:server:RemoveEffectServerEvent",
+        "modsdk:event:server:WillAddEffectServerEvent"
       ],
-      "entries": [
-        "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue"
+      "source_dependencies": {
+        "modsdk:event:server:AddEffectServerEvent": "36ff644567afd506c84dff0b089136a03789fa096ca95263dccaacf3ff6ade06",
+        "modsdk:event:server:RemoveEffectServerEvent": "66e92b833fc857b79a4c91aa8579be1ed944d256e597600a6bf34bce51ddecae",
+        "modsdk:event:server:WillAddEffectServerEvent": "08d2df8c2ae6d264c19b0670e1150ed58d0dce308b0e768eccc15ef22c034e16"
+      }
+    },
+    {
+      "id": "modsdk:event:server:RemoveEffectServerEvent",
+      "source_sha256": "66e92b833fc857b79a4c91aa8579be1ed944d256e597600a6bf34bce51ddecae",
+      "authority": "curated_note",
+      "tags": [
+        "状态效果",
+        "效果移除",
+        "事件通知"
       ],
-      "pick": 1,
-      "exclude": [
-        "不修改",
-        "不改变",
-        "只读取",
-        "只查看"
-      ]
+      "aliases": [],
+      "questions": [],
+      "usage": "实体状态效果被移除时通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:AddEffectServerEvent",
+        "modsdk:event:server:RefreshEffectServerEvent",
+        "modsdk:event:server:WillAddEffectServerEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:AddEffectServerEvent": "36ff644567afd506c84dff0b089136a03789fa096ca95263dccaacf3ff6ade06",
+        "modsdk:event:server:RefreshEffectServerEvent": "c434029ab443efb73268add574a21d57665a8e2a4f7a0ae686a7ca6ecca4a69e",
+        "modsdk:event:server:WillAddEffectServerEvent": "08d2df8c2ae6d264c19b0670e1150ed58d0dce308b0e768eccc15ef22c034e16"
+      }
+    },
+    {
+      "id": "modsdk:event:server:DimensionChangeServerEvent",
+      "source_sha256": "8ea5757d4d042e5d4fce37eb418ef488469cc969ee217cef3ff7c634138b90a2",
+      "authority": "curated_note",
+      "tags": [
+        "玩家维度",
+        "维度变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家维度变化时通知，不等同于切换已完成。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:DimensionChangeFinishServerEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:DimensionChangeFinishServerEvent": "0592f523e998050a7f79da6415b9a135f5888bc963e203001437263ad47738d2"
+      }
+    },
+    {
+      "id": "modsdk:event:server:DimensionChangeFinishServerEvent",
+      "source_sha256": "0592f523e998050a7f79da6415b9a135f5888bc963e203001437263ad47738d2",
+      "authority": "curated_note",
+      "tags": [
+        "玩家维度",
+        "切换完成",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家切换维度完成后通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:DimensionChangeServerEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:DimensionChangeServerEvent": "8ea5757d4d042e5d4fce37eb418ef488469cc969ee217cef3ff7c634138b90a2"
+      }
+    },
+    {
+      "id": "modsdk:event:client:DimensionChangeClientEvent",
+      "source_sha256": "ec81394cb51fa5bd681edf675503103b93afde4045f8287dc4d52f2444be6d5b",
+      "authority": "curated_note",
+      "tags": [
+        "玩家维度",
+        "维度变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端玩家维度变化时通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:client:DimensionChangeFinishClientEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:client:DimensionChangeFinishClientEvent": "6a1d05694a2a84a5cf1d95b3a073be1ef6c7c7a89b2a2057b9ad1e58095740c5"
+      }
+    },
+    {
+      "id": "modsdk:event:client:DimensionChangeFinishClientEvent",
+      "source_sha256": "6a1d05694a2a84a5cf1d95b3a073be1ef6c7c7a89b2a2057b9ad1e58095740c5",
+      "authority": "curated_note",
+      "tags": [
+        "玩家维度",
+        "切换完成",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端玩家维度切换完成后通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:client:DimensionChangeClientEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:client:DimensionChangeClientEvent": "ec81394cb51fa5bd681edf675503103b93afde4045f8287dc4d52f2444be6d5b"
+      }
+    },
+    {
+      "id": "modsdk:event:server:EntityChangeDimensionServerEvent",
+      "source_sha256": "774f3d7281b68f1ee5b52cd45029d32822facc3aba739f5cc232bb0ea22852a9",
+      "authority": "curated_note",
+      "tags": [
+        "实体维度",
+        "维度变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "非玩家实体离开原维度时通知，不保证目标区块已创建该实体。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:BlockNeighborChangedServerEvent",
+      "source_sha256": "014b06f7e31e1bbe62d9ca29184087f2017f4f387b73a6ed051434c27c0597ae",
+      "authority": "curated_note",
+      "tags": [
+        "相邻方块",
+        "方块变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "已启用相邻变化通知的自定义方块，其邻居改变时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:BlockRandomTickServerEvent",
+      "source_sha256": "dba8bace4e29a65a216d52e5ce91f20998298ede4db42dec445f66a04cc0e20a",
+      "authority": "curated_note",
+      "tags": [
+        "方块更新",
+        "随机刻",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "配置了随机更新的自定义方块发生随机刻时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:BlockRemoveServerEvent",
+      "source_sha256": "24115de92c01057d64a5633ac53fe34e14100fe50dbd489acdfa968c6f68e5e8",
+      "authority": "curated_note",
+      "tags": [
+        "方块销毁",
+        "销毁监听",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "已注册销毁监听的方块被移除时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:OnGroundServerEvent",
+      "source_sha256": "257e1aadd74c35b67b1ee9a5a6cb688d50f7778f64eaa9d7fcb56fd70b524d5c",
+      "authority": "curated_note",
+      "tags": [
+        "实体着地",
+        "落地事件",
+        "碰撞通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "受支持实体着地时通知，不支持投射物。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:OnGroundClientEvent",
+      "source_sha256": "a277ed3709775119bd28b649850261d35131f2d420ebf544e2943057b76ab5e8",
+      "authority": "curated_note",
+      "tags": [
+        "实体着地",
+        "落地事件",
+        "碰撞通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端受支持实体着地时通知；与服务端计算时机可能不同。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:PlayerDoInteractServerEvent",
+      "source_sha256": "294baea25be98f3901e46a7fbfc8eed9676cf1db11a7774a591cecce86538ef7",
+      "authority": "curated_note",
+      "tags": [
+        "实体交互",
+        "交互执行",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家实际与具有交互组件的生物交互时通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:PlayerInteractServerEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:PlayerInteractServerEvent": "30b2c18a5fc6755a974b9d4a150f8bb119db645d0a43f3c3df44b3c61de85600"
+      }
+    },
+    {
+      "id": "modsdk:event:server:PlayerInteractServerEvent",
+      "source_sha256": "30b2c18a5fc6755a974b9d4a150f8bb119db645d0a43f3c3df44b3c61de85600",
+      "authority": "curated_note",
+      "tags": [
+        "实体交互",
+        "交互可用",
+        "行为拦截"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家可与实体交互时通知，不等同于已执行交互。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:PlayerDoInteractServerEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:PlayerDoInteractServerEvent": "294baea25be98f3901e46a7fbfc8eed9676cf1db11a7774a591cecce86538ef7"
+      }
+    },
+    {
+      "id": "modsdk:event:server:EntityStartRidingEvent",
+      "source_sha256": "5f7d85174462109f922b03effc3bf5c221d70772fe66b5a22dcb18c461ae41ca",
+      "authority": "curated_note",
+      "tags": [
+        "实体骑乘",
+        "骑乘开始",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "实体开始骑乘另一实体时通知。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:EntityStopRidingEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:EntityStopRidingEvent": "c8c750ea1caa203584f1b7af20c08fe0c3004129704a5e26b27af2481be38b96"
+      }
+    },
+    {
+      "id": "modsdk:event:server:EntityStopRidingEvent",
+      "source_sha256": "c8c750ea1caa203584f1b7af20c08fe0c3004129704a5e26b27af2481be38b96",
+      "authority": "curated_note",
+      "tags": [
+        "实体骑乘",
+        "骑乘结束",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "实体停止骑乘时通知；部分原因下不允许取消。",
+      "cautions": [],
+      "related": [
+        "modsdk:event:server:EntityStartRidingEvent"
+      ],
+      "source_dependencies": {
+        "modsdk:event:server:EntityStartRidingEvent": "5f7d85174462109f922b03effc3bf5c221d70772fe66b5a22dcb18c461ae41ca"
+      }
+    },
+    {
+      "id": "modsdk:event:client:EntityStopRidingEvent",
+      "source_sha256": "c8c750ea1caa203584f1b7af20c08fe0c3004129704a5e26b27af2481be38b96",
+      "authority": "curated_note",
+      "tags": [
+        "实体骑乘",
+        "骑乘结束",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "实体停止骑乘时通知；部分原因下不允许取消。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:OnMusicStopClientEvent",
+      "source_sha256": "ecf8485405b254029cf79a5d88118cf65f1c1b14720dbbcba7da86c90c152360",
+      "authority": "curated_note",
+      "tags": [
+        "音乐停止",
+        "播放事件",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "通过指定停止接口结束自定义背景音乐时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:PlaySoundClientEvent",
+      "source_sha256": "082a5b63034fe48ed0f9daf65223acc9e29b77fd81353bf4ad80c94bf50713ff",
+      "authority": "curated_note",
+      "tags": [
+        "声音播放",
+        "播放事件",
+        "行为拦截"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "播放场景或界面音效时通知，可按事件字段取消。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:GetEntityByCoordEvent",
+      "source_sha256": "6064a689297128a48d080da3484da5a1fe5d1a32b03456a995317cf8ef33b312",
+      "authority": "curated_note",
+      "tags": [
+        "屏幕点击",
+        "输入按下",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "首次触控按下时通知，可结合屏幕坐标拾取接口使用。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:GetEntityByCoordReleaseClientEvent",
+      "source_sha256": "01adb99760b1924cc6029eedf994b0c970110f8034d51bcef4697481f885d758",
+      "authority": "curated_note",
+      "tags": [
+        "屏幕点击",
+        "输入释放",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "最后一个触点松开时通知。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:TapBeforeClientEvent",
+      "source_sha256": "cba25cf4a26f571d915dc3a8ab66e09f001ace5f84777bc927fca836152eaa6f",
+      "authority": "curated_note",
+      "tags": [
+        "触屏输入",
+        "响应之前",
+        "行为拦截"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "触屏短按即将响应到世界前通知；被界面吞噬的点击不触发。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:TapOrHoldReleaseClientEvent",
+      "source_sha256": "cbb5dca3895b2741f6b6820e11fce894b6f72ea02cea72c96d5af9c01974dd32",
+      "authority": "curated_note",
+      "tags": [
+        "触屏输入",
+        "长短按释放",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "触屏短按或长按后松手时通知，桌面普通鼠标模式使用对应鼠标事件。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:PlayerPermissionChangeServerEvent",
+      "source_sha256": "aedbd939ddde63f015c5db6e2e1650c4cb8bc0e5c64c4f5f1f19fd401071f531",
+      "authority": "curated_note",
+      "tags": [
+        "玩家权限",
+        "权限变更",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家行为权限改变时通知，可按事件字段取消。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:client:PlayerPermissionChangeClientEvent",
+      "source_sha256": "7868dc749007289e5be6261372bbb190cc5bd3f3388a9d66a6318c75058bf16a",
+      "authority": "curated_note",
+      "tags": [
+        "玩家权限",
+        "权限同步",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "客户端收到玩家权限变更时通知；服务端取消的变动不会触发。",
+      "cautions": [],
+      "related": []
+    },
+    {
+      "id": "modsdk:event:server:PlayerHungerChangeServerEvent",
+      "source_sha256": "60b38e6969f68ce109fd046f18776f5fd42b3eb23ff179b2811d27588d9a7abb",
+      "authority": "curated_note",
+      "tags": [
+        "玩家饥饿",
+        "属性变化",
+        "事件通知"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家饥饿度变化时通知；通过设置接口写入时不触发对应服务端事件。",
+      "cautions": [],
+      "related": []
     }
   ]
 }
