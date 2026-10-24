@@ -1970,5 +1970,808 @@
       "side": "server",
       "expected_first": "GetAttrValue"
     }
-  ]
+  ],
+  "product_review": {
+    "protocol": {
+      "baseline_commit": "40906a7e494ed0a797bb98945f68cb17821ead17",
+      "current_commit": "0dd39239a5b9728ab1c31612c519be6a140ed7ea",
+      "engine_sha256": "7af2314e47ea5a4b310da492c6f1e9f344ba27d1f59de3fd4d0c0d8ee713d4a5",
+      "annotation_sha256": "e1699618b40e4d1179824d25efeef969ad2ca2a41fa65ce46e74ef43a4ef9fdc",
+      "top_k": 8,
+      "description": "新编写的产品功能需求，未用于本轮标注修改；同一评估者制定参考方案，不是独立盲测。冻结首问与拆分查询，查询中不含目标 API 名称。普通业务状态管理及通用框架初始化不计入参考清单。必需能力由原文合同核对，合理辅助项另列；未列入参考方案的候选不直接等同噪声。",
+      "cases_sha256": "6be15b17468c4ea97315e80b86fdda78c9b545b2d4f61f10b3ddde2675b79a4d"
+    },
+    "cases": [
+      {
+        "id": "remote-processing",
+        "title": "远程区域运行开关",
+        "side": "server",
+        "query": "管理面板启用远处生产区域后，即使附近没有玩家也保持运行；开始读写前确认区域已经加载，停用时释放常驻。",
+        "required": [
+          {
+            "label": "保持区域加载",
+            "ids": [
+              "modsdk:api:server:mod.server.component.chunkSourceComp.ChunkSourceCompServer.SetAddArea"
+            ]
+          },
+          {
+            "label": "确认区块加载",
+            "ids": [
+              "modsdk:api:server:mod.server.component.chunkSourceComp.ChunkSourceCompServer.CheckChunkState"
+            ]
+          },
+          {
+            "label": "释放常加载区域",
+            "ids": [
+              "modsdk:api:server:mod.server.component.chunkSourceComp.ChunkSourceCompServer.DeleteArea"
+            ]
+          }
+        ],
+        "followups": [
+          "指定区域保持区块常加载并按名称取消",
+          "判断坐标所在区块是否加载完成"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.chunkSourceComp.ChunkSourceCompServer.GetAllAreaKeys",
+          "modsdk:api:server:mod.server.component.chunkSourceComp.ChunkSourceCompServer.DoTaskOnChunkAsync",
+          "modsdk:api:server:mod.server.component.chunkSourceComp.ChunkSourceCompServer.GetLoadedChunks"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.chunkSourceComp.ChunkSourceCompServer.DeleteAllArea"
+        ],
+        "contract_checks": [
+          "取消单个区域不能误用全部清理；区块加载不是区块生成状态。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "saved-respawn",
+        "title": "跨维度重生与返回点",
+        "side": "server",
+        "query": "玩家可保存当前所在维度和脚下位置为重生点，死亡后在那里复活，点击返回时立刻跨维度回到保存的位置。",
+        "required": [
+          {
+            "label": "读取脚底位置",
+            "ids": [
+              "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.GetFootPos"
+            ]
+          },
+          {
+            "label": "读取维度",
+            "ids": [
+              "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.GetEntityDimensionId"
+            ]
+          },
+          {
+            "label": "设置个人重生点",
+            "ids": [
+              "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerRespawnPos"
+            ]
+          },
+          {
+            "label": "跨维度传送",
+            "ids": [
+              "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.ChangePlayerDimension"
+            ]
+          }
+        ],
+        "followups": [
+          "读取玩家脚底坐标和所在维度",
+          "设置玩家个人重生点维度和位置",
+          "把玩家传送到指定维度和坐标"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.GetPlayerRespawnPos",
+          "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetPos",
+          "modsdk:api:server:mod.server.component.posCompServer.PosComponentServer.SetFootPos",
+          "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.AddTimer",
+          "modsdk:event:server:PlayerRespawnFinishServerEvent"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetSpawnDimensionAndPosition"
+        ],
+        "contract_checks": [
+          "跨维度传送用头部坐标，不能直接回填脚底坐标；个人重生点不同于世界出生点。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "equipment-modifiers",
+        "title": "装备独立属性加成",
+        "side": "server",
+        "query": "装备栏更换时，按装备的唯一标识添加或撤销攻击属性加成，不能直接覆盖生物原来的基础属性值。",
+        "required": [
+          {
+            "label": "监听装备更换",
+            "ids": [
+              "modsdk:event:server:OnNewArmorExchangeServerEvent"
+            ]
+          },
+          {
+            "label": "添加修饰符",
+            "ids": [
+              "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.AddModifier"
+            ]
+          },
+          {
+            "label": "移除修饰符",
+            "ids": [
+              "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.RemoveModifier"
+            ]
+          }
+        ],
+        "followups": [
+          "监听玩家盔甲装备更换事件",
+          "按唯一标识添加和移除属性修饰符"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAllModifiers",
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.HasModifier",
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.UpdateModifier",
+          "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetEntityDamage",
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrMaxValue"
+        ],
+        "contract_checks": [
+          "登录时每个装备槽会触发两次更换事件；不要在回调中修改盔甲导致递归。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "container-audit",
+        "title": "方块容器库存审计",
+        "side": "server",
+        "query": "后台审计指定箱子的格子数量和每格物品，允许修正某一格的数量。这是方块容器，不是玩家背包，不要给玩家发物品。",
+        "required": [
+          {
+            "label": "容量",
+            "ids": [
+              "modsdk:api:server:mod.server.component.chestContainerCompServer.ChestContainerCompServer.GetChestBoxSize",
+              "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetContainerSize"
+            ]
+          },
+          {
+            "label": "读取物品",
+            "ids": [
+              "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetContainerItem"
+            ]
+          },
+          {
+            "label": "修改格子数量",
+            "ids": [
+              "modsdk:api:server:mod.server.component.chestContainerCompServer.ChestContainerCompServer.SetChestBoxItemNum"
+            ]
+          }
+        ],
+        "followups": [
+          "读取箱子容量和指定槽位物品",
+          "设置箱子某个槽位的物品数量"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetChestPairedPosition",
+          "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetOpenContainerItem"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerAllItems",
+          "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
+          "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
+          "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SpawnItemToPlayerInv"
+        ],
+        "contract_checks": [
+          "容器坐标和维度必须明确；末影箱不属于普通容器容量接口的支持范围。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "independent-exhibit",
+        "title": "展示维度固定昼夜天气",
+        "side": "server",
+        "query": "一个展示维度固定在中午并始终晴天，其他维度的昼夜和天气保持原样；这里的时刻与天气不能再自动变化。",
+        "required": [
+          {
+            "label": "独立时间",
+            "ids": [
+              "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.SetUseLocalTime"
+            ]
+          },
+          {
+            "label": "设置日内时刻",
+            "ids": [
+              "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.SetLocalTimeOfDay"
+            ]
+          },
+          {
+            "label": "关闭昼夜变化",
+            "ids": [
+              "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.SetLocalDoDayNightCycle"
+            ]
+          },
+          {
+            "label": "独立天气",
+            "ids": [
+              "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetDimensionUseLocalWeather"
+            ]
+          },
+          {
+            "label": "晴天",
+            "ids": [
+              "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetDimensionLocalRain"
+            ]
+          },
+          {
+            "label": "关闭天气循环",
+            "ids": [
+              "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetDimensionLocalDoWeatherCycle"
+            ]
+          }
+        ],
+        "followups": [
+          "维度启用独立时间并设置日内时刻和关闭昼夜更替",
+          "维度启用独立天气并设置晴天和关闭天气循环"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.GetLocalTime",
+          "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.GetUseLocalTime",
+          "modsdk:api:server:mod.server.component.dimensionCompServer.DimensionCompServer.GetLocalDoDayNightCycle",
+          "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.GetDimensionLocalWeatherInfo",
+          "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.GetDimensionUseLocalWeather"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTime",
+          "modsdk:api:server:mod.server.component.timeCompServer.TimeComponentServer.SetTimeOfDay",
+          "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining",
+          "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetThunder"
+        ],
+        "contract_checks": [
+          "先启用维度独立规则；全局时间天气接口不满足隔离要求。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "visitor-policy",
+        "title": "保留容器访问的游客权限",
+        "side": "server",
+        "query": "给生存模式访客禁止放置方块、挖掘和攻击其他玩家，但仍允许打开箱子，不要通过切换游戏模式来实现。",
+        "required": [
+          {
+            "label": "禁用建造",
+            "ids": [
+              "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetBuildAbility"
+            ]
+          },
+          {
+            "label": "禁用挖掘",
+            "ids": [
+              "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetMineAbility"
+            ]
+          },
+          {
+            "label": "禁用玩家攻击",
+            "ids": [
+              "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetAttackPlayersAbility"
+            ]
+          },
+          {
+            "label": "允许容器访问",
+            "ids": [
+              "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetOpenContainersAbility"
+            ]
+          }
+        ],
+        "followups": [
+          "设置玩家不能放置破坏方块但允许打开容器",
+          "设置玩家能否攻击其他玩家"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.GetPlayerAbilities",
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.GetPlayerOperation"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerGameType",
+          "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetDefaultGameType",
+          "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.SetDisableContainers"
+        ],
+        "contract_checks": [
+          "行为能力和权限等级不同；建造挖掘能力只影响生存模式并存档。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "filter-form",
+        "title": "筛选表单输入与穿透",
+        "side": "client",
+        "query": "做一个筛选面板：输入文字最多二十个字符，提交时读取文字；下拉框读取当前选项的索引，点面板时不能误操作后面的游戏世界。",
+        "required": [
+          {
+            "label": "限制长度",
+            "ids": [
+              "modsdk:api:client:mod.client.ui.controls.textEditBoxUIControl.TextEditBoxUIControl.SetEditTextMaxLength"
+            ]
+          },
+          {
+            "label": "读取文字",
+            "ids": [
+              "modsdk:api:client:mod.client.ui.controls.textEditBoxUIControl.TextEditBoxUIControl.GetEditText"
+            ]
+          },
+          {
+            "label": "读取选项",
+            "ids": [
+              "modsdk:api:client:mod.client.ui.controls.neteaseComboBoxUIControl.NeteaseComboBoxUIControl.GetSelectOptionIndex"
+            ]
+          },
+          {
+            "label": "阻止面板穿透",
+            "ids": [
+              "modsdk:api:client:mod.client.ui.controls.inputPanelUIControl.InputPanelUIControl.SetIsSwallow"
+            ]
+          }
+        ],
+        "followups": [
+          "输入框设置最大长度并读取输入文本",
+          "读取下拉框选中索引并让输入面板吞噬点击事件"
+        ],
+        "support_ids": [
+          "modsdk:api:client:mod.client.ui.controls.textEditBoxUIControl.TextEditBoxUIControl.SetEditText",
+          "modsdk:api:client:mod.client.ui.controls.neteaseComboBoxUIControl.NeteaseComboBoxUIControl.AddOption",
+          "modsdk:api:client:mod.client.ui.controls.neteaseComboBoxUIControl.NeteaseComboBoxUIControl.GetOptionCount",
+          "modsdk:api:client:mod.client.ui.controls.neteaseComboBoxUIControl.NeteaseComboBoxUIControl.RegisterSelectItemCallback",
+          "modsdk:api:client:mod.client.ui.controls.neteaseComboBoxUIControl.NeteaseComboBoxUIControl.SetSelectOptionByIndex",
+          "modsdk:api:client:mod.client.ui.controls.inputPanelUIControl.InputPanelUIControl.GetIsSwallow",
+          "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.AddTouchEventParams",
+          "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchUpCallback"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText",
+          "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.GetText"
+        ],
+        "contract_checks": [
+          "输入框不同于文本标签；下拉框未选择时索引为负值。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "model-preview",
+        "title": "独立骨骼模型预览卡",
+        "side": "client",
+        "query": "资源预览卡使用网易纸娃娃控件直接显示骨骼模型文件，可以指定初始朝向和缩放，不在世界里生成生物。",
+        "required": [
+          {
+            "label": "直接渲染骨骼模型",
+            "ids": [
+              "modsdk:api:client:mod.client.ui.controls.neteasePaperDollUIControl.NeteasePaperDollUIControl.RenderSkeletonModel"
+            ]
+          }
+        ],
+        "followups": [
+          "网易纸娃娃控件不依赖实体显示骨骼模型并设置初始旋转缩放"
+        ],
+        "support_ids": [
+          "modsdk:api:client:mod.client.ui.screenNode.ScreenNode.GetBaseUIControl",
+          "modsdk:api:client:mod.client.ui.controls.baseUIControl.BaseUIControl.asNeteasePaperDoll",
+          "modsdk:api:client:mod.client.ui.controls.neteasePaperDollUIControl.NeteasePaperDollUIControl.GetModelId"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:client:mod.client.ui.controls.neteasePaperDollUIControl.NeteasePaperDollUIControl.RenderEntity",
+          "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.CreateClientEntityByTypeStr",
+          "modsdk:api:client:mod.client.component.modelCompClient.ModelComponentClient.SetFreeModelScale",
+          "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.SetCameraRotation"
+        ],
+        "contract_checks": [
+          "缩放与初始角度在渲染参数字典内；创建世界实体并非前置。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "inspection-camera",
+        "title": "固定观察相机并恢复",
+        "side": "client",
+        "query": "展示流程把观察位置移到指定坐标，朝向指定角度并缩小视角；关闭后恢复跟随玩家，玩家本体不能被传送。",
+        "required": [
+          {
+            "label": "分离相机",
+            "ids": [
+              "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.DepartCamera"
+            ]
+          },
+          {
+            "label": "独立位置",
+            "ids": [
+              "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.SetCameraPos"
+            ]
+          },
+          {
+            "label": "朝向",
+            "ids": [
+              "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.SetCameraRotation"
+            ]
+          },
+          {
+            "label": "视野",
+            "ids": [
+              "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.SetFov"
+            ]
+          },
+          {
+            "label": "恢复跟随",
+            "ids": [
+              "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.ResetCameraPos"
+            ]
+          }
+        ],
+        "followups": [
+          "分离玩家与摄像机并设置相机独立位置",
+          "设置摄像机朝向和视野大小",
+          "取消独立相机位置并恢复跟随玩家"
+        ],
+        "support_ids": [
+          "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.GetCameraRotation",
+          "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.GetPosition",
+          "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.GetFov",
+          "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.SetSpeedFovLock",
+          "modsdk:api:client:mod.client.component.cameraCompClient.CameraComponentClient.UnDepartCamera"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:client:mod.client.component.virtualWorldCompClient.VirtualWorldCompClient.CameraSetPos",
+          "modsdk:api:client:mod.client.component.posCompClient.PosComponentClient.SetPosForClientEntity",
+          "modsdk:api:client:mod.client.component.modelCompClient.ModelComponentClient.SetFreeModelPos"
+        ],
+        "contract_checks": [
+          "SetCameraPos 必须先分离相机；恢复位置跟随有专门接口。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "persistent-name",
+        "title": "单个实体名称常显与透视",
+        "side": "client",
+        "query": "让一个已有名字的实体始终显示名称，即使准星没有对准它也显示，并允许名称穿过墙面可见；其他实体的名字显示不变。",
+        "required": [
+          {
+            "label": "始终显示",
+            "ids": [
+              "modsdk:api:client:mod.client.component.nameCompClient.NameComponentClient.SetAlwaysShowName"
+            ]
+          },
+          {
+            "label": "名称深度检测",
+            "ids": [
+              "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.SetNameDeeptest"
+            ]
+          }
+        ],
+        "followups": [
+          "单个实体名称一直显示并设置名字是否受墙体遮挡"
+        ],
+        "support_ids": [
+          "modsdk:api:client:mod.client.component.nameCompClient.NameComponentClient.SetShowName",
+          "modsdk:api:client:mod.client.component.nameCompClient.NameComponentClient.IsShowName",
+          "modsdk:api:client:mod.client.component.nameCompClient.NameComponentClient.GetName"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:client:mod.client.extraClientApi.HideNameTag",
+          "modsdk:api:client:mod.client.extraClientApi.IsHideNameTag",
+          "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.SetNotRenderAtAll"
+        ],
+        "contract_checks": [
+          "名称显隐不是整个实体渲染开关；不能用全局名称隐藏处理单体需求。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "particle-controls",
+        "title": "原版粒子独立状态控制",
+        "side": "client",
+        "query": "给资源包原版粒子发射器做控制面板：冻结计算时保留当前画面，恢复后继续；另一个开关只隐藏画面但继续计算，最后能彻底删除这个实例。",
+        "required": [
+          {
+            "label": "暂停逻辑",
+            "ids": [
+              "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.Pause"
+            ]
+          },
+          {
+            "label": "恢复逻辑",
+            "ids": [
+              "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.Resume"
+            ]
+          },
+          {
+            "label": "仅隐藏",
+            "ids": [
+              "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.Hide"
+            ]
+          },
+          {
+            "label": "销毁",
+            "ids": [
+              "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.Remove"
+            ]
+          }
+        ],
+        "followups": [
+          "原版粒子发射器暂停逻辑但保留渲染，随后恢复",
+          "原版粒子发射器只隐藏渲染以及按标识销毁实例"
+        ],
+        "support_ids": [
+          "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.IsPausing",
+          "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.IsHiding",
+          "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.Show",
+          "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.Exist"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:client:mod.client.component.particleControlComp.ParticleControlComp.Pause",
+          "modsdk:api:client:mod.client.component.frameAniControlComp.FrameAniControlComp.Pause",
+          "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.Stop",
+          "modsdk:api:client:mod.client.component.particleSystemCompClient.ParticleSystemCompClient.RemoveByName"
+        ],
+        "contract_checks": [
+          "Pause、Hide、Stop、Remove 职责不同；同名网易粒子接口不是这套发射器。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "interaction-ray",
+        "title": "普通方块与生物射线选取",
+        "side": "server",
+        "query": "服务端从给定起点沿方向找出射线碰到的普通方块和生物，再用命中位置判断能否交互，不是只查询自定义物理刚体。",
+        "required": [
+          {
+            "label": "实体与方块射线",
+            "ids": [
+              "modsdk:api:server:mod.server.extraServerApi.getEntitiesOrBlockFromRay"
+            ]
+          }
+        ],
+        "followups": [
+          "射线查询普通世界中的实体和方块命中结果"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.CanSee",
+          "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.CheckBlockToPos",
+          "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockClip",
+          "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockCollision"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.physxCompServer.PhysxComponentServer.Raycast"
+        ],
+        "contract_checks": [
+          "物理 Raycast 只支持自定义刚体；普通世界射线另有接口。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "entity-lifetime",
+        "title": "存档持久化与自然清除",
+        "side": "server",
+        "query": "两类实体分别管理：临时对象退出存档或区块卸载时自动消失；常驻生物离玩家很远也不能被自然清掉。",
+        "required": [
+          {
+            "label": "临时对象不存档",
+            "ids": [
+              "modsdk:api:server:mod.server.component.persistenceCompServer.PersistenceCompServer.SetPersistence"
+            ]
+          },
+          {
+            "label": "阻止距离清除",
+            "ids": [
+              "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetPersistent"
+            ]
+          }
+        ],
+        "followups": [
+          "关闭实体存档持久化，使区块卸载时删除",
+          "禁止生物因为远离玩家而自然清除"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.entityDefinitionsCompServer.EntityDefinitionsCompServer.IsPersistent",
+          "modsdk:api:server:mod.server.component.actorOwnerCompServer.ActorOwnerComponentServer.GetEntityOwner"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.DestroyEntity",
+          "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.KillEntity"
+        ],
+        "contract_checks": [
+          "SetPersistence 与 SetPersistent 名称相近，但控制的是不同清理机制。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "readonly-dashboard",
+        "title": "只读玩家与天气监控",
+        "side": "server",
+        "query": "监控面板只读取玩家生命值、当前是否正在飞行、个人游戏模式和是否下雨，绝不能修改任何玩家状态或天气。",
+        "required": [
+          {
+            "label": "读取生命",
+            "ids": [
+              "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrValue"
+            ]
+          },
+          {
+            "label": "读取飞行状态",
+            "ids": [
+              "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerFlying"
+            ]
+          },
+          {
+            "label": "读取个人模式",
+            "ids": [
+              "modsdk:api:server:mod.server.component.gameCompServer.GameComponentServer.GetPlayerGameType"
+            ]
+          },
+          {
+            "label": "读取降雨",
+            "ids": [
+              "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.IsRaining"
+            ]
+          }
+        ],
+        "followups": [
+          "只读取当前生命值和玩家是否正在飞行",
+          "只查询指定玩家个人游戏模式和当前是否下雨"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.GetAttrMaxValue",
+          "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.IsPlayerCanFly",
+          "modsdk:api:server:mod.server.extraServerApi.GetPlayerList"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.attrCompServer.AttrCompServer.SetAttrValue",
+          "modsdk:api:server:mod.server.component.flyCompServer.FlyComponentServer.ChangePlayerFlyState",
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPlayerGameType",
+          "modsdk:api:server:mod.server.component.weatherCompServer.WeatherComponentServer.SetRaining"
+        ],
+        "contract_checks": [
+          "会飞与正在飞不同；个人模式与世界默认模式不同。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "region-snapshot",
+        "title": "区域方块快照传输与恢复",
+        "side": "server",
+        "query": "编辑工具选中一个长方体区域，将方块组合存成可传输的字典；随后从字典恢复该组合并放回世界，不是生成渲染模型。",
+        "required": [
+          {
+            "label": "采集区域",
+            "ids": [
+              "modsdk:api:server:mod.server.component.blockCompServer.BlockCompServer.GetBlockPaletteBetweenPos"
+            ]
+          },
+          {
+            "label": "序列化",
+            "ids": [
+              "modsdk:api:server:mod.common.component.blockPaletteComp.BlockPaletteComponent.SerializeBlockPalette"
+            ]
+          },
+          {
+            "label": "反序列化",
+            "ids": [
+              "modsdk:api:server:mod.common.component.blockPaletteComp.BlockPaletteComponent.DeserializeBlockPalette"
+            ]
+          },
+          {
+            "label": "写回世界",
+            "ids": [
+              "modsdk:api:server:mod.server.component.blockCompServer.BlockCompServer.SetBlockByBlockPalette"
+            ]
+          }
+        ],
+        "followups": [
+          "按两个位置读取方块组合并序列化为字典",
+          "从字典还原方块调色板并批量放回世界"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.blockCompServer.BlockCompServer.GetBlankBlockPalette",
+          "modsdk:api:server:mod.common.component.blockPaletteComp.BlockPaletteComponent.GetVolumeOfBlockPalette",
+          "modsdk:api:server:mod.common.component.blockPaletteComp.BlockPaletteComponent.GetBlockCountInBlockPalette",
+          "modsdk:api:server:mod.server.component.blockCompServer.BlockCompServer.GetBlockPaletteFromPosList",
+          "modsdk:api:server:mod.common.component.blockPaletteComp.BlockPaletteComponent.GetLocalPosListOfBlocks"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.blockCompServer.BlockCompServer.CreateMicroBlockResStr"
+        ],
+        "contract_checks": [
+          "调色板序列化用于数据传输；几何体转换不等于还原世界方块。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "sound-instance",
+        "title": "实体声音的实例级控制",
+        "side": "client",
+        "query": "给一个实体播放跟随它移动的声音，运行中可单独开关这个播放实例的循环；用户快速关闭时只停止这一条声音，其他背景音乐继续播放。",
+        "required": [
+          {
+            "label": "绑定声音",
+            "ids": [
+              "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.PlayCustomMusic"
+            ]
+          },
+          {
+            "label": "实例循环",
+            "ids": [
+              "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.SetCustomMusicLoopById"
+            ]
+          },
+          {
+            "label": "实例停止",
+            "ids": [
+              "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.StopCustomMusicById"
+            ]
+          },
+          {
+            "label": "短时停止避让",
+            "ids": [
+              "modsdk:api:client:mod.client.component.gameCompClient.GameComponentClient.AddTimer"
+            ]
+          }
+        ],
+        "followups": [
+          "按实体播放场景音效并获取播放实例标识",
+          "按播放实例切换循环和停止声音",
+          "刚播放立刻停止音效的时间限制和延迟执行"
+        ],
+        "support_ids": [
+          "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.SetCustomMusicLoop",
+          "modsdk:event:client:PlaySoundClientEvent"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.PlayGlobalCustomMusic",
+          "modsdk:api:client:mod.client.component.audioCustomCompClient.AudioCustomComponentClient.StopCustomMusic"
+        ],
+        "contract_checks": [
+          "停止同一播放实例前需关注七帧限制，原文建议延迟十五帧以上；流式音频不能同时开多个实例。"
+        ],
+        "boundary": false
+      },
+      {
+        "id": "permission-tree",
+        "title": "原生字符串权限树边界",
+        "side": "server",
+        "query": "需要原生权限接口直接支持字符串权限节点、继承和否定节点，像服务端插件权限系统那样；不能用几个数字身份等级代替。",
+        "required": [],
+        "followups": [
+          "查询字符串权限节点与继承是否有对应原生能力"
+        ],
+        "support_ids": [
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.GetPlayerAbilities",
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.GetPlayerOperation"
+        ],
+        "hard_negative_ids": [
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetPermissionLevel",
+          "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.SetOperatorCommandAbility"
+        ],
+        "contract_checks": [
+          "现有权限等级与行为能力不能证明存在原生字符串权限树；未检索到也不能证明平台绝无其他实现。"
+        ],
+        "boundary": true
+      },
+      {
+        "id": "remote-inventory-client",
+        "title": "客户端读取他人背包边界",
+        "side": "client",
+        "query": "只在客户端查看另一个远处玩家的全部背包内容，不发送服务器请求，也不只看他手里或者身上的装备。",
+        "required": [],
+        "followups": [
+          "客户端读取其他玩家完整背包的支持范围"
+        ],
+        "support_ids": [],
+        "hard_negative_ids": [
+          "modsdk:api:client:mod.client.component.itemCompClient.ItemCompClient.GetPlayerAllItems",
+          "modsdk:api:client:mod.client.component.itemCompClient.ItemCompClient.GetPlayerItem",
+          "modsdk:api:client:mod.client.component.itemCompClient.ItemCompClient.GetCarriedItem",
+          "modsdk:api:client:mod.client.component.itemCompClient.ItemCompClient.GetOffhandItem"
+        ],
+        "contract_checks": [
+          "客户端完整背包接口仅支持本地玩家；需要服务端配合的方案不满足此限定。"
+        ],
+        "boundary": true
+      }
+    ]
+  }
 }

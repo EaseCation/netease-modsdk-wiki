@@ -9,7 +9,7 @@ import sys
 import subprocess
 import time
 from pathlib import Path
-from api_knowledge import ROOT, Search, load
+from api_knowledge import ROOT, Search, load, build, input_signature
 
 
 def query_cli():
@@ -190,14 +190,192 @@ def evaluate_community(data, engine):
     path.write_text(old.rstrip()+'\n\n'+'\n'.join(lines)+'\n'+('\n### 方便查询的常用功能'+manual_tail if manual_tail else ''))
 
 
+def write_product_report(report, cases):
+    """将实际查询回执汇总到现有评估文档。"""
+    summaries = {s['mode']:s for s in report['summaries']}
+    old, new = summaries['old84'], summaries['expanded']
+    lines = ['## 大范围标注后的真实产品需求对照', '',
+             '结论：扩展标注提升了可找回的能力数量，配合明确拆分后收益明显；完整需求一次查询仍不可靠，近邻接口干扰和输出长度也有所增加。建议保留标注，优先改进需求拆分、否定约束、对象范围和事件检索。', '',
+             '本轮新编写 18 个贴近产品功能的需求：16 个能力组合、2 个支持边界。它们未用于本轮标注修改，但由同一评估者制定参考方案，不是独立盲测，也不是游戏实机验收。参考清单只统计本功能片段所需的引擎能力，不计普通业务状态处理和通用框架初始化。', '',
+             '对照冻结在旧版 `40906a7e`（84 条）与扩展版 `0dd39239`（1,649 条）。原文、查询引擎、43 条能力规则及原有 84 条标注完全一致。通过独立 Skill 的真实 CLI 执行，共 192 次固定查询；历史标注在临时独立目录构建索引，结束即清理，正式数据和查询实现未改动。', '',
+             '每例先将完整需求交给 `resolve`，Top 8。随后各方案都执行相同、预先固定且不含目标 API 名称的拆分查询。16 个正向需求共 54 项必需能力、48 次固定查询；另外比较关闭能力规则的纯词法版本。', '',
+             '| 指标 | 仅原文 | 84 条标注 | 1,649 条标注 |',
+             '| --- | ---: | ---: | ---: |']
+    specs = [('首问命中必需能力', 'initial_hits', '/54'), ('首问完整需求', 'initial_complete', '/16'),
+             ('固定拆分后命中能力', 'split_hits', '/54'), ('固定拆分后完整需求', 'split_complete', '/16'),
+             ('首问范围冲突候选命中数', 'initial_hard_negatives', ''), ('首问输出字符合计', 'first_chars', ''),
+             ('固定查询路径输出字符合计', 'fixed_path_chars', '')]
+    for label, key, suffix in specs:
+        lines.append('| '+label+' | '+' | '.join(f"{summaries[m][key]:,}{suffix}" for m in ['raw','old84','expanded'])+' |')
+    lines += ['', '“范围冲突候选”只统计预先列出的对象、操作或作用范围不符合要求（或范围过大）的候选，不是全部噪声。搜索返回候选也不等于 Agent 已经误用该接口；必须读取详情判断。', '',
+              f"相较 84 条版，新版固定查询路径的文本量增加 {(new['fixed_path_chars']/old['fixed_path_chars']-1)*100:.1f}%。字符数不是 token，不含模型推理与后续详情。各方案均执行相同 48 次查询，因此本轮不能宣称已经减少 Agent 查询次数。回执中的 oracle_stop 只表示参考清单可提前完成的位置，不是 Agent 盲执行的决策成本。", '',
+              '候选更接近产品领域：首问 128 个结果中，预定参考方案及可用辅助项从 40 个增加到 48 个。不在预定清单的候选可能包含其他实现路径，不能把剩余结果一律算作无关。', '',
+              '| 产品功能 | 84 条首问 | 扩展版首问 | 84 条拆分后 | 扩展版拆分后 |',
+              '| --- | ---: | ---: | ---: | ---: |']
+    for case in cases:
+        if case['boundary']:continue
+        a=next(r for r in report['rows'] if r['case']==case['id'] and r['mode']=='old84')
+        b=next(r for r in report['rows'] if r['case']==case['id'] and r['mode']=='expanded')
+        n=a['required']
+        lines.append(f"| {case['title']} | {a['initial_hits']}/{n} | {b['initial_hits']}/{n} | {a['after_split_hits']}/{n} | {b['after_split_hits']}/{n} |")
+    lines += ['', '### 实际观察到的改善与退步', '',
+              '- 区域快照：整段需求从 0/4 提升到 3/4，拆分后从 3/4 提升到 4/4，能够找到调色板采集、序列化、反序列化和写回世界的组合。',
+              '- 实体声音：整段从 1/4 提升到 3/4，拆分后从 3/4 提升到 4/4，实例循环和按实例停止更容易发现。读取详情后仍要处理刚播放七帧内停止可能失败的限制，原文建议延迟十五帧以上。',
+              '- 跨维度重生：首问从 4/4 退步到 3/4，`GetEntityDimensionId` 被挤出 Top 8，出现作用于世界出生点的 `SetSpawnDimensionAndPosition`。补查“获取玩家当前所在维度”时目标词法排名从旧版第 9 退到新版第 13；实际改问“实体所在维度”后首位命中，说明对象层级和同义表达仍需要处理。',
+              '- 模型预览：`RenderSkeletonModel` 从首位退到第 6 位，前面出现 `SetUiModel`、`SetUiModelScale`、`SetUiEntity` 等相近界面 API。目标仍在 Top 8，但 Agent 需要结合控件类型和参数进一步选择。',
+              '- 表单：首问 Top 8 被下拉框相关接口占据，输入长度、读取文字和面板吞噬输入三项仍然漏掉。全局相关性排序缺少对子需求的名额分配。',
+              '- 装备更换：固定拆分后两版都漏掉事件。混合查询“监听玩家盔甲装备更换事件”中，`OnNewArmorExchangeServerEvent` 从第 9 退到第 11；实际使用 `search "玩家更换盔甲" --kind event --side server` 后首位命中。普通 API 标注已近全覆盖，但事件仍只有 14/298 条标注。', '',
+              '### 原有规则与新增字段分别造成什么影响', '',
+              '- 旧版和新版使用相同 43 条能力规则。游客权限需求含“不要通过切换游戏模式”，仍强制插入 `SetPlayerGameType`；“禁止放置方块”也触发 `SetBlockNew`。在扩展标注下，关闭这些规则的词法版本首问能命中 4/4，默认 coverage 只命中 3/4。这一损失来自已有规则与否定约束处理，而非新标注本身。',
+              '- 只读监控同样推荐了 `SetPlayerGameType`；只读要求尚未成为检索的硬约束。',
+              '- 箱子审计明确说“不是玩家背包”，两版首问都为 0/3，新版仍返回多项玩家背包 API。删除否定对象并拆成“读取箱子容量和指定槽位物品”“设置箱子某个槽位的物品数量”后可查齐。',
+              '- 新版“原生字符串权限树”首位返回 `SetPermissionLevel`，其新增说明包含“不是字符串权限节点系统”。限制性描述参与词法打分时，也可能把不支持该能力的接口排到前面。详情有正确边界，但它不应被当作正向能力命中。',
+              '- 物理 `Raycast` 与普通世界射线容易混淆；详情明确前者仅支持自定义刚体。限定“普通世界实体和方块”后可找回 `getEntitiesOrBlockFromRay`。',
+              '- 新版默认 coverage 的 13 个首问不完整需求仍返回空的 `uncovered_groups`，与旧版相同。该字段仅覆盖已知规则，不能当作产品需求已经完整匹配的证明。', '',
+              '### 两个支持边界', '',
+              '- 字符串权限树：读取 `SetPermissionLevel` 后可以确认它是访客、成员、操作员等数值身份，不证明存在字符串节点、继承和否定节点系统。没有搜到其他对应接口不等于平台绝对不支持其他实现。',
+              '- 客户端读取他人全部背包：完整需求首问两版都被跨端通信等词汇带偏；拆分后可找到 `GetPlayerItem`、`GetPlayerAllItems`，其原文和新版补充均明确客户端背包读取仅支持本地玩家，应否定“只靠客户端直接读取他人完整背包”这一方案。', '',
+              '### 下一步优先级', '',
+              '1. 先将需求拆为对象、动作、端侧、约束和触发时机，为每个子需求分别召回少量候选，再合并去重；不要依赖一段长文本的 Top 8 自动覆盖全部功能。',
+              '2. 将只读、单个／全部、普通世界／物理刚体、玩家／实体、界面模型／世界实体等对象与作用域作为约束；否定内容不再触发正向能力规则。',
+              '3. 为事件检索单独路由，并优先补齐常用事件的基础标签。',
+              '4. 区分“能力命中”和“限制说明命中”，在结果中明确标记；保留详情中的完整限制。',
+              '5. 为真正的前置依赖增加关联，如独立相机位置依赖先分离相机、短时停止声音需关注延迟；目前的读写配对不等于完整实现依赖图。', '',
+              '### 复现与资料', '',
+              '运行 `npm run api:evaluate -- --products`。需要本地 Git 能读取冻结的基线提交；当前数据或查询引擎改变时会拒绝复用这一对照。',
+              '产品需求与参考清单在 `knowledge/retrieval-cases.json` 的 `product_review`；完整查询回执在 `.api-index/product-evaluation.json`。本轮未修改标注、查询引擎、已安装 Skill 或线上搜索设置。']
+    path = ROOT / 'knowledge/evaluation.md'
+    old_text = path.read_text().split('\n## 大范围标注后的真实产品需求对照')[0]
+    path.write_text(old_text.rstrip()+'\n\n'+'\n'.join(lines)+'\n')
+
+
+def evaluate_products(data):
+    """对冻结的产品需求进行真实 CLI 对照，不改动正式原文、标注或索引。"""
+    import copy
+    import tempfile
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    review = data['product_review']; protocol = review['protocol']; cases = review['cases']
+    if hashlib.sha256(json.dumps(cases, ensure_ascii=False, sort_keys=True).encode()).hexdigest() != protocol['cases_sha256']:
+        raise ValueError('冻结的产品需求或参考清单已改变，需明确建立新的评估快照')
+    runtime = ROOT / 'scripts/api_knowledge.py'
+    annotations_path = ROOT / 'knowledge/annotations.json'
+    if hashlib.sha256(runtime.read_bytes()).hexdigest() != protocol['engine_sha256'] or hashlib.sha256(annotations_path.read_bytes()).hexdigest() != protocol['annotation_sha256']:
+        raise ValueError('产品需求对照的引擎或标注已变化；保留旧结果，需明确选择新的评估快照')
+    baseline = json.loads(subprocess.check_output(['git', 'show', protocol['baseline_commit'] + ':knowledge/annotations.json'], cwd=ROOT, text=True))
+    current = json.loads(annotations_path.read_text())
+    if baseline['capabilities'] != current['capabilities']:
+        raise ValueError('两版能力规则不同，不能只归因于扩大标注')
+    baseline_engine = subprocess.check_output(['git', 'show', protocol['baseline_commit'] + ':scripts/api_knowledge.py'], cwd=ROOT)
+    if baseline_engine != runtime.read_bytes():
+        raise ValueError('两版查询引擎不同')
+    changed_docs = subprocess.check_output(['git', 'diff', '--name-only', protocol['baseline_commit'], 'HEAD', '--', 'docs/mcdocs', 'docs/mcguide', 'docs/mconline'], cwd=ROOT, text=True)
+    if changed_docs.strip():
+        raise ValueError('两版原始文档不同')
+    if any(a != next((b for b in current['entries'] if b['id'] == a['id']), None) for a in baseline['entries']):
+        raise ValueError('原有标注已被修改，不属于纯扩展对照')
+    cli = query_cli(); top_k = protocol['top_k']; report_dir = ROOT / '.api-index'; report_dir.mkdir(exist_ok=True)
+    raw = copy.deepcopy(current); raw['entries'] = []; raw['capabilities'] = []
+    raw_doc_signature = input_signature(ROOT)
+    with tempfile.TemporaryDirectory(prefix='product-baselines-', dir=report_dir) as temporary:
+        roots = {}
+        for label, annotation in [('raw', raw), ('old84', baseline), ('expanded', current)]:
+            root = Path(temporary) / label
+            (root / 'scripts').mkdir(parents=True); (root / 'knowledge').mkdir(); (root / 'docs').mkdir()
+            (root / 'scripts/api_knowledge.py').write_bytes(runtime.read_bytes())
+            (root / 'knowledge/annotations.json').write_text(json.dumps(annotation, ensure_ascii=False))
+            # 仅原文目录只读复用；public 和 .api-index 留在临时目录，不写正式产物。
+            for folder in ['mcdocs', 'mcguide', 'mconline']:
+                (root / 'docs' / folder).symlink_to(ROOT / 'docs' / folder, target_is_directory=True)
+            build(root)
+            roots[label] = root
+        index = json.loads((roots['expanded'] / '.api-index/index.json').read_text())
+        by_key = {r['key']: r for r in index['records']}
+        modes = {'raw': ('raw', 'raw'), 'old84': ('old84', 'coverage'), 'expanded': ('expanded', 'coverage'),
+                 'old84_lexical': ('old84', 'annotated'), 'expanded_lexical': ('expanded', 'annotated')}
+        tasks = []
+        for case in cases:
+            queries = [case['query']] + case['followups']
+            for mode in modes:
+                for query_index, query in enumerate(queries[:1] if mode.endswith('_lexical') else queries):
+                    tasks.append((case, mode, query_index, query))
+        def invoke(task):
+            case, mode, query_index, query = task; root_key, strategy = modes[mode]
+            arguments = ['resolve', query, '--side', case['side'], '--strategy', strategy, '--limit', str(top_k)]
+            started = time.monotonic()
+            proc = subprocess.run([sys.executable, str(cli), *arguments], cwd=ROOT, env={**os.environ, 'MODSDK_WIKI_ROOT':str(roots[root_key]), 'PYTHONHASHSEED':'0'}, text=True, capture_output=True)
+            if proc.returncode: raise RuntimeError(proc.stderr)
+            output = json.loads(proc.stdout)
+            result_ids = [by_key[r['id']]['id'] for r in output['results']]
+            return {'case':case['id'], 'mode':mode, 'query_index':query_index, 'arguments':arguments,
+                    'ids':result_ids, 'output':output, 'chars':len(proc.stdout.rstrip('\n')),
+                    'elapsed_ms':round((time.monotonic()-started)*1000)}
+        calls = []
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            futures = [pool.submit(invoke, task) for task in tasks]
+            for i, future in enumerate(as_completed(futures), 1):
+                calls.append(future.result())
+                if i % 24 == 0 or i == len(futures):print('产品需求实际查询', i, '/', len(futures), flush=True)
+        calls.sort(key=lambda c:(c['case'], c['mode'], c['query_index']))
+        rows = []
+        for case in cases:
+            required_ids = {i for g in case['required'] for i in g['ids']}
+            allowed = required_ids | set(case['support_ids'])
+            for mode in modes:
+                cs = [c for c in calls if c['case']==case['id'] and c['mode']==mode]
+                first = cs[0]; union = set(); prefix = None
+                for i, c in enumerate(cs, 1):
+                    union.update(c['ids'])
+                    if case['required'] and prefix is None and all(set(g['ids']) & union for g in case['required']):prefix=i
+                def hits(found):return sum(bool(set(g['ids']) & set(found)) for g in case['required'])
+                rows.append({'case':case['id'],'title':case['title'],'mode':mode,'boundary':case['boundary'],
+                             'required':len(case['required']), 'initial_hits':hits(first['ids']), 'after_split_hits':hits(union),
+                             'initial_ids':first['ids'],'after_split_ids':sorted(union),
+                             'outside_reference':[i for i in first['ids'] if i not in allowed],
+                             'hard_negatives':[i for i in first['ids'] if i in case['hard_negative_ids']],
+                             'false_clear_coverage':bool(case['required']) and hits(first['ids'])<len(case['required']) and not first['output'].get('uncovered_groups'),
+                             'first_chars':first['chars'], 'fixed_path_calls':len(cs),'fixed_path_chars':sum(c['chars'] for c in cs),
+                             'oracle_stop_calls':prefix,'oracle_stop_chars':sum(c['chars'] for c in cs[:prefix]) if prefix is not None else None})
+    if input_signature(ROOT) != raw_doc_signature:
+        raise ValueError('正式输入在对照期间发生变化')
+    summaries = []
+    for mode in modes:
+        valid = [r for r in rows if r['mode']==mode and not r['boundary']]
+        summaries.append({'mode':mode,'cases':len(valid),'required':sum(r['required'] for r in valid),
+                          'initial_hits':sum(r['initial_hits'] for r in valid),'initial_complete':sum(r['initial_hits']==r['required'] for r in valid),
+                          'split_hits':sum(r['after_split_hits'] for r in valid),'split_complete':sum(r['after_split_hits']==r['required'] for r in valid),
+                          'initial_outside_reference':sum(len(r['outside_reference']) for r in valid),'initial_hard_negatives':sum(len(r['hard_negatives']) for r in valid),
+                          'false_clear_coverage':sum(r['false_clear_coverage'] for r in valid),
+                          'first_chars':sum(r['first_chars'] for r in valid),'fixed_path_chars':sum(r['fixed_path_chars'] for r in valid)})
+    report = {'protocol':protocol,'cases_sha256':hashlib.sha256(json.dumps(cases,ensure_ascii=False,sort_keys=True).encode()).hexdigest(),
+              'corpus_sha256':index['corpus_sha256'],'same_rules_engine_docs':True,'baseline_annotations':len(baseline['entries']),
+              'expanded_annotations':len(current['entries']),'summaries':summaries,'rows':rows,'calls':calls,
+              'notes':['outside_reference 是不在预定参考方案的候选，不能直接当作无关结果。',
+                       'oracle_stop 指参考答案可提前结束的查询位置，不是独立 Agent 的实际决策成本。',
+                       '固定拆分路径在所有方案中全部执行；字符数不是 token，不含模型推理或尚未读取的详情。',
+                       '并发实际调用用于检索质量对照，耗时不用于宣称单次响应性能。']}
+    report_path = report_dir / 'product-evaluation.json'
+    if report_path.exists():
+        previous = json.loads(report_path.read_text())
+        if previous.get('cases_sha256') == report['cases_sha256'] and previous.get('corpus_sha256') == report['corpus_sha256']:
+            for key in ['adaptive_review_calls', 'rank_diagnostics']:
+                if key in previous: report[key] = previous[key]
+    report_path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+    write_product_report(report, cases)
+    print(json.dumps(summaries,ensure_ascii=False,indent=2))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--legacy-root', type=Path, help='只读原 MCP 基线源码（可选）')
     parser.add_argument('--scenarios', action='store_true', help='只运行冻结的新增模组案例，通过真实 skill CLI 查询')
     parser.add_argument('--gap-checks', action='store_true', help='通过 skill CLI 查询缺口补充后的改写与相反意图案例')
     parser.add_argument('--community', action='store_true', help='比较 Bukkit/Nukkit 方法名和中文能力的实际检索结果')
+    parser.add_argument('--products', action='store_true', help='对照原文、84 条和扩展标注的冻结产品需求，通过真实 skill CLI 调用')
     args = parser.parse_args()
     data = json.loads((ROOT / 'knowledge/retrieval-cases.json').read_text())
+    if args.products:
+        evaluate_products(data)
+        return
     if args.gap_checks:
         evaluate_gap_checks(data)
         return
