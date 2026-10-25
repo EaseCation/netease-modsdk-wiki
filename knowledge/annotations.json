@@ -1158,7 +1158,8 @@
           "item_info",
           "item",
           "custom_data",
-          "offhand"
+          "offhand",
+          "inventory_contents"
         ],
         "evidence": {
           "source_sha256": "e99813b7a895e8f008533a85335c6acf1d5722ed4db0326ef447addcd29f0f8f",
@@ -1929,9 +1930,10 @@
       "authority": "curated_note",
       "tags": [
         "自定义数据",
-        "键值读取",
         "世界数据",
-        "实体数据"
+        "实体数据",
+        "持久化",
+        "键值读取"
       ],
       "aliases": [
         "读取世界自定义数据",
@@ -1940,8 +1942,9 @@
         "读取已保存的键值数据"
       ],
       "questions": [],
-      "usage": "按自定义键读取组件绑定对象已保存的数据。",
+      "usage": "按键读取已保存的数据；世界级数据用 levelId 创建组件，实体数据使用对应实体 ID。",
       "cautions": [
+        "世界数据与方块实体数据不是同一存储；读取时使用与写入一致的组件归属及键。",
         "世界数据用 levelId 创建组件，实体数据用对应实体标识；未设置键的返回行为不作额外保证。"
       ],
       "related": [
@@ -1959,8 +1962,31 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_data",
+          "world_data",
+          "persistence"
+        ],
+        "evidence": {
+          "source_sha256": "15b484086d5eaf69db79a7726a9244bac239da99156b8aeee94ffc4f3b1811b1",
+          "section": [
+            "自定义数据",
+            "GetExtraData"
+          ]
+        },
+        "operation": "read",
+        "targets": [
+          "world",
+          "entity"
+        ],
+        "property": [
+          "custom_data",
+          "world_data"
+        ]
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f"
       }
     },
     {
@@ -1969,9 +1995,10 @@
       "authority": "curated_note",
       "tags": [
         "自定义数据",
-        "键值写入",
         "世界数据",
-        "实体数据"
+        "实体数据",
+        "持久化",
+        "键值写入"
       ],
       "aliases": [
         "保存自定义键值",
@@ -1980,8 +2007,9 @@
         "保存实体业务状态"
       ],
       "questions": [],
-      "usage": "为组件绑定对象写入自定义键值；批量写入可关闭逐次自动保存，再统一保存。",
+      "usage": "按键写入 Python 基本数据；世界级数据用 levelId 创建组件，实体数据使用对应实体 ID。默认自动保存，批量关闭 autoSave 后需调用 SaveExtraData。",
       "cautions": [
+        "世界数据与方块实体数据不是同一存储；读取时使用与写入一致的组件归属及键。",
         "值支持 Python 基本数据类型；关闭 autoSave 后需调用保存接口。"
       ],
       "related": [
@@ -1999,8 +2027,31 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_data",
+          "world_data",
+          "persistence"
+        ],
+        "evidence": {
+          "source_sha256": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
+          "section": [
+            "自定义数据",
+            "SetExtraData"
+          ]
+        },
+        "operation": "set",
+        "targets": [
+          "world",
+          "entity"
+        ],
+        "property": [
+          "custom_data",
+          "world_data"
+        ]
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f"
       }
     },
     {
@@ -2009,9 +2060,10 @@
       "authority": "curated_note",
       "tags": [
         "自定义数据",
-        "数据保存",
         "世界数据",
-        "实体数据"
+        "实体数据",
+        "持久化",
+        "数据保存"
       ],
       "aliases": [
         "批量写入后保存数据",
@@ -2020,8 +2072,9 @@
         "关闭自动保存后手动保存"
       ],
       "questions": [],
-      "usage": "统一保存组件绑定对象的自定义数据，适用于关闭自动保存后的写入。",
+      "usage": "提交组件中已设置的自定义数据；它不接收键值，不能替代 SetExtraData 写入内容。",
       "cautions": [
+        "世界数据与方块实体数据不是同一存储；读取时使用与写入一致的组件归属及键。",
         "此接口只保存已有自定义数据，不负责创建或修改键值。"
       ],
       "related": [
@@ -2041,11 +2094,9 @@
       "facts": {
         "status": "reviewed",
         "concepts": [
-          "custom_data"
-        ],
-        "operation": "write",
-        "property": [
-          "custom_data"
+          "custom_data",
+          "world_data",
+          "persistence"
         ],
         "evidence": {
           "source_sha256": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d",
@@ -2053,7 +2104,19 @@
             "自定义数据",
             "SaveExtraData"
           ]
-        }
+        },
+        "operation": "write",
+        "targets": [
+          "world",
+          "entity"
+        ],
+        "property": [
+          "custom_data",
+          "world_data"
+        ]
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f"
       }
     },
     {
@@ -2777,7 +2840,8 @@
         "concepts": [
           "ui",
           "interface_open",
-          "spawn"
+          "spawn",
+          "interface"
         ],
         "evidence": {
           "source_sha256": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456",
@@ -2789,7 +2853,13 @@
         "operation": "create",
         "target": [
           "ui"
+        ],
+        "required_before": [
+          "modsdk:api:client:mod.client.extraClientApi.RegisterUI"
         ]
+      },
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.extraClientApi.RegisterUI": "95f61b7da73a32e5e3ab782aca0521303e6a1f34a62bb1e9cd455051bedb6ef9"
       }
     },
     {
@@ -3174,8 +3244,10 @@
         "给本地玩家播放声音"
       ],
       "questions": [],
-      "usage": "按位置播放客户端音效，可设置循环或绑定实体；绑定实体时位置参数表示相对偏移。",
+      "usage": "在客户端按位置或绑定实体播放场景音效；保存返回的播放实例 ID 以便后续停止或控制循环。",
       "cautions": [
+        "资源需配置 sound_definitions.json；不是服务端向任意玩家直接发声的接口，远端触发需先通知目标客户端。",
+        "绑定实体时 pos 为相对坐标；距离、流式音频和失败 ID 的限制见原文。",
         "未绑定实体且距离本地玩家超过 16 格会跳过；流式音频多次调用会从头播放，不能同时开多个实例。",
         "名字带 CustomMusic 但也支持原版场景音效；接口仅在客户端播放，服务端定向请求需通知对应客户端。"
       ],
@@ -3193,8 +3265,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_audio"
+        ],
+        "evidence": {
+          "source_sha256": "664cb5c5e9302ff2c3d7d9525772199463e122247e7866f783028dea02bba9da",
+          "section": [
+            "索引",
+            "PlayCustomMusic"
+          ]
+        },
+        "operation": "play",
+        "targets": [
+          "sound"
+        ],
+        "property": [
+          "custom_audio"
+        ]
       }
     },
     {
@@ -4128,8 +4216,9 @@
         "给一个玩家设置游戏模式"
       ],
       "questions": [],
-      "usage": "设置指定玩家的个人游戏模式；需要恢复时应自行记录原模式。",
+      "usage": "设置单个玩家的游戏模式，取值使用 GameType 枚举。",
       "cautions": [
+        "极限模式不可修改玩家个人游戏模式。",
         "极限模式不能修改；这是个人模式接口，不应替代默认游戏模式设置。"
       ],
       "related": [
@@ -4151,8 +4240,27 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "game_mode"
+        ],
+        "evidence": {
+          "source_sha256": "2ccbda21b68d5aade111e0594c0f243d53805f471922be5bb40355d479e0cdbc",
+          "section": [
+            "游戏模式",
+            "SetPlayerGameType"
+          ]
+        },
+        "operation": "set",
+        "targets": [
+          "player",
+          "game_mode"
+        ],
+        "extent": "single",
+        "property": [
+          "game_mode"
+        ]
       }
     },
     {
@@ -19630,7 +19738,8 @@
           "item_info",
           "item",
           "custom_data",
-          "offhand"
+          "offhand",
+          "inventory_contents"
         ],
         "evidence": {
           "source_sha256": "ea505bbc526ee347ce3a2b701514c2c6896bd8cfa0197d6efe2fd2c946bd9337",
@@ -27801,14 +27910,18 @@
       "source_sha256": "15b484086d5eaf69db79a7726a9244bac239da99156b8aeee94ffc4f3b1811b1",
       "authority": "curated_note",
       "tags": [
-        "实体数据",
         "自定义数据",
+        "世界数据",
+        "实体数据",
+        "持久化",
         "键值读取"
       ],
       "aliases": [],
       "questions": [],
-      "usage": "按键读取组件绑定实体的自定义数据。",
-      "cautions": [],
+      "usage": "按键读取已保存的数据；世界级数据用 levelId 创建组件，实体数据使用对应实体 ID。",
+      "cautions": [
+        "世界数据与方块实体数据不是同一存储；读取时使用与写入一致的组件归属及键。"
+      ],
       "related": [
         "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/实体/自定义数据.md"
       ],
@@ -27823,8 +27936,31 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_data",
+          "world_data",
+          "persistence"
+        ],
+        "evidence": {
+          "source_sha256": "15b484086d5eaf69db79a7726a9244bac239da99156b8aeee94ffc4f3b1811b1",
+          "section": [
+            "自定义数据",
+            "GetExtraData"
+          ]
+        },
+        "operation": "read",
+        "targets": [
+          "world",
+          "entity"
+        ],
+        "property": [
+          "custom_data",
+          "world_data"
+        ]
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/实体/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f"
       }
     },
     {
@@ -27861,14 +27997,18 @@
       "source_sha256": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d",
       "authority": "curated_note",
       "tags": [
-        "实体数据",
         "自定义数据",
+        "世界数据",
+        "实体数据",
+        "持久化",
         "数据保存"
       ],
       "aliases": [],
       "questions": [],
-      "usage": "保存组件绑定实体的自定义数据。",
-      "cautions": [],
+      "usage": "提交组件中已设置的自定义数据；它不接收键值，不能替代 SetExtraData 写入内容。",
+      "cautions": [
+        "世界数据与方块实体数据不是同一存储；读取时使用与写入一致的组件归属及键。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -27883,11 +28023,9 @@
       "facts": {
         "status": "reviewed",
         "concepts": [
-          "custom_data"
-        ],
-        "operation": "write",
-        "property": [
-          "custom_data"
+          "custom_data",
+          "world_data",
+          "persistence"
         ],
         "evidence": {
           "source_sha256": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d",
@@ -27895,7 +28033,19 @@
             "自定义数据",
             "SaveExtraData"
           ]
-        }
+        },
+        "operation": "write",
+        "targets": [
+          "world",
+          "entity"
+        ],
+        "property": [
+          "custom_data",
+          "world_data"
+        ]
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/实体/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f"
       }
     },
     {
@@ -27903,14 +28053,18 @@
       "source_sha256": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
       "authority": "curated_note",
       "tags": [
-        "实体数据",
         "自定义数据",
+        "世界数据",
+        "实体数据",
+        "持久化",
         "键值设置"
       ],
       "aliases": [],
       "questions": [],
-      "usage": "为组件绑定实体写入自定义键值数据。",
-      "cautions": [],
+      "usage": "按键写入 Python 基本数据；世界级数据用 levelId 创建组件，实体数据使用对应实体 ID。默认自动保存，批量关闭 autoSave 后需调用 SaveExtraData。",
+      "cautions": [
+        "世界数据与方块实体数据不是同一存储；读取时使用与写入一致的组件归属及键。"
+      ],
       "related": [
         "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/实体/自定义数据.md"
       ],
@@ -27925,8 +28079,31 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_data",
+          "world_data",
+          "persistence"
+        ],
+        "evidence": {
+          "source_sha256": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
+          "section": [
+            "自定义数据",
+            "SetExtraData"
+          ]
+        },
+        "operation": "set",
+        "targets": [
+          "world",
+          "entity"
+        ],
+        "property": [
+          "custom_data",
+          "world_data"
+        ]
+      },
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/实体/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f"
       }
     },
     {
@@ -36634,7 +36811,8 @@
         "status": "reviewed",
         "concepts": [
           "ui",
-          "registration"
+          "registration",
+          "interface"
         ],
         "operation": "create",
         "target": [
@@ -53427,7 +53605,7 @@
         "玩家发言事件"
       ],
       "questions": [],
-      "usage": "玩家发送聊天信息时通知，可按事件字段修改或取消消息。",
+      "usage": "监听玩家发送的聊天内容；可取消本次发送，定向接收等可修改字段及 Apollo 专属禁言条件须按事件参数核对。",
       "cautions": [],
       "related": [],
       "inferred": {
@@ -53441,7 +53619,8 @@
       "facts": {
         "status": "reviewed",
         "concepts": [
-          "cancellation"
+          "cancellation",
+          "chat_content"
         ],
         "cancellable": true,
         "evidence": {
@@ -53453,7 +53632,8 @@
         },
         "mutable_fields": [
           "cancel"
-        ]
+        ],
+        "operation": "observe"
       }
     },
     {

@@ -42,7 +42,10 @@
       ],
       "input_concepts": [
         "break"
-      ]
+      ],
+      "contract": {
+        "target": "block"
+      }
     },
     {
       "id": "player.animation",
@@ -97,7 +100,10 @@
         "set",
         "create",
         "play"
-      ]
+      ],
+      "contract": {
+        "target": "player"
+      }
     },
     {
       "id": "ui.drag",
@@ -136,6 +142,9 @@
       "source_dependencies": {
         "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchMoveCallback": "3d528010630f6c49d3c2f8c3e2ac07b7be858b876932bdbfc24ce2a23313e83e",
         "modsdk:api:client:mod.client.ui.controls.baseUIControl.BaseUIControl.SetPosition": "e487303e2fe849291893de9a1ef57b38f69edb7ee37c74ac10c625a4dec32890"
+      },
+      "contract": {
+        "target": "ui"
       }
     },
     {
@@ -174,6 +183,9 @@
       "source_dependencies": {
         "modsdk:api:client:mod.client.ui.controls.itemRendererUIControl.ItemRendererUIControl.SetUiItem": "48d4f213dea768ba899513babab13ec06440e83eb68958523fba77d8191e35ac",
         "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText": "8f429c4908d0f6128a5de0749717cb8918853ee60efde56e5dd7ea7625ce762c"
+      },
+      "contract": {
+        "target": "ui"
       }
     },
     {
@@ -258,6 +270,72 @@
       "source_dependencies": {
         "modsdk:api:client:mod.client.extraClientApi.RegisterUI": "95f61b7da73a32e5e3ab782aca0521303e6a1f34a62bb1e9cd455051bedb6ef9",
         "modsdk:api:client:mod.client.extraClientApi.CreateUI": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456"
+      },
+      "triggers": [
+        [
+          "ui",
+          "interface_open"
+        ],
+        [
+          "interface",
+          "spawn"
+        ]
+      ],
+      "contract": {
+        "target": "ui"
+      }
+    },
+    {
+      "id": "world.data",
+      "label": "世界数据持久化与读取",
+      "concepts": [
+        "world_data",
+        "custom_data",
+        "persistence"
+      ],
+      "triggers": [
+        [
+          "world_data",
+          "persistence"
+        ]
+      ],
+      "side": "server",
+      "operations": [
+        "write",
+        "set"
+      ],
+      "modes": [
+        "workflow"
+      ],
+      "status": "matched",
+      "steps": [
+        {
+          "label": "使用 levelId 创建数据组件并按键写入",
+          "ids": [
+            "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md"
+          ]
+        },
+        {
+          "label": "重新进入后使用同一归属和键读取",
+          "ids": [
+            "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md"
+          ]
+        }
+      ],
+      "cautions": [
+        "默认 autoSave=True；批量关闭自动保存时，全部写入后调用 SaveExtraData 并检查返回结果。",
+        "使用 levelId 创建组件；实体 ID 和方块实体数据不能替代世界数据。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/世界/自定义数据.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "15b484086d5eaf69db79a7726a9244bac239da99156b8aeee94ffc4f3b1811b1",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SaveExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d"
+      },
+      "contract": {
+        "target": "world"
       }
     }
   ]

@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = '3.9'
 SIDE_NAMES = {'server': '服务端', 'client': '客户端', 'common': '通用'}
 SCHEMA_VERSION = 3
+QUERY_PROTOCOL = 4
 
 
 def atomic_artifact(path, data):
@@ -269,6 +270,9 @@ def read_records(root):
 def validate_knowledge(concepts, recipes, by_id, root):
     if concepts.get('schema_version') != SCHEMA_VERSION or recipes.get('schema_version') != SCHEMA_VERSION:
         raise ValueError('概念/组合协议不匹配，请同步更新 Wiki 和 Skill')
+    terms=concepts.get('operation_terms',{})
+    if set(terms)!={'read','write','observe'} or any(not isinstance(v,list) or not v or any(not isinstance(x,str) or not x for x in v) for v in terms.values()):
+        raise ValueError('缺少有效的共享操作词表，请同步更新 Wiki 与 Skill')
     entries = concepts.get('entries', [])
     ids = {c['id'] for c in entries}
     if len(ids) != len(entries): raise ValueError('概念 ID 重复')
@@ -277,7 +281,7 @@ def validate_knowledge(concepts, recipes, by_id, root):
         if cid in seen: raise ValueError('概念父子关系存在循环：'+cid)
         for parent in graph[cid]: visit(parent,seen|{cid})
     for c in entries:
-        if set(c)-{'id','label','category','aliases','parents','excludes','requires_any','context_only','kinds','requires_facts','target_key'}: raise ValueError('概念字段非法：'+c['id'])
+        if set(c)-{'id','label','category','aliases','parents','excludes','requires_any','context_only','kinds','requires_facts','target_key','role_excludes'}: raise ValueError('概念字段非法：'+c['id'])
         if 'target_key' in c and (c['category']!='target' or c['target_key'] not in TARGETS):raise ValueError('对象概念映射非法：'+c['id'])
         if set(c.get('requires_any',[]))-ids: raise ValueError('概念上下文引用不存在')
         if c['category'] not in ('action','target','property','qualifier'): raise ValueError('概念类别非法：'+c['id'])
@@ -288,7 +292,7 @@ def validate_knowledge(concepts, recipes, by_id, root):
         for field,value in requirements.items():
             if field=='cancellable' and not isinstance(value,bool):raise ValueError('取消能力必须为布尔值')
             if field!='cancellable' and (not isinstance(value,str) or value not in FACT_CHOICES[field]):raise ValueError('概念条件取值非法：'+c['id'])
-        if set(c.get('parents',[])+c.get('excludes',[]))-ids: raise ValueError('概念引用不存在：'+c['id'])
+        if set(c.get('parents',[])+c.get('excludes',[])+c.get('role_excludes',[]))-ids: raise ValueError('概念引用不存在：'+c['id'])
         visit(c['id'],set())
     recipe_ids = set()
     for recipe in recipes.get('entries',[]):
@@ -297,11 +301,14 @@ def validate_knowledge(concepts, recipes, by_id, root):
         if set(recipe['concepts'])-ids: raise ValueError('组合概念不存在')
         if not isinstance(recipe.get('operations'),list) or not recipe['operations'] or set(recipe['operations'])-set(OPERATIONS):raise ValueError('组合操作非法')
         if recipe.get('status') not in ('matched','partial') or recipe.get('side') not in SIDE_NAMES:raise ValueError('组合状态或端侧非法')
+        if set(recipe.get('modes',['auto','workflow']))-{'auto','workflow'}:raise ValueError('组合查询模式非法')
         for concepts in [recipe.get('unverified_concepts',[]),recipe.get('input_concepts',[]),*recipe.get('triggers',[])]:
             if not isinstance(concepts,list) or set(concepts)-ids:raise ValueError('组合条件引用非法')
         for guide in recipe.get('guides',[]):
             path=(root/'docs'/guide).resolve()
             if (root/'docs').resolve() not in path.parents or not path.is_file(): raise ValueError('组合文档路径不存在：'+guide)
+        contract=recipe.get('contract',{})
+        if not isinstance(contract,dict) or set(contract)-{'target','extent','batch','target_scope'} or any(value not in INTENT_CHOICES[field] for field,value in contract.items()):raise ValueError('组合合同字段非法')
         for step in recipe['steps']:
             for rid in step['ids']:
                 if rid not in by_id or recipe.get('source_dependencies',{}).get(rid)!=by_id[rid]['source_sha256']:
@@ -347,6 +354,8 @@ class Knowledge:
     def __init__(self,index):
         self.concepts={c['id']:c for c in index.get('concepts',[])}
         self.recipes=index.get('recipes',[])
+        self.operation_terms=index['operation_terms']
+        self.alias_patterns={cid:[(alias.lower(),re.compile(re.escape(alias.lower()))) for alias in c['aliases']] for cid,c in self.concepts.items()}
         self._query_cache={}; self._record_cache={}
 
     def identify(self,text,explicit=(),kind=None):
@@ -355,17 +364,16 @@ class Knowledge:
         if cache_key not in self._query_cache:
             lower=text.lower();matches=[]
             for cid,c in self.concepts.items():
-                if kind not in (None,'all','auto') and c.get('kinds') and kind not in c['kinds']:continue
-                for alias in c['aliases']:
-                    word=alias.lower()
-                    for match in re.finditer(re.escape(word),lower):
+                if c.get('kinds') and kind not in c['kinds']:continue
+                for word,pattern in self.alias_patterns[cid]:
+                    for match in pattern.finditer(lower):
                         if word.isascii() and ((match.start() and lower[match.start()-1].isascii() and lower[match.start()-1].isalnum()) or (match.end()<len(lower) and lower[match.end()].isascii() and lower[match.end()].isalnum())): continue
                         matches.append((match.start(),match.end(),cid))
             present={cid for _,_,cid in matches}
             matches=[hit for hit in matches if not self.concepts[hit[2]].get('requires_any') or present & set(self.concepts[hit[2]]['requires_any'])]
             selected=[]
             for begin,end,cid in sorted(matches,key=lambda x:-(x[1]-x[0])):
-                if not any(begin>=a and end<=b and end-begin<b-a for a,b,_ in selected): selected.append((begin,end,cid))
+                if not any(begin>=a and end<=b and end-begin<b-a and (self.concepts[cid]['category']!='target' or self.concepts[other]['category']=='target') for a,b,other in selected): selected.append((begin,end,cid))
             self._query_cache[cache_key]={cid for _,_,cid in selected}
         return self.ancestors(self._query_cache[cache_key] | set(explicit))
 
@@ -397,7 +405,7 @@ class Knowledge:
         domain=self.leaves({c for c in requested if self.concepts[c]['category']=='target'})
         known=self.leaves({c for c in verified|inferred if self.concepts[c]['category']=='target'})
         domain_match=sum(any(c in self.ancestors([k]) or k in self.ancestors([c]) for k in known) for c in domain)
-        domain_score=domain_match/max(1,len(domain)) if not (intent or {}).get('target') else 0
+        domain_score=(10 if core else 1)*domain_match/max(1,len(domain)) if not (intent or {}).get('target') else 0
         if not core:return domain_score
         # 上位概念只用于蕴含，不重复计分；未请求的额外能力不惩罚通用接口。
         core=self.leaves(core)
@@ -425,11 +433,13 @@ class Knowledge:
         missing=sorted(core-verified)
         return ('matched' if not missing else 'partial' if core&verified else 'unknown'),missing
 
-    def matching_recipes(self,requested,side,operation='any'):
+    def matching_recipes(self,requested,side,operation='any',mode='auto',intent=None):
         result=[]
         for recipe in self.recipes:
-            if operation!='any' and operation not in recipe.get('operations',[]):continue
+            if mode=='atomic' or mode not in recipe.get('modes',['auto','workflow']):continue
+            if operation!='any' and not supports_operation(recipe,operation):continue
             if recipe['side'] not in (side,'common') and side!='any':continue
+            if any((intent or {}).get(field) not in (None,'any',value) for field,value in recipe.get('contract',{}).items()):continue
             triggers=recipe.get('triggers',[recipe['concepts']])
             if any(set(trigger)<=requested for trigger in triggers):result.append(recipe)
         return result
@@ -491,7 +501,7 @@ def build(root=ROOT):
     if start_signature != input_signature(root): raise ValueError('构建期间来源发生变化，请在修改结束后重新构建')
     corpus_hash = digest(json.dumps({'docs': docs, 'annotations': annotations, 'concepts': concepts, 'recipes': recipes}, ensure_ascii=False, sort_keys=True))
     index = {'schema_version': SCHEMA_VERSION, 'version': VERSION, 'snapshot_note': 'GitHub 3.8 基础文档及官网 3.9 补充快照；不代表全部 API 的引入版本',
-             'corpus_sha256': corpus_hash, 'input_signature': start_signature, 'source_files': docs, 'records': records, 'concepts': concepts['entries'], 'recipes': recipes['entries']}
+             'corpus_sha256': corpus_hash, 'input_signature': start_signature, 'source_files': docs, 'records': records, 'concepts': concepts['entries'], 'recipes': recipes['entries'], 'operation_terms': concepts['operation_terms'], 'query_protocol': QUERY_PROTOCOL}
     for note in notes.values(): note['corpus_sha256'] = corpus_hash
     output = root / '.api-index'; output.mkdir(exist_ok=True)
     atomic_artifact(output / 'index.json', json.dumps(index, ensure_ascii=False, separators=(',', ':')))
@@ -499,7 +509,7 @@ def build(root=ROOT):
     public = root / 'docs/public/ai'; public.mkdir(parents=True, exist_ok=True)
     packed = json.dumps(index, ensure_ascii=False, separators=(',', ':')).encode()
     atomic_artifact(public / 'index.json.gz', gzip.compress(packed, mtime=0))
-    manifest = {'schema_version': SCHEMA_VERSION, 'version': VERSION, 'corpus_sha256': corpus_hash,
+    manifest = {'schema_version': SCHEMA_VERSION, 'query_protocol': QUERY_PROTOCOL, 'version': VERSION, 'corpus_sha256': corpus_hash,
                 'index_sha256': digest((public / 'index.json.gz').read_bytes()), 'records': len(records),
                 'scopes': dict(collections.Counter(r['scope'] for r in records)), 'annotated': len(notes),
                 'index_only': sum(r['documentation_status'] == 'index_only' for r in records)}
@@ -583,13 +593,15 @@ def retrieval_profile(record):
 
 
 def supports_operation(profile,operation):
-    supported=set(profile.get('operations',[profile['operation']]))
+    supported=set(profile.get('operations',[profile.get('operation','unknown')]))
     return bool(supported & MUTATIONS) if operation=='write' else operation in supported
 
 
+INTENT_FIELDS = ('id','query','side','scope','kind','operation','target','extent','read_only','exclude_targets','exclude','must_support','target_scope','phase','batch','concepts','action','subject','object','property','qualifiers','mode','hints','requirements')
+
 def prepare_intent(intent, defaults=None):
     if not isinstance(intent, dict): raise ValueError('子目标必须为对象')
-    allowed = {'id','query','side','scope','kind','operation','target','extent','read_only','exclude_targets','exclude','must_support','target_scope','phase','batch','concepts','action','subject','object','property','qualifiers'}
+    allowed = set(INTENT_FIELDS)
     unknown = set(intent) - allowed
     if unknown: raise ValueError('未知子目标字段：' + ', '.join(sorted(unknown)))
     if (defaults or {}).get('read_only') and intent.get('read_only') is False:
@@ -604,6 +616,8 @@ def prepare_intent(intent, defaults=None):
     positive = NEGATIVE_CLAUSE.sub(' ', query).strip(' ，,；;。')
     value['positive_query'] = positive
     value['negative_clauses'] = negatives
+    value.setdefault('mode','auto')
+    if value['mode'] not in ('auto','atomic','workflow'):raise ValueError('mode 必须为 auto、atomic 或 workflow')
     value.setdefault('side','any'); value.setdefault('scope','modsdk'); value.setdefault('kind','auto')
     value.setdefault('operation','any'); value.setdefault('target',None); value.setdefault('extent','any'); value.setdefault('target_scope','any'); value.setdefault('phase','any'); value.setdefault('batch','any')
     if value['kind']=='auto': value['kind']='event' if re.search(r'(?:监听|触发|发生).*(?:事件)|引擎事件', positive) else 'all'
@@ -611,9 +625,6 @@ def prepare_intent(intent, defaults=None):
         desired='observe' if value['kind']=='event' else 'read'
         if value['operation'] not in ('any',desired): raise ValueError('read_only 与写入操作冲突')
         value['operation']=desired
-    if value['operation']=='any' and value['kind']!='event':
-        reading = bool(re.search(r'读取|获取|查询|检查|判断', positive)); writing = bool(re.search(r'设置|修改|添加|移除|删除|创建|开启|关闭|切换|播放|停止|恢复|注册|撤销|写入|启动|禁止|允许', positive))
-        if reading != writing: value['operation']='read' if reading else 'write'
     if value['kind']=='event':
         if value['operation'] not in ('any','observe'): raise ValueError('事件子目标的 operation 应为 observe 或省略')
         value['operation']='observe'
@@ -625,7 +636,7 @@ def prepare_intent(intent, defaults=None):
     for key, choices in [('side',('any','server','client','common')),('scope',('modsdk','preset','all')),('kind',('all','api','event','enum','document')),('operation',OPERATIONS),('extent',('any','single','many','global','dimension')),('target_scope',('any','local_player','other_player','all_players')),('phase',('any','before','after','change')),('batch',('any','bulk'))]:
         if value[key] not in choices: raise ValueError(key+' 不支持：'+str(value[key]))
     if value['target'] is not None and (not isinstance(value['target'],str) or value['target'] not in TARGETS): raise ValueError('未知 target；使用 schema 查看对象类别')
-    for key in ('exclude_targets','exclude','must_support','concepts','action','subject','object','property','qualifiers'):
+    for key in ('exclude_targets','exclude','must_support','concepts','action','subject','object','property','qualifiers','hints','requirements'):
         vals=value.get(key,[])
         if key in ('action','subject','object','property','qualifiers') and isinstance(vals,str): vals=[vals]
         if not isinstance(vals,list) or any(not isinstance(v,str) or not v.strip() for v in vals):raise ValueError(key+' 必须为非空字符串组成的数组')
@@ -646,7 +657,14 @@ class Search:
     def normalize_intent(self,intent):
         # 显式角色与粗粒度对象约束共用同一条件核对，不按某个接口补规则。
         explicit=sum((intent.get(k,[]) for k in ('concepts','action','subject','object','property','qualifiers')),[])
-        self.knowledge.identify('',explicit)
+        self.knowledge.identify('',explicit+intent.get('hints',[]))
+        # 操作词汇由 Wiki 维护；显式操作优先，多操作不偷偷选择其中一个。
+        detected={op for op,words in self.knowledge.operation_terms.items() if any(word in intent['positive_query'] for word in words)}
+        if intent['operation']=='any' and intent['mode']!='workflow':
+            if len(detected)==1:
+                intent['operation']=next(iter(detected))
+                if intent['operation']=='observe' and intent['kind']=='all':intent['kind']='event'
+            elif len(detected)>1:intent['needs_decomposition']=True
         if not intent['target']:
             targets={self.knowledge.concepts[c].get('target_key') for c in intent.get('object',[])}-{None}
             if len(targets)==1:intent['target']=targets.pop()
@@ -698,7 +716,7 @@ class Search:
 
     def constraint_reason(self,r,intent,key):
         p=self.profiles[r['id']]
-        if intent['target'] and 'targets' in p['verified'] and intent['target'] not in p['targets']:return '对象类别不匹配'
+        if intent['target'] and 'targets' in p['verified'] and p['targets'] and intent['target'] not in p['targets']:return '对象类别不匹配'
         if 'targets' in p['verified'] and set(intent['exclude_targets']) & set(p['targets']):return '属于明确排除的对象类别'
         if intent['operation']!='any' and 'operation' in p['verified'] and not supports_operation(p,intent['operation']):return '操作类型不匹配或尚未核实'
         if intent['extent']!='any' and 'extent' in p['verified'] and p['extent']!=intent['extent']:return '作用范围不匹配或尚未核实'
@@ -708,13 +726,14 @@ class Search:
         if self.knowledge.conflicts(r,concepts):return '已核验能力与请求概念冲突'
         for cid in concepts:
             for field,value in self.knowledge.concepts[cid].get('requires_facts',{}).items():
-                if facts.get(field)!=value:return '尚未核实请求的能力条件：'+self.knowledge.concepts[cid]['label']
+                if field not in facts:return '待核验能力条件：'+self.knowledge.concepts[cid]['label']
+                if facts[field]!=value:return '已核验条件与请求冲突：'+self.knowledge.concepts[cid]['label']
         for field in ('action','subject','object','property','qualifiers'):
             required=intent.get(field,[]); known=facts.get('target' if field=='object' else field)
-            if required and known and not set(required)<=self.knowledge.ancestors(known):return '已核验能力角色不匹配'
+            if required and known and any(set(self.knowledge.concepts[c].get('excludes',[])+self.knowledge.concepts[c].get('role_excludes',[])) & self.knowledge.ancestors(known) for c in required):return '已核验能力角色不匹配'
         explicit_objects={c for c in intent.get('concepts',[]) if self.knowledge.concepts[c]['category']=='target'}
         known_objects=facts.get('target',[])
-        if explicit_objects and known_objects and not all(any(a in self.knowledge.ancestors([b]) or b in self.knowledge.ancestors([a]) for b in known_objects) for a in explicit_objects):return '已核验作用对象与显式概念不匹配'
+        if explicit_objects and known_objects and any(set(self.knowledge.concepts[c].get('excludes',[])) & self.knowledge.ancestors(known_objects) for c in explicit_objects):return '已核验作用对象与显式概念不匹配'
         text=self.positive_text[(key,r['id'])]
         if any(term.lower() in text.lower() for term in intent['exclude']):return '命中排除条件'
         for rule in facts.get('constraints',[]):
@@ -745,6 +764,7 @@ class Search:
                 score = self.lexical_score(position, qt, key, df)
                 semantic = self.knowledge.score(r, requested,intent)
                 if requested: score += semantic
+                if intent.get('hints'):score += .02*self.knowledge.score(r,self.knowledge.ancestors(intent['hints']))
                 profile = self.profiles[r['id']]
                 # 未核实的分类不能删除答案，但与请求相反的推断只作为低优先级线索。
                 if intent['operation'] != 'any' and profile['operation'] != 'unknown':
@@ -777,7 +797,7 @@ class Search:
     def supported_selection(self,intent,selection):
         """边界已命中时，不用只有背景词相关的入口填补能力缺口；搜索召回仍保留。"""
         ranked,limited=selection
-        requested=self.knowledge.identify(intent['positive_query'],intent.get('concepts',[]),kind=intent['kind'])
+        requested=self.knowledge.identify(intent['positive_query'],intent.get('concepts',[])+sum((intent.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[]),kind=intent['kind'])
         core=self.knowledge.primary_concepts(requested)
         if not ranked or not core:return selection
         def supported(record):
@@ -837,7 +857,7 @@ class Search:
             if record['key'] not in allocated[i]:allocated[i].append(record['key'])
             return True
         requested = [self.knowledge.identify(i['positive_query'], i.get('concepts', []) + sum((i.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[]),kind=i['kind']) for i in intents]
-        workflows = [self.knowledge.matching_recipes(c, i['side'],i['operation']) if i['kind'] in ('api','all') else [] for c,i in zip(requested,intents)]
+        workflows = [self.knowledge.matching_recipes(c, i['side'],i['operation'],i['mode'],i) if i['kind'] in ('api','all') else [] for c,i in zip(requested,intents)]
         for i,recipes in enumerate(workflows):
             workflows[i]=[recipe for recipe in recipes if all(self.permitted_dependency(self.by_id[rid],intents[i],strategy) for step in recipe['steps'] for rid in step['ids'])]
             if recipes and not workflows[i]:dependency_conflicts.add(i)
@@ -865,6 +885,7 @@ class Search:
         for i,intent in enumerate(intents):
             limits=selections[i][1][:1]
             status='budget_limited' if i in budget_limited else 'candidates' if allocated[i] else 'no_capability_match'
+            if not allocated[i] and any(x[2].startswith('待核验能力条件：') for x in limits):status='evidence_missing'
             if i in dependency_conflicts:status='prerequisite_conflict'
             if selections[i][0] and intent['phase']!='any':
                 phase_profile=self.profiles[selections[i][0][0][1]['id']]
@@ -895,11 +916,28 @@ class Search:
                     record=next(r for r in self.records if r['key']==key)
                     actual.update(record.get('annotation',{}).get('facts',{}).get('target' if role=='object' else role,[]))
                 if required-self.knowledge.ancestors(actual):missing_roles.append(role)
-            if missing_roles and coverage=='matched':coverage='partial'
+            # 已核验对象/范围是独立合同维度；没有事实不能宣称完整覆盖。
+            if selections[i][0] and not workflows[i]:
+                facts=selections[i][0][0][1].get('annotation',{}).get('facts',{})
+                for field, fact in (('target','targets'),('extent','extent'),('batch','batch')):
+                    if intent.get(field) not in (None,'any') and not facts.get(fact):missing_roles.append(field)
+                for cid in requested[i]:
+                    for field,value in self.knowledge.concepts[cid].get('requires_facts',{}).items():
+                        if facts.get(field)!=value:missing_roles.append(field)
+            if workflows[i]:
+                contract=workflows[i][0].get('contract',{})
+                for field in ('target','extent','batch','target_scope'):
+                    if intent.get(field) not in (None,'any') and contract.get(field)!=intent[field]:missing_roles.append(field)
+            if (missing_roles or intent['requirements']) and coverage=='matched':coverage='partial'
+            if coverage=='unknown':coverage='query_incomplete' if not core else 'evidence_missing'
+            if intent.get('needs_decomposition') and intent['mode']!='workflow':
+                status='split_required'
+            elif intent['mode']=='workflow' and not workflows[i]:status='workflow_unverified'
             if coverage != 'matched' and status == 'candidates': status = 'needs_review'
             group={'id':labels[i], 'candidates':allocated[i], 'status':status, 'coverage':coverage}
             if missing: group['missing_concepts']=missing
-            if missing_roles: group['missing_roles']=missing_roles
+            if missing_roles: group['missing_roles']=sorted(set(missing_roles))
+            if intent['requirements']:group['missing_requirements']=intent['requirements']
             if selections[i][0]:
                 verified,inferred=self.knowledge.record_concepts(selections[i][0][0][1])
                 group['evidence']={'verified':sorted(core&verified),'textual':sorted((core-verified)&inferred)}
@@ -983,7 +1021,7 @@ def load(root=ROOT):
 def compact_result(result, command):
     """默认只输出决策所需内容；诊断元数据由 --verbose 显式请求。"""
     def candidate(value):
-        keep=('id','name','side','description','component','document','related_to')
+        keep=('id','name','side','description','document','related_to')
         output={k:value[k] for k in keep if value.get(k) not in (None,'',[],{})}
         if output.get('description'):
             output['description']=re.split(r'[。！？\n]',output['description'],maxsplit=1)[0]
@@ -1000,12 +1038,15 @@ def compact_result(result, command):
                 if state!='candidates':item['state']=state
                 if group.get('missing_concepts'):item['missing']=group['missing_concepts']
                 roles=group.get('missing_roles',[])
-                if roles and not (roles==['operation'] and group['coverage']=='unknown'):item['missing_roles']=roles
+                if roles and not (roles==['operation'] and group['coverage'] in ('query_incomplete','evidence_missing')):item['missing_roles']=roles
+                if group.get('missing_requirements'):item['unverified']=group['missing_requirements']
                 groups.append(item)
             output['intents']=groups
         if result.get('related'):output['related']=[candidate(x) for x in result['related']]
         if result.get('limitations'):
-            output['limitations']=[{k:x[k] for k in ('id','name','reason','evidence') if x.get(k)} for x in result['limitations']]
+            for entry in result['limitations']:
+                lane='review' if entry.get('reason','').startswith('待核验能力条件：') else 'limitations'
+                output.setdefault(lane,[]).append({k:entry[k] for k in ('id','name','reason','evidence') if entry.get(k)})
         if result.get('workflows'):output['workflows']=result['workflows']
         if result.get('next_offset') is not None:output['next_offset']=result['next_offset']
         return output
@@ -1072,7 +1113,7 @@ def main():
     if args.command == 'build':
         result = build(args.root)
     elif args.command == 'schema':
-        result = {'schema_version': SCHEMA_VERSION, 'targets': TARGETS, 'operations': list(OPERATIONS), 'extents': ['any','single','many','global','dimension'], 'phases': ['any','before','after','change'], 'batch': ['any','bulk'], 'target_scopes': ['any','local_player','other_player','all_players'], 'intent_fields': ['id','query','side','scope','kind','operation','target','extent','read_only','exclude_targets','exclude','must_support','target_scope','phase','batch','concepts','action','subject','object','property','qualifiers'], 'concepts': [{k:c[k] for k in ('id','label','category')} for c in load(args.root)['concepts']], 'phase_behavior': '阶段用于排序；关联事件仍在 related 返回。timing_review 表示主候选阶段未匹配，不能作为已满足需求。', 'plan': {'side': 'server', 'intents': [{'id':'a','query':'读取箱子容量','kind':'api','operation':'read','target':'block_container'}]}}
+        result = {'schema_version': SCHEMA_VERSION, 'targets': TARGETS, 'operations': list(OPERATIONS), 'extents': ['any','single','many','global','dimension'], 'phases': ['any','before','after','change'], 'batch': ['any','bulk'], 'target_scopes': ['any','local_player','other_player','all_players'], 'query_protocol': QUERY_PROTOCOL, 'intent_fields': list(INTENT_FIELDS), 'modes': ['auto','atomic','workflow'], 'field_usage': {'concepts':'必需能力；缺事实保留候选并报告缺口','hints':'可选软提示；不参与覆盖与排除','requirements':'尚未用受控字段表达的关键条件；原样返回待核验','mode':'atomic 单操作；workflow 已审流程；auto 自动候选'}, 'operations_relation': {'write': sorted(MUTATIONS)}, 'concepts': [{k:c[k] for k in ('id','label','category')} for c in load(args.root)['concepts']], 'phase_behavior': '阶段用于排序；关联事件仍在 related 返回。timing_review 表示主候选阶段未匹配，不能作为已满足需求。', 'plan': {'side': 'server', 'intents': [{'id':'a','query':'读取箱子容量','kind':'api','operation':'read','target':'block_container'}]}}
         if not args.all_concepts:
             if args.query:
                 words=args.query.lower().split()
@@ -1114,6 +1155,8 @@ def main():
                 result = search.resolve(args.query,args.strategy,args.limit,args.side,args.kind,args.scope,plan,args.per_intent,**constraints)
             else:
                 result = search.search_response(args.query,args.strategy,max(1,min(20,args.limit)),args.side,args.kind,args.scope,max(0,args.offset),**constraints)
+    if args.verbose and args.command!='build':
+        result['runtime']={'query_protocol':QUERY_PROTOCOL,'corpus_sha256':load(args.root)['corpus_sha256']}
     if not args.verbose: result = compact_result(result,args.command)
     encoded = json.dumps(result, ensure_ascii=False, separators=(',', ':'))
     if len(encoded) > max(500,args.max_chars):

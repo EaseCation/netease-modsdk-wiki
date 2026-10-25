@@ -6,6 +6,7 @@
 
 每项有稳定 `id`、中文 `label`、`category`（action/target/property/qualifier）、`aliases`、`parents` 和 `excludes`。别名只写基础概念，不粘贴回归题或完整业务需求。父子关系不能循环。
 
+- `role_excludes`：仅在同一显式角色中互斥，例如玩家与非玩家；不同角色可同时出现，不能全局排除。
 - `requires_any`：只有上下文也出现指定概念时才启用，适合“等级”等多义词。
 - `context_only`：对象背景不能单独证明能力命中，如“玩家”“界面”。
 - `kinds`：限制概念适用的文档类型，例如事件取消不用于接口调用。
@@ -33,9 +34,19 @@
 
 ## 组合关系
 
-每项包含 `id`、`label`、触发概念、端侧、`operations`、`steps`、`guides`、`cautions` 及步骤来源哈希。步骤引用稳定 API ID。`triggers` 可表达多个触发概念组合；`input_concepts` 说明流程处理的已有状态或前序操作；`unverified_concepts` 保留尚未得到证明的限定条件。
+每项包含 `id`、`label`、触发概念、端侧、`operations`、`steps`、`guides`、`cautions` 及步骤来源哈希。步骤引用稳定 API ID。`contract` 声明整个流程已核验的对象/范围/批量条件，不能把某一步的条件当成整体保证；显式条件无合同依据时返回缺口。`triggers` 可表达多个触发概念组合；`input_concepts` 说明流程处理的已有状态或前序操作；`unverified_concepts` 保留尚未得到证明的限定条件。
 
 组合只描述可复用接入方式，例如捕获与恢复、动画注册与状态驱动。用户的市场案例及具体玩法留在检索题库，不加入通用教程。组合没有完整覆盖限定条件时，必须返回 partial，不能拿注册 API 当作效果已经实现。
+
+## 请求合同
+
+知识协议仍为 v3，请求协议为 4；Skill 必须验证 QUERY_PROTOCOL，旧引擎报错并要求同步升级，不回退。运行时 INTENT_FIELDS 同时用于输入校验和 schema 输出。
+
+AI 将需求整理成动作、对象、属性及必要限定；atomic 查询单项能力，workflow 保留整体接入目标。concepts/角色字段是必需条件，hints 只提供软线索；无法用受控字段表达的条件写入 requirements，必须原样返回待核验。匹配成功仅针对已表达条件，不能证明 AI 已完整理解原始需求。
+
+concepts.json 的 operation_terms 维护共享读、写、观察词汇，辅助未指定操作的自然语言请求；结构化操作优先。混合操作提示拆分，显式流程允许跨步骤操作。API 和配方共用操作层级，write 覆盖具体变更。recipes 的 modes 可限制只在显式流程请求时启用，避免读取单步时无意加入写入步骤。
+
+query_incomplete 表示没有识别核心能力，evidence_missing 表示缺少对应事实，partial 表示部分覆盖；split_required 表示需拆分操作，workflow_unverified 表示未确认完整流程。缺少事实不是冲突，明确的互斥/不支持事实才排除；requires_facts 这类必要条件未知时在 review 保留待核验入口，与已支持的步骤分开，不写成不支持；对象、范围、操作未知时保留缺失维度。不得靠删限定或把原文词面命中升级为事实来消除状态。
 
 ## 编译、检索与展示
 
@@ -51,6 +62,6 @@
 
 ## 维护与验收
 
-修改知识后运行 `npm run api:build`，再使用配套 Skill 的 `scripts/evaluate.py`、`--market` 与 `--guides` 检查稳定需求、改述、边界和上下文预算。站点运行构建、死链检查与 `npm run docs:algolia -- --dry-run`。这些是文档与真实查询验证，不是游戏实机验收。
+修改知识后运行 `npm run api:build`，再使用配套 Skill 的 `scripts/evaluate.py`、`--market`、`--requests` 与 `--guides` 检查稳定需求、改述、边界和上下文预算。站点运行构建、死链检查与 `npm run docs:algolia -- --dry-run`。这些是文档与真实查询验证，不是游戏实机验收。
 
 v3 不读取旧版知识协议；Wiki 与 Skill 必须配套更新。原始问题、旧成本基线和期望答案的复核差异保留在 Skill 仓库；不得通过删题、填入原题整句别名或扩大预算消除失败。

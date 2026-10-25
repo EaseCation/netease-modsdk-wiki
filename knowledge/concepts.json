@@ -31,9 +31,12 @@
       "parents": [
         "entity"
       ],
-      "excludes": [],
       "context_only": true,
-      "target_key": "player"
+      "target_key": "player",
+      "role_excludes": [
+        "non_player"
+      ],
+      "excludes": []
     },
     {
       "id": "entity",
@@ -934,7 +937,10 @@
         "在线玩家列表",
         "玩家列表",
         "列出所有在线玩家",
-        "在线玩家枚举"
+        "在线玩家枚举",
+        "在线玩家",
+        "在线的人",
+        "在线用户"
       ],
       "parents": [],
       "excludes": [],
@@ -962,7 +968,8 @@
         "完整背包",
         "背包槽位",
         "背包格子",
-        "背包某格"
+        "背包某格",
+        "背包物品"
       ],
       "parents": [],
       "excludes": [
@@ -1024,8 +1031,11 @@
       "parents": [
         "entity"
       ],
-      "excludes": [],
-      "context_only": false
+      "context_only": false,
+      "role_excludes": [
+        "player"
+      ],
+      "excludes": []
     },
     {
       "id": "damage_source",
@@ -1755,7 +1765,9 @@
         "界面打开",
         "打开",
         "创建界面",
-        "创建UI"
+        "创建UI",
+        "界面创建",
+        "自定义界面创建"
       ],
       "parents": [],
       "excludes": [],
@@ -2121,6 +2133,146 @@
       ],
       "parents": [],
       "excludes": []
+    },
+    {
+      "id": "world_data",
+      "label": "世界级数据",
+      "category": "property",
+      "aliases": [
+        "世界级数据",
+        "世界级自定义数据",
+        "世界自定义数据",
+        "世界数据",
+        "保存到世界"
+      ],
+      "parents": [
+        "custom_data"
+      ],
+      "excludes": [
+        "block_entity"
+      ]
+    },
+    {
+      "id": "persistence",
+      "label": "跨会话保存",
+      "category": "qualifier",
+      "aliases": [
+        "持久化",
+        "重进",
+        "重新进入",
+        "跨会话",
+        "退出重进"
+      ],
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "game_mode",
+      "label": "游戏模式",
+      "category": "property",
+      "aliases": [
+        "游戏模式",
+        "创造模式",
+        "生存模式",
+        "冒险模式"
+      ],
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "custom_audio",
+      "label": "场景音效",
+      "category": "property",
+      "aliases": [
+        "场景音效",
+        "自定义音效",
+        "定制音效"
+      ],
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "chat_content",
+      "label": "玩家聊天内容",
+      "category": "property",
+      "aliases": [
+        "聊天内容",
+        "聊天信息",
+        "玩家聊天",
+        "聊天消息"
+      ],
+      "parents": [],
+      "excludes": [],
+      "kinds": [
+        "event"
+      ]
+    },
+    {
+      "id": "block_state_definition",
+      "label": "方块状态定义",
+      "category": "property",
+      "aliases": [
+        "自定义状态",
+        "方块状态定义"
+      ],
+      "parents": [
+        "block_state"
+      ],
+      "excludes": [
+        "effect"
+      ],
+      "requires_any": [
+        "block"
+      ]
+    },
+    {
+      "id": "interface",
+      "label": "界面实例",
+      "category": "target",
+      "aliases": [
+        "自定义界面",
+        "界面实例",
+        "界面定义"
+      ],
+      "parents": [
+        "ui"
+      ],
+      "excludes": [],
+      "context_only": true,
+      "target_key": "ui"
     }
-  ]
+  ],
+  "operation_terms": {
+    "read": [
+      "读取",
+      "获取",
+      "查询",
+      "检查",
+      "判断"
+    ],
+    "write": [
+      "设置",
+      "修改",
+      "添加",
+      "移除",
+      "删除",
+      "创建",
+      "开启",
+      "关闭",
+      "切换",
+      "播放",
+      "停止",
+      "恢复",
+      "注册",
+      "撤销",
+      "写入",
+      "保存",
+      "启动",
+      "禁止",
+      "允许"
+    ],
+    "observe": [
+      "监听"
+    ]
+  }
 }

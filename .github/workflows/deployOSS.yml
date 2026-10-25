@@ -50,7 +50,7 @@ jobs:
         with:
           repository: EaseCation/netease-modsdk-skill
           # 固定已复核的题库和执行器；升级时显式更新此提交。
-          ref: de533b10b2ebfe72f8f8230934c7f271e67a5040
+          ref: 4b2d8c3ceb9f3754e3ccbdf3389e7e4a949466b0
           path: .retrieval-skill
           persist-credentials: false
 
@@ -60,6 +60,7 @@ jobs:
         run: |
           python3 .retrieval-skill/scripts/evaluate.py
           python3 .retrieval-skill/scripts/evaluate.py --market
+          python3 .retrieval-skill/scripts/evaluate.py --requests
           python3 .retrieval-skill/scripts/evaluate.py --guides
 
       - name: Build with VitePress
