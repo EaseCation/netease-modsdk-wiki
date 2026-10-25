@@ -134,7 +134,10 @@
           "entity"
         ],
         "operation": "read",
-        "extent": "single"
+        "extent": "single",
+        "qualifiers": [
+          "maximum"
+        ]
       }
     },
     {
@@ -774,8 +777,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "non_player",
+          "spawn"
+        ],
+        "evidence": {
+          "source_sha256": "1fb41b1e5232ea76eababc592b373ec04e11fa465d59ce82dd2b88d1c6bc354b",
+          "section": [
+            "实体管理",
+            "CreateEngineEntityByTypeStr"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "non_player"
+        ]
       }
     },
     {
@@ -817,8 +835,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "entity_remove"
+        ],
+        "evidence": {
+          "source_sha256": "0f970cfca04830e3d7768b6f592c28a53bad911a8b8165806bc25ed2203fd366",
+          "section": [
+            "实体管理",
+            "DestroyEntity"
+          ]
+        },
+        "operation": "delete",
+        "target": [
+          "entity"
+        ]
       }
     },
     {
@@ -1123,7 +1155,10 @@
           "held",
           "count",
           "enchant",
-          "item_info"
+          "item_info",
+          "item",
+          "custom_data",
+          "offhand"
         ],
         "evidence": {
           "source_sha256": "e99813b7a895e8f008533a85335c6acf1d5722ed4db0326ef447addcd29f0f8f",
@@ -1138,6 +1173,9 @@
           "player",
           "player_equipment",
           "player_inventory"
+        ],
+        "target": [
+          "item"
         ]
       }
     },
@@ -1187,7 +1225,8 @@
           "player",
           "inventory",
           "count",
-          "inventory_contents"
+          "inventory_contents",
+          "held"
         ],
         "evidence": {
           "source_sha256": "5bceaac47d2fd6013cfb79b7faf71ca55cc033ab043b3dd37b8b5484b89eda30",
@@ -1253,8 +1292,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "item_drop",
+          "item",
+          "position",
+          "spawn"
+        ],
+        "evidence": {
+          "source_sha256": "cee697cae6bf402f44f1953ce5f223f58f371fdedf04b3d2658f86d2dd867756",
+          "section": [
+            "实体管理",
+            "CreateEngineItemEntity"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "item_drop"
+        ]
       }
     },
     {
@@ -1293,8 +1348,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "container",
+          "container_contents",
+          "item"
+        ],
+        "evidence": {
+          "source_sha256": "61e4c33cecee442b938b16384be25c6ebbb85ffaa9df962b35511731a3afee71",
+          "section": [
+            "容器",
+            "GetContainerItem"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "container"
+        ]
       }
     },
     {
@@ -1334,8 +1404,31 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "inventory",
+          "inventory_contents"
+        ],
+        "evidence": {
+          "source_sha256": "ed630ef35828ddd68bc284a19985deb7b537479c453bf7a50f79d884d474488c",
+          "section": [
+            "背包",
+            "SetPlayerAllItems"
+          ]
+        },
+        "operation": "set",
+        "targets": [
+          "player_inventory",
+          "player_equipment"
+        ],
+        "target": [
+          "inventory"
+        ],
+        "property": [
+          "inventory_contents"
+        ],
+        "batch": "bulk"
       }
     },
     {
@@ -1380,8 +1473,31 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation",
+          "item_use"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "a9feb85fdcb5dca6105868f27d16f7af2b565749a7f2d166b55ea3826e0eebf3",
+          "section": [
+            "物品",
+            "ServerItemTryUseEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ],
+        "action": [
+          "item_use"
+        ],
+        "subject": [
+          "player"
+        ],
+        "target": [
+          "held"
+        ]
       }
     },
     {
@@ -1430,7 +1546,8 @@
           "player",
           "block",
           "held",
-          "item_use"
+          "item_use",
+          "cancellation"
         ],
         "evidence": {
           "source_sha256": "6321edacd42da108e759afaf6cd7254b8a37e912b5947395fb2a8e22466d9a59",
@@ -1444,7 +1561,8 @@
         "phase": "before",
         "mutable_fields": [
           "ret"
-        ]
+        ],
+        "cancellable": true
       }
     },
     {
@@ -1546,7 +1664,8 @@
         "concepts": [
           "player",
           "block",
-          "break"
+          "break",
+          "cancellation"
         ],
         "evidence": {
           "source_sha256": "eb170675c68f847690bf0a5a5deb6ddda11ab213503d05914ecdd4c72a2a7a4c",
@@ -1562,7 +1681,8 @@
         "phase": "before",
         "mutable_fields": [
           "cancel"
-        ]
+        ],
+        "cancellable": true
       }
     },
     {
@@ -1919,8 +2039,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_data"
+        ],
+        "operation": "write",
+        "property": [
+          "custom_data"
+        ],
+        "evidence": {
+          "source_sha256": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d",
+          "section": [
+            "自定义数据",
+            "SaveExtraData"
+          ]
+        }
       }
     },
     {
@@ -1967,7 +2100,8 @@
         "concepts": [
           "block",
           "place",
-          "position"
+          "position",
+          "spawn"
         ],
         "evidence": {
           "source_sha256": "ff481a38502792c4d3732574606b89d723c9e17c60f7b952393aa63d6e74855f",
@@ -2267,8 +2401,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "50ada1d1cc000b0265310965547a7d1958220b3a1abc1dd377369c40de277742",
+          "section": [
+            "事件",
+            "NotifyToServer"
+          ]
+        },
+        "operation": "write",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -2310,8 +2457,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "client_message"
+        ],
+        "evidence": {
+          "source_sha256": "f6ce1485dbcc8da10e2148f5daba24ffbf201e3029edef954674efab8cde40b0",
+          "section": [
+            "事件",
+            "NotifyToClient"
+          ]
+        },
+        "operation": "write",
+        "target": [
+          "player"
+        ],
+        "targets": [
+          "communication"
+        ]
       }
     },
     {
@@ -2609,8 +2773,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "ui",
+          "interface_open",
+          "spawn"
+        ],
+        "evidence": {
+          "source_sha256": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456",
+          "section": [
+            "通用",
+            "CreateUI"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "ui"
+        ]
       }
     },
     {
@@ -2648,8 +2827,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "ui",
+          "interface_open",
+          "spawn"
+        ],
+        "evidence": {
+          "source_sha256": "e86e4bbbef985f1442d8f116c4bf37070fda0ea921d6285e8648ec52861b75c0",
+          "section": [
+            "通用",
+            "PushScreen"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "ui"
+        ]
       }
     },
     {
@@ -2731,8 +2925,28 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "ui",
+          "text_content"
+        ],
+        "evidence": {
+          "source_sha256": "8f429c4908d0f6128a5de0749717cb8918853ee60efde56e5dd7ea7625ce762c",
+          "section": [
+            "UI控件",
+            "SetText"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "ui"
+        ],
+        "targets": [
+          "ui"
+        ],
+        "property": [
+          "text_content"
+        ]
       }
     },
     {
@@ -3031,7 +3245,8 @@
         "concepts": [
           "player",
           "dimension",
-          "teleport"
+          "teleport",
+          "position"
         ],
         "evidence": {
           "source_sha256": "f7e03dae1ce14d75a4d964b4cb9683d458e7e27541e23ce0ba4664202698db24",
@@ -3044,7 +3259,10 @@
           "player"
         ],
         "operation": "set",
-        "extent": "single"
+        "extent": "single",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -3105,6 +3323,9 @@
         "phase": "before",
         "mutable_fields": [
           "damage"
+        ],
+        "qualifiers": [
+          "after_armor"
         ]
       }
     },
@@ -3206,8 +3427,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "c127b283fc7e0cb76f5d1b80c0849ed99a148cd0c0c698cf8699484b0dde7e93",
+          "section": [
+            "方块",
+            "ServerEntityTryPlaceBlockEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -3378,8 +3612,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "109dd26ababfca0fa9ec58ce651f407783d2aa5e3c3237fe25f304ec78f8ec54",
+          "section": [
+            "实体",
+            "ProjectileDoHitEffectEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -3500,8 +3747,18 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "rain"
+        ],
+        "evidence": {
+          "source_sha256": "a4dca0ed816ea0f7d6dc4bc6964c249363968a753dce945375e28e134613b8e8",
+          "section": [
+            "天气",
+            "SetRaining"
+          ]
+        },
+        "operation": "set"
       }
     },
     {
@@ -3787,7 +4044,9 @@
         "concepts": [
           "inventory",
           "inventory_contents",
-          "player"
+          "player",
+          "custom_data",
+          "all_slots"
         ],
         "evidence": {
           "source_sha256": "777cb6d4f6656038be90041b686f7948000f0538059ccd8b7b260b0fccb3c973",
@@ -3804,7 +4063,10 @@
         ],
         "operation": "read",
         "extent": "single",
-        "batch": "bulk"
+        "batch": "bulk",
+        "target": [
+          "inventory"
+        ]
       }
     },
     {
@@ -4270,7 +4532,8 @@
       "facts": {
         "status": "reviewed",
         "concepts": [
-          "dimension"
+          "dimension",
+          "spawn"
         ],
         "evidence": {
           "source_sha256": "4fa8bc7de24f49c3c9ba01decf6276021302e2495fa43b1afd2e4f07d902fb52",
@@ -4282,6 +4545,9 @@
         "operation": "create",
         "targets": [
           "world"
+        ],
+        "target": [
+          "dimension"
         ]
       }
     },
@@ -4545,8 +4811,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "biome",
+          "name",
+          "position"
+        ],
+        "evidence": {
+          "source_sha256": "52f8e50566e0fc4413e3014955547bf1d6023c4de47141c0f6bcf6b7557c3ab6",
+          "section": [
+            "地图",
+            "GetBiomeName",
+            "服务端接口"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "biome"
+        ]
       }
     },
     {
@@ -4577,8 +4859,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "biome",
+          "name",
+          "position"
+        ],
+        "evidence": {
+          "source_sha256": "a6037264ed7ec27776b6473c7b6e65ceec5adb2d7666e93f8851df5741e78d5e",
+          "section": [
+            "地图",
+            "GetBiomeName",
+            "客户端接口"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "biome"
+        ]
       }
     },
     {
@@ -4595,7 +4893,9 @@
       ],
       "questions": [],
       "usage": "读取已加载区块中指定方块位置的光照等级。",
-      "cautions": [],
+      "cautions": [
+        "读取的是已加载位置的光照等级，不会创建光源或改变照明。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -4608,8 +4908,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "block",
+          "light_level"
+        ],
+        "evidence": {
+          "source_sha256": "c5e58b1245acbd130df9b0524b4c790e0a2f30d9e23a8f96aafae1e5f08cdce2",
+          "section": [
+            "地图",
+            "GetBlockLightLevel"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "block"
+        ],
+        "property": [
+          "light_level"
+        ]
       }
     },
     {
@@ -6205,8 +6522,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "entity_nbt",
+          "spawn"
+        ],
+        "evidence": {
+          "source_sha256": "29f944cbb625f0809a6ae43fe4d266d90955d549b0787f0301f0c730c7be4972",
+          "section": [
+            "实体管理",
+            "CreateEngineEntityByNBT"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "non_player"
+        ]
       }
     },
     {
@@ -6969,8 +7301,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "permissions",
+          "command_permission"
+        ],
+        "evidence": {
+          "source_sha256": "2a2c8556b7668315c7ff5e4be7ebf52dab9254125e1dbe9af0ef37ae9d7a987e",
+          "section": [
+            "指令",
+            "GetCommandPermissionLevel"
+          ]
+        },
+        "operation": "read",
+        "qualifiers": [
+          "command_permission"
+        ]
       }
     },
     {
@@ -7662,8 +8008,28 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "block",
+          "palette",
+          "position",
+          "box_region"
+        ],
+        "evidence": {
+          "source_sha256": "4c169f05604a19d860ffb07100efaa731e1b90fb432811adf59737ec292f9055",
+          "section": [
+            "方块组合",
+            "GetBlockPaletteBetweenPos",
+            "服务端接口"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "palette"
+        ],
+        "qualifiers": [
+          "box_region"
+        ]
       }
     },
     {
@@ -7694,8 +8060,24 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "block",
+          "palette",
+          "position"
+        ],
+        "evidence": {
+          "source_sha256": "22e00edc768e0709559d86cb80444ea2fc831e775e231cc82c21f3e6268f2a4c",
+          "section": [
+            "方块组合",
+            "GetBlockPaletteBetweenPos",
+            "客户端接口"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "palette"
+        ]
       }
     },
     {
@@ -7726,8 +8108,28 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "block",
+          "palette",
+          "position",
+          "position_list"
+        ],
+        "evidence": {
+          "source_sha256": "f0dc4e9b61fd3e32b548e4e444d812b4a9f4928bf7dbac332170e5520f34a2ec",
+          "section": [
+            "方块组合",
+            "GetBlockPaletteFromPosList",
+            "服务端接口"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "palette"
+        ],
+        "qualifiers": [
+          "position_list"
+        ]
       }
     },
     {
@@ -7973,8 +8375,19 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "world_time"
+        ],
+        "evidence": {
+          "source_sha256": "29c6ba6a13ca6931a0fa1e1c0df1939e5e132c0c1960af8a59cc6e3324fd7a89",
+          "section": [
+            "时间",
+            "GetTime",
+            "服务端接口"
+          ]
+        },
+        "operation": "read"
       }
     },
     {
@@ -8005,8 +8418,19 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "world_time"
+        ],
+        "evidence": {
+          "source_sha256": "f64d5abb77766c4bfd170cdc42b69df16abd298fd432975a5a962e962995e5e3",
+          "section": [
+            "时间",
+            "GetTime",
+            "客户端接口"
+          ]
+        },
+        "operation": "read"
       }
     },
     {
@@ -8315,7 +8739,10 @@
       },
       "facts": {
         "status": "reviewed",
-        "concepts": [],
+        "concepts": [
+          "corner_notice",
+          "text_content"
+        ],
         "targets": [
           "player"
         ],
@@ -8326,7 +8753,15 @@
             "消息",
             "SetLeftCornerNotify"
           ]
-        }
+        },
+        "operation": "set",
+        "target": [
+          "player"
+        ],
+        "property": [
+          "corner_notice",
+          "text_content"
+        ]
       }
     },
     {
@@ -11797,8 +12232,28 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "container",
+          "capacity"
+        ],
+        "evidence": {
+          "source_sha256": "f7549960222c8dde767d452fc5426894234725fdc339f5c509dbc34b8de8e667",
+          "section": [
+            "容器",
+            "GetContainerSize"
+          ]
+        },
+        "operation": "read",
+        "targets": [
+          "block_container"
+        ],
+        "target": [
+          "container"
+        ],
+        "property": [
+          "capacity"
+        ]
       }
     },
     {
@@ -12056,8 +12511,29 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "container",
+          "container_contents",
+          "count"
+        ],
+        "evidence": {
+          "source_sha256": "8913e403fcc79b3e6a1640363fcdc6ae20e582dcd08543fcfde3d51f93b2e746",
+          "section": [
+            "容器",
+            "SetChestBoxItemNum"
+          ]
+        },
+        "operation": "set",
+        "targets": [
+          "block_container"
+        ],
+        "target": [
+          "container"
+        ],
+        "property": [
+          "count"
+        ]
       }
     },
     {
@@ -12155,8 +12631,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "container",
+          "container_contents",
+          "item"
+        ],
+        "evidence": {
+          "source_sha256": "35c4be84b3dc0e52de2d78e115069a1a6300178add59e813db70a8c49847874f",
+          "section": [
+            "容器",
+            "SpawnItemToContainer"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "container"
+        ]
       }
     },
     {
@@ -12489,8 +12980,26 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "palette",
+          "geometry"
+        ],
+        "evidence": {
+          "source_sha256": "f9cb2a08e5654ab778e58ad73a8ffd0b8a7317258d4e1c557fbc85d6db79259b",
+          "section": [
+            "方块几何体模型",
+            "CombineBlockPaletteToGeometry"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "geometry"
+        ],
+        "operations": [
+          "create",
+          "set"
+        ]
       }
     },
     {
@@ -12815,7 +13324,10 @@
         "status": "reviewed",
         "concepts": [
           "block",
-          "state"
+          "state",
+          "block_entity",
+          "custom_block",
+          "custom_data"
         ],
         "evidence": {
           "source_sha256": "70abea7db69593b8575f7058a1dddfd1dc6588b357c7b03131ecdc0c005810df",
@@ -12828,6 +13340,12 @@
         "operation": "read",
         "targets": [
           "block"
+        ],
+        "target": [
+          "block_entity"
+        ],
+        "property": [
+          "custom_data"
         ]
       }
     },
@@ -13265,7 +13783,10 @@
         "status": "reviewed",
         "concepts": [
           "block",
-          "state"
+          "state",
+          "block_entity",
+          "custom_block",
+          "custom_data"
         ],
         "evidence": {
           "source_sha256": "62ad315597a57ceb1ee4b0fc1a3d48fe7cb19ede3f59334358c8db45a589d5be",
@@ -13277,6 +13798,12 @@
         "operation": "set",
         "targets": [
           "block"
+        ],
+        "target": [
+          "block_entity"
+        ],
+        "property": [
+          "custom_data"
         ]
       }
     },
@@ -13398,8 +13925,27 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "block_entity",
+          "animation"
+        ],
+        "evidence": {
+          "source_sha256": "3fa2ce3d5603f26234f508635b10b3bff73a009515127ec721e50eeac867e524",
+          "section": [
+            "方块实体",
+            "SetEnableBlockEntityAnimations"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "block_entity"
+        ],
+        "operations": [
+          "set",
+          "play",
+          "stop"
+        ]
       }
     },
     {
@@ -14681,6 +15227,9 @@
         "operation": "play",
         "targets": [
           "player"
+        ],
+        "qualifiers": [
+          "third_person"
         ]
       }
     },
@@ -14835,8 +15384,28 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "experience_points"
+        ],
+        "evidence": {
+          "source_sha256": "fe6c3401cbf18ec92d7c20289a234353ca0839a09a5c66e52c1d86c113e462ac",
+          "section": [
+            "属性",
+            "AddPlayerExperience"
+          ]
+        },
+        "operation": "write",
+        "target": [
+          "player"
+        ],
+        "targets": [
+          "player"
+        ],
+        "property": [
+          "experience_points"
+        ]
       }
     },
     {
@@ -14873,8 +15442,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "experience_level"
+        ],
+        "evidence": {
+          "source_sha256": "92c40a6168f4a6ab016fa64f81ea53603cfe40710401f20e1d997943d0f35687",
+          "section": [
+            "属性",
+            "AddPlayerLevel"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -15097,8 +15680,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "experience_level"
+        ],
+        "evidence": {
+          "source_sha256": "d31bd7f62d2a3edbd0b4adcae3a6e05d3fae7a8bff31d95963485b837e444288",
+          "section": [
+            "属性",
+            "GetPlayerLevel"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -15494,8 +16091,28 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "experience_total"
+        ],
+        "evidence": {
+          "source_sha256": "76ef294359fe4edd05b12a859f6bea1898e5cb8f8791010d6c60e6d008d09ffd",
+          "section": [
+            "属性",
+            "SetPlayerTotalExp"
+          ]
+        },
+        "operation": "set",
+        "targets": [
+          "player"
+        ],
+        "target": [
+          "player"
+        ],
+        "property": [
+          "experience_total"
+        ]
       }
     },
     {
@@ -15999,6 +16616,9 @@
         "operation": "read",
         "targets": [
           "player"
+        ],
+        "qualifiers": [
+          "hunger_threshold"
         ]
       }
     },
@@ -16044,6 +16664,9 @@
         "operation": "set",
         "targets": [
           "player"
+        ],
+        "qualifiers": [
+          "hunger_threshold"
         ]
       }
     },
@@ -17342,8 +17965,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "permissions",
+          "operator"
+        ],
+        "evidence": {
+          "source_sha256": "c2b0e747f5895bc197b6788ea901b56a802beec56977de2f9a73792f5e15ddc9",
+          "section": [
+            "权限",
+            "GetPlayerAbilities"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -17372,8 +18010,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "permissions",
+          "permission_type"
+        ],
+        "evidence": {
+          "source_sha256": "568002d861083112c3875ee19e21ee5128b46119cdd44080b9d38cc74a273196",
+          "section": [
+            "权限",
+            "GetPlayerOperation"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -17704,8 +18357,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "permissions",
+          "operator"
+        ],
+        "evidence": {
+          "source_sha256": "3abf56704cb3ebfdca8c1e71c160d44de45688e135c083d46f76448925e5e244",
+          "section": [
+            "权限",
+            "SetOperatorCommandAbility"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -18493,8 +19161,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "held",
+          "item",
+          "custom_data",
+          "extra_id"
+        ],
+        "evidence": {
+          "source_sha256": "2364a3a1142ae8599b7ce3444a7a904f28340845d705e45314d23f0dc3cfa41f",
+          "section": [
+            "背包",
+            "ChangePlayerItemTipsAndExtraId"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "item"
+        ]
       }
     },
     {
@@ -18553,8 +19237,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "held",
+          "item_info",
+          "custom_data"
+        ],
+        "evidence": {
+          "source_sha256": "1c49d756a4c8f4b5bc3bba9a3649c9a48ef266ab8ac28e3900b1d9ba4b58cc93",
+          "section": [
+            "背包",
+            "GetCarriedItem"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "held"
+        ],
+        "property": [
+          "item_info"
+        ]
       }
     },
     {
@@ -18641,8 +19343,22 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "inventory",
+          "enchant"
+        ],
+        "evidence": {
+          "source_sha256": "1f0bf9f5c4770c51ca483a6149c215cb93bcfc3afe99c5cd738d5743d573e549",
+          "section": [
+            "背包",
+            "GetInvItemModEnchantData"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "item"
+        ]
       }
     },
     {
@@ -18671,8 +19387,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "offhand",
+          "item_info",
+          "custom_data"
+        ],
+        "evidence": {
+          "source_sha256": "fabfcce0b972da88994a43b1b778a6934d97a54e390243bde8f08083ec7f0733",
+          "section": [
+            "背包",
+            "GetOffhandItem"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "offhand"
+        ],
+        "property": [
+          "item_info"
+        ]
       }
     },
     {
@@ -18706,9 +19440,10 @@
         "concepts": [
           "inventory",
           "inventory_contents",
-          "player"
+          "player",
+          "custom_data",
+          "all_slots"
         ],
-        "local_inventory_only": true,
         "evidence": {
           "source_sha256": "eaa87a5305da62a064e3d408e93276336638afb08fd4b3d0489bf31c602b9869",
           "section": [
@@ -18724,7 +19459,22 @@
         ],
         "operation": "read",
         "extent": "single",
-        "batch": "bulk"
+        "batch": "bulk",
+        "target": [
+          "inventory"
+        ],
+        "constraints": [
+          {
+            "when": {
+              "target": "player_inventory"
+            },
+            "allow": {
+              "target_scope": [
+                "local_player"
+              ]
+            }
+          }
+        ]
       }
     },
     {
@@ -18877,9 +19627,11 @@
           "held",
           "count",
           "enchant",
-          "item_info"
+          "item_info",
+          "item",
+          "custom_data",
+          "offhand"
         ],
-        "local_inventory_only": true,
         "evidence": {
           "source_sha256": "ea505bbc526ee347ce3a2b701514c2c6896bd8cfa0197d6efe2fd2c946bd9337",
           "section": [
@@ -18893,6 +19645,21 @@
           "player",
           "player_equipment",
           "player_inventory"
+        ],
+        "target": [
+          "item"
+        ],
+        "constraints": [
+          {
+            "when": {
+              "target": "player_inventory"
+            },
+            "allow": {
+              "target_scope": [
+                "local_player"
+              ]
+            }
+          }
         ]
       }
     },
@@ -19271,8 +20038,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "death",
+          "death_drop"
+        ],
+        "evidence": {
+          "source_sha256": "7fc623d1cb2adf38c78f6b841f9db21e6c94b3e765aadfb1a71d05a0245f1436",
+          "section": [
+            "行为",
+            "EnableKeepInventory"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -20114,7 +20896,9 @@
       "aliases": [],
       "questions": [],
       "usage": "控制玩家能否钓起物品；禁止后仍可甩出鱼竿。",
-      "cautions": [],
+      "cautions": [
+        "只控制是否允许钓起物品，不执行抛竿或收杆。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -20127,8 +20911,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "fishing_permission"
+        ],
+        "evidence": {
+          "source_sha256": "639a6cbf2e6e309d4ba2804dd2bbd633184101cf6f7b73769248a1816f0857f0",
+          "section": [
+            "行为",
+            "SetBanPlayerFishing"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "player"
+        ],
+        "qualifiers": [
+          "fishing_permission"
+        ]
       }
     },
     {
@@ -21569,8 +22369,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "entity_nbt"
+        ],
+        "evidence": {
+          "source_sha256": "013e20c9c456c5d9c021af8e7e85a7b152a9f65c1507c258ab0fc983808c417a",
+          "section": [
+            "实体类型",
+            "GetEntityNBTTags"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "entity"
+        ]
       }
     },
     {
@@ -21739,7 +22553,10 @@
           "entity"
         ],
         "operation": "read",
-        "extent": "single"
+        "extent": "single",
+        "qualifiers": [
+          "maximum"
+        ]
       }
     },
     {
@@ -21903,8 +22720,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "dimension",
+          "dimension_id"
+        ],
+        "evidence": {
+          "source_sha256": "43c6a04ea063cd2a044a7f2271f950a972231a5eb5cbdba5bec0a380ba1ca9f4",
+          "section": [
+            "属性",
+            "GetEntityDimensionId"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "entity"
+        ],
+        "property": [
+          "dimension_id"
+        ]
       }
     },
     {
@@ -23147,8 +23982,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "head_name"
+        ],
+        "evidence": {
+          "source_sha256": "fafccf7d6365c3049228d01d77716b9e64c2b3c659d4868b17548333ced82931",
+          "section": [
+            "属性",
+            "SetName"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "entity"
+        ]
       }
     },
     {
@@ -23774,8 +24623,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "variant"
+        ],
+        "evidence": {
+          "source_sha256": "5870870e858f103696c6458bc1c9326b90e1f115d4fda8db0b3d9d9cc5afa815",
+          "section": [
+            "属性",
+            "SetMarkVariant"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "entity"
+        ]
       }
     },
     {
@@ -24082,8 +24945,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "villager",
+          "trade_level"
+        ],
+        "evidence": {
+          "source_sha256": "7601850afc11cb3356e63226acc2de0a08398c1c57efaa0e3ab5e816a26bdabe",
+          "section": [
+            "属性",
+            "GetTradeLevel"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "villager"
+        ]
       }
     },
     {
@@ -24113,8 +24990,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "villager",
+          "trade_level"
+        ],
+        "evidence": {
+          "source_sha256": "d2dc10bac39588c60b1229ee3acda4e29a1731fcbb34baf51e2644e15bffe2b5",
+          "section": [
+            "属性",
+            "SetTradeLevel"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "villager"
+        ]
       }
     },
     {
@@ -24175,8 +25066,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "variant"
+        ],
+        "evidence": {
+          "source_sha256": "3523fef020813e097f86329627bee3f5aa586521c0457b418e8a97ddf75e69a8",
+          "section": [
+            "属性",
+            "SetVariant"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "entity"
+        ]
       }
     },
     {
@@ -25283,8 +26188,28 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "geometry",
+          "attach"
+        ],
+        "evidence": {
+          "source_sha256": "bd220e913c3e57c6ee9ddd0f68ba03dd46ab44eed05384fb5463fa1b42ad1b8f",
+          "section": [
+            "渲染",
+            "AddActorBlockGeometry"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "geometry"
+        ],
+        "operations": [
+          "set",
+          "create",
+          "write"
+        ]
       }
     },
     {
@@ -25843,8 +26768,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "geometry",
+          "visibility"
+        ],
+        "evidence": {
+          "source_sha256": "d27f2626dc1e54a17d0a33a8e7fba4aba7da7c16557066d90947a1923b2756dc",
+          "section": [
+            "渲染",
+            "SetActorBlockGeometryVisible"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "geometry"
+        ]
       }
     },
     {
@@ -26529,6 +27469,9 @@
         "property": [
           "enchant",
           "enchant_level"
+        ],
+        "qualifiers": [
+          "armour"
         ]
       }
     },
@@ -26588,8 +27531,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "item",
+          "custom_data"
+        ],
+        "evidence": {
+          "source_sha256": "207027d8d43eb9da7ae5ec7757080fe3ecd6e5e39503447acf4c3519245002ae",
+          "section": [
+            "背包",
+            "SetEntityItem"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "item"
+        ]
       }
     },
     {
@@ -26924,8 +27881,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_data"
+        ],
+        "operation": "write",
+        "property": [
+          "custom_data"
+        ],
+        "evidence": {
+          "source_sha256": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d",
+          "section": [
+            "自定义数据",
+            "SaveExtraData"
+          ]
+        }
       }
     },
     {
@@ -28220,6 +29190,9 @@
         ],
         "property": [
           "permissions"
+        ],
+        "qualifiers": [
+          "permissions"
         ]
       }
     },
@@ -28413,6 +29386,9 @@
         ],
         "property": [
           "owner"
+        ],
+        "qualifiers": [
+          "taming"
         ]
       }
     },
@@ -28714,8 +29690,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "navigation",
+          "position"
+        ],
+        "evidence": {
+          "source_sha256": "d3a03b02b55100fb448c660f2b473835ea102bcbea6b7710813b0a4d47c10fdf",
+          "section": [
+            "行为",
+            "SetMoveSetting"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "non_player"
+        ]
       }
     },
     {
@@ -28806,7 +29797,8 @@
         "concepts": [
           "player",
           "entity",
-          "riding"
+          "riding",
+          "mount"
         ],
         "evidence": {
           "source_sha256": "801d120947e36551f5dc08b0aa8f868fa97b6cc84e1b9bafdb9c4cbaf527e900",
@@ -28827,6 +29819,9 @@
         ],
         "property": [
           "riding"
+        ],
+        "action": [
+          "mount"
         ]
       }
     },
@@ -28945,8 +29940,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity",
+          "riding",
+          "dismount"
+        ],
+        "evidence": {
+          "source_sha256": "733b89b2447f59ed6866a28ee11d85a4559b7dc432fda6952ce52b5570ee2f88",
+          "section": [
+            "行为",
+            "StopEntityRiding"
+          ]
+        },
+        "operation": "stop",
+        "target": [
+          "entity"
+        ],
+        "action": [
+          "dismount"
+        ]
       }
     },
     {
@@ -29119,8 +30132,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "minimap",
+          "entity",
+          "icon_marker"
+        ],
+        "evidence": {
+          "source_sha256": "b15ca6831534402a3f60977e4ac24b907a69eaf61f07b155be2598a712255d3f",
+          "section": [
+            "UI控件",
+            "AddEntityMarker"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "minimap"
+        ],
+        "property": [
+          "icon_marker"
+        ]
       }
     },
     {
@@ -29148,8 +30179,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "minimap",
+          "entity",
+          "text_marker"
+        ],
+        "evidence": {
+          "source_sha256": "a7ed78ff55bcb864befa707f4c7d8f9661d65241709579c374bf1afba6fc5641",
+          "section": [
+            "UI控件",
+            "AddEntityTextMarker"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "minimap"
+        ],
+        "property": [
+          "text_marker"
+        ]
       }
     },
     {
@@ -29235,8 +30284,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "minimap",
+          "position",
+          "icon_marker"
+        ],
+        "evidence": {
+          "source_sha256": "894a8e05d017106c36d428b1f31c3df11a80ce54b2b5091d712a3d1960861c87",
+          "section": [
+            "UI控件",
+            "AddStaticMarker"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "minimap"
+        ],
+        "property": [
+          "icon_marker"
+        ]
       }
     },
     {
@@ -29264,8 +30331,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "minimap",
+          "position",
+          "text_marker"
+        ],
+        "evidence": {
+          "source_sha256": "f58f13780ffcff50bfc0e0af7cfed013e4c7f18368cddcb04ce16af3424110e8",
+          "section": [
+            "UI控件",
+            "AddStaticTextMarker"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "minimap"
+        ],
+        "property": [
+          "text_marker"
+        ]
       }
     },
     {
@@ -30648,6 +31733,9 @@
         "operation": "set",
         "targets": [
           "ui"
+        ],
+        "qualifiers": [
+          "hover"
         ]
       }
     },
@@ -30792,8 +31880,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "ui",
+          "drag"
+        ],
+        "evidence": {
+          "source_sha256": "3d528010630f6c49d3c2f8c3e2ac07b7be858b876932bdbfc24ce2a23313e83e",
+          "section": [
+            "UI控件",
+            "SetButtonTouchMoveCallback"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "ui"
+        ]
       }
     },
     {
@@ -31502,8 +32604,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "minimap",
+          "magnify"
+        ],
+        "evidence": {
+          "source_sha256": "bd2710bae2aab0c663b4e38763b97b0a21c96b7274c059c4410d6626ac13cfd2",
+          "section": [
+            "UI控件",
+            "ZoomIn"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "minimap"
+        ],
+        "action": [
+          "magnify"
+        ]
       }
     },
     {
@@ -31531,8 +32650,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "minimap",
+          "shrink"
+        ],
+        "evidence": {
+          "source_sha256": "b6d090fb4a9049269b974a1f1be6383ebea302fc1b57441b0a53389442ba9853",
+          "section": [
+            "UI控件",
+            "ZoomOut"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "minimap"
+        ],
+        "action": [
+          "shrink"
+        ]
       }
     },
     {
@@ -33286,8 +34422,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "ui",
+          "item",
+          "item_renderer"
+        ],
+        "evidence": {
+          "source_sha256": "48d4f213dea768ba899513babab13ec06440e83eb68958523fba77d8191e35ac",
+          "section": [
+            "UI控件",
+            "SetUiItem"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "ui"
+        ]
       }
     },
     {
@@ -35480,8 +36631,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "ui",
+          "registration"
+        ],
+        "operation": "create",
+        "target": [
+          "ui"
+        ],
+        "evidence": {
+          "source_sha256": "95f61b7da73a32e5e3ab782aca0521303e6a1f34a62bb1e9cd455051bedb6ef9",
+          "section": [
+            "通用",
+            "RegisterUI"
+          ]
+        },
+        "qualifiers": [
+          "registration"
+        ]
       }
     },
     {
@@ -37767,7 +38935,10 @@
           ]
         },
         "operation": "set",
-        "targets": []
+        "targets": [],
+        "qualifiers": [
+          "input_unlock"
+        ]
       }
     },
     {
@@ -38141,8 +39312,35 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "inventory_input"
+        ],
+        "evidence": {
+          "source_sha256": "0992c8389d585784a61cea1385a0895abcc57ed4ed5c80a6505c44cd72719c75",
+          "section": [
+            "索引",
+            "IsCanOpenInv"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "player"
+        ],
+        "property": [
+          "inventory_input"
+        ],
+        "constraints": [
+          {
+            "when": {},
+            "allow": {
+              "target_scope": [
+                "local_player"
+              ]
+            }
+          }
+        ]
       }
     },
     {
@@ -38687,8 +39885,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "keyboard",
+          "layout",
+          "registration"
+        ],
+        "evidence": {
+          "source_sha256": "03b0e5054a30f0e0fa511f1d541dab05cd039eb57b8fad48731ce7cd4b5f4467",
+          "section": [
+            "索引",
+            "RegisterCustomKeyMapping"
+          ]
+        },
+        "operation": "create",
+        "target": [
+          "ui"
+        ]
       }
     },
     {
@@ -39025,8 +40238,30 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "item",
+          "entity",
+          "bone_binding"
+        ],
+        "operation": "create",
+        "targets": [
+          "entity",
+          "model"
+        ],
+        "target": [
+          "entity"
+        ],
+        "property": [
+          "bone_binding"
+        ],
+        "evidence": {
+          "source_sha256": "939afb9b924c0b754ffaef6c025812c2acb399dc6ed4ca47ac9c04a1f399fc80",
+          "section": [
+            "索引",
+            "BindItemToSkeletonModel"
+          ]
+        }
       }
     },
     {
@@ -39860,7 +41095,10 @@
           ]
         },
         "operation": "set",
-        "targets": []
+        "targets": [],
+        "qualifiers": [
+          "tier"
+        ]
       }
     },
     {
@@ -42654,7 +43892,9 @@
       "aliases": [],
       "questions": [],
       "usage": "读取本地配置文件保存的数据。",
-      "cautions": [],
+      "cautions": [
+        "跨存档共享需 isGlobal=True；数据保存在本机，不保证跨设备同步。"
+      ],
       "related": [
         "modsdk:api:client:mod.client.component.configCompClient.ConfigCompClient.SetConfigData"
       ],
@@ -42667,8 +43907,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "local_storage",
+          "custom_data",
+          "cross_save"
+        ],
+        "evidence": {
+          "source_sha256": "76294d5087bb662bff4c1f0b22dd6472bc1eea597682ea78d05059ed2df01a74",
+          "section": [
+            "本地存储",
+            "GetConfigData"
+          ]
+        },
+        "operation": "read",
+        "target": [
+          "local_storage"
+        ],
+        "property": [
+          "custom_data"
+        ]
       }
     },
     {
@@ -42683,7 +43941,9 @@
       "aliases": [],
       "questions": [],
       "usage": "以本地配置文件形式保存数据。",
-      "cautions": [],
+      "cautions": [
+        "跨存档共享需 isGlobal=True；数据保存在本机，不保证跨设备同步。"
+      ],
       "related": [
         "modsdk:api:client:mod.client.component.configCompClient.ConfigCompClient.GetConfigData"
       ],
@@ -42696,8 +43956,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "local_storage",
+          "custom_data",
+          "cross_save"
+        ],
+        "evidence": {
+          "source_sha256": "ee30f75e638b77a17e755df229b9ec499fc0a8791299d093feef80aa53445e50",
+          "section": [
+            "本地存储",
+            "SetConfigData"
+          ]
+        },
+        "operation": "set",
+        "target": [
+          "local_storage"
+        ],
+        "property": [
+          "custom_data"
+        ]
       }
     },
     {
@@ -52161,8 +53439,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "682efeb7a4e802444163d7b86401034e34726adbb50f72d88fbffda7240d9a7c",
+          "section": [
+            "世界",
+            "ServerChatEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -52317,8 +53608,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "inventory",
+          "inventory_contents",
+          "inventory_exchange"
+        ],
+        "evidence": {
+          "source_sha256": "dade8147e0a271d02c2f7e3476c50e9c716481a460ef1712e7ec1c6eb5fb99d4",
+          "section": [
+            "物品",
+            "InventoryItemChangedServerEvent"
+          ]
+        },
+        "operation": "observe",
+        "target": [
+          "inventory"
+        ],
+        "mutable_fields": [],
+        "phase": "change"
       }
     },
     {
@@ -52537,8 +53845,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "1d860045244434c8c67e4c01aa74eb096abef85fb1c0dd8c096b1feca8b83f89",
+          "section": [
+            "物品",
+            "ServerPlayerTryTouchEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -52593,8 +53914,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "player",
+          "death"
+        ],
+        "evidence": {
+          "source_sha256": "7d45c79d02a12299c0f9f50d72a8a2bfaf83e34e01454eafb6d2b5cd1fb3d069",
+          "section": [
+            "玩家",
+            "PlayerDieEvent"
+          ]
+        },
+        "operation": "observe",
+        "target": [
+          "player"
+        ]
       }
     },
     {
@@ -52625,8 +53960,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "17b894a770ac9ea7e4351af25d446c8bedc4b78de11b55b460814d384b54b9fb",
+          "section": [
+            "实体",
+            "HealthChangeBeforeServerEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -52769,7 +54117,8 @@
         "status": "reviewed",
         "concepts": [
           "entity",
-          "effect"
+          "effect",
+          "cancellation"
         ],
         "evidence": {
           "source_sha256": "08d2df8c2ae6d264c19b0670e1150ed58d0dce308b0e768eccc15ef22c034e16",
@@ -52779,7 +54128,11 @@
           ]
         },
         "operation": "observe",
-        "phase": "before"
+        "phase": "before",
+        "cancellable": true,
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -53118,8 +54471,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "custom_block",
+          "random_tick"
+        ],
+        "evidence": {
+          "source_sha256": "dba8bace4e29a65a216d52e5ce91f20998298ede4db42dec445f66a04cc0e20a",
+          "section": [
+            "方块",
+            "BlockRandomTickServerEvent"
+          ]
+        },
+        "operation": "observe",
+        "target": [
+          "custom_block"
+        ]
       }
     },
     {
@@ -53282,8 +54649,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "30b2c18a5fc6755a974b9d4a150f8bb119db645d0a43f3c3df44b3c61de85600",
+          "section": [
+            "玩家",
+            "PlayerInteractServerEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -53346,8 +54726,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "8aec3c8f30919537f769daa9a29a4187c41a9dcff3eeaad8ded6b310368793e1",
+          "section": [
+            "实体",
+            "EntityStopRidingEvent",
+            "服务端事件"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -53373,8 +54767,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "b8e4ded4aece7fea32f057092f69ffb252d10799175a3f260a1f88784ee77485",
+          "section": [
+            "实体",
+            "EntityStopRidingEvent",
+            "客户端事件"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -53568,8 +54976,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "aedbd939ddde63f015c5db6e2e1650c4cb8bc0e5c64c4f5f1f19fd401071f531",
+          "section": [
+            "玩家",
+            "PlayerPermissionChangeServerEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -53626,8 +55047,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "cancellation"
+        ],
+        "cancellable": true,
+        "evidence": {
+          "source_sha256": "60b38e6969f68ce109fd046f18776f5fd42b3eb23ff179b2811d27588d9a7abb",
+          "section": [
+            "玩家",
+            "PlayerHungerChangeServerEvent"
+          ]
+        },
+        "mutable_fields": [
+          "cancel"
+        ]
       }
     },
     {
@@ -53789,7 +55223,10 @@
           ]
         },
         "operation": "observe",
-        "targets": []
+        "targets": [],
+        "qualifiers": [
+          "layout"
+        ]
       }
     },
     {
@@ -53810,7 +55247,10 @@
         "status": "reviewed",
         "concepts": [
           "block",
-          "state"
+          "state",
+          "block_entity",
+          "custom_block",
+          "custom_data"
         ],
         "evidence": {
           "source_sha256": "41d7aac1446fc629b3c3a8160efcac131baf5a3fb8c4568a9f900a300f2d8cae",
@@ -53821,7 +55261,13 @@
           ]
         },
         "operation": "read",
-        "targets": []
+        "targets": [],
+        "target": [
+          "block_entity"
+        ],
+        "property": [
+          "custom_data"
+        ]
       }
     },
     {
@@ -53855,7 +55301,8 @@
           "player",
           "entity",
           "held",
-          "feed"
+          "feed",
+          "cancellation"
         ],
         "evidence": {
           "source_sha256": "3e2c3db5c7e5c3854671fe9847aedd098c8b402357a66fe4762563a8b09bba3f",
@@ -53867,6 +55314,13 @@
         "operation": "observe",
         "targets": [
           "player"
+        ],
+        "cancellable": true,
+        "mutable_fields": [
+          "cancel"
+        ],
+        "qualifiers": [
+          "feed"
         ]
       }
     },
@@ -53981,7 +55435,8 @@
           "player",
           "attack",
           "damage",
-          "damage_edit"
+          "damage_edit",
+          "cancellation"
         ],
         "evidence": {
           "source_sha256": "b8eb4db1597cba76844427065d4613d606cb8df1ea1156e6ce366ea96a3fc950",
@@ -54001,7 +55456,8 @@
           "isValid",
           "cancel",
           "isKnockBack"
-        ]
+        ],
+        "cancellable": true
       }
     },
     {
@@ -54049,6 +55505,100 @@
         ],
         "phase": "after",
         "mutable_fields": []
+      }
+    },
+    {
+      "id": "modsdk:event:server:ServerBlockEntityTickEvent",
+      "source_sha256": "76e2479bdcfedbcf2133281d27178299f71f3e35187afeb69b82fa76bd72f45f",
+      "authority": "curated_note",
+      "tags": [
+        "方块实体",
+        "周期更新"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "",
+      "cautions": [],
+      "related": [],
+      "inferred": {},
+      "facts": {
+        "concepts": [
+          "block_entity",
+          "tick"
+        ],
+        "status": "reviewed",
+        "evidence": {
+          "source_sha256": "76e2479bdcfedbcf2133281d27178299f71f3e35187afeb69b82fa76bd72f45f",
+          "section": [
+            "方块",
+            "ServerBlockEntityTickEvent"
+          ]
+        },
+        "operation": "observe",
+        "target": [
+          "block_entity"
+        ]
+      }
+    },
+    {
+      "id": "modsdk:event:server:HopperTryPullInServerEvent",
+      "source_sha256": "f776057c80d5c3e338b1186b8cf5f881df0e6d278618c7087881813515ff7b34",
+      "authority": "curated_note",
+      "tags": [
+        "方块容器",
+        "漏斗输入"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "",
+      "cautions": [],
+      "related": [],
+      "inferred": {},
+      "facts": {
+        "concepts": [
+          "container",
+          "hopper_pull"
+        ],
+        "status": "reviewed",
+        "evidence": {
+          "source_sha256": "f776057c80d5c3e338b1186b8cf5f881df0e6d278618c7087881813515ff7b34",
+          "section": [
+            "方块",
+            "HopperTryPullInServerEvent"
+          ]
+        },
+        "operation": "observe",
+        "target": [
+          "container"
+        ]
+      }
+    },
+    {
+      "id": "modsdk:event:server:CustomCommandTriggerServerEvent",
+      "source_sha256": "c13ab52786ae82ac47d63c9f4cf4e6540fb280daae7a48b9b32ad24b3ea94df8",
+      "authority": "curated_note",
+      "tags": [
+        "自定义命令"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "",
+      "cautions": [],
+      "related": [],
+      "inferred": {},
+      "facts": {
+        "concepts": [
+          "command"
+        ],
+        "status": "reviewed",
+        "evidence": {
+          "source_sha256": "c13ab52786ae82ac47d63c9f4cf4e6540fb280daae7a48b9b32ad24b3ea94df8",
+          "section": [
+            "世界",
+            "CustomCommandTriggerServerEvent"
+          ]
+        },
+        "operation": "observe"
       }
     }
   ]

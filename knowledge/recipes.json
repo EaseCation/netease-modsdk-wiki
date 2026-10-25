@@ -35,7 +35,14 @@
         "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew": "17346fd8a45c67cdc18f5018aa8bd5c08a5ec855babfe4467d5ffb89accfab41",
         "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates": "05e05752df40e55381ba035290655b9c74fde96e0ae6b28587a06115e5347a11",
         "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew": "ff481a38502792c4d3732574606b89d723c9e17c60f7b952393aa63d6e74855f"
-      }
+      },
+      "operations": [
+        "write",
+        "set"
+      ],
+      "input_concepts": [
+        "break"
+      ]
     },
     {
       "id": "player.animation",
@@ -84,7 +91,174 @@
       ],
       "unverified_concepts": [
         "first_person"
+      ],
+      "operations": [
+        "write",
+        "set",
+        "create",
+        "play"
       ]
+    },
+    {
+      "id": "ui.drag",
+      "label": "控件拖动接入",
+      "concepts": [
+        "ui",
+        "drag",
+        "position"
+      ],
+      "side": "client",
+      "operations": [
+        "set",
+        "write"
+      ],
+      "status": "matched",
+      "steps": [
+        {
+          "label": "触控移动回调",
+          "ids": [
+            "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchMoveCallback"
+          ]
+        },
+        {
+          "label": "更新控件位置",
+          "ids": [
+            "modsdk:api:client:mod.client.ui.controls.baseUIControl.BaseUIControl.SetPosition"
+          ]
+        }
+      ],
+      "cautions": [
+        "移动回调仅支持触屏模式；鼠标拖动须另核验输入入口。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/自定义UI/UI控件.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchMoveCallback": "3d528010630f6c49d3c2f8c3e2ac07b7be858b876932bdbfc24ce2a23313e83e",
+        "modsdk:api:client:mod.client.ui.controls.baseUIControl.BaseUIControl.SetPosition": "e487303e2fe849291893de9a1ef57b38f69edb7ee37c74ac10c625a4dec32890"
+      }
+    },
+    {
+      "id": "ui.item-display",
+      "label": "物品图标与数量展示",
+      "concepts": [
+        "item_renderer",
+        "count"
+      ],
+      "side": "client",
+      "operations": [
+        "set",
+        "write"
+      ],
+      "status": "matched",
+      "steps": [
+        {
+          "label": "物品图标",
+          "ids": [
+            "modsdk:api:client:mod.client.ui.controls.itemRendererUIControl.ItemRendererUIControl.SetUiItem"
+          ]
+        },
+        {
+          "label": "数量文本",
+          "ids": [
+            "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText"
+          ]
+        }
+      ],
+      "cautions": [
+        "图标控件和数量文本分别接线；SetUiItem没有数量参数。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/自定义UI/UI控件.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.ui.controls.itemRendererUIControl.ItemRendererUIControl.SetUiItem": "48d4f213dea768ba899513babab13ec06440e83eb68958523fba77d8191e35ac",
+        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText": "8f429c4908d0f6128a5de0749717cb8918853ee60efde56e5dd7ea7625ce762c"
+      }
+    },
+    {
+      "id": "item.instance-data",
+      "label": "物品实例数据关联",
+      "concepts": [
+        "item",
+        "custom_data"
+      ],
+      "side": "server",
+      "operations": [
+        "set",
+        "write"
+      ],
+      "status": "matched",
+      "steps": [
+        {
+          "label": "读取现有物品信息",
+          "ids": [
+            "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem"
+          ]
+        },
+        {
+          "label": "持久化实例内容",
+          "ids": [
+            "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md"
+          ]
+        },
+        {
+          "label": "回写实例关联标识",
+          "ids": [
+            "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.ChangePlayerItemTipsAndExtraId"
+          ]
+        }
+      ],
+      "cautions": [
+        "extraId用于关联实例，完整内容由开发者按键保存；先确认持久化成功再改标识，保留原物品信息及已有tips。",
+        "不是向userData任意塞入Python对象；世界数据需用levelId创建组件。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/世界/自定义数据.md",
+        "mcdocs/1-ModAPI/接口/玩家/背包.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem": "e99813b7a895e8f008533a85335c6acf1d5722ed4db0326ef447addcd29f0f8f",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.ChangePlayerItemTipsAndExtraId": "2364a3a1142ae8599b7ce3444a7a904f28340845d705e45314d23f0dc3cfa41f"
+      }
+    },
+    {
+      "id": "ui.open",
+      "label": "自定义界面创建",
+      "concepts": [
+        "ui",
+        "interface_open"
+      ],
+      "operations": [
+        "create"
+      ],
+      "side": "client",
+      "status": "matched",
+      "steps": [
+        {
+          "label": "首次注册界面定义",
+          "ids": [
+            "modsdk:api:client:mod.client.extraClientApi.RegisterUI"
+          ]
+        },
+        {
+          "label": "创建界面实例",
+          "ids": [
+            "modsdk:api:client:mod.client.extraClientApi.CreateUI"
+          ]
+        }
+      ],
+      "cautions": [
+        "需要对应的JSON界面与ScreenNode类；已经注册时直接创建实例，不重复注册。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/自定义UI/通用.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.extraClientApi.RegisterUI": "95f61b7da73a32e5e3ab782aca0521303e6a1f34a62bb1e9cd455051bedb6ef9",
+        "modsdk:api:client:mod.client.extraClientApi.CreateUI": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456"
+      }
     }
   ]
 }

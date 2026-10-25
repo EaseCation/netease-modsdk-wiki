@@ -132,6 +132,8 @@ async function generate() {
                 recordGroup: entry?.id || `${docPath}#${section.anchor}`,
                 corpus_sha256: index.corpus_sha256,
                 capabilityLabels: entry?.capability_labels || [],
+                capabilityRoles: entry?.capability_roles || {},
+                workflows: (entry?.workflows || []).map(w => ({ id: w.id, label: w.label, guides: w.guides })),
                 facts: entry?.annotation?.facts || {status:'unknown',concepts:[]},
                 returns: entry?.returns?.description || '',
                 tags: unique(annotations.flatMap(a => a.tags || [])),
@@ -166,12 +168,12 @@ async function generate() {
 
 const SETTINGS = {
     searchableAttributes: ['unordered(apiName)', 'unordered(capabilityLabels)', 'unordered(description)', 'unordered(returns)', 'unordered(tags)', 'unordered(aliases)',
-        'unordered(hierarchy.lvl2)', 'unordered(hierarchy.lvl1)', 'unordered(questions)', 'unordered(usage)',
+        'unordered(hierarchy.lvl2)', 'unordered(hierarchy.lvl1)', 'unordered(workflows.label)', 'unordered(questions)', 'unordered(usage)',
         'unordered(cautions)', 'unordered(content)', 'unordered(hierarchy.lvl0)'],
     attributesForFaceting: ['lang', 'type', 'rootType', 'scope', 'side', 'tags', 'facts.concepts'],
     attributesToHighlight: ['hierarchy.lvl0', 'hierarchy.lvl1', 'hierarchy.lvl2', 'content', 'tags', 'description'],
     attributesToSnippet: ['content:50', 'description:40'],
-    attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'lang', 'priority', 'rootType', 'scope', 'side', 'tags', 'apiName', 'capabilityLabels', 'side', 'facts'],
+    attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'lang', 'priority', 'rootType', 'scope', 'side', 'tags', 'apiName', 'capabilityLabels'],
     customRanking: ['desc(priority)', 'asc(contentLength)'],
     attributeForDistinct: 'recordGroup', distinct: 1,
     indexLanguages: ['zh'], queryLanguages: ['zh'],

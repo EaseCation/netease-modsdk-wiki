@@ -40,10 +40,13 @@ ${matches.filter(m => m.side === n.side).length > 1 ? `<p><strong>组件：</str
 ${n.capability_labels?.some((label: string) => !n.tags.includes(label)) ? `<p><strong>能力：</strong>${n.capability_labels.map(escape).join(' · ')}</p>` : ''}
 ${n.facts?.phase ? `<p><strong>触发阶段：</strong>${escape(({before:'发生之前',after:'发生之后',change:'发生变化'} as any)[n.facts.phase] || n.facts.phase)}</p>` : ''}
 ${n.facts?.mutable_fields?.length ? `<p><strong>允许修改的字段：</strong>${n.facts.mutable_fields.map(escape).join('、')}</p>` : ''}
+${n.capability_roles?.target?.length ? `<p><strong>作用对象：</strong>${n.capability_roles.target.map(escape).join('、')}</p>` : ''}
+${n.capability_roles?.qualifiers?.length ? `<p><strong>适用限定：</strong>${n.capability_roles.qualifiers.map(escape).join('、')}</p>` : ''}
 ${n.usage ? `<p>${escape(n.usage)}</p>` : ''}
 ${n.cautions.length ? `<ul>${n.cautions.map((t: string) => `<li>${escape(t)}</li>`).join('')}</ul>` : ''}
 ${n.questions.length ? `<p><strong>常见问法</strong></p><ul>${n.questions.map((t: string) => `<li>${escape(t)}</li>`).join('')}</ul>` : ''}
 ${n.related_entries.length ? `<p><strong>关联接口：</strong>${n.related_entries.map((r: any) => `<a href="${escape(r.url)}">${escape(r.name)} (${escape(r.side)})</a>`).join(' · ')}</p>` : ''}
+${(n.workflows || []).map((w: any) => `<details><summary>关联流程：${escape(w.label)}</summary><ol>${w.steps.map((step: any) => `<li>${escape(step.label)}：${step.entries.map((r: any) => `<a href="${escape(r.url)}">${escape(r.name)}</a>`).join('、')}</li>`).join('')}</ol>${w.cautions.map((c: string) => `<p>${escape(c)}</p>`).join('')}<p>${w.guides.map((g: any) => `<a href="${escape(g.url)}">${escape(g.title)}</a>`).join(' · ')}</p></details>`).join('')}
 </div></details>\n`).join('');
         state.tokens.splice(i + 3, 0, token);
       }

@@ -50,7 +50,7 @@ jobs:
         with:
           repository: EaseCation/netease-modsdk-skill
           # 固定已复核的题库和执行器；升级时显式更新此提交。
-          ref: 7c84afafaca1fbb01860c051ff0d06fadde3339a
+          ref: 34ab25ca10313c28f06bf73c0f566f87263cc5bc
           path: .retrieval-skill
           persist-credentials: false
 

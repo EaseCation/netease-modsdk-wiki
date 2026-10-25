@@ -277,10 +277,17 @@ def validate_knowledge(concepts, recipes, by_id, root):
         if cid in seen: raise ValueError('概念父子关系存在循环：'+cid)
         for parent in graph[cid]: visit(parent,seen|{cid})
     for c in entries:
-        if set(c)-{'id','label','category','aliases','parents','excludes','requires_explicit','requires_any','context_only'}: raise ValueError('概念字段非法：'+c['id'])
+        if set(c)-{'id','label','category','aliases','parents','excludes','requires_any','context_only','kinds','requires_facts','target_key'}: raise ValueError('概念字段非法：'+c['id'])
+        if 'target_key' in c and (c['category']!='target' or c['target_key'] not in TARGETS):raise ValueError('对象概念映射非法：'+c['id'])
         if set(c.get('requires_any',[]))-ids: raise ValueError('概念上下文引用不存在')
         if c['category'] not in ('action','target','property','qualifier'): raise ValueError('概念类别非法：'+c['id'])
         if not c.get('label') or not isinstance(c.get('aliases'),list) or any(not isinstance(x,str) or not x.strip() for x in c['aliases']): raise ValueError('概念词汇为空或非法')
+        if 'kinds' in c and (not isinstance(c['kinds'],list) or not c['kinds'] or set(c['kinds'])-{'api','event','enum','document'}):raise ValueError('概念文档类型非法：'+c['id'])
+        requirements=c.get('requires_facts',{})
+        if not isinstance(requirements,dict) or set(requirements)-{'cancellable','batch','phase','extent','operation'}:raise ValueError('概念条件非法：'+c['id'])
+        for field,value in requirements.items():
+            if field=='cancellable' and not isinstance(value,bool):raise ValueError('取消能力必须为布尔值')
+            if field!='cancellable' and (not isinstance(value,str) or value not in FACT_CHOICES[field]):raise ValueError('概念条件取值非法：'+c['id'])
         if set(c.get('parents',[])+c.get('excludes',[]))-ids: raise ValueError('概念引用不存在：'+c['id'])
         visit(c['id'],set())
     recipe_ids = set()
@@ -288,6 +295,10 @@ def validate_knowledge(concepts, recipes, by_id, root):
         if recipe['id'] in recipe_ids: raise ValueError('组合 ID 重复')
         recipe_ids.add(recipe['id'])
         if set(recipe['concepts'])-ids: raise ValueError('组合概念不存在')
+        if not isinstance(recipe.get('operations'),list) or not recipe['operations'] or set(recipe['operations'])-set(OPERATIONS):raise ValueError('组合操作非法')
+        if recipe.get('status') not in ('matched','partial') or recipe.get('side') not in SIDE_NAMES:raise ValueError('组合状态或端侧非法')
+        for concepts in [recipe.get('unverified_concepts',[]),recipe.get('input_concepts',[]),*recipe.get('triggers',[])]:
+            if not isinstance(concepts,list) or set(concepts)-ids:raise ValueError('组合条件引用非法')
         for guide in recipe.get('guides',[]):
             path=(root/'docs'/guide).resolve()
             if (root/'docs').resolve() not in path.parents or not path.is_file(): raise ValueError('组合文档路径不存在：'+guide)
@@ -298,7 +309,7 @@ def validate_knowledge(concepts, recipes, by_id, root):
 
 
 def validate_facts(facts, record, concept_ids):
-    allowed={'status','concepts','evidence','operation','targets','extent','phase','batch','mutable_fields','local_inventory_only','unsupported_features','required_before','subject','target','property','action','cancellable','qualifiers'}
+    allowed={'status','concepts','evidence','operation','operations','targets','constraints','extent','phase','batch','mutable_fields','unsupported_features','required_before','subject','target','property','action','cancellable','qualifiers'}
     if set(facts)-allowed or facts.get('status') not in ('unknown','reviewed'):
         raise ValueError('能力事实格式不完整：'+record['id'])
     if not isinstance(facts.get('concepts'),list) or set(facts['concepts'])-concept_ids:
@@ -307,6 +318,21 @@ def validate_facts(facts, record, concept_ids):
         raise ValueError('未核验能力不能填写确定事实：'+record['id'])
     for field in ('action','subject','target','property','qualifiers'):
         if field in facts and (not isinstance(facts[field],list) or set(facts[field])-concept_ids): raise ValueError('能力角色概念非法：'+field)
+    for field,choices in FACT_CHOICES.items():
+        if field in facts and facts[field] not in choices:raise ValueError('能力事实值非法：'+field)
+    if 'cancellable' in facts and not isinstance(facts['cancellable'],bool):raise ValueError('取消能力必须为布尔值')
+    if 'operations' in facts:
+        if not isinstance(facts['operations'],list) or set(facts['operations'])-set(OPERATIONS) or ('read' in facts['operations'] and set(facts['operations']) & MUTATIONS): raise ValueError('能力操作集合非法或混合读写副作用')
+    if not isinstance(facts.get('constraints',[]),list):raise ValueError('能力条件必须为数组')
+    for rule in facts.get('constraints',[]):
+        if set(rule)-{'when','allow'} or not isinstance(rule.get('when',{}),dict) or not isinstance(rule.get('allow'),dict) or not rule['allow']:raise ValueError('能力条件规则非法')
+        fields={'target','target_scope','operation','extent','batch','side','kind'}
+        if (set(rule.get('when',{}))|set(rule['allow']))-fields:raise ValueError('未知能力条件字段')
+        if any(not isinstance(v,str) for v in rule.get('when',{}).values()) or any(not isinstance(v,list) or not v or any(not isinstance(x,str) for x in v) for v in rule['allow'].values()):raise ValueError('能力条件值非法')
+        for field,value in rule.get('when',{}).items():
+            if value not in INTENT_CHOICES[field]:raise ValueError('能力条件选择值非法：'+field)
+        for field,values in rule['allow'].items():
+            if set(values)-set(INTENT_CHOICES[field]):raise ValueError('能力条件允许值非法：'+field)
     if facts['status']=='reviewed':
         evidence=facts.get('evidence',{})
         if evidence.get('source_sha256')!=record['source_sha256'] or evidence.get('section')!=record['section_path']:
@@ -323,11 +349,13 @@ class Knowledge:
         self.recipes=index.get('recipes',[])
         self._query_cache={}; self._record_cache={}
 
-    def identify(self,text,explicit=()):
+    def identify(self,text,explicit=(),kind=None):
         if set(explicit)-self.concepts.keys(): raise ValueError('未知概念 ID：'+','.join(set(explicit)-self.concepts.keys()))
-        if text not in self._query_cache:
+        cache_key=(text,kind)
+        if cache_key not in self._query_cache:
             lower=text.lower();matches=[]
             for cid,c in self.concepts.items():
+                if kind not in (None,'all','auto') and c.get('kinds') and kind not in c['kinds']:continue
                 for alias in c['aliases']:
                     word=alias.lower()
                     for match in re.finditer(re.escape(word),lower):
@@ -338,8 +366,8 @@ class Knowledge:
             selected=[]
             for begin,end,cid in sorted(matches,key=lambda x:-(x[1]-x[0])):
                 if not any(begin>=a and end<=b and end-begin<b-a for a,b,_ in selected): selected.append((begin,end,cid))
-            self._query_cache[text]={cid for _,_,cid in selected}
-        return self.ancestors(self._query_cache[text] | set(explicit))
+            self._query_cache[cache_key]={cid for _,_,cid in selected}
+        return self.ancestors(self._query_cache[cache_key] | set(explicit))
 
     def ancestors(self,ids):
         result=set(ids);pending=list(ids)
@@ -352,26 +380,43 @@ class Knowledge:
         if r['id'] not in self._record_cache:
             facts=r.get('annotation',{}).get('facts',{})
             verified=(set(facts.get('concepts',[])) | set(sum((facts.get(k,[]) for k in ('action','subject','target','property','qualifiers')),[]))) if facts.get('status')=='reviewed' else set()
-            inferred=self.identify(r['description'])
+            if facts.get('status')=='reviewed':
+                verified.update(cid for cid,c in self.concepts.items() if c.get('requires_facts') and all(facts.get(k)==v for k,v in c['requires_facts'].items()))
+            # 参数是输入，备注可能是否定或上下文；不能当作本接口产生的能力。
+            positive,_=evidence_parts(r['description']+' '+json.dumps(r.get('returns',{}),ensure_ascii=False))
+            inferred=self.identify(positive,kind=r['kind'])
             self._record_cache[r['id']]=(self.ancestors(verified),inferred)
         return self._record_cache[r['id']]
 
-    def score(self,r,requested):
+    def score(self,r,requested,intent=None):
         if not requested:return 0
         verified,inferred=self.record_concepts(r)
         weights={'action':4,'target':1,'property':5,'qualifier':4}
         core={c for c in requested if not self.concepts[c].get('context_only',False)}
-        if not core:return 0
-        declared_core={c for c in verified if not self.concepts[c].get('context_only',False)}
-        if declared_core and not core & verified: return -100
-        if not core & (verified|inferred): return -100
-        total=sum(weights[self.concepts[c]['category']] for c in requested)
-        overlap=sum(weights[self.concepts[c]['category']] for c in requested & verified)
-        soft=sum(weights[self.concepts[c]['category']] for c in (requested-verified)&inferred)
-        conflict=sum(weights[self.concepts[c]['category']] for c in requested if set(self.concepts[c].get('excludes',[]))&verified)
-        implicit = sum(1 for c in verified if self.concepts[c].get('requires_explicit') and c not in requested)
-        extra = len({c for c in verified-requested if self.concepts[c]['category']=='property'})
-        return 100*(overlap+.2*soft-conflict*2)/max(1,total) - 80*implicit - 4*extra
+        # 领域词只帮助消歧，不能单独证明动作或属性。显式对象约束由合同核对处理。
+        domain=self.leaves({c for c in requested if self.concepts[c]['category']=='target'})
+        known=self.leaves({c for c in verified|inferred if self.concepts[c]['category']=='target'})
+        domain_match=sum(any(c in self.ancestors([k]) or k in self.ancestors([c]) for k in known) for c in domain)
+        domain_score=domain_match/max(1,len(domain)) if not (intent or {}).get('target') else 0
+        if not core:return domain_score
+        # 上位概念只用于蕴含，不重复计分；未请求的额外能力不惩罚通用接口。
+        core=self.leaves(core)
+        total=sum(weights[self.concepts[c]['category']] for c in core)
+        overlap=sum(weights[self.concepts[c]['category']] for c in core & verified)
+        soft=sum(weights[self.concepts[c]['category']] for c in (core-verified)&inferred)
+        implicit=set(r.get('annotation',{}).get('facts',{}).get('qualifiers',[]))-requested
+        return max(0,100*(overlap+.3*soft)/max(1,total)-30*bool(implicit)) + domain_score
+
+    def leaves(self,concepts):
+        parents=set().union(*(self.ancestors([c])-{c} for c in concepts)) if concepts else set()
+        return set(concepts)-parents
+
+    def conflicts(self,r,requested):
+        verified,_=self.record_concepts(r)
+        return {c for c in requested-verified if set(self.concepts[c].get('excludes',[])) & verified}
+
+    def primary_concepts(self,requested):
+        return {c for c in requested if not self.concepts[c].get('context_only',False) and self.concepts[c]['category']!='qualifier'}
 
     def coverage(self,r,requested):
         verified,_=self.record_concepts(r)
@@ -380,9 +425,10 @@ class Knowledge:
         missing=sorted(core-verified)
         return ('matched' if not missing else 'partial' if core&verified else 'unknown'),missing
 
-    def matching_recipes(self,requested,side):
+    def matching_recipes(self,requested,side,operation='any'):
         result=[]
         for recipe in self.recipes:
+            if operation!='any' and operation not in recipe.get('operations',[]):continue
             if recipe['side'] not in (side,'common') and side!='any':continue
             triggers=recipe.get('triggers',[recipe['concepts']])
             if any(set(trigger)<=requested for trigger in triggers):result.append(recipe)
@@ -401,6 +447,7 @@ def build(root=ROOT):
     recipes = json.loads((root / 'knowledge/recipes.json').read_text())
     validate_knowledge(concepts, recipes, by_id, root)
     concept_ids = {c['id'] for c in concepts['entries']}
+    vocabulary={c['id']:c for c in concepts['entries']}
     notes = {}
     if len({a['id'] for a in annotations['entries']}) != len(annotations['entries']):
         raise ValueError('标注目标重复')
@@ -421,10 +468,14 @@ def build(root=ROOT):
         facts = annotation.get('facts', {})
         validate_facts(facts, record, concept_ids)
         record['annotation'] = annotation
-        record['concept_aliases'] = sorted({alias for c in concepts['entries'] if c['id'] in facts.get('concepts',[]) for alias in c['aliases']})
-        record['capability_labels'] = [next(c['label'] for c in concepts['entries'] if c['id'] == cid) for cid in facts.get('concepts', [])]
+        supported=set(facts.get('concepts',[])) | set(sum((facts.get(k,[]) for k in ('action','subject','target','property','qualifiers')),[]))
+        record['concept_aliases'] = sorted({alias for cid in supported for alias in vocabulary[cid]['aliases']})
+        record['capability_labels'] = [vocabulary[cid]['label'] for cid in sorted(supported)]
+        record['capability_roles'] = {role:[vocabulary[cid]['label'] for cid in facts[role]] for role in ('action','subject','target','property','qualifiers') if facts.get(role)}
+        record['workflows'] = [{'id':recipe['id'],'label':recipe['label'],'steps':[{'label':step['label'],'entries':[{'name':by_id[rid]['name'],'url':by_id[rid]['wiki_url']} for rid in step['ids']]} for step in recipe['steps']], 'guides':[{'title':Path(guide).stem,'url':'/'+quote(guide.replace('.md','.html'),safe='/')} for guide in recipe['guides']], 'cautions':recipe['cautions']} for recipe in recipes['entries'] if any(record['id'] in step['ids'] for step in recipe['steps'])]
         notes[record['id']] = {**annotation, 'name': record['name'], 'side': record['side'], 'doc_path': record['doc_path'],
                                'heading_line': record['heading_line'], 'wiki_url': record['wiki_url'], 'capability_labels': record['capability_labels'], 'source_section': record['section_path'],
+                               'capability_roles':record['capability_roles'],'workflows':record['workflows'],
                                'related_entries': [{'name': by_id[i]['name'], 'side': by_id[i]['side'], 'url': by_id[i]['wiki_url']} for i in annotation.get('related', [])]}
     for record in records:
         profile = retrieval_profile(record)
@@ -483,6 +534,8 @@ TARGETS = {
 }
 OPERATIONS = ('any','read','write','create','set','delete','play','pause','resume','stop','observe')
 MUTATIONS = set(OPERATIONS) - {'any','read','observe'}
+FACT_CHOICES = {'operation':set(OPERATIONS)-{'any'},'extent':{'single','many','global','dimension'},'phase':{'before','after','change'},'batch':{'single','bulk'}}
+INTENT_CHOICES = {**FACT_CHOICES,'target':set(TARGETS),'target_scope':{'local_player','other_player','all_players'},'side':set(SIDE_NAMES),'kind':{'api','event','enum','document'}}
 READ_PREFIX = re.compile(r'^(?:get|is|has|can|check|lookup|exist|query|raycast)', re.I)
 WRITE_PREFIX = re.compile(r'^(?:set|add|remove|delete|destroy|create|enable|disable|start|stop|play|pause|resume|replay|reset|register|unregister|unlisten|listen|notify|broadcast|change|open|close|hide|show|lock|unlock|bind|unbind|clear|clean|spawn|use|kill|promote|trigger|emit|render|rotate|zoom|push|pop|insert|copy|replace|serialize|deserialize|update|upgrade|mirror|place|cancel|forbid|immune|depart|undepart|collect|swing|begin|end)', re.I)
 LIMIT_MARKER = re.compile(r'不支持|仅支持|只支持|仅适用于|仅适用|只适用于|仅能|不能(?:用于|用来|当作|直接|代替|修改|设置|获取|查询)|不(?:用于|提供|包含|包括|保证|等于|代表|代替|影响|改变|修改)|不是|需先|须先|必须先|需要先|才(?:会|能|生效)')
@@ -522,11 +575,16 @@ def retrieval_profile(record):
     facts = annotation.get('facts', {})
     verified = set()
     if facts.get('status') == 'reviewed':
-        for key in ('targets','operation','extent','phase','batch','local_inventory_only','unsupported_features','required_before'):
+        for key in ('targets','operation','operations','extent','phase','batch','constraints','unsupported_features','required_before'):
             if key in facts:
                 profile[key] = facts[key]; verified.add(key)
     profile['verified'] = sorted(verified)
     return profile
+
+
+def supports_operation(profile,operation):
+    supported=set(profile.get('operations',[profile['operation']]))
+    return bool(supported & MUTATIONS) if operation=='write' else operation in supported
 
 
 def prepare_intent(intent, defaults=None):
@@ -585,6 +643,15 @@ class Search:
         self._vectors = {}; self.profiles = {r['id']:retrieval_profile(r) for r in self.records}
         self.limitations = {}; self.positive_text = {}
 
+    def normalize_intent(self,intent):
+        # 显式角色与粗粒度对象约束共用同一条件核对，不按某个接口补规则。
+        explicit=sum((intent.get(k,[]) for k in ('concepts','action','subject','object','property','qualifiers')),[])
+        self.knowledge.identify('',explicit)
+        if not intent['target']:
+            targets={self.knowledge.concepts[c].get('target_key') for c in intent.get('object',[])}-{None}
+            if len(targets)==1:intent['target']=targets.pop()
+        return intent
+
     def vectors(self, strategy):
         key = 'raw' if strategy == 'raw' else 'annotated'
         if key in self._vectors: return self._vectors[key]
@@ -617,12 +684,11 @@ class Search:
     def lexical_score(self, index, qt, key, df):
         columns, averages = self._field_vectors[key]
         by_field = collections.defaultdict(list)
+        weights={term:math.log(1+(len(self.records)-df[term]+.5)/(df[term]+.5)) for term in qt}
+        total=sum(weights.values()) or 1
         for field,weight,v,size in columns[index]:
-            score = 0
-            for term in qt & v.keys():
-                tf = min(v[term],3)
-                idf = math.log(1+(len(self.records)-df[term]+.5)/(df[term]+.5))
-                score += idf*tf*2.2/(tf+1.2*(.25+.75*size/max(1,averages.get(field,1))))
+            # 各字段有固定得分上限，重复词和长正文不能压过能力合同。
+            score=sum(weights[term] for term in qt & v.keys())/total
             by_field[field].append(weight*score)
         # 每个别名独立归一化并取最佳值，新增无关别名不会拉长整条 API。
         return sum(max(values,default=0) for values in by_field.values())
@@ -634,16 +700,27 @@ class Search:
         p=self.profiles[r['id']]
         if intent['target'] and 'targets' in p['verified'] and intent['target'] not in p['targets']:return '对象类别不匹配'
         if 'targets' in p['verified'] and set(intent['exclude_targets']) & set(p['targets']):return '属于明确排除的对象类别'
-        if intent['operation']!='any' and 'operation' in p['verified'] and not (p['operation'] in MUTATIONS if intent['operation']=='write' else p['operation']==intent['operation']):return '操作类型不匹配或尚未核实'
+        if intent['operation']!='any' and 'operation' in p['verified'] and not supports_operation(p,intent['operation']):return '操作类型不匹配或尚未核实'
         if intent['extent']!='any' and 'extent' in p['verified'] and p['extent']!=intent['extent']:return '作用范围不匹配或尚未核实'
         if intent['batch']!='any' and 'batch' in p['verified'] and p['batch']!=intent['batch']:return '批量能力不匹配或尚未核实'
         facts=r.get('annotation',{}).get('facts',{})
+        concepts=self.knowledge.identify(intent['positive_query'],intent.get('concepts',[]),kind=intent['kind'])
+        if self.knowledge.conflicts(r,concepts):return '已核验能力与请求概念冲突'
+        for cid in concepts:
+            for field,value in self.knowledge.concepts[cid].get('requires_facts',{}).items():
+                if facts.get(field)!=value:return '尚未核实请求的能力条件：'+self.knowledge.concepts[cid]['label']
         for field in ('action','subject','object','property','qualifiers'):
             required=intent.get(field,[]); known=facts.get('target' if field=='object' else field)
             if required and known and not set(required)<=self.knowledge.ancestors(known):return '已核验能力角色不匹配'
+        explicit_objects={c for c in intent.get('concepts',[]) if self.knowledge.concepts[c]['category']=='target'}
+        known_objects=facts.get('target',[])
+        if explicit_objects and known_objects and not all(any(a in self.knowledge.ancestors([b]) or b in self.knowledge.ancestors([a]) for b in known_objects) for a in explicit_objects):return '已核验作用对象与显式概念不匹配'
         text=self.positive_text[(key,r['id'])]
         if any(term.lower() in text.lower() for term in intent['exclude']):return '命中排除条件'
-        if p.get('local_inventory_only') and intent['target']=='player_inventory' and intent['target_scope'] in ('other_player','all_players'):return '客户端完整背包读取仅支持本地玩家'
+        for rule in facts.get('constraints',[]):
+            if all(intent.get(k)==v for k,v in rule.get('when',{}).items()):
+                for field,values in rule['allow'].items():
+                    if intent.get(field) not in (None,'any') and intent[field] not in values:return '已核验条件不满足：'+field
         unsupported=p.get('unsupported_features',[])
         if any(term in unsupported for term in intent['must_support']) or any(term in intent['positive_query'] for term in unsupported):return '原文或标注明确不支持所要求的能力'
         if any(term.lower() not in text.lower() for term in intent['must_support']):return '尚未从能力说明核实所要求的特性'
@@ -655,7 +732,8 @@ class Search:
         if not qt:return [],[]
         scored=[];limited=[];query=intent['positive_query'].strip()
         exact_known=any(query.lower() in (r['name'].lower(),r['id'].lower(),r['key']) for r in self.records)
-        requested = self.knowledge.identify(intent['query'], intent.get('concepts', []) + sum((intent.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[]))
+        requested = self.knowledge.identify(intent['positive_query'], intent.get('concepts', []) + sum((intent.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[]),kind=intent['kind'])
+        qt.update(tokens(' '.join(self.knowledge.concepts[c]['label'] for c in self.knowledge.leaves(requested))))
         for position,(r,v) in enumerate(zip(self.records,vectors)):
             if not self.allowed(r,intent['side'],intent['kind'],intent['scope']):continue
             reason=self.constraint_reason(r,intent,key)
@@ -665,16 +743,17 @@ class Search:
             hits=qt & v.keys();score=1000 if exact else 0
             if not exact:
                 score = self.lexical_score(position, qt, key, df)
-                semantic = self.knowledge.score(r, requested)
-                if requested and any(not self.knowledge.concepts[c].get('context_only',False) for c in requested): score = score*.1 + semantic*3
+                semantic = self.knowledge.score(r, requested,intent)
+                if requested: score += semantic
                 profile = self.profiles[r['id']]
                 # 未核实的分类不能删除答案，但与请求相反的推断只作为低优先级线索。
                 if intent['operation'] != 'any' and profile['operation'] != 'unknown':
-                    compatible = profile['operation'] in MUTATIONS if intent['operation']=='write' else profile['operation']==intent['operation']
-                    if not compatible: score *= .2
-                if intent['target'] and intent['target'] not in profile['targets']: score *= .1
+                    compatible = supports_operation(profile,intent['operation'])
+                    if not compatible: score *= .2 if (intent['operation']=='read' or profile['operation']=='read') else .5
+                if intent['target'] and profile['targets'] and intent['target'] not in profile['targets']: score *= .1
                 if intent['extent'] != 'any' and profile['extent'] not in ('unknown',intent['extent']): score *= .25
-                if intent['phase'] != 'any' and 'phase' in profile['verified'] and semantic > 0:
+                verified,inferred=self.knowledge.record_concepts(r)
+                if intent['phase'] != 'any' and 'phase' in profile['verified'] and self.knowledge.primary_concepts(requested)&(verified|inferred):
                     score *= 1.2 if profile['phase']==intent['phase'] else .25
                 specific = profile.get('specializations',[])
                 if specific and not any(term in query for term in specific): score *= .5
@@ -695,8 +774,22 @@ class Search:
                 if best[0]>=max(4,len(qt)*.6):limited.append((float(best[0]),r,'仅命中限制说明',best[1],best[2]))
         return sorted(scored,key=lambda x:(-x[0],x[1]['id'])), sorted(limited,key=lambda x:(-x[0],x[1]['id']))
 
+    def supported_selection(self,intent,selection):
+        """边界已命中时，不用只有背景词相关的入口填补能力缺口；搜索召回仍保留。"""
+        ranked,limited=selection
+        requested=self.knowledge.identify(intent['positive_query'],intent.get('concepts',[]),kind=intent['kind'])
+        core=self.knowledge.primary_concepts(requested)
+        if not ranked or not core:return selection
+        def supported(record):
+            verified,inferred=self.knowledge.record_concepts(record)
+            return bool(core & (verified|inferred))
+        # 事件的取消/阶段限定不能代替触发行为；通用搜索仍可发现这些弱候选。
+        if not supported(ranked[0][1]) and (intent['kind']=='event' or any(supported(entry[1]) or self.knowledge.conflicts(entry[1],core) for entry in limited)):
+            return [entry for entry in ranked if supported(entry[1])],limited
+        return selection
+
     def search(self,query,strategy='annotated',limit=5,side='any',kind='all',scope='modsdk',offset=0,**constraints):
-        intent=prepare_intent({'query':query,'side':side,'kind':kind,'scope':scope,**constraints})
+        intent=self.normalize_intent(prepare_intent({'query':query,'side':side,'kind':kind,'scope':scope,**constraints}))
         ranked,_=self.ranked(intent,strategy);return ranked[offset:offset+limit]
 
     def phase_relations(self, records, side, scope):
@@ -711,8 +804,16 @@ class Search:
                 result.append(item)
         return result
 
+    def permitted_dependency(self,record,intent,strategy):
+        profile=self.profiles[record['id']]
+        key='raw' if strategy=='raw' else 'annotated'
+        return (self.allowed(record,intent['side'],'all',intent['scope'])
+                and not (intent.get('read_only') and profile['operation'] not in ('read','observe'))
+                and not (set(intent['exclude_targets']) & set(profile['targets']))
+                and not any(term.lower() in self.positive_text[(key,record['id'])].lower() for term in intent['exclude']))
+
     def search_response(self,query,strategy='annotated',limit=5,side='any',kind='auto',scope='modsdk',offset=0,**constraints):
-        intent=prepare_intent({'query':query,'side':side,'kind':kind,'scope':scope,**constraints});ranked,limited=self.ranked(intent,strategy)
+        intent=self.normalize_intent(prepare_intent({'query':query,'side':side,'kind':kind,'scope':scope,**constraints}));ranked,limited=self.ranked(intent,strategy)
         selected=ranked[offset:offset+limit]
         return {'query':query,'scope':scope,'kind':intent['kind'],'operation':intent['operation'],
                 'results':[self.summary(r) for _,r in selected], 'related':self.phase_relations([r for _,r in selected],side,scope), 'limitations':[self.limitation_summary(x) for x in limited[:2]],
@@ -724,19 +825,22 @@ class Search:
         if not isinstance(plan,dict) or set(plan)-{'intents','side','scope','read_only'}:raise ValueError('计划仅接受 intents、side、scope、read_only')
         raw=plan.get('intents');defaults={'side':plan.get('side',side),'scope':plan.get('scope',scope),'read_only':plan.get('read_only',False)}
         if not isinstance(raw,list) or not 1<=len(raw)<=12:raise ValueError('计划需要 1–12 个子目标')
-        intents=[prepare_intent(x,defaults) for x in raw]
+        intents=[self.normalize_intent(prepare_intent(x,defaults)) for x in raw]
         labels=[str(x.get('id',i+1)) for i,x in enumerate(intents)]
         if len(set(labels))!=len(labels):raise ValueError('子目标 id 不能重复')
         if limit<len(intents):raise ValueError('limit 至少等于子目标数，不能静默遗漏子目标')
-        selections=[self.ranked(x,strategy) for x in intents];selected=[];allocated=[[] for _ in intents];prerequisites={};budget_limited=set();dependency_conflicts=set()
+        selections=[self.supported_selection(x,self.ranked(x,strategy)) for x in intents];selected=[];allocated=[[] for _ in intents];prerequisites={};budget_limited=set();dependency_conflicts=set()
         def include(record, i):
             if record['id'] not in selected:
                 if len(selected)>=limit:return False
                 selected.append(record['id'])
             if record['key'] not in allocated[i]:allocated[i].append(record['key'])
             return True
-        requested = [self.knowledge.identify(i['query'], i.get('concepts', []) + sum((i.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[])) for i in intents]
-        workflows = [self.knowledge.matching_recipes(c, i['side']) for c,i in zip(requested,intents)]
+        requested = [self.knowledge.identify(i['positive_query'], i.get('concepts', []) + sum((i.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[]),kind=i['kind']) for i in intents]
+        workflows = [self.knowledge.matching_recipes(c, i['side'],i['operation']) if i['kind'] in ('api','all') else [] for c,i in zip(requested,intents)]
+        for i,recipes in enumerate(workflows):
+            workflows[i]=[recipe for recipe in recipes if all(self.permitted_dependency(self.by_id[rid],intents[i],strategy) for step in recipe['steps'] for rid in step['ids'])]
+            if recipes and not workflows[i]:dependency_conflicts.add(i)
         # 先分配已知能力链，其余子目标再分配主要候选。
         for i,(ranked,_) in enumerate(selections):
             if workflows[i]:
@@ -749,53 +853,45 @@ class Search:
             r=ranked[0][1]
             for dep in self.profiles[r['id']].get('required_before',[]):
                 other=self.by_id[dep]
-                if (not self.allowed(other,intents[i]['side'],'all',intents[i]['scope'])
-                    or (intents[i].get('read_only') and self.profiles[dep]['operation'] not in ('read','observe'))
-                    or set(intents[i]['exclude_targets']) & set(self.profiles[dep]['targets'])
-                    or any(term.lower() in self.positive_text[('raw' if strategy=='raw' else 'annotated',dep)].lower() for term in intents[i]['exclude'])):
+                if not self.permitted_dependency(other,intents[i],strategy):
                     dependency_conflicts.add(i);continue
                 if include(other,i):prerequisites.setdefault(r['key'],[]).append(other['key'])
                 else:budget_limited.add(i)
-        # 自动补充互补事实，而不是每项无条件增加第二个相似接口。
-        for i,(ranked,_) in enumerate(selections):
-            if workflows[i] or not ranked: continue
-            core = {c for c in requested[i] if not self.knowledge.concepts[c].get('context_only',False)}
-            covered = self.knowledge.record_concepts(ranked[0][1])[0]
-            missing = core - covered
-            if not missing or not core & covered: continue
-            for _,other in ranked[1:8]:
-                additional = self.knowledge.record_concepts(other)[0]
-                if missing <= additional and not (intents[i].get('extent') not in (None,'any') and self.profiles[other['id']]['extent'] not in ('unknown',intents[i]['extent'])) and not any(set(self.knowledge.concepts[c].get('excludes',[])) & additional for c in core):
-                    if not include(other,i): budget_limited.add(i)
-                    break
+        # 互补能力只由有来源的组合关系分配；词面重叠不构成接线依据。
         for rank in range(1,per_intent):
             for i,(ranked,_) in enumerate(selections):
                 if len(ranked)>rank:include(ranked[rank][1],i)
         groups=[];limited_records={}
         for i,intent in enumerate(intents):
             limits=selections[i][1][:1]
-            for entry in limits:limited_records[entry[1]['key']]=self.limitation_summary(entry)
-            status='budget_limited' if i in budget_limited else 'candidates' if selections[i][0] else 'no_capability_match'
+            status='budget_limited' if i in budget_limited else 'candidates' if allocated[i] else 'no_capability_match'
             if i in dependency_conflicts:status='prerequisite_conflict'
             if selections[i][0] and intent['phase']!='any':
                 phase_profile=self.profiles[selections[i][0][0][1]['id']]
                 if 'phase' not in phase_profile['verified'] or phase_profile['phase']!=intent['phase']:status='timing_review'
             core = {c for c in requested[i] if not self.knowledge.concepts[c].get('context_only',False)}
             known = set()
-            for key in allocated[i]:
-                record = next(r for r in self.records if r['key']==key)
-                known |= self.knowledge.record_concepts(record)[0]
+            # 替代候选与前置接口不能合并成虚假的完整能力。
+            if selections[i][0]:
+                known=self.knowledge.record_concepts(selections[i][0][0][1])[0]
             missing = sorted(core-known)
             coverage = 'matched' if core and not missing else 'partial' if core & known else 'unknown'
             if workflows[i]:
-                coverage = 'partial' if set(workflows[i][0].get('unverified_concepts',[])) & requested[i] else workflows[i][0]['status']
-                missing = sorted(set(workflows[i][0].get('unverified_concepts',[])) & requested[i])
+                recipe=workflows[i][0]
+                route_known=self.knowledge.ancestors(set(recipe['concepts'])|set(recipe.get('input_concepts',[])))
+                for step in recipe['steps']:
+                    for rid in step['ids']:route_known.update(self.knowledge.record_concepts(self.by_id[rid])[0])
+                missing=sorted((core-route_known)|(set(recipe.get('unverified_concepts',[]))&requested[i]))
+                coverage='partial' if missing else recipe['status']
             missing_roles=[]
+            if selections[i][0] and not workflows[i]:
+                primary=self.profiles[selections[i][0][0][1]['id']]
+                if intent['operation']!='any' and not set(primary['verified'])&{'operation','operations'}:missing_roles.append('operation')
             for role in ('action','subject','object','property','qualifiers'):
                 required=set(intents[i].get(role,[]))
                 if not required:continue
                 actual=set()
-                for key in allocated[i]:
+                for key in allocated[i] if workflows[i] else allocated[i][:1]:
                     record=next(r for r in self.records if r['key']==key)
                     actual.update(record.get('annotation',{}).get('facts',{}).get('target' if role=='object' else role,[]))
                 if required-self.knowledge.ancestors(actual):missing_roles.append(role)
@@ -804,7 +900,12 @@ class Search:
             group={'id':labels[i], 'candidates':allocated[i], 'status':status, 'coverage':coverage}
             if missing: group['missing_concepts']=missing
             if missing_roles: group['missing_roles']=missing_roles
-            if limits: group['limitations']=[entry[1]['key'] for entry in limits]
+            if selections[i][0]:
+                verified,inferred=self.knowledge.record_concepts(selections[i][0][0][1])
+                group['evidence']={'verified':sorted(core&verified),'textual':sorted((core-verified)&inferred)}
+            if limits and coverage != 'matched':
+                group['limitations']=[entry[1]['key'] for entry in limits]
+                for entry in limits:limited_records[entry[1]['key']]=self.limitation_summary(entry)
             groups.append(group)
         related=[];related_seen=set();selected_keys={self.by_id[rid]['key'] for rid in selected}
         for i,(ranked,_) in enumerate(selections):
@@ -898,7 +999,8 @@ def compact_result(result, command):
                 if state=='needs_review':state=group['coverage']
                 if state!='candidates':item['state']=state
                 if group.get('missing_concepts'):item['missing']=group['missing_concepts']
-                if group.get('missing_roles'):item['missing_roles']=group['missing_roles']
+                roles=group.get('missing_roles',[])
+                if roles and not (roles==['operation'] and group['coverage']=='unknown'):item['missing_roles']=roles
                 groups.append(item)
             output['intents']=groups
         if result.get('related'):output['related']=[candidate(x) for x in result['related']]
@@ -955,7 +1057,7 @@ def main():
         if command == 'resolve':
             p.add_argument('--plan-file', help='结构化子目标 JSON；- 从 stdin 读取')
             p.add_argument('--per-intent', type=int, choices=[1,2,3], default=1, help='每个子目标最多返回的候选数，默认一项')
-    sub.add_parser('schema')
+    p = sub.add_parser('schema'); p.add_argument('query',nargs='?',help='按中文词或概念 ID 查阅词表'); p.add_argument('--all-concepts',action='store_true',help='显式展开完整词表')
     p = sub.add_parser('detail'); p.add_argument('ids', nargs='+')
     p.add_argument('--side', choices=['any', 'server', 'client', 'common'], default='any')
     p.add_argument('--scope', choices=['modsdk', 'preset', 'all'], default='modsdk')
@@ -971,6 +1073,15 @@ def main():
         result = build(args.root)
     elif args.command == 'schema':
         result = {'schema_version': SCHEMA_VERSION, 'targets': TARGETS, 'operations': list(OPERATIONS), 'extents': ['any','single','many','global','dimension'], 'phases': ['any','before','after','change'], 'batch': ['any','bulk'], 'target_scopes': ['any','local_player','other_player','all_players'], 'intent_fields': ['id','query','side','scope','kind','operation','target','extent','read_only','exclude_targets','exclude','must_support','target_scope','phase','batch','concepts','action','subject','object','property','qualifiers'], 'concepts': [{k:c[k] for k in ('id','label','category')} for c in load(args.root)['concepts']], 'phase_behavior': '阶段用于排序；关联事件仍在 related 返回。timing_review 表示主候选阶段未匹配，不能作为已满足需求。', 'plan': {'side': 'server', 'intents': [{'id':'a','query':'读取箱子容量','kind':'api','operation':'read','target':'block_container'}]}}
+        if not args.all_concepts:
+            if args.query:
+                words=args.query.lower().split()
+                catalog=load(args.root)['concepts']
+                matched={c['id'] for c in catalog if any(word in ' '.join([c['id'],c['label'],*c['aliases']]).lower() for word in words)}
+                result['concepts']=[c for c in result['concepts'] if c['id'] in matched]
+            else:
+                result.pop('concepts')
+                result['concept_lookup']='schema <概念词>；完整词表用 --all-concepts'
     elif args.command == 'section':
         file = (args.root / 'docs' / args.file).resolve()
         if (args.root / 'docs').resolve() not in file.parents:
