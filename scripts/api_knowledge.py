@@ -684,14 +684,14 @@ class Search:
     def lexical_score(self, index, qt, key, df):
         columns, averages = self._field_vectors[key]
         by_field = collections.defaultdict(list)
-        weights={term:math.log(1+(len(self.records)-df[term]+.5)/(df[term]+.5)) for term in qt}
-        total=sum(weights.values()) or 1
+        weights={term:math.log(1+(len(self.records)-df[term]+.5)/(df[term]+.5)) for term in sorted(qt)}
+        total=math.fsum(weights.values()) or 1
         for field,weight,v,size in columns[index]:
             # 各字段有固定得分上限，重复词和长正文不能压过能力合同。
-            score=sum(weights[term] for term in qt & v.keys())/total
+            score=math.fsum(weights[term] for term in sorted(qt & v.keys()))/total
             by_field[field].append(weight*score)
         # 每个别名独立归一化并取最佳值，新增无关别名不会拉长整条 API。
-        return sum(max(values,default=0) for values in by_field.values())
+        return math.fsum(max(values,default=0) for values in by_field.values())
 
     def allowed(self,r,side,kind,scope):
         return (scope=='all' or r['scope']==scope) and (side=='any' or r['side'] in (side,'common')) and (kind in ('all','auto') or r['kind']==kind)
