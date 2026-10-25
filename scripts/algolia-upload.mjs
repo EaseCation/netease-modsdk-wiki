@@ -98,6 +98,7 @@ async function generate() {
     execFileSync(process.env.PYTHON || 'python3', ['scripts/api_knowledge.py', 'build'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'inherit'] });
     const index = JSON.parse(await readFile(join(ROOT, '.api-index/index.json'), 'utf8'));
     const notes = Object.values(JSON.parse(await readFile(join(ROOT, '.api-index/notes.json'), 'utf8')));
+    if (notes.some(note => note.corpus_sha256 !== index.corpus_sha256)) throw new Error('标注与索引不是同一语料快照');
     const bySection = new Map();
     for (const entry of index.records) {
         const key = `${entry.doc_path}#${entry.anchor}`;
@@ -112,32 +113,41 @@ async function generate() {
         const pageTitle = docPath.replace(/\.md$/, '').split('/').map(p => p.replace(/^\d+-/, '')).join(' / ');
         for (const section of sections(content, docPath)) {
             const entries = bySection.get(`${docPath}#${section.anchor}`) || [];
-            const annotations = entries.flatMap(e => e.annotation ? [e.annotation] : []);
-            for (const note of annotations) joined.add(note.id);
             const body = clean(textOf(section.tokens));
             if (!body && !section.title) continue;
+            // API、组件变体与端侧各自成记录；文章章节仍保留独立记录。
+            for (const entry of entries.length ? entries : [null]) {
+            const variants = entry ? [entry] : [];
+            const annotations = variants.flatMap(e => e.annotation ? [e.annotation] : []);
+            for (const note of annotations) joined.add(note.id);
             const url = `${SITE}/${docPath.replace(/\.md$/, '.html').split('/').map(encodeURIComponent).join('/')}${section.anchor ? '#' + encodeURIComponent(section.anchor) : ''}`;
             const hierarchy = { lvl0: pageTitle, lvl1: section.h1 || data.title || pageTitle };
             if (section.level === 2) hierarchy.lvl2 = section.title;
             const record = {
-                objectID: createHash('sha256').update(`${docPath}#${section.anchor}`).digest('hex').slice(0, 24),
+                objectID: createHash('sha256').update(`${docPath}#${section.anchor}:${entry?.id || "document"}`).digest('hex').slice(0, 24),
                 url, type: section.level ? `lvl${section.level}` : 'content', hierarchy,
-                apiName: unique(entries.filter(e => e.kind !== 'document').map(e => e.name)),
-                description: unique(entries.map(e => e.description)).join('；'),
-                content: body,
+                apiName: unique(variants.filter(e => e.kind !== 'document').map(e => e.name)),
+                description: unique(variants.map(e => e.description)).join('；'),
+                content: entry ? clean(textOf(md.parse(entry.raw, { path: join(DOCS, docPath), relativePath: docPath }))) : body,
+                recordGroup: entry?.id || `${docPath}#${section.anchor}`,
+                corpus_sha256: index.corpus_sha256,
+                capabilityLabels: entry?.capability_labels || [],
+                facts: entry?.annotation?.facts || {status:'unknown',concepts:[]},
+                returns: entry?.returns?.description || '',
                 tags: unique(annotations.flatMap(a => a.tags || [])),
-                aliases: unique(annotations.flatMap(a => a.aliases || [])),
+                aliases: unique([...annotations.flatMap(a => a.aliases || []), ...(entry?.concept_aliases || [])]),
                 questions: unique(annotations.flatMap(a => a.questions || [])),
                 usage: unique(annotations.map(a => a.usage)).join('\n'),
                 cautions: unique(annotations.flatMap(a => a.cautions || [])),
                 annotationIds: annotations.map(a => a.id),
-                side: unique(entries.map(e => e.side)),
-                scope: entries.some(e => e.scope === 'preset') || /预设|preset/i.test(docPath) ? 'preset' : 'modsdk',
+                side: unique(variants.map(e => e.side)),
+                scope: variants.some(e => e.scope === 'preset') || /预设|preset/i.test(docPath) ? 'preset' : 'modsdk',
                 lang: 'zh-CN', _tags: ['zh-CN'], rootType,
                 priority: { mcdocs: 3, mcguide: 2, mconline: 1 }[rootType] || 0,
                 contentLength: body.length,
             };
             records.push(...chunks(record));
+            }
             sectionCount++;
         }
     }
@@ -155,15 +165,15 @@ async function generate() {
 }
 
 const SETTINGS = {
-    searchableAttributes: ['unordered(apiName)', 'unordered(tags)', 'unordered(aliases)', 'unordered(description)',
+    searchableAttributes: ['unordered(apiName)', 'unordered(capabilityLabels)', 'unordered(description)', 'unordered(returns)', 'unordered(tags)', 'unordered(aliases)',
         'unordered(hierarchy.lvl2)', 'unordered(hierarchy.lvl1)', 'unordered(questions)', 'unordered(usage)',
         'unordered(cautions)', 'unordered(content)', 'unordered(hierarchy.lvl0)'],
-    attributesForFaceting: ['lang', 'type', 'rootType', 'scope', 'side', 'tags'],
+    attributesForFaceting: ['lang', 'type', 'rootType', 'scope', 'side', 'tags', 'facts.concepts'],
     attributesToHighlight: ['hierarchy.lvl0', 'hierarchy.lvl1', 'hierarchy.lvl2', 'content', 'tags', 'description'],
     attributesToSnippet: ['content:50', 'description:40'],
-    attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'lang', 'priority', 'rootType', 'scope', 'side', 'tags', 'apiName'],
+    attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'lang', 'priority', 'rootType', 'scope', 'side', 'tags', 'apiName', 'capabilityLabels', 'side', 'facts'],
     customRanking: ['desc(priority)', 'asc(contentLength)'],
-    attributeForDistinct: 'url', distinct: 1,
+    attributeForDistinct: 'recordGroup', distinct: 1,
     indexLanguages: ['zh'], queryLanguages: ['zh'],
 };
 

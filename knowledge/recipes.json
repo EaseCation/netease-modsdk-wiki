@@ -1,0 +1,90 @@
+{
+  "schema_version": 3,
+  "entries": [
+    {
+      "id": "block.restore",
+      "label": "方块状态捕获与恢复",
+      "concepts": [
+        "restore",
+        "block"
+      ],
+      "side": "server",
+      "status": "matched",
+      "steps": [
+        {
+          "label": "破坏前保存方块及状态",
+          "ids": [
+            "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew",
+            "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates"
+          ]
+        },
+        {
+          "label": "恢复已保存的方块",
+          "ids": [
+            "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew"
+          ]
+        }
+      ],
+      "cautions": [
+        "只恢复已记录的状态；容器与方块实体数据需单独保存，不能回滚未记录的数据。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/世界/方块管理.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew": "17346fd8a45c67cdc18f5018aa8bd5c08a5ec855babfe4467d5ffb89accfab41",
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates": "05e05752df40e55381ba035290655b9c74fde96e0ae6b28587a06115e5347a11",
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew": "ff481a38502792c4d3732574606b89d723c9e17c60f7b952393aa63d6e74855f"
+      }
+    },
+    {
+      "id": "player.animation",
+      "label": "玩家自定义动画接线",
+      "concepts": [
+        "animation",
+        "custom_animation"
+      ],
+      "side": "client",
+      "status": "matched",
+      "steps": [
+        {
+          "label": "注册动画与控制器",
+          "ids": [
+            "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimation",
+            "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationController"
+          ]
+        },
+        {
+          "label": "接入状态",
+          "ids": [
+            "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationIntoState"
+          ]
+        }
+      ],
+      "cautions": [
+        "需要动画 JSON 和状态驱动；第一人称抬手与现有资源包、模型的组合必须按目标包体核验。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/玩家/渲染.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimation": "198de303e3525b88097acc99eb02e183a862815e41ac9cec67abf49bfa6e740d",
+        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationController": "42153e3fdde5133460e9cf41f977e8246524fed891072abba825aeb636714d56",
+        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationIntoState": "7fb574ece3d0dc494b505acce0f6808ff1133132687c1215c1a3940b8218be8a"
+      },
+      "triggers": [
+        [
+          "animation",
+          "custom_animation"
+        ],
+        [
+          "animation",
+          "first_person"
+        ]
+      ],
+      "unverified_concepts": [
+        "first_person"
+      ]
+    }
+  ]
+}

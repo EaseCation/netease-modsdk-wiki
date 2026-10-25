@@ -80,7 +80,7 @@ def main():
         json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     lines = ['# 当前站点链接检查', '',
              f'检查 {len(pages)} 个生成页面；缺失路径 {len(missing)} 个；缺失锚点 {len(anchors)} 个。',
-             f'已明确标为不可用的历史链接 {len(unavailable)} 个。',
+             f'已明确标为不可用的原文链接 {len(unavailable)} 个。',
              '本报告检查站内文件和锚点；未逐一请求全部外链，不能据此判断外部网站可用性。', '']
     for title, issues in [('缺失页面或附件', missing), ('缺失页内锚点', anchors)]:
         lines += [f'## {title}', '']
@@ -92,11 +92,11 @@ def main():
             lines += [f'- `{target}`：{len(refs)} 个页面/引用；'
                       f'[示例来源](<{source}>)。']
         lines.append('')
-    lines += ['## 原文已失效的链接', '']
+    lines += ['## 未能定位的原文链接', '']
     lines += [f'- `{href}`：{", ".join(refs)}' for href, refs in sorted(unavailable.items())]
     (git_dir / 'docs-link-report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print(f'页面 {len(pages)}；缺失路径 {len(missing)}；缺失锚点 {len(anchors)}；'
-          f'原文已失效链接 {len(unavailable)}。')
+          f'未能定位的原文链接 {len(unavailable)}。')
     print(f'详细清单：{git_dir / "docs-link-report.md"}')
     return 1 if missing or anchors else 0
 

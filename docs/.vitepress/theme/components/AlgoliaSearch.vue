@@ -85,7 +85,9 @@ function initialize(userOptions: DefaultTheme.AlgoliaSearchOptions) {
     transformItems(items) {
       return items.map((item) => {
         const snippetResult = item._snippetResult;
-        const description = (item as typeof item & { description?: string }).description;
+        const metadata = item as typeof item & { description?: string; side?: string[]; capabilityLabels?: string[] };
+        const sides = (metadata.side || []).map(side => ({server:'服务端',client:'客户端',common:'通用'}[side] || side));
+        const description = [sides.join(' / '), metadata.description].filter(Boolean).join(' · ');
         if (description && snippetResult?.hierarchy?.lvl2 && snippetResult.hierarchy.lvl1) {
             const original = snippetResult.hierarchy.lvl1.value;
             if (!original.includes("<br>")) {

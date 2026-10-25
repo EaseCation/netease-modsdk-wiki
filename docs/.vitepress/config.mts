@@ -196,7 +196,7 @@ export default withMermaid({
         indexName: 'netease-modsdk',
         searchParameters: {
           // DocSearch 默认请求会覆盖服务端字段设置，显式保留结构化描述与标签。
-          attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'tags', 'apiName'],
+          attributesToRetrieve: ['hierarchy', 'content', 'description', 'type', 'url', 'tags', 'apiName', 'capabilityLabels', 'side'],
           // 默认排除历史课程与 Preset；明确搜索预设时由搜索组件切换范围。
           facetFilters: ['rootType:-mconline', 'scope:modsdk']
         },

@@ -1,0 +1,1230 @@
+{
+  "schema_version": 3,
+  "entries": [
+    {
+      "id": "block",
+      "label": "方块",
+      "category": "target",
+      "aliases": [
+        "方块",
+        "一格",
+        "某格",
+        "厨具",
+        "灶台",
+        "作物"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "player",
+      "label": "玩家",
+      "category": "target",
+      "aliases": [
+        "玩家",
+        "角色",
+        "骑手",
+        "本地玩家"
+      ],
+      "parents": [
+        "entity"
+      ],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "entity",
+      "label": "实体",
+      "category": "target",
+      "aliases": [
+        "实体",
+        "生物",
+        "怪物",
+        "动物",
+        "坐骑",
+        "敌人"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "inventory",
+      "label": "背包",
+      "category": "target",
+      "aliases": [
+        "背包",
+        "物品栏",
+        "背包格",
+        "背包槽"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "held",
+      "label": "主手物品",
+      "category": "target",
+      "aliases": [
+        "主手物品",
+        "手持",
+        "主手",
+        "手中",
+        "当前选中"
+      ],
+      "parents": [
+        "inventory"
+      ],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "ui",
+      "label": "界面控件",
+      "category": "target",
+      "aliases": [
+        "界面控件",
+        "UI",
+        "ui",
+        "界面",
+        "控件",
+        "按钮",
+        "进度条"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "armour",
+      "label": "盔甲",
+      "category": "target",
+      "aliases": [
+        "盔甲",
+        "盔甲栏",
+        "护甲槽"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "weapon",
+      "label": "武器",
+      "category": "target",
+      "aliases": [
+        "武器"
+      ],
+      "parents": [
+        "held"
+      ],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "break",
+      "label": "破坏",
+      "category": "action",
+      "aliases": [
+        "破坏",
+        "摧毁",
+        "挖掘",
+        "挖掉",
+        "采掉",
+        "拆掉"
+      ],
+      "parents": [],
+      "excludes": [
+        "place"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "place",
+      "label": "放置",
+      "category": "action",
+      "aliases": [
+        "放置",
+        "放上",
+        "放下",
+        "建造",
+        "放方块"
+      ],
+      "parents": [],
+      "excludes": [
+        "break"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "restore",
+      "label": "恢复方块",
+      "category": "action",
+      "aliases": [
+        "恢复方块",
+        "还原",
+        "撤销",
+        "恢复之前"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "count",
+      "label": "数量",
+      "category": "property",
+      "aliases": [
+        "数量",
+        "数目",
+        "几个",
+        "个数",
+        "剩余量"
+      ],
+      "parents": [],
+      "excludes": [
+        "swap"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "swap",
+      "label": "槽位交换",
+      "category": "property",
+      "aliases": [
+        "槽位交换",
+        "交换槽位",
+        "交换玩家背包",
+        "背包交换"
+      ],
+      "parents": [],
+      "excludes": [
+        "count"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "position",
+      "label": "位置",
+      "category": "property",
+      "aliases": [
+        "位置",
+        "坐标",
+        "挪到"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "orientation",
+      "label": "朝向",
+      "category": "property",
+      "aliases": [
+        "朝向",
+        "方向状态",
+        "俯仰",
+        "转角",
+        "偏航",
+        "旋转角",
+        "朝向角"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "block_state",
+      "label": "方块状态",
+      "category": "property",
+      "aliases": [
+        "方块状态",
+        "朝向状态",
+        "方块状态信息"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "name",
+      "label": "名称",
+      "category": "property",
+      "aliases": [
+        "名称",
+        "是什么"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "item_use",
+      "label": "使用物品",
+      "category": "action",
+      "aliases": [
+        "使用物品",
+        "用物品",
+        "物品使用",
+        "用在",
+        "物品对",
+        "手中食材"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "state",
+      "label": "状态数据",
+      "category": "property",
+      "aliases": [
+        "状态数据",
+        "加工状态",
+        "加工进度",
+        "存储内容",
+        "方块保存",
+        "厨具方块实体",
+        "自定义数据",
+        "加工数据"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "damage",
+      "label": "伤害",
+      "category": "property",
+      "aliases": [
+        "伤害",
+        "扣血",
+        "受伤"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "damage_edit",
+      "label": "伤害修改",
+      "category": "qualifier",
+      "aliases": [
+        "伤害修改",
+        "取消本次伤害",
+        "拦截伤害",
+        "伤害计算",
+        "改写本次伤害",
+        "修改本次伤害",
+        "伤害改为零",
+        "伤害改为",
+        "修改伤害",
+        "伤害数值"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "hunger",
+      "label": "饥饿值",
+      "category": "property",
+      "aliases": [
+        "饥饿值",
+        "饱食度",
+        "食物条",
+        "饥饿度"
+      ],
+      "parents": [],
+      "excludes": [
+        "hunger_threshold"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "hunger_threshold",
+      "label": "饥饿临界值",
+      "category": "property",
+      "aliases": [
+        "饥饿临界值",
+        "饥饿阈值"
+      ],
+      "parents": [],
+      "excludes": [
+        "hunger"
+      ],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "attack",
+      "label": "攻击",
+      "category": "action",
+      "aliases": [
+        "攻击",
+        "攻击命中"
+      ],
+      "parents": [],
+      "excludes": [
+        "receiving_damage"
+      ],
+      "context_only": false,
+      "requires_explicit": true
+    },
+    {
+      "id": "permissions",
+      "label": "权限控制",
+      "category": "qualifier",
+      "aliases": [
+        "权限控制",
+        "权限",
+        "禁止",
+        "不允许",
+        "关闭角色攻击"
+      ],
+      "parents": [],
+      "excludes": [],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "doors",
+      "label": "门和开关",
+      "category": "property",
+      "aliases": [
+        "门和开关",
+        "开门",
+        "操作门",
+        "门及"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "containers",
+      "label": "容器访问",
+      "category": "property",
+      "aliases": [
+        "容器访问",
+        "开箱",
+        "开启箱子",
+        "打开箱子",
+        "打开容器",
+        "开启容器"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "movement",
+      "label": "移动输入",
+      "category": "property",
+      "aliases": [
+        "移动输入",
+        "方向输入",
+        "移动摇杆",
+        "无法走动",
+        "无法移动"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "jump",
+      "label": "跳跃",
+      "category": "property",
+      "aliases": [
+        "跳跃",
+        "跳起",
+        "跳跃键",
+        "跳跃按钮"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "press",
+      "label": "按下",
+      "category": "qualifier",
+      "aliases": [
+        "按下",
+        "开始按压",
+        "按压"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "release",
+      "label": "松开",
+      "category": "qualifier",
+      "aliases": [
+        "松开",
+        "抬起",
+        "释放"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "keyboard",
+      "label": "键盘按键",
+      "category": "property",
+      "aliases": [
+        "键盘按键",
+        "快捷键",
+        "键盘",
+        "按键"
+      ],
+      "parents": [],
+      "excludes": [
+        "layout"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "layout",
+      "label": "按键映射",
+      "category": "property",
+      "aliases": [
+        "按键映射",
+        "键盘布局"
+      ],
+      "parents": [],
+      "excludes": [
+        "keyboard"
+      ],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "click",
+      "label": "按钮点击",
+      "category": "property",
+      "aliases": [
+        "按钮点击",
+        "点击回调",
+        "点完按钮",
+        "触摸抬起",
+        "触控弹起"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "drag",
+      "label": "拖动",
+      "category": "action",
+      "aliases": [
+        "拖动"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "hover",
+      "label": "悬浮",
+      "category": "property",
+      "aliases": [
+        "悬浮",
+        "鼠标进入"
+      ],
+      "parents": [],
+      "excludes": [],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "animation",
+      "label": "动画",
+      "category": "property",
+      "aliases": [
+        "动画",
+        "动作",
+        "姿态",
+        "姿势",
+        "抬手"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "custom_animation",
+      "label": "自定义姿势",
+      "category": "qualifier",
+      "aliases": [
+        "自定义姿势",
+        "受限姿势",
+        "束缚姿态",
+        "自定义束缚",
+        "自定义武器",
+        "自定义攻击动画"
+      ],
+      "parents": [
+        "animation"
+      ],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "first_person",
+      "label": "第一人称",
+      "category": "qualifier",
+      "aliases": [
+        "第一人称",
+        "第一视角"
+      ],
+      "parents": [],
+      "excludes": [
+        "third_person"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "third_person",
+      "label": "第三人称",
+      "category": "qualifier",
+      "aliases": [
+        "第三人称",
+        "第三视角"
+      ],
+      "parents": [],
+      "excludes": [
+        "first_person"
+      ],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "owner",
+      "label": "驯服主人",
+      "category": "property",
+      "aliases": [
+        "驯服主人",
+        "主人",
+        "属于哪位玩家",
+        "驯服者",
+        "驯养动物属于"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "riding",
+      "label": "骑乘",
+      "category": "property",
+      "aliases": [
+        "骑乘",
+        "乘客",
+        "坐骑",
+        "坐到"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "taming",
+      "label": "驯服",
+      "category": "action",
+      "aliases": [
+        "驯服",
+        "驯养"
+      ],
+      "parents": [],
+      "excludes": [],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "velocity",
+      "label": "运动速度",
+      "category": "property",
+      "aliases": [
+        "运动速度",
+        "运动向量",
+        "速度向量",
+        "移动速度",
+        "瞬时运动",
+        "三维移动"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "particle",
+      "label": "原版粒子",
+      "category": "target",
+      "aliases": [
+        "原版粒子",
+        "Bedrock粒子",
+        "粒子发射"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "bone_binding",
+      "label": "骨骼绑定",
+      "category": "property",
+      "aliases": [
+        "骨骼绑定",
+        "骨骼",
+        "口部绑定",
+        "嘴部",
+        "挂在"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "dimension",
+      "label": "自定义维度",
+      "category": "target",
+      "aliases": [
+        "自定义维度",
+        "维度"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "enchant",
+      "label": "附魔",
+      "category": "property",
+      "aliases": [
+        "附魔"
+      ],
+      "parents": [],
+      "excludes": [
+        "attack_power"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "enchant_level",
+      "label": "附魔等级",
+      "category": "qualifier",
+      "aliases": [
+        "附魔等级",
+        "附魔类型",
+        "附魔类别",
+        "附魔列表",
+        "级别",
+        "等级"
+      ],
+      "parents": [
+        "enchant"
+      ],
+      "excludes": [],
+      "context_only": false,
+      "requires_any": [
+        "enchant"
+      ]
+    },
+    {
+      "id": "attack_power",
+      "label": "攻击力",
+      "category": "property",
+      "aliases": [
+        "攻击力",
+        "综合攻击力",
+        "攻击加成"
+      ],
+      "parents": [],
+      "excludes": [
+        "enchant"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "nearby",
+      "label": "范围实体",
+      "category": "property",
+      "aliases": [
+        "范围实体",
+        "附近",
+        "周围",
+        "枚举",
+        "范围内"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "knockback",
+      "label": "击退",
+      "category": "property",
+      "aliases": [
+        "击退"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "progress",
+      "label": "进度条",
+      "category": "property",
+      "aliases": [
+        "进度条",
+        "百分比",
+        "冷却比例",
+        "冷却进度",
+        "UI进度"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "interact_player",
+      "label": "玩家交互",
+      "category": "property",
+      "aliases": [
+        "玩家交互",
+        "另一个玩家",
+        "另一玩家",
+        "另一位玩家"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "feed",
+      "label": "喂养",
+      "category": "action",
+      "aliases": [
+        "喂养"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "tier",
+      "label": "挖掘等级",
+      "category": "property",
+      "aliases": [
+        "挖掘等级"
+      ],
+      "parents": [],
+      "excludes": [],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "tamed_entity",
+      "label": "已驯服生物",
+      "category": "target",
+      "aliases": [
+        "已驯服生物",
+        "被驯服生物",
+        "被驯服的生物",
+        "驯服生物",
+        "驯养动物"
+      ],
+      "parents": [
+        "entity"
+      ],
+      "excludes": [],
+      "context_only": true
+    },
+    {
+      "id": "health",
+      "label": "生命值",
+      "category": "property",
+      "aliases": [
+        "生命值",
+        "血量",
+        "当前生命",
+        "当前血量"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "maximum",
+      "label": "最大值",
+      "category": "qualifier",
+      "aliases": [
+        "最大值",
+        "最大",
+        "上限"
+      ],
+      "parents": [],
+      "excludes": [],
+      "requires_explicit": true,
+      "context_only": false
+    },
+    {
+      "id": "current",
+      "label": "当前值",
+      "category": "qualifier",
+      "aliases": [
+        "当前值",
+        "当前值",
+        "现有血量"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "effect",
+      "label": "状态效果",
+      "category": "property",
+      "aliases": [
+        "状态效果",
+        "药水效果",
+        "获得状态",
+        "状态添加"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "leave",
+      "label": "玩家离开",
+      "category": "action",
+      "aliases": [
+        "玩家离开",
+        "玩家即将离开",
+        "退出前",
+        "退出游戏",
+        "离开游戏"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "online_players",
+      "label": "在线玩家列表",
+      "category": "property",
+      "aliases": [
+        "在线玩家列表",
+        "玩家列表",
+        "列出所有在线玩家",
+        "在线玩家枚举"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "burning",
+      "label": "燃烧",
+      "category": "property",
+      "aliases": [
+        "燃烧",
+        "着火",
+        "点燃"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "inventory_contents",
+      "label": "背包内容",
+      "category": "property",
+      "aliases": [
+        "背包内容",
+        "完整背包",
+        "背包槽位",
+        "背包格子",
+        "背包某格"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "head_name",
+      "label": "实体名称",
+      "category": "property",
+      "aliases": [
+        "实体名称",
+        "名字",
+        "名称显示"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "depth_test",
+      "label": "深度检测",
+      "category": "property",
+      "aliases": [
+        "深度检测",
+        "透视",
+        "深度检测"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "held_change",
+      "label": "手持切换",
+      "category": "action",
+      "aliases": [
+        "手持切换",
+        "切换当前手持",
+        "切换手持",
+        "手持物品切换",
+        "主手物品切换",
+        "换到另一件"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "non_player",
+      "label": "非玩家实体",
+      "category": "target",
+      "aliases": [
+        "非玩家实体",
+        "非玩家生物",
+        "怪物"
+      ],
+      "parents": [
+        "entity"
+      ],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "damage_source",
+      "label": "伤害来源",
+      "category": "property",
+      "aliases": [
+        "伤害来源",
+        "攻击来源",
+        "攻击者"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "account_id",
+      "label": "账号标识",
+      "aliases": [
+        "账号标识",
+        "账号",
+        "uid",
+        "账户ID"
+      ],
+      "category": "property",
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "always_visible",
+      "label": "持续显示",
+      "aliases": [
+        "持续显示",
+        "一直显示",
+        "始终显示"
+      ],
+      "category": "property",
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "immunity",
+      "label": "伤害免疫",
+      "aliases": [
+        "伤害免疫",
+        "免疫伤害",
+        "无敌",
+        "不受伤害"
+      ],
+      "category": "property",
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "input_lock",
+      "label": "输入锁定",
+      "aliases": [
+        "输入锁定",
+        "锁住",
+        "锁定输入",
+        "固定为零",
+        "禁用本地玩家移动"
+      ],
+      "category": "qualifier",
+      "parents": [],
+      "excludes": [
+        "input_unlock"
+      ],
+      "requires_explicit": false
+    },
+    {
+      "id": "input_unlock",
+      "label": "输入解锁",
+      "aliases": [
+        "输入解锁",
+        "解除锁定",
+        "恢复移动输入"
+      ],
+      "category": "qualifier",
+      "parents": [],
+      "excludes": [
+        "input_lock"
+      ],
+      "requires_explicit": true
+    },
+    {
+      "id": "after_armor",
+      "label": "护甲结算后",
+      "aliases": [
+        "护甲结算后",
+        "实际扣血量",
+        "实际伤害",
+        "经过护甲",
+        "伤害吸收后"
+      ],
+      "category": "qualifier",
+      "parents": [],
+      "excludes": [],
+      "requires_explicit": true
+    },
+    {
+      "id": "teleport",
+      "label": "实体传送",
+      "aliases": [
+        "实体传送",
+        "传送"
+      ],
+      "category": "action",
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "palette",
+      "label": "方块调色板",
+      "aliases": [
+        "方块调色板",
+        "调色板",
+        "方块组合"
+      ],
+      "category": "target",
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "actionbar",
+      "label": "动作栏",
+      "aliases": [
+        "动作栏",
+        "动作栏",
+        "actionbar"
+      ],
+      "category": "property",
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "foot",
+      "label": "脚底位置",
+      "aliases": [
+        "脚底位置",
+        "脚底",
+        "脚下"
+      ],
+      "category": "qualifier",
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "serialize",
+      "label": "序列化",
+      "category": "action",
+      "aliases": [
+        "序列化"
+      ],
+      "parents": [],
+      "excludes": [
+        "deserialize"
+      ]
+    },
+    {
+      "id": "deserialize",
+      "label": "反序列化",
+      "category": "action",
+      "aliases": [
+        "反序列化"
+      ],
+      "parents": [],
+      "excludes": [
+        "serialize"
+      ]
+    },
+    {
+      "id": "item_info",
+      "label": "物品实例信息",
+      "category": "property",
+      "aliases": [
+        "物品信息",
+        "拿着什么"
+      ],
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "system_message",
+      "label": "系统消息",
+      "category": "property",
+      "aliases": [
+        "系统消息",
+        "系统聊天",
+        "系统通知"
+      ],
+      "parents": [],
+      "excludes": []
+    },
+    {
+      "id": "receiving_damage",
+      "label": "受伤过程",
+      "category": "action",
+      "aliases": [
+        "受伤",
+        "受到伤害",
+        "受到攻击",
+        "扣血前"
+      ],
+      "parents": [
+        "damage"
+      ],
+      "excludes": [
+        "attack"
+      ]
+    }
+  ]
+}

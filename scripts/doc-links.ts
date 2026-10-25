@@ -91,6 +91,22 @@ export function docLinks(root: string) {
         }
       }
     }
+    if (fragment && !ids.get(target)?.has(fragment)) {
+      // 翻译前后的编号章节：只在同一页面有唯一相同章节号时迁移。
+      const number = fragment.match(/(?:^|[^0-9])(\d+(?:-\d+){2})(?=-)/)?.[1];
+      if (number) {
+        const numbered = [...ids.get(target)!].filter(h => h.match(/(?:^|[^0-9])(\d+(?:-\d+){2})(?=-)/)?.[1] === number);
+        if (numbered.length === 1) fragment = numbered[0];
+      }
+    }
+    if (fragment && !ids.get(target)?.has(fragment)) {
+      // 仅在当前文档树中唯一定位到同名 API 时修复迁移链接。
+      const key = slug(fragment);
+      const locations = /^[a-z][a-z0-9_]*$/i.test(fragment)
+        ? [...ids].filter(([name, anchors]) => name.startsWith('/mcdocs/1-ModAPI/') && anchors.has(key)) : [];
+      if (locations.length === 1) { target = locations[0][0]; fragment = key; }
+      else return null; // 明确标为原文不可用，不跳到无关章节或留下失效锚点。
+    }
     return encodeURI(target + '.html') + url.search + (fragment ? '#' + encodeURIComponent(fragment) : url.hash === '#' ? '#' : '');
   }
   return (md: any) => {
@@ -99,19 +115,26 @@ export function docLinks(root: string) {
       const current = '/' + file.replace(/\.md$/, '.html');
       function visit(tokens: any[]) {
         const stack: boolean[] = [];
+        const htmlStack: boolean[] = [];
         for (const token of tokens) {
           if (token.children) visit(token.children);
           if (token.type === 'link_open') {
             const href = token.attrGet('href') || ''; const result = resolve(href, current); stack.push(result === null);
             if (result === null) {
-              token.tag = 'span'; token.attrs = [['title', '原文链接缺失或已失效'], ['data-unavailable-link', href]];
+              token.tag = 'span'; token.attrs = [['title', '原文链接目标在镜像中无法定位'], ['data-unavailable-link', href]];
             } else token.attrSet('href', result);
           } else if (token.type === 'link_close' && stack.pop()) token.tag = 'span';
           if (['html_inline', 'html_block'].includes(token.type)) {
-            token.content = token.content.replace(/(<a\b[^>]*?\bhref\s*=\s*)(["'])(.*?)\2/gi, (all: string, before: string, quote: string, href: string) => {
-              const result = resolve(href, current);
-              // HTML 空链接保持原文；不可用链接需要成对改写，不能留下错误闭合标签。
-              return result === null ? all : before + quote + result.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + quote;
+            token.content = token.content.replace(/<\/?(?:a|BButton)\b[^>]*>/gi, (tag: string) => {
+              if (/^<\/(?:a|BButton)/i.test(tag)) return htmlStack.pop() ? '</span>' : tag;
+              const button = /^<BButton\b/i.test(tag);
+              const match = tag.match(button ? /(?<!:)\blink\s*=\s*(["'])(.*?)\1/i : /(?<!:)\bhref\s*=\s*(["'])(.*?)\1/i);
+              if (!match) { htmlStack.push(false); return tag; }
+              const result = resolve(match[2], current);
+              htmlStack.push(result === null);
+              const escape = (value: string) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+              if (result === null) return `<span title="原文链接目标在镜像中无法定位" data-unavailable-link="${escape(match[2])}">`;
+              return tag.replace(match[0], `${button ? 'link' : 'href'}="${escape(result)}"`);
             });
           }
         }

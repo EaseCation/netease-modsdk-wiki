@@ -50,17 +50,26 @@ jobs:
         with:
           repository: EaseCation/netease-modsdk-skill
           # 固定已复核的题库和执行器；升级时显式更新此提交。
-          ref: d0398c3c5163919b220863951f9b39848f4db246
+          ref: 7c84afafaca1fbb01860c051ff0d06fadde3339a
           path: .retrieval-skill
           persist-credentials: false
 
       - name: Check retrieval regressions
         env:
           MODSDK_WIKI_ROOT: ${{ github.workspace }}
-        run: python3 .retrieval-skill/scripts/evaluate.py
+        run: |
+          python3 .retrieval-skill/scripts/evaluate.py
+          python3 .retrieval-skill/scripts/evaluate.py --market
+          python3 .retrieval-skill/scripts/evaluate.py --guides
 
       - name: Build with VitePress
         run: npm run docs:build
+
+      - name: Check generated links
+        run: npm run docs:check-links
+
+      - name: Validate search records
+        run: npm run docs:algolia -- --dry-run
 
       # docs/.vitepress/dist
         
