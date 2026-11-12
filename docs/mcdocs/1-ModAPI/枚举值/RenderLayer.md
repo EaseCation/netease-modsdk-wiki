@@ -1,17 +1,22 @@
-# RenderLayer
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/RenderLayer.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  RenderLayer
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    方块渲染时的材质类型
+方块渲染时的材质类型
 
 - 备注
-    - 目前自定义方块只支持使用部分材质，具体见<a href="../../../mcguide/20-玩法开发/15-自定义游戏内容/2-自定义方块/1-JSON组件.html" rel="noopenner"> 自定义方块json组件 </a>
-        由于联机大厅和apollo存在部分材质缺少定义，所以枚举值在联机大厅和apollo环境下，整体-2
-        如：Blend = 5 变成 Blend = 3 ; Opaque = 6 变成 Opaque = 4，依此类推
 
-
+- 目前自定义方块只支持使用部分材质，具体见[ 自定义方块json组件 ](https://mc.163.com/dev/mcmanual/mc-dev/mcguide/20-玩法开发/15-自定义游戏内容/2-自定义方块/1-JSON组件.html)
+由于联机大厅和apollo存在部分材质缺少定义，所以枚举值在联机大厅和apollo环境下，整体-2
+如：Blend = 5 变成 Blend = 3 ; Opaque = 6 变成 Opaque = 4，依此类推
 
 ```python
 class RenderLayer(object):
@@ -35,5 +40,4 @@ class RenderLayer(object):
 	LIGHT = 17 # 原版光源
 	STRUCTURE_VOID = 18 # 原版结构空位
 
-``` 
-
+```

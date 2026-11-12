@@ -14,6 +14,10 @@ const paths: Record<string, string | null> = {
   '/mcdocs/1-ModAPI/事件/玩家html': '/mcdocs/1-ModAPI/事件/玩家',
   '/mcguide/20-玩法开发/14-预设玩法编程/9-第一个预设Mod/index': '/mcguide/20-玩法开发/14-预设玩法编程/9-第一个预设Mod/0-创建新版作品',
   '/mcguide/50-常见问题答疑/index': '/mcguide/50-常见问题答疑/86-开发者常见问题汇总',
+  // 3.10 更新说明引用了上游 MCP 仓库里的快照清单；镜像不收录这些机器可读文件，链接到同步时固定的上游提交。
+  '/mcdocs/standard/registry/snapshots/modsdk-3.9-to-3.10.json': 'https://github.com/MCNeteaseDevs/modsdk_mcp_server/blob/2589ca35b396cf0dc5b74b1b1773383b1e06fd40/standard/registry/snapshots/modsdk-3.9-to-3.10.json',
+  '/mcdocs/standard/registry/snapshots/official-docs.json': 'https://github.com/MCNeteaseDevs/modsdk_mcp_server/blob/2589ca35b396cf0dc5b74b1b1773383b1e06fd40/standard/registry/snapshots/official-docs.json',
+  '/mcdocs/standard/registry/snapshots/pre-3.10-repository-inventory.json': 'https://github.com/MCNeteaseDevs/modsdk_mcp_server/blob/2589ca35b396cf0dc5b74b1b1773383b1e06fd40/standard/registry/snapshots/pre-3.10-repository-inventory.json',
   // 官网也返回缺页；不能凭相似名字改指到另一个枚举。
   '/mcdocs/1-ModAPI/枚举值/AniCheatMoveUnSupportRewind': null,
 };

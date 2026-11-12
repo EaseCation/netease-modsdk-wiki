@@ -1,17 +1,24 @@
-# AttrType
+---
+source_url: "https://mc.163.com/dev/mcmanual/mc-dev/mcdocs/1-ModAPI/%E6%9E%9A%E4%B8%BE%E5%80%BC/AttrType.html"
+last_modified: "Wed, 28 Oct 2026 10:10:37 GMT"
+synced_from: "NetEase developer official website"
+---
+
+#  AttrType
 
 class in mod.common.minecraftEnum
 
 - 描述
 
-    描述属性枚举值，用于设置与获取实体的引擎属性的当前值与最大值
+描述属性枚举值，用于设置与获取实体的引擎属性的当前值与最大值
 
 - 备注
-    - ABSORPTION: 伤害吸收效果的量化值，详见wiki文档：[伤害吸收](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3%E5%90%B8%E6%94%B6)
-    - 各类属性值一般通过entity的json配置，如`minecraft:knockback_resistance : {"value": 100, "max": 100}`
-    - 当json文件中未配置时，引擎会针对不同属性进行不同初始值、不同最大值的设置
 
+- ABSORPTION: 伤害吸收效果的量化值，详见wiki文档：[伤害吸收(opens new window)](https://zh.minecraft.wiki/w/%E4%BC%A4%E5%AE%B3%E5%90%B8%E6%94%B6)
 
+- 各类属性值一般通过entity的json配置，如`minecraft:knockback_resistance : {"value": 100, "max": 100}`
+
+- 当json文件中未配置时，引擎会针对不同属性进行不同初始值、不同最大值的设置
 
 ```python
 class AttrType(object):
@@ -39,5 +46,4 @@ class AttrType(object):
 	MINING_EFFICIENCY = 21            # 玩家的挖掘速度增量
 	SUBMERGED_MINING_SPEED = 22       # 玩家浸没在水中时的挖掘速度乘数
 
-``` 
-
+```
