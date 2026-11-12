@@ -55,7 +55,9 @@
         "status": "reviewed",
         "concepts": [
           "health",
-          "current"
+          "current",
+          "saturation",
+          "armor_value"
         ],
         "evidence": {
           "source_sha256": "5b3db33c145a43c24d9ed65c85c47cf8b9658999e4b2634329a1fc1bd9afeaa7",
@@ -209,7 +211,8 @@
           "player",
           "health",
           "hunger",
-          "current"
+          "current",
+          "saturation"
         ],
         "evidence": {
           "source_sha256": "ea7e02f0a01f4a0e50a9863520c590bf7d1fc930ef07bda21e8f58a6cd4fab7a",
@@ -437,8 +440,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "position",
+          "entity",
+          "player"
+        ],
+        "operation": "read",
+        "targets": [
+          "entity"
+        ],
+        "extent": "single",
+        "evidence": {
+          "source_sha256": "826b233e96485d2d5412664118ec43271afbcdb4e80f031da2946dc4885cec60",
+          "section": [
+            "属性",
+            "GetPos",
+            "服务端接口"
+          ]
+        }
       }
     },
     {
@@ -551,8 +571,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "position",
+          "teleport",
+          "entity",
+          "player"
+        ],
+        "operation": "set",
+        "targets": [
+          "entity"
+        ],
+        "extent": "single",
+        "evidence": {
+          "source_sha256": "d943a450d231a4bffae89a3fe126e2adeeadf85293ac8d369613ef82c6b6624d",
+          "section": [
+            "属性",
+            "SetPos"
+          ]
+        }
       }
     },
     {
@@ -781,7 +818,8 @@
         "concepts": [
           "entity",
           "non_player",
-          "spawn"
+          "spawn",
+          "position"
         ],
         "evidence": {
           "source_sha256": "1fb41b1e5232ea76eababc592b373ec04e11fa465d59ce82dd2b88d1c6bc354b",
@@ -793,6 +831,9 @@
         "operation": "create",
         "target": [
           "non_player"
+        ],
+        "targets": [
+          "entity"
         ]
       }
     },
@@ -850,6 +891,9 @@
         "operation": "delete",
         "target": [
           "entity"
+        ],
+        "targets": [
+          "entity"
         ]
       }
     },
@@ -885,8 +929,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity_type",
+          "entity"
+        ],
+        "operation": "read",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "9dd47ece2bbcc00d37aef45ea68483b824579bc9e1afadba0df9ba9c1664abb3",
+          "section": [
+            "实体类型",
+            "GetEngineTypeStr",
+            "服务端接口"
+          ]
+        }
       }
     },
     {
@@ -1124,7 +1183,8 @@
       "questions": [],
       "usage": "读取玩家指定位置类型和槽位的物品；主手、副手、背包与盔甲栏需按位置类型区分。",
       "cautions": [
-        "无物品返回 None；需要物品附加数据时应明确开启 getUserData。"
+        "无物品返回 None；需要物品附加数据时应明确开启 getUserData。",
+        "物品的 NBT 即物品信息字典里的 userData，需传 getUserData=True 才返回。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetInvItemNum",
@@ -1159,7 +1219,9 @@
           "item",
           "custom_data",
           "offhand",
-          "inventory_contents"
+          "inventory_contents",
+          "armour",
+          "item_nbt"
         ],
         "evidence": {
           "source_sha256": "e99813b7a895e8f008533a85335c6acf1d5722ed4db0326ef447addcd29f0f8f",
@@ -1310,6 +1372,9 @@
         "operation": "create",
         "target": [
           "item_drop"
+        ],
+        "qualifiers": [
+          "item"
         ]
       }
     },
@@ -1365,6 +1430,9 @@
         "operation": "read",
         "target": [
           "container"
+        ],
+        "targets": [
+          "block_container"
         ]
       }
     },
@@ -1409,7 +1477,8 @@
         "concepts": [
           "player",
           "inventory",
-          "inventory_contents"
+          "inventory_contents",
+          "all_slots"
         ],
         "evidence": {
           "source_sha256": "ed630ef35828ddd68bc284a19985deb7b537479c453bf7a50f79d884d474488c",
@@ -2164,7 +2233,8 @@
           "block",
           "place",
           "position",
-          "spawn"
+          "spawn",
+          "dimension"
         ],
         "evidence": {
           "source_sha256": "ff481a38502792c4d3732574606b89d723c9e17c60f7b952393aa63d6e74855f",
@@ -2175,7 +2245,8 @@
         },
         "operation": "set",
         "targets": [
-          "world"
+          "world",
+          "block"
         ],
         "subject": [
           "block"
@@ -2185,6 +2256,10 @@
         ],
         "property": [
           "block_state"
+        ],
+        "operations": [
+          "set",
+          "create"
         ]
       }
     },
@@ -2240,7 +2315,8 @@
         },
         "operation": "read",
         "targets": [
-          "world"
+          "world",
+          "block"
         ],
         "subject": [
           "block"
@@ -2466,7 +2542,8 @@
       "facts": {
         "status": "reviewed",
         "concepts": [
-          "player"
+          "player",
+          "server_message"
         ],
         "evidence": {
           "source_sha256": "50ada1d1cc000b0265310965547a7d1958220b3a1abc1dd377369c40de277742",
@@ -2478,6 +2555,9 @@
         "operation": "write",
         "target": [
           "player"
+        ],
+        "targets": [
+          "communication"
         ]
       }
     },
@@ -2841,7 +2921,8 @@
           "ui",
           "interface_open",
           "spawn",
-          "interface"
+          "interface",
+          "bind_entity"
         ],
         "evidence": {
           "source_sha256": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456",
@@ -3754,8 +3835,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "durability",
+          "item"
+        ],
+        "operation": "read",
+        "targets": [
+          "player_inventory",
+          "player_equipment"
+        ],
+        "evidence": {
+          "source_sha256": "e1ef74851103063516d963bfca955e6811b25741333c1cccc1ebb2c0f11d6b84",
+          "section": [
+            "索引",
+            "GetItemDurability"
+          ]
+        }
       }
     },
     {
@@ -4079,8 +4175,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "name",
+          "head_name",
+          "entity"
+        ],
+        "operation": "read",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "67474adf8b87a8943766bd3ec5fa04e5360eabcf437b730c0366e94321480cc8",
+          "section": [
+            "属性",
+            "GetName",
+            "服务端接口"
+          ]
+        }
       }
     },
     {
@@ -4104,7 +4216,8 @@
       "usage": "按物品位置类型批量读取玩家槽位；物品筛选、数量统计及写回需另行处理。",
       "cautions": [
         "返回列表中空槽位为 None；按所选位置类型读取，不保证一次包含全部背包与装备。",
-        "读取附加数据需开启 getUserData；读取快照不是原子扣除或锁定库存。"
+        "读取附加数据需开启 getUserData；读取快照不是原子扣除或锁定库存。",
+        "物品的 NBT 即物品信息字典里的 userData，需传 getUserData=True 才返回。"
       ],
       "related": [
         "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem",
@@ -4134,7 +4247,8 @@
           "inventory_contents",
           "player",
           "custom_data",
-          "all_slots"
+          "all_slots",
+          "item_nbt"
         ],
         "evidence": {
           "source_sha256": "777cb6d4f6656038be90041b686f7948000f0538059ccd8b7b260b0fccb3c973",
@@ -4750,8 +4864,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "chunk_keep"
+        ],
+        "operation": "delete",
+        "targets": [
+          "chunk"
+        ],
+        "evidence": {
+          "source_sha256": "fdf963dd7692f6c0d9940b82b7efcb765a8beeb02af5f61c33aed56ae6f7a8a4",
+          "section": [
+            "地图",
+            "DeleteArea"
+          ]
+        }
       }
     },
     {
@@ -4814,8 +4941,21 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "chunk_load"
+        ],
+        "operation": "set",
+        "targets": [
+          "chunk"
+        ],
+        "evidence": {
+          "source_sha256": "5c6753725faa620cbbc28eecac7e6200c7ccb1b08143610801b4ce6c2eddfb7d",
+          "section": [
+            "地图",
+            "DoTaskOnChunkAsync"
+          ]
+        }
       }
     },
     {
@@ -6072,7 +6212,10 @@
       ],
       "questions": [],
       "usage": "注册常加载区域，按名称管理其生命周期。",
-      "cautions": [],
+      "cautions": [
+        "该方式创建的常加载区域不会 tick，实体、方块实体与随机刻都不更新；需要 tick 时用原版 tickingarea 指令。",
+        "key 必须唯一，已存在时添加失败。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -6086,8 +6229,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "chunk_keep",
+          "chunk_load"
+        ],
+        "operation": "set",
+        "targets": [
+          "chunk"
+        ],
+        "evidence": {
+          "source_sha256": "c7ba88c8fbb4f428ef60166f17dca7d00224c8a6107e49f223eb133f7438a61e",
+          "section": [
+            "地图",
+            "SetAddArea"
+          ]
+        },
+        "operations": [
+          "create",
+          "set"
+        ]
       }
     },
     {
@@ -10563,8 +10724,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "game_rule"
+        ],
+        "operation": "read",
+        "targets": [
+          "world"
+        ],
+        "extent": "global",
+        "evidence": {
+          "source_sha256": "17de8c489fb30b4a228d1b38a1b8e94239439381d3c215ee1e8e4218bb06cea9",
+          "section": [
+            "游戏规则",
+            "GetGameRulesInfoServer"
+          ]
+        }
       }
     },
     {
@@ -11313,8 +11488,22 @@
         "batch": "bulk"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "game_rule"
+        ],
+        "operation": "set",
+        "targets": [
+          "world"
+        ],
+        "extent": "global",
+        "evidence": {
+          "source_sha256": "4d8ab93d559e9cbb45811e634035ee76824c9e0648f7dbbabf387d944c4355f1",
+          "section": [
+            "游戏规则",
+            "SetGameRulesInfoServer"
+          ]
+        }
       }
     },
     {
@@ -12392,8 +12581,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "ender_chest",
+          "item"
+        ],
+        "operation": "read",
+        "targets": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "8beb0546d4f17bf7b20a43c6103178fec73b3b7756f36422f9b07643de693a80",
+          "section": [
+            "容器",
+            "GetEnderChestItem"
+          ]
+        }
       }
     },
     {
@@ -12589,8 +12792,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "container",
+          "container_contents",
+          "swap"
+        ],
+        "operation": "set",
+        "targets": [
+          "block_container"
+        ],
+        "qualifiers": [
+          "swap"
+        ],
+        "evidence": {
+          "source_sha256": "d7bae5ffdfe5b1849261a00c119baf2be6269fe1e817dfd13a752133040f6f5f",
+          "section": [
+            "容器",
+            "SetChestBoxItemExchange"
+          ]
+        }
       }
     },
     {
@@ -12605,7 +12826,9 @@
       "aliases": [],
       "questions": [],
       "usage": "设置箱子指定槽位的物品数量。",
-      "cautions": [],
+      "cautions": [
+        "只有数量参数，不能写入或更换槽位里的物品；写入物品用 SpawnItemToContainer。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -12640,6 +12863,9 @@
           "container"
         ],
         "property": [
+          "count"
+        ],
+        "qualifiers": [
           "count"
         ]
       }
@@ -12722,10 +12948,16 @@
         "物品生成",
         "物品写入"
       ],
-      "aliases": [],
+      "aliases": [
+        "设置箱子槽位物品",
+        "向容器槽位放入物品",
+        "写入箱子格子物品"
+      ],
       "questions": [],
       "usage": "向容器方块的物品栏生成物品。",
-      "cautions": [],
+      "cautions": [
+        "不支持末影箱，末影箱用 SpawnItemToEnderChest。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -12755,6 +12987,9 @@
         "operation": "set",
         "target": [
           "container"
+        ],
+        "targets": [
+          "block_container"
         ]
       }
     },
@@ -15622,8 +15857,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "armor_value",
+          "player"
+        ],
+        "operation": "read",
+        "targets": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "3919320c7cc0ac901cb0d4f9e951ad2548874ee11255fd556df2922efb0c62b1",
+          "section": [
+            "属性",
+            "GetArmorValue"
+          ]
+        }
       }
     },
     {
@@ -19315,8 +19564,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "selected_slot",
+          "player"
+        ],
+        "operation": "set",
+        "targets": [
+          "player_inventory"
+        ],
+        "evidence": {
+          "source_sha256": "4d955ba471325ae8d22487fb7ddb49758996ecff9c307f748aa2b1dd6c299942",
+          "section": [
+            "背包",
+            "ChangeSelectSlot"
+          ]
+        }
       }
     },
     {
@@ -19529,7 +19792,9 @@
       "aliases": [],
       "questions": [],
       "usage": "按位置类型批量读取物品；客户端背包读取仅支持本地玩家。",
-      "cautions": [],
+      "cautions": [
+        "物品的 NBT 即物品信息字典里的 userData，需传 getUserData=True 才返回。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -19550,7 +19815,8 @@
           "inventory_contents",
           "player",
           "custom_data",
-          "all_slots"
+          "all_slots",
+          "item_nbt"
         ],
         "evidence": {
           "source_sha256": "eaa87a5305da62a064e3d408e93276336638afb08fd4b3d0489bf31c602b9869",
@@ -19713,7 +19979,9 @@
       "aliases": [],
       "questions": [],
       "usage": "读取指定位置类型与槽位的物品；客户端背包读取仅支持本地玩家。",
-      "cautions": [],
+      "cautions": [
+        "物品的 NBT 即物品信息字典里的 userData，需传 getUserData=True 才返回。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -19739,7 +20007,9 @@
           "item",
           "custom_data",
           "offhand",
-          "inventory_contents"
+          "inventory_contents",
+          "armour",
+          "item_nbt"
         ],
         "evidence": {
           "source_sha256": "ea505bbc526ee347ce3a2b701514c2c6896bd8cfa0197d6efe2fd2c946bd9337",
@@ -19943,6 +20213,9 @@
           "inventory"
         ],
         "property": [
+          "swap"
+        ],
+        "qualifiers": [
           "swap"
         ]
       }
@@ -20400,8 +20673,25 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "destroy_time",
+          "break",
+          "held",
+          "player"
+        ],
+        "operation": "read",
+        "targets": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "fc1cf84cf0a6841926918a4c369aff65728c09f6ce7af31defbbac429100e1c7",
+          "section": [
+            "行为",
+            "GetPlayerDestroyTotalTime",
+            "服务端接口"
+          ]
+        }
       }
     },
     {
@@ -20891,7 +21181,8 @@
           "player",
           "block",
           "break",
-          "held"
+          "held",
+          "durability"
         ],
         "evidence": {
           "source_sha256": "727c54279024be14f3cd0c89aa032e0206cb0c0b6e457bb3fbc041e74fc262af",
@@ -21542,8 +21833,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "sneak",
+          "player",
+          "state"
+        ],
+        "operation": "read",
+        "targets": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "961009e7dc97ee510403f0c54a26c904879a3286ee57130d9e1be9bf299eaad0",
+          "section": [
+            "行为",
+            "isSneaking",
+            "服务端接口"
+          ]
+        }
       }
     },
     {
@@ -21571,8 +21878,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "sneak",
+          "player",
+          "state"
+        ],
+        "operation": "read",
+        "targets": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "1c5740a98420b9a12f8bb9af6ab727da3b66001c703c4fb3017a4338d7b6f30c",
+          "section": [
+            "行为",
+            "isSneaking",
+            "客户端接口"
+          ]
+        }
       }
     },
     {
@@ -21852,7 +22175,9 @@
       "aliases": [],
       "questions": [],
       "usage": "读取实体计算节点的值；未提供值时使用注册默认值。",
-      "cautions": [],
+      "cautions": [
+        "节点名必须以 query.mod. 开头，并先用 Register 注册后才能设置或读取。"
+      ],
       "related": [
         "modsdk:api:client:mod.client.component.queryVariableCompClient.QueryVariableComponentClient.Set"
       ],
@@ -21867,8 +22192,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "molang_node",
+          "entity"
+        ],
+        "operation": "read",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "ce3530ec873327a74c6beb5409ed5ca09b32141a810e348fa0e0d1d5d7727a81",
+          "section": [
+            "molang",
+            "Get"
+          ]
+        }
       }
     },
     {
@@ -21970,7 +22309,9 @@
       "aliases": [],
       "questions": [],
       "usage": "注册实体计算节点及其默认值。",
-      "cautions": [],
+      "cautions": [
+        "值按单精度浮点存储，整数超过 ±16777216 会有误差。"
+      ],
       "related": [],
       "inferred": {
         "targets": [
@@ -21983,8 +22324,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "molang_node",
+          "entity"
+        ],
+        "operation": "create",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "62a10a3a269fe0c0864db402d43894865cb39d59ec100027d92aa7bc481c70bd",
+          "section": [
+            "molang",
+            "Register"
+          ]
+        }
       }
     },
     {
@@ -21999,7 +22354,10 @@
       "aliases": [],
       "questions": [],
       "usage": "设置已注册实体计算节点的值。",
-      "cautions": [],
+      "cautions": [
+        "节点名必须以 query.mod. 开头，并先用 Register 注册后才能设置或读取。",
+        "值按单精度浮点存储，整数超过 ±16777216 会有误差。"
+      ],
       "related": [
         "modsdk:api:client:mod.client.component.queryVariableCompClient.QueryVariableComponentClient.Get"
       ],
@@ -22014,8 +22372,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "molang_node",
+          "entity"
+        ],
+        "operation": "set",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "595c40b193fa89e816a6ff5c5d3dbb9701093385a9791294c4003e694b8718b5",
+          "section": [
+            "molang",
+            "Set"
+          ]
+        }
       }
     },
     {
@@ -22420,8 +22792,23 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity_type",
+          "entity"
+        ],
+        "operation": "read",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "d8968c63121c7b3cf3ea8c89c6abe25cb00c253d208397a5fefb3951a08707d3",
+          "section": [
+            "实体类型",
+            "GetEngineTypeStr",
+            "客户端接口"
+          ]
+        }
       }
     },
     {
@@ -22697,7 +23084,8 @@
         "status": "reviewed",
         "concepts": [
           "health",
-          "current"
+          "current",
+          "armor_value"
         ],
         "evidence": {
           "source_sha256": "246033c55f421a0dcc81db151ba769f40813e11b0b580a2b2739ba1f0ec00127",
@@ -23067,8 +23455,24 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "name",
+          "head_name",
+          "entity"
+        ],
+        "operation": "read",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "a5fb067cf0e02c0449825b4972c305a2ec3436a941bac87dd26693ffd398fd9b",
+          "section": [
+            "属性",
+            "GetName",
+            "客户端接口"
+          ]
+        }
       }
     },
     {
@@ -24057,8 +24461,26 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "position",
+          "teleport",
+          "entity",
+          "player",
+          "foot"
+        ],
+        "operation": "set",
+        "targets": [
+          "entity"
+        ],
+        "extent": "single",
+        "evidence": {
+          "source_sha256": "81ebc7743ab03518e4dd851b80f8651c42af7a568036343f64929908d8fa4fc1",
+          "section": [
+            "属性",
+            "SetFootPos"
+          ]
+        }
       }
     },
     {
@@ -27508,7 +27930,9 @@
       "aliases": [],
       "questions": [],
       "usage": "读取生物的背包、护甲或手持槽位物品。",
-      "cautions": [],
+      "cautions": [
+        "物品的 NBT 即物品信息字典里的 userData，需传 getUserData=True 才返回。"
+      ],
       "related": [
         "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetEntityItem"
       ],
@@ -27523,8 +27947,27 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "armour",
+          "offhand",
+          "held",
+          "entity",
+          "item",
+          "item_nbt"
+        ],
+        "operation": "read",
+        "targets": [
+          "entity",
+          "player_equipment"
+        ],
+        "evidence": {
+          "source_sha256": "b0664e2d3a80c0dc6874654a862dc948b2a8fff65e1b61f006102cd5f94b9d8e",
+          "section": [
+            "背包",
+            "GetEntityItem"
+          ]
+        }
       }
     },
     {
@@ -27643,7 +28086,9 @@
         "status": "reviewed",
         "concepts": [
           "item",
-          "custom_data"
+          "custom_data",
+          "offhand",
+          "armour"
         ],
         "evidence": {
           "source_sha256": "207027d8d43eb9da7ae5ec7757080fe3ecd6e5e39503447acf4c3519245002ae",
@@ -27655,6 +28100,10 @@
         "operation": "set",
         "target": [
           "item"
+        ],
+        "targets": [
+          "entity",
+          "player_equipment"
         ]
       }
     },
@@ -30135,6 +30584,16 @@
           "entity"
         ],
         "action": [
+          "dismount"
+        ],
+        "targets": [
+          "entity"
+        ],
+        "operations": [
+          "stop",
+          "set"
+        ],
+        "qualifiers": [
           "dismount"
         ]
       }
@@ -35215,7 +35674,9 @@
       "questions": [],
       "usage": "修改已绑定界面所关联的实体。",
       "cautions": [],
-      "related": [],
+      "related": [
+        "modsdk:api:client:mod.client.extraClientApi.CreateUI"
+      ],
       "inferred": {
         "targets": [
           "ui"
@@ -35227,8 +35688,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "bind_entity",
+          "ui"
+        ],
+        "operation": "set",
+        "targets": [
+          "ui"
+        ],
+        "evidence": {
+          "source_sha256": "db610b06d47bf936ce66ab91a84aa3a550ba53a9118b45463ac697b32564b7d7",
+          "section": [
+            "UI界面",
+            "ChangeBindEntityId"
+          ]
+        }
       }
     },
     {
@@ -40656,8 +41131,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "item",
+          "stack_size",
+          "attack_power"
+        ],
+        "operation": "read",
+        "extent": "single",
+        "evidence": {
+          "source_sha256": "f41a63ad1decd68129e3e9f08313d711472f60467d806dc0e5d01a250c66124c",
+          "section": [
+            "索引",
+            "GetItemBasicInfo",
+            "服务端接口"
+          ]
+        }
       }
     },
     {
@@ -40683,8 +41172,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "item",
+          "stack_size",
+          "attack_power"
+        ],
+        "operation": "read",
+        "extent": "single",
+        "evidence": {
+          "source_sha256": "820d5fc9ef0aea6a22efd6e9ca5d7e0ede3b8ffb3ff68fd181c58e1c664e7c82",
+          "section": [
+            "索引",
+            "GetItemBasicInfo",
+            "客户端接口"
+          ]
+        }
       }
     },
     {
@@ -43429,8 +43932,20 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "host_player",
+          "player"
+        ],
+        "operation": "read",
+        "evidence": {
+          "source_sha256": "7141eb0650febd2160e774320dda397569e1976db60b485f6efd52c6bce6c667",
+          "section": [
+            "工具",
+            "GetHostPlayerId",
+            "服务端接口"
+          ]
+        }
       }
     },
     {
@@ -53263,8 +53778,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity_load",
+          "entity"
+        ],
+        "operation": "observe",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "4b7587cf16c5bcedce4615fae130565e9a6482667483dd2b7861e9fe59b1733b",
+          "section": [
+            "世界",
+            "AddEntityClientEvent"
+          ]
+        }
       }
     },
     {
@@ -53290,8 +53819,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "entity_remove",
+          "entity"
+        ],
+        "operation": "observe",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "ab0bf7d92c094c9c1ff7abf5930e324faf9581727407ea41e09bb8c8029de2f9",
+          "section": [
+            "世界",
+            "RemoveEntityClientEvent"
+          ]
+        }
       }
     },
     {
@@ -54719,8 +55262,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "landing",
+          "entity"
+        ],
+        "operation": "observe",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "257e1aadd74c35b67b1ee9a5a6cb688d50f7778f64eaa9d7fcb56fd70b524d5c",
+          "section": [
+            "实体",
+            "OnGroundServerEvent"
+          ]
+        }
       }
     },
     {
@@ -54734,8 +55291,10 @@
       ],
       "aliases": [],
       "questions": [],
-      "usage": "客户端受支持实体着地时通知；与服务端计算时机可能不同。",
-      "cautions": [],
+      "usage": "玩家、沙子、铁砧、掉落的物品、点燃的 TNT 掉落地面时在客户端触发，其余实体着地不触发。",
+      "cautions": [
+        "掉落由两端各自计算，掉落方块可能在服务端先着地并被移除，导致客户端不触发。"
+      ],
       "related": [],
       "inferred": {
         "targets": [],
@@ -54746,8 +55305,22 @@
         "batch": "unknown"
       },
       "facts": {
-        "status": "unknown",
-        "concepts": []
+        "status": "reviewed",
+        "concepts": [
+          "landing",
+          "entity"
+        ],
+        "operation": "observe",
+        "targets": [
+          "entity"
+        ],
+        "evidence": {
+          "source_sha256": "a277ed3709775119bd28b649850261d35131f2d420ebf544e2943057b76ab5e8",
+          "section": [
+            "实体",
+            "OnGroundClientEvent"
+          ]
+        }
       }
     },
     {
@@ -55762,8 +56335,10 @@
       ],
       "aliases": [],
       "questions": [],
-      "usage": "",
-      "cautions": [],
+      "usage": "玩家或命令方块执行已在 json 中定义的自定义命令时触发，可设置执行结果与返回信息。",
+      "cautions": [
+        "origin 中的 entityId 在命令方块触发时不存在，按来源授权时需要分别处理。"
+      ],
       "related": [],
       "inferred": {},
       "facts": {
@@ -55778,7 +56353,278 @@
             "CustomCommandTriggerServerEvent"
           ]
         },
-        "operation": "observe"
+        "operation": "observe",
+        "mutable_fields": [
+          "return_failed",
+          "return_msg_key"
+        ]
+      }
+    },
+    {
+      "id": "modsdk:event:server:StartDestroyBlockServerEvent",
+      "source_sha256": "250e66fb53395e4823f9d878d69cca471c18a21f728c78a51cd8e21eb1211cb2",
+      "authority": "curated_note",
+      "tags": [
+        "开始挖掘",
+        "方块破坏",
+        "事件监听"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家开始挖方块时触发，可在进入挖掘状态前取消；创造模式不触发。",
+      "cautions": [
+        "秒破方块在本事件前已被删除，blockName 为 air 且无法取消，应改用 ServerPlayerTryDestroyBlockEvent。",
+        "取消需与 StartDestroyBlockClientEvent 一起修改。"
+      ],
+      "related": [
+        "modsdk:event:server:ServerPlayerTryDestroyBlockEvent"
+      ],
+      "inferred": {
+        "targets": [
+          "block",
+          "player"
+        ],
+        "operation": "observe",
+        "extent": "unknown",
+        "specializations": [],
+        "phase": "before",
+        "batch": "unknown"
+      },
+      "facts": {
+        "status": "reviewed",
+        "concepts": [
+          "break_start",
+          "block",
+          "player",
+          "cancellation"
+        ],
+        "operation": "observe",
+        "phase": "before",
+        "targets": [
+          "block"
+        ],
+        "cancellable": true,
+        "mutable_fields": [
+          "cancel"
+        ],
+        "action": [
+          "break_start"
+        ],
+        "subject": [
+          "player"
+        ],
+        "target": [
+          "block"
+        ],
+        "evidence": {
+          "source_sha256": "250e66fb53395e4823f9d878d69cca471c18a21f728c78a51cd8e21eb1211cb2",
+          "section": [
+            "方块",
+            "StartDestroyBlockServerEvent"
+          ]
+        }
+      }
+    },
+    {
+      "id": "modsdk:event:server:ItemDurabilityChangedServerEvent",
+      "source_sha256": "a76b57a3e13b9a9b891af69c738a9ee8d7ac140060d3bebad4281cb639408a76",
+      "authority": "curated_note",
+      "tags": [
+        "物品耐久",
+        "耐久变化",
+        "事件监听"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "有物主的耐久物品耐久度变化时触发，可通过 durability 修改变化后的耐久度。",
+      "cautions": [
+        "仅 canChange 为 true 时可修改；铁砧修复、经验修补和 SetItemDurability 触发时不可修改。",
+        "发射器中物品的耐久变化不触发。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetItemDurability",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.SetItemDurability"
+      ],
+      "inferred": {
+        "targets": [
+          "player"
+        ],
+        "operation": "observe",
+        "extent": "unknown",
+        "specializations": [],
+        "phase": "change",
+        "batch": "unknown"
+      },
+      "facts": {
+        "status": "reviewed",
+        "concepts": [
+          "durability",
+          "item"
+        ],
+        "operation": "observe",
+        "phase": "change",
+        "mutable_fields": [
+          "durability"
+        ],
+        "property": [
+          "durability"
+        ],
+        "target": [
+          "item"
+        ],
+        "evidence": {
+          "source_sha256": "a76b57a3e13b9a9b891af69c738a9ee8d7ac140060d3bebad4281cb639408a76",
+          "section": [
+            "物品",
+            "ItemDurabilityChangedServerEvent"
+          ]
+        }
+      }
+    },
+    {
+      "id": "modsdk:event:server:OnPlayerActiveShieldServerEvent",
+      "source_sha256": "aa9794bd23ef9df94fbe754fc3bd1ed4b034c868dd204c6969e562e96741e2e2",
+      "authority": "curated_note",
+      "tags": [
+        "盾牌",
+        "格挡",
+        "事件监听"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家激活或取消激活盾牌时触发，包括持盾潜行和潜行时切换盾牌；可在 cancelable 为真时取消激活。",
+      "cautions": [
+        "只覆盖持盾场景，不是通用的潜行状态变化事件；潜行开始/停止用 OnPlayerActionServerEvent，当前状态用 isSneaking 读取。",
+        "潜行状态下切换盾牌时 cancelable 为 False，不能取消。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.isSneaking",
+        "modsdk:event:server:OnPlayerActionServerEvent"
+      ],
+      "inferred": {
+        "targets": [
+          "player"
+        ],
+        "operation": "observe",
+        "extent": "unknown",
+        "specializations": [],
+        "phase": "unknown",
+        "batch": "unknown"
+      },
+      "facts": {
+        "status": "reviewed",
+        "concepts": [
+          "shield",
+          "player"
+        ],
+        "operation": "observe",
+        "qualifiers": [
+          "shield"
+        ],
+        "subject": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "aa9794bd23ef9df94fbe754fc3bd1ed4b034c868dd204c6969e562e96741e2e2",
+          "section": [
+            "物品",
+            "OnPlayerActiveShieldServerEvent"
+          ]
+        }
+      }
+    },
+    {
+      "id": "modsdk:event:server:OnPlayerActionServerEvent",
+      "source_sha256": "80e621e28c12b431615e03617c85517a9a61082cad533ba773abc264ceb90de2",
+      "authority": "curated_note",
+      "tags": [
+        "玩家动作",
+        "潜行",
+        "事件监听"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "玩家开始或停止某些动作时触发；actionType 取 PlayerActionType，包含开始/停止潜行、冲刺、睡觉、滑翔、游泳等。",
+      "cautions": [
+        "只覆盖 PlayerActionType 列出的动作；需按 actionType 自行区分开始与停止。"
+      ],
+      "related": [
+        "modsdk:api:server:mod.server.component.playerCompServer.PlayerCompServer.isSneaking"
+      ],
+      "inferred": {
+        "targets": [
+          "player"
+        ],
+        "operation": "observe",
+        "extent": "unknown",
+        "specializations": [],
+        "phase": "change",
+        "batch": "unknown"
+      },
+      "facts": {
+        "status": "reviewed",
+        "concepts": [
+          "sneak",
+          "player"
+        ],
+        "operation": "observe",
+        "phase": "change",
+        "targets": [
+          "player"
+        ],
+        "subject": [
+          "player"
+        ],
+        "evidence": {
+          "source_sha256": "80e621e28c12b431615e03617c85517a9a61082cad533ba773abc264ceb90de2",
+          "section": [
+            "玩家",
+            "OnPlayerActionServerEvent"
+          ]
+        }
+      }
+    },
+    {
+      "id": "modsdk:event:server:ChunkAcquireDiscardedServerEvent",
+      "source_sha256": "720ef13fd2086a06d7690217abdbab5cb63338a62e6bc58c69f803c3ffbddb33",
+      "authority": "curated_note",
+      "tags": [
+        "区块卸载",
+        "事件监听",
+        "生命周期"
+      ],
+      "aliases": [],
+      "questions": [],
+      "usage": "服务端区块即将被卸载时触发，附带随区块移除的实体与自定义方块实体列表。",
+      "cautions": [
+        "事件触发时已无法获取这些实体的信息。"
+      ],
+      "related": [],
+      "inferred": {
+        "targets": [],
+        "operation": "observe",
+        "extent": "unknown",
+        "specializations": [],
+        "phase": "before",
+        "batch": "unknown"
+      },
+      "facts": {
+        "status": "reviewed",
+        "concepts": [
+          "chunk_unload"
+        ],
+        "operation": "observe",
+        "phase": "before",
+        "targets": [
+          "chunk"
+        ],
+        "evidence": {
+          "source_sha256": "720ef13fd2086a06d7690217abdbab5cb63338a62e6bc58c69f803c3ffbddb33",
+          "section": [
+            "世界",
+            "ChunkAcquireDiscardedServerEvent"
+          ]
+        }
       }
     }
   ]

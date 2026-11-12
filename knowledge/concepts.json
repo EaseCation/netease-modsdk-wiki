@@ -165,7 +165,8 @@
         "放上",
         "放下",
         "建造",
-        "放方块"
+        "放方块",
+        "设置方块"
       ],
       "parents": [],
       "excludes": [
@@ -582,7 +583,8 @@
         "束缚姿态",
         "自定义束缚",
         "自定义武器",
-        "自定义攻击动画"
+        "自定义攻击动画",
+        "自定义动画"
       ],
       "parents": [
         "animation"
@@ -756,7 +758,9 @@
       "aliases": [
         "攻击力",
         "综合攻击力",
-        "攻击加成"
+        "攻击加成",
+        "攻击伤害",
+        "武器伤害"
       ],
       "parents": [],
       "excludes": [
@@ -1057,7 +1061,8 @@
         "账号标识",
         "账号",
         "uid",
-        "账户ID"
+        "账户ID",
+        "唯一标识"
       ],
       "category": "property",
       "parents": [],
@@ -1357,7 +1362,8 @@
         "物品实体"
       ],
       "parents": [
-        "entity"
+        "entity",
+        "item"
       ],
       "excludes": []
     },
@@ -1401,7 +1407,9 @@
       "parents": [
         "block"
       ],
-      "excludes": [],
+      "excludes": [
+        "world_data"
+      ],
       "context_only": true,
       "target_key": "block"
     },
@@ -1535,7 +1543,10 @@
         "实体序列化"
       ],
       "parents": [],
-      "excludes": []
+      "excludes": [],
+      "requires_any": [
+        "entity"
+      ]
     },
     {
       "id": "navigation",
@@ -1556,7 +1567,9 @@
         "实体移除",
         "移除实体",
         "销毁实体",
-        "移除指定实体"
+        "移除指定实体",
+        "删除实体",
+        "删除指定实体"
       ],
       "parents": [],
       "excludes": []
@@ -1640,7 +1653,11 @@
       "aliases": [
         "结束骑乘",
         "下坐骑",
-        "强制下马"
+        "强制下马",
+        "停止骑乘",
+        "取消骑乘",
+        "离开坐骑",
+        "下马"
       ],
       "parents": [],
       "excludes": [
@@ -1780,7 +1797,8 @@
       "aliases": [
         "生成实例",
         "生成",
-        "创建"
+        "创建",
+        "召唤"
       ],
       "parents": [],
       "excludes": [],
@@ -1822,7 +1840,10 @@
         "所有槽位",
         "全部物品",
         "所有物品",
-        "批量物品"
+        "批量物品",
+        "每一格",
+        "各个格子",
+        "所有格子"
       ],
       "parents": [],
       "excludes": [],
@@ -2240,6 +2261,320 @@
       "excludes": [],
       "context_only": true,
       "target_key": "ui"
+    },
+    {
+      "id": "saturation",
+      "label": "饱和度",
+      "category": "property",
+      "aliases": [
+        "饱和度",
+        "饱和值"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "stack_size",
+      "label": "堆叠上限",
+      "category": "property",
+      "aliases": [
+        "最大堆叠",
+        "堆叠上限",
+        "堆叠数量",
+        "可堆叠数量"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "selected_slot",
+      "label": "快捷栏选中槽位",
+      "category": "property",
+      "aliases": [
+        "选中槽位",
+        "选中的快捷栏",
+        "快捷栏选中"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "host_player",
+      "label": "房主",
+      "category": "property",
+      "aliases": [
+        "房主",
+        "服主",
+        "主机玩家"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "sneak",
+      "label": "潜行",
+      "category": "property",
+      "aliases": [
+        "潜行",
+        "下蹲",
+        "蹲下"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "durability",
+      "label": "耐久度",
+      "category": "property",
+      "aliases": [
+        "耐久度",
+        "耐久值",
+        "耐久"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "break_start",
+      "label": "开始破坏",
+      "category": "action",
+      "aliases": [
+        "开始挖掘",
+        "开始挖",
+        "开始破坏",
+        "开始敲击"
+      ],
+      "parents": [
+        "break"
+      ],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "shield",
+      "label": "盾牌",
+      "category": "qualifier",
+      "aliases": [
+        "盾牌",
+        "持盾"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "armor_value",
+      "label": "护甲值",
+      "category": "property",
+      "aliases": [
+        "护甲值",
+        "盔甲值",
+        "防御值"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "ender_chest",
+      "label": "末影箱",
+      "category": "target",
+      "aliases": [
+        "末影箱"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "landing",
+      "label": "着地",
+      "category": "action",
+      "aliases": [
+        "着地",
+        "落地",
+        "落到地面",
+        "掉落地面"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "entity_load",
+      "label": "实体加载",
+      "category": "action",
+      "aliases": [
+        "实体加载",
+        "进入视野",
+        "创建新实体"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "bind_entity",
+      "label": "界面绑定实体",
+      "category": "property",
+      "aliases": [
+        "绑定实体",
+        "跟随实体",
+        "实体头顶"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "destroy_time",
+      "label": "破坏时间",
+      "category": "property",
+      "aliases": [
+        "破坏时间",
+        "挖掘时间",
+        "破坏方块需要的时间"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "game_rule",
+      "label": "游戏规则",
+      "category": "property",
+      "aliases": [
+        "游戏规则"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "entity_type",
+      "label": "实体类型",
+      "category": "property",
+      "aliases": [
+        "实体类型",
+        "类型标识",
+        "类型名称"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "chunk_keep",
+      "label": "常加载区域",
+      "category": "property",
+      "aliases": [
+        "常加载",
+        "保持加载",
+        "保持区块加载"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "chunk_load",
+      "label": "区块加载",
+      "category": "action",
+      "aliases": [
+        "加载区块",
+        "区块加载",
+        "预加载"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "chunk_unload",
+      "label": "区块卸载",
+      "category": "action",
+      "aliases": [
+        "区块卸载",
+        "卸载区块",
+        "区块被卸载"
+      ],
+      "parents": [],
+      "excludes": [
+        "chunk_load"
+      ],
+      "context_only": false
+    },
+    {
+      "id": "molang_node",
+      "label": "Molang 计算节点",
+      "category": "property",
+      "aliases": [
+        "计算节点",
+        "查询节点",
+        "query.mod",
+        "molang节点"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "item_nbt",
+      "label": "物品NBT",
+      "category": "property",
+      "aliases": [
+        "NBT",
+        "nbt",
+        "物品NBT"
+      ],
+      "parents": [
+        "custom_data"
+      ],
+      "excludes": [],
+      "context_only": false,
+      "requires_any": [
+        "item"
+      ]
+    },
+    {
+      "id": "server_message",
+      "label": "发往服务端的事件通信",
+      "category": "action",
+      "aliases": [
+        "通知服务端",
+        "发给服务端",
+        "发送到服务端",
+        "上报服务端",
+        "请求服务端"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "state_sync",
+      "label": "跨端同步",
+      "category": "action",
+      "aliases": [
+        "同步",
+        "跨端通信",
+        "跨端同步",
+        "双端同步"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false,
+      "requires_any": [
+        "ui",
+        "client_message",
+        "server_message"
+      ]
     }
   ],
   "operation_terms": {

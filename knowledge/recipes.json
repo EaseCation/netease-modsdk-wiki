@@ -337,6 +337,69 @@
       "contract": {
         "target": "world"
       }
+    },
+    {
+      "id": "net.request-sync",
+      "label": "跨端请求与同步",
+      "concepts": [
+        "server_message",
+        "client_message",
+        "state_sync"
+      ],
+      "triggers": [
+        [
+          "state_sync"
+        ],
+        [
+          "server_message"
+        ]
+      ],
+      "side": "common",
+      "operations": [
+        "write",
+        "set",
+        "create"
+      ],
+      "status": "matched",
+      "steps": [
+        {
+          "label": "客户端发送自定义事件",
+          "ids": [
+            "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer"
+          ]
+        },
+        {
+          "label": "服务端注册监听并处理请求",
+          "ids": [
+            "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent"
+          ]
+        },
+        {
+          "label": "服务端把结果发回指定客户端",
+          "ids": [
+            "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient"
+          ]
+        },
+        {
+          "label": "客户端注册监听并刷新界面",
+          "ids": [
+            "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent"
+          ]
+        }
+      ],
+      "cautions": [
+        "服务端监听客户端系统事件时，回调参数自带 __id__，值为对应客户端的玩家 id，用它确定请求来源。",
+        "ListenForEvent 的 namespace 和 systemName 填事件来源系统的名称；事件参数一般用 CreateEventData 创建。"
+      ],
+      "guides": [
+        "mcdocs/1-ModAPI/接口/通用/事件.md"
+      ],
+      "source_dependencies": {
+        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer": "50ada1d1cc000b0265310965547a7d1958220b3a1abc1dd377369c40de277742",
+        "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient": "f6ce1485dbcc8da10e2148f5daba24ffbf201e3029edef954674efab8cde40b0",
+        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d"
+      }
     }
   ]
 }
