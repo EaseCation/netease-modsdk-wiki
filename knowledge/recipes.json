@@ -32,9 +32,9 @@
         "mcdocs/1-ModAPI/接口/世界/方块管理.md"
       ],
       "source_dependencies": {
-        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew": "17346fd8a45c67cdc18f5018aa8bd5c08a5ec855babfe4467d5ffb89accfab41",
-        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates": "05e05752df40e55381ba035290655b9c74fde96e0ae6b28587a06115e5347a11",
-        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew": "ff481a38502792c4d3732574606b89d723c9e17c60f7b952393aa63d6e74855f"
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.GetBlockNew": "43a083ba523d4b4266c3ed6691d762ad7eb9374e860d37e6e0e2ec2d0e825878",
+        "modsdk:api:server:mod.server.component.blockStateCompServer.BlockStateComponentServer.GetBlockStates": "f2417812442ec1a936cc2ce4a806b4c2ca632bee1a28f21ce03c012ff23fd231",
+        "modsdk:api:server:mod.server.component.blockInfoCompServer.BlockInfoComponentServer.SetBlockNew": "41e2f164a62a310b29db1330b06fa5609605cadf763bb7bb46e7a26406adb219"
       },
       "operations": [
         "write",
@@ -78,9 +78,9 @@
         "mcdocs/1-ModAPI/接口/玩家/渲染.md"
       ],
       "source_dependencies": {
-        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimation": "198de303e3525b88097acc99eb02e183a862815e41ac9cec67abf49bfa6e740d",
-        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationController": "42153e3fdde5133460e9cf41f977e8246524fed891072abba825aeb636714d56",
-        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationIntoState": "7fb574ece3d0dc494b505acce0f6808ff1133132687c1215c1a3940b8218be8a"
+        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimation": "67d1382d14b32d3f4c91c5a20fa8242930a880b87a66ca567dde69f4b089fcb9",
+        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationController": "3889b5cbaefb6b46d0eb7b969a1f2c29573deb507db5fac225408ccb70689fd7",
+        "modsdk:api:client:mod.client.component.actorRenderCompClient.ActorRenderCompClient.AddPlayerAnimationIntoState": "c31b6d79a3f16d1de7d3302a2fd71a9af15501fd138e568347705ab5265d054d"
       },
       "triggers": [
         [
@@ -140,8 +140,8 @@
         "mcdocs/1-ModAPI/接口/自定义UI/UI控件.md"
       ],
       "source_dependencies": {
-        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchMoveCallback": "3d528010630f6c49d3c2f8c3e2ac07b7be858b876932bdbfc24ce2a23313e83e",
-        "modsdk:api:client:mod.client.ui.controls.baseUIControl.BaseUIControl.SetPosition": "e487303e2fe849291893de9a1ef57b38f69edb7ee37c74ac10c625a4dec32890"
+        "modsdk:api:client:mod.client.ui.controls.buttonUIControl.ButtonUIControl.SetButtonTouchMoveCallback": "45be59c14998bbaa9dc11189432fe4517ace21b81496c59548506973c76dc74e",
+        "modsdk:api:client:mod.client.ui.controls.baseUIControl.BaseUIControl.SetPosition": "ff459acc6fb66c814b91284ea85d5d5de1a9cc5c51b7f6f9604c72e03a4ec488"
       },
       "contract": {
         "target": "ui"
@@ -181,8 +181,8 @@
         "mcdocs/1-ModAPI/接口/自定义UI/UI控件.md"
       ],
       "source_dependencies": {
-        "modsdk:api:client:mod.client.ui.controls.itemRendererUIControl.ItemRendererUIControl.SetUiItem": "48d4f213dea768ba899513babab13ec06440e83eb68958523fba77d8191e35ac",
-        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText": "8f429c4908d0f6128a5de0749717cb8918853ee60efde56e5dd7ea7625ce762c"
+        "modsdk:api:client:mod.client.ui.controls.itemRendererUIControl.ItemRendererUIControl.SetUiItem": "742f25b1449d9cebb7d2ea77f5fd4172b4ec89466b488bbf4e5662ccca47ec3a",
+        "modsdk:api:client:mod.client.ui.controls.labelUIControl.LabelUIControl.SetText": "4eb6c2e92f487337f7d95a9800f79576cda8a236eb1c6328e981bf27a8ee7f61"
       },
       "contract": {
         "target": "ui"
@@ -230,9 +230,9 @@
         "mcdocs/1-ModAPI/接口/玩家/背包.md"
       ],
       "source_dependencies": {
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem": "e99813b7a895e8f008533a85335c6acf1d5722ed4db0326ef447addcd29f0f8f",
-        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
-        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.ChangePlayerItemTipsAndExtraId": "2364a3a1142ae8599b7ce3444a7a904f28340845d705e45314d23f0dc3cfa41f"
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.GetPlayerItem": "7fabc8e6ae61a35b2c860963ae90fb1e1abe49a5fa5bcb07df21264998ada426",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "2c4c7a251f8c7116270ac173d739359672c5c55144ac1298fd03929e74870e72",
+        "modsdk:api:server:mod.server.component.itemCompServer.ItemCompServer.ChangePlayerItemTipsAndExtraId": "5315090350a4588d4b9350ebd700b6991b4bc8948350e8f82269009e8cf533d1"
       }
     },
     {
@@ -268,8 +268,8 @@
         "mcdocs/1-ModAPI/接口/自定义UI/通用.md"
       ],
       "source_dependencies": {
-        "modsdk:api:client:mod.client.extraClientApi.RegisterUI": "95f61b7da73a32e5e3ab782aca0521303e6a1f34a62bb1e9cd455051bedb6ef9",
-        "modsdk:api:client:mod.client.extraClientApi.CreateUI": "ed924f51320bf066ddc1aa1ad66cf81cbb01e1a55aa3a96f87ecea1325487456"
+        "modsdk:api:client:mod.client.extraClientApi.RegisterUI": "fcf49fad0c62bf34c350c75291b432d7146e5e866545d139860fcb3995b7823c",
+        "modsdk:api:client:mod.client.extraClientApi.CreateUI": "ef429cb220dd351c4b34de5c6934e9def18c9dff3c4114dd4248939f081c5205"
       },
       "triggers": [
         [
@@ -330,9 +330,9 @@
         "mcdocs/1-ModAPI/接口/世界/自定义数据.md"
       ],
       "source_dependencies": {
-        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "68136863b3b94e66fba8ba3fa8d93c686eee51744bc3088015cf266fbc2e838f",
-        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "15b484086d5eaf69db79a7726a9244bac239da99156b8aeee94ffc4f3b1811b1",
-        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SaveExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "b97e582f3ffc98dd8f2f325a134ed82fba0489d382e42559b8cff512baeaac8d"
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "2c4c7a251f8c7116270ac173d739359672c5c55144ac1298fd03929e74870e72",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.GetExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "c150ae34412ac878acaf8ae8bd199c2c5165d52fd051dd73dc794b7f19ac58b9",
+        "modsdk:api:server:mod.server.component.exDataCompServer.ExDataCompServer.SaveExtraData@mcdocs/1-ModAPI/接口/世界/自定义数据.md": "19318b7c40dcb4d9e7ef493059111abcdbe20744862efc439609c39619bade98"
       },
       "contract": {
         "target": "world"
@@ -395,10 +395,10 @@
         "mcdocs/1-ModAPI/接口/通用/事件.md"
       ],
       "source_dependencies": {
-        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer": "50ada1d1cc000b0265310965547a7d1958220b3a1abc1dd377369c40de277742",
-        "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d",
-        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient": "f6ce1485dbcc8da10e2148f5daba24ffbf201e3029edef954674efab8cde40b0",
-        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent": "36856e8eb1ebb6e5ea9c1bc67999db45161fc73d1bacae4d04e1aaa5a304d83d"
+        "modsdk:api:client:mod.client.system.clientSystem.ClientSystem.NotifyToServer": "8c22bbebb2a25a8e7a36b6fd77852ccf8b5d2d0ef0dce55c87ea47a220cac730",
+        "modsdk:api:server:mod.common.system.baseSystem.BaseSystem.ListenForEvent": "cdf356d3da6472651c304b730bbc3f0b3ad734fd96008f96dc219137a154d7f1",
+        "modsdk:api:server:mod.server.system.serverSystem.ServerSystem.NotifyToClient": "ba0b03264cf3a59226f3d15eeaa317489a70e399d4e29ee58015b6d54094249c",
+        "modsdk:api:client:mod.common.system.baseSystem.BaseSystem.ListenForEvent": "cdf356d3da6472651c304b730bbc3f0b3ad734fd96008f96dc219137a154d7f1"
       }
     }
   ]

@@ -2575,6 +2575,692 @@
         "client_message",
         "server_message"
       ]
+    },
+    {
+      "id": "rigid_body",
+      "label": "自定义刚体",
+      "category": "target",
+      "aliases": [
+        "自定义刚体",
+        "物理刚体",
+        "刚体"
+      ],
+      "parents": [
+        "physx"
+      ],
+      "excludes": [],
+      "context_only": true,
+      "target_key": "physics"
+    },
+    {
+      "id": "physics_joint",
+      "label": "物理关节",
+      "category": "target",
+      "aliases": [
+        "物理关节",
+        "关节"
+      ],
+      "parents": [
+        "physx"
+      ],
+      "excludes": [],
+      "context_only": true,
+      "target_key": "physics"
+    },
+    {
+      "id": "collision_shape",
+      "label": "碰撞体",
+      "category": "target",
+      "aliases": [
+        "碰撞体",
+        "碰撞形状",
+        "碰撞外形"
+      ],
+      "parents": [
+        "physx"
+      ],
+      "excludes": [],
+      "context_only": false,
+      "target_key": "physics"
+    },
+    {
+      "id": "physics_trigger",
+      "label": "物理触发器",
+      "category": "target",
+      "aliases": [
+        "触发器",
+        "触发区域",
+        "触发盒",
+        "感应区"
+      ],
+      "parents": [
+        "physx"
+      ],
+      "excludes": [],
+      "context_only": false,
+      "target_key": "physics"
+    },
+    {
+      "id": "force",
+      "label": "施加力",
+      "category": "action",
+      "aliases": [
+        "施加力",
+        "施力",
+        "推力",
+        "作用力",
+        "冲量"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "torque",
+      "label": "施加扭矩",
+      "category": "action",
+      "aliases": [
+        "扭矩",
+        "力矩",
+        "转矩"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "angular_velocity",
+      "label": "角速度",
+      "category": "property",
+      "aliases": [
+        "角速度",
+        "旋转速度",
+        "转速",
+        "自转速度"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "damping",
+      "label": "阻尼",
+      "category": "property",
+      "aliases": [
+        "阻尼",
+        "速度衰减"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "mass",
+      "label": "质量",
+      "category": "property",
+      "aliases": [
+        "质量",
+        "刚体质量"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "center_of_mass",
+      "label": "质心",
+      "category": "property",
+      "aliases": [
+        "质心",
+        "重心"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "inertia_tensor",
+      "label": "惯性张量",
+      "category": "property",
+      "aliases": [
+        "惯性张量",
+        "转动惯量"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "rigid_sleep",
+      "label": "刚体休眠",
+      "category": "property",
+      "aliases": [
+        "刚体休眠",
+        "休眠",
+        "唤醒"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "gravity",
+      "label": "重力",
+      "category": "property",
+      "aliases": [
+        "重力"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "axis_lock",
+      "label": "轴锁定",
+      "category": "property",
+      "aliases": [
+        "轴锁定",
+        "锁定旋转",
+        "锁定平移",
+        "锁轴"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "kinematic",
+      "label": "运动学刚体",
+      "category": "qualifier",
+      "aliases": [
+        "运动学刚体",
+        "运动学"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "buoyancy",
+      "label": "浮力",
+      "category": "property",
+      "aliases": [
+        "浮力",
+        "浸没体积",
+        "浮心"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "physics_step",
+      "label": "物理模拟步",
+      "category": "action",
+      "aliases": [
+        "物理模拟",
+        "物理帧",
+        "模拟步"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "physics_debugger",
+      "label": "物理调试器",
+      "category": "target",
+      "aliases": [
+        "物理调试器",
+        "PVD"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "collision_contact",
+      "label": "碰撞接触",
+      "category": "action",
+      "aliases": [
+        "碰撞接触",
+        "刚体碰撞",
+        "物理碰撞",
+        "开始接触",
+        "结束接触"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "trigger_overlap",
+      "label": "触发器进出",
+      "category": "action",
+      "aliases": [
+        "进入触发器",
+        "离开触发器",
+        "进出触发器"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "shape_box",
+      "label": "盒形",
+      "category": "qualifier",
+      "aliases": [
+        "盒形",
+        "长方体",
+        "方盒"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false,
+      "requires_any": [
+        "collision_shape",
+        "physics_trigger"
+      ]
+    },
+    {
+      "id": "shape_capsule",
+      "label": "胶囊形",
+      "category": "qualifier",
+      "aliases": [
+        "胶囊形",
+        "胶囊体"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false,
+      "requires_any": [
+        "collision_shape",
+        "physics_trigger"
+      ]
+    },
+    {
+      "id": "shape_sphere",
+      "label": "球形",
+      "category": "qualifier",
+      "aliases": [
+        "球形",
+        "球体"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false,
+      "requires_any": [
+        "collision_shape",
+        "physics_trigger"
+      ]
+    },
+    {
+      "id": "fixed_joint",
+      "label": "固定关节",
+      "category": "qualifier",
+      "aliases": [
+        "固定关节",
+        "刚性连接",
+        "焊接"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "distance_joint",
+      "label": "距离关节",
+      "category": "qualifier",
+      "aliases": [
+        "距离关节",
+        "距离约束",
+        "绳索约束"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "revolute_joint",
+      "label": "铰链关节",
+      "category": "qualifier",
+      "aliases": [
+        "铰链关节",
+        "旋转关节",
+        "铰链",
+        "转轴"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "spherical_joint",
+      "label": "球窝关节",
+      "category": "qualifier",
+      "aliases": [
+        "球窝关节",
+        "球形关节",
+        "球关节",
+        "球铰"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "prismatic_joint",
+      "label": "滑动关节",
+      "category": "qualifier",
+      "aliases": [
+        "滑动关节",
+        "滑轨",
+        "平移关节"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "joint_limit",
+      "label": "关节限位",
+      "category": "property",
+      "aliases": [
+        "关节限位",
+        "限位",
+        "角度限制",
+        "行程限制",
+        "锥形限制"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "joint_drive",
+      "label": "关节电机",
+      "category": "property",
+      "aliases": [
+        "关节电机",
+        "电机",
+        "马达",
+        "关节驱动"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "joint_break",
+      "label": "关节断裂",
+      "category": "property",
+      "aliases": [
+        "关节断裂",
+        "断裂阈值",
+        "断裂力"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "joint_type",
+      "label": "关节类型",
+      "category": "property",
+      "aliases": [
+        "关节类型",
+        "关节种类"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "joint_angle",
+      "label": "关节角度",
+      "category": "property",
+      "aliases": [
+        "关节角度",
+        "铰链角度"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "joint_collision",
+      "label": "关节相连碰撞",
+      "category": "property",
+      "aliases": [
+        "相连刚体碰撞",
+        "关节碰撞"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "joint_frame",
+      "label": "关节坐标系",
+      "category": "property",
+      "aliases": [
+        "关节坐标系",
+        "关节锚点"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "lobby_room",
+      "label": "联机大厅房间",
+      "category": "target",
+      "aliases": [
+        "联机大厅",
+        "大厅房间",
+        "房间信息",
+        "房间号"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "room_meta",
+      "label": "房间元数据",
+      "category": "property",
+      "aliases": [
+        "房间元数据",
+        "房间数据",
+        "房间自定义数据"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "kick_player",
+      "label": "踢出玩家",
+      "category": "action",
+      "aliases": [
+        "踢出",
+        "踢人",
+        "踢出玩家"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "block_tag",
+      "label": "方块标签",
+      "category": "property",
+      "aliases": [
+        "方块标签",
+        "方块tag",
+        "方块分类标签"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "item_tag",
+      "label": "物品标签",
+      "category": "property",
+      "aliases": [
+        "物品标签",
+        "物品tag",
+        "物品分类标签"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "texture_atlas_uv",
+      "label": "图集UV",
+      "category": "property",
+      "aliases": [
+        "纹理图集",
+        "图集坐标",
+        "贴图UV",
+        "UV坐标"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "screen_coordinate",
+      "label": "屏幕坐标",
+      "category": "property",
+      "aliases": [
+        "屏幕坐标",
+        "屏幕位置",
+        "像素坐标"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "world_to_screen",
+      "label": "世界转屏幕",
+      "category": "qualifier",
+      "aliases": [
+        "世界转屏幕",
+        "世界坐标投影",
+        "投影到屏幕"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "screen_to_world",
+      "label": "屏幕转世界",
+      "category": "qualifier",
+      "aliases": [
+        "屏幕转世界",
+        "屏幕坐标转射线",
+        "屏幕拾取"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "view_matrix",
+      "label": "视图矩阵",
+      "category": "property",
+      "aliases": [
+        "视图矩阵",
+        "观察矩阵"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "projection_matrix",
+      "label": "投影矩阵",
+      "category": "property",
+      "aliases": [
+        "投影矩阵",
+        "透视矩阵",
+        "透视投影"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "aspect_ratio",
+      "label": "画面宽高比",
+      "category": "property",
+      "aliases": [
+        "宽高比",
+        "画面比例",
+        "屏幕比例"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "clip_plane",
+      "label": "裁剪面",
+      "category": "property",
+      "aliases": [
+        "近裁剪面",
+        "远裁剪面",
+        "裁剪面",
+        "裁剪距离"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "quaternion",
+      "label": "四元数",
+      "category": "qualifier",
+      "aliases": [
+        "四元数",
+        "万向锁"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "destroy_particle",
+      "label": "方块破坏粒子",
+      "category": "qualifier",
+      "aliases": [
+        "破坏粒子",
+        "破碎粒子",
+        "挖掘粒子",
+        "碎屑粒子"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
+    },
+    {
+      "id": "physx",
+      "label": "自定义物理",
+      "category": "qualifier",
+      "aliases": [
+        "物理",
+        "PhysX",
+        "physx"
+      ],
+      "parents": [],
+      "excludes": [],
+      "context_only": false
     }
   ],
   "operation_terms": {
