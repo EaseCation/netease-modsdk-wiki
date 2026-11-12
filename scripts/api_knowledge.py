@@ -16,7 +16,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '3.9'
+VERSION = '3.10'
 SIDE_NAMES = {'server': '服务端', 'client': '客户端', 'common': '通用'}
 SCHEMA_VERSION = 3
 QUERY_PROTOCOL = 4
@@ -267,7 +267,19 @@ def read_records(root):
     return records, docs
 
 
-def validate_knowledge(concepts, recipes, by_id, root):
+def contract_digest(record):
+    """合同指纹：只看描述、参数、返回与备注的文字，忽略空白、强调符、表格符号、链接样式和示例代码。
+    官方文档持续更新且经常只是重排版；标注据此判断原文合同是否真的变了，而不是逐字节比对。"""
+    if record['kind'] in ('api', 'event'):
+        text = json.dumps([record.get(k) for k in ('description', 'parameters', 'returns', 'remarks')], ensure_ascii=False, sort_keys=True)
+    else:
+        text = record.get('raw') or ''
+    text = text.replace('\\n', ' ').replace('(opens new window)', '')
+    text = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)
+    return digest(re.sub(r'[\s\*_`\\>|:\-]+', '', text))
+
+
+def validate_knowledge(concepts, recipes, by_id, root, drift=None):
     if concepts.get('schema_version') != SCHEMA_VERSION or recipes.get('schema_version') != SCHEMA_VERSION:
         raise ValueError('概念/组合协议不匹配，请同步更新 Wiki 和 Skill')
     terms=concepts.get('operation_terms',{})
@@ -311,11 +323,15 @@ def validate_knowledge(concepts, recipes, by_id, root):
         if not isinstance(contract,dict) or set(contract)-{'target','extent','batch','target_scope'} or any(value not in INTENT_CHOICES[field] for field,value in contract.items()):raise ValueError('组合合同字段非法')
         for step in recipe['steps']:
             for rid in step['ids']:
-                if rid not in by_id or recipe.get('source_dependencies',{}).get(rid)!=by_id[rid]['source_sha256']:
-                    raise ValueError('组合步骤来源缺失或变化：'+rid)
+                if rid not in by_id:
+                    # 步骤指向的接口已不存在：这条流程无法展示，剔除并报告，不阻塞整个索引。
+                    if drift is None: raise ValueError('组合步骤来源缺失：'+rid)
+                    drift['broken_recipes'].setdefault(recipe['id'],[]).append(rid)
+                elif recipe.get('source_dependencies',{}).get(rid)!=by_id[rid]['contract_sha256'] and drift is not None:
+                    drift['stale_recipes'].setdefault(recipe['id'],[]).append(rid)
 
 
-def validate_facts(facts, record, concept_ids):
+def validate_facts(facts, record, concept_ids, drift=None):
     allowed={'status','concepts','evidence','operation','operations','targets','constraints','extent','phase','batch','mutable_fields','unsupported_features','required_before','subject','target','property','action','cancellable','qualifiers'}
     if set(facts)-allowed or facts.get('status') not in ('unknown','reviewed'):
         raise ValueError('能力事实格式不完整：'+record['id'])
@@ -342,8 +358,9 @@ def validate_facts(facts, record, concept_ids):
             if set(values)-set(INTENT_CHOICES[field]):raise ValueError('能力条件允许值非法：'+field)
     if facts['status']=='reviewed':
         evidence=facts.get('evidence',{})
-        if evidence.get('source_sha256')!=record['source_sha256'] or evidence.get('section')!=record['section_path']:
-            raise ValueError('能力事实来源变化：'+record['id'])
+        # 原文合同在核验之后变了：事实继续使用，但标为待复核。章节路径只用于定位，不作一致性要求。
+        if evidence.get('source_sha256')!=record['contract_sha256'] and drift is not None:
+            drift['stale_annotations'].add(record['id'])
         if 'mutable_fields' in facts:
             names={p['name'] for p in record['parameters']}
             if set(facts['mutable_fields'])-names: raise ValueError('可修改字段不存在：'+record['id'])
@@ -461,10 +478,13 @@ def build(root=ROOT):
     annotations = json.loads(sidecar.read_text()) if sidecar.exists() else {'entries': []}
     if annotations.get('schema_version') != SCHEMA_VERSION:
         raise ValueError('标注协议与查询引擎不匹配，请使用配套最新版')
+    for r in records: r['contract_sha256'] = contract_digest(r)
     by_id = {r['id']: r for r in records}
+    drift = {'stale_annotations': set(), 'orphan_annotations': [], 'stale_recipes': {}, 'broken_recipes': {}, 'dropped_links': []}
     concepts = json.loads((root / 'knowledge/concepts.json').read_text())
     recipes = json.loads((root / 'knowledge/recipes.json').read_text())
-    validate_knowledge(concepts, recipes, by_id, root)
+    validate_knowledge(concepts, recipes, by_id, root, drift)
+    recipes['entries'] = [r for r in recipes['entries'] if r['id'] not in drift['broken_recipes']]
     concept_ids = {c['id'] for c in concepts['entries']}
     vocabulary={c['id']:c for c in concepts['entries']}
     notes = {}
@@ -473,19 +493,25 @@ def build(root=ROOT):
     for annotation in annotations['entries']:
         record = by_id.get(annotation['id'])
         if not record or record['documentation_status'] != 'full':
-            raise ValueError('标注目标没有完整正文：' + annotation['id'])
-        if annotation['source_sha256'] != record['source_sha256']:
-            raise ValueError('标注所依赖原文已变化，请复核：' + annotation['id'])
+            # 上游移动或删除了这条接口：跳过并报告，由维护者迁移或清理。
+            drift['orphan_annotations'].append(annotation['id']);continue
+        if annotation['source_sha256'] != record['contract_sha256']:
+            drift['stale_annotations'].add(annotation['id'])
         for dependency, expected in annotation.get('source_dependencies', {}).items():
-            if dependency not in by_id or by_id[dependency]['source_sha256'] != expected:
-                raise ValueError('标注引用的文档已变化，请复核：' + annotation['id'] + ' -> ' + dependency)
+            if dependency not in by_id or by_id[dependency]['contract_sha256'] != expected:
+                drift['stale_annotations'].add(annotation['id'])
         if not 0 <= len(annotation['tags']) <= 6 or len(set(annotation['tags'])) != len(annotation['tags']) or any(not re.fullmatch(r'[\u4e00-\u9fff]{1,12}', t) for t in annotation['tags']):
             raise ValueError('标签须为最多 6 个不重复的中文基础能力词：' + annotation['id'])
-        for linked in annotation.get('related', []) + annotation.get('facts', {}).get('required_before', []):
-            if linked not in by_id:
-                raise ValueError('关联目标不存在：' + linked)
+        missing = [linked for linked in annotation.get('related', []) + annotation.get('facts', {}).get('required_before', []) if linked not in by_id]
+        if missing:
+            # 关联到的接口已不存在：只去掉这条关联并报告。
+            drift['dropped_links'] += [annotation['id'] + ' -> ' + linked for linked in missing]
+            annotation = {**annotation, 'related': [x for x in annotation.get('related', []) if x in by_id]}
+            if annotation.get('facts', {}).get('required_before'):
+                annotation['facts'] = {**annotation['facts'], 'required_before': [x for x in annotation['facts']['required_before'] if x in by_id]}
         facts = annotation.get('facts', {})
-        validate_facts(facts, record, concept_ids)
+        validate_facts(facts, record, concept_ids, drift)
+        if annotation['id'] in drift['stale_annotations']: annotation = {**annotation, 'stale': True}
         record['annotation'] = annotation
         supported=set(facts.get('concepts',[])) | set(sum((facts.get(k,[]) for k in ('action','subject','target','property','qualifiers')),[]))
         record['concept_aliases'] = sorted({alias for cid in supported for alias in vocabulary[cid]['aliases']})
@@ -509,7 +535,7 @@ def build(root=ROOT):
     for entry_id in by_id:visit_dependencies(entry_id,set())
     if start_signature != input_signature(root): raise ValueError('构建期间来源发生变化，请在修改结束后重新构建')
     corpus_hash = digest(json.dumps({'docs': docs, 'annotations': annotations, 'concepts': concepts, 'recipes': recipes}, ensure_ascii=False, sort_keys=True))
-    index = {'schema_version': SCHEMA_VERSION, 'version': VERSION, 'snapshot_note': 'GitHub 3.8 基础文档及官网 3.9 补充快照；不代表全部 API 的引入版本',
+    index = {'schema_version': SCHEMA_VERSION, 'version': VERSION, 'snapshot_note': '官方 GitHub 文档与 MCP 原文快照合并，更新信息覆盖到 3.10；不代表全部 API 的引入版本',
              'corpus_sha256': corpus_hash, 'input_signature': start_signature, 'source_files': docs, 'records': records, 'concepts': concepts['entries'], 'recipes': recipes['entries'], 'operation_terms': concepts['operation_terms'], 'query_protocol': QUERY_PROTOCOL}
     for note in notes.values(): note['corpus_sha256'] = corpus_hash
     output = root / '.api-index'; output.mkdir(exist_ok=True)
@@ -523,7 +549,11 @@ def build(root=ROOT):
                 'scopes': dict(collections.Counter(r['scope'] for r in records)), 'annotated': len(notes),
                 'index_only': sum(r['documentation_status'] == 'index_only' for r in records)}
     atomic_artifact(public / 'manifest.json', json.dumps(manifest, ensure_ascii=False, indent=2))
-    return manifest
+    report = {'stale_annotations': sorted(drift['stale_annotations']), 'orphan_annotations': drift['orphan_annotations'],
+              'stale_recipes': drift['stale_recipes'], 'broken_recipes': drift['broken_recipes'], 'dropped_links': drift['dropped_links']}
+    atomic_artifact(output / 'drift.json', json.dumps(report, ensure_ascii=False, indent=2))
+    counts = {k: len(v) for k, v in report.items() if v}
+    return {**manifest, **({'drift': counts, 'drift_report': '.api-index/drift.json'} if counts else {})}
 
 
 def tokens(text):
@@ -815,6 +845,10 @@ class Search:
                 semantic = self.knowledge.score(r, requested,intent)
                 if text_only: semantic=0
                 elif requested: score += semantic
+                # 专用接口（facts.qualifiers）未被请求点名时降权。请求里有核心能力时由概念得分扣减；
+                # 请求只有对象背景、没有核心能力时在这里处理，避免专用接口仅凭字面相似排到通用接口前面。
+                if not text_only and not any(not self.knowledge.concepts[c].get('context_only',False) for c in requested):
+                    if set(r.get('annotation',{}).get('facts',{}).get('qualifiers',[]))-requested: score *= .4
                 if intent.get('hints'):score += .02*self.knowledge.score(r,self.knowledge.ancestors(intent['hints']))
                 profile = self.profiles[r['id']]
                 # 未核实的分类不能删除答案，但与请求相反的推断只作为低优先级线索。
@@ -1040,12 +1074,15 @@ class Search:
             # 备选来自两个通道的并集：词面通道首选、概念通道次选交替补入，由调用方读合同取舍；不计入已分配候选。
             if not (workflows[i] and coverage=='matched'):
                 taken=set(allocated[i])|{self.by_id[rid]['key'] for w in workflows[i][:1] for step in w['steps'] for rid in step['ids']}
-                lanes=[[r for _,r in text_selections[i][:ALTERNATIVE_DEPTH]],[r for _,r in selections[i][0][1:1+ALTERNATIVE_DEPTH]]]
+                lanes=[[r for _,r in text_selections[i][:ALTERNATIVE_DEPTH+2]],[r for _,r in selections[i][0][1:3+ALTERNATIVE_DEPTH]]]
                 alternatives=[]
-                for depth in range(ALTERNATIVE_DEPTH):
+                # 同一接口被官方收录在多个文档页时只列一次。
+                same=lambda r:(r['name'],r['side'],r['class_path'])
+                listed={same(r) for r in self.records if r['key'] in taken}
+                for depth in range(ALTERNATIVE_DEPTH+2):
                     for lane in lanes:
-                        if depth<len(lane) and lane[depth]['key'] not in taken and len(alternatives)<ALTERNATIVE_LIMIT:
-                            taken.add(lane[depth]['key']);alternatives.append(lane[depth])
+                        if depth<len(lane) and lane[depth]['key'] not in taken and same(lane[depth]) not in listed and len(alternatives)<ALTERNATIVE_LIMIT:
+                            taken.add(lane[depth]['key']);listed.add(same(lane[depth]));alternatives.append(lane[depth])
                 if alternatives:group['alternatives']=[{'id':r['key'],'name':r['name'],'description':r['description']} for r in alternatives]
             # 检索可信度与核验状态是两回事：两个通道各自的首选不同，说明首选只得到一路证据支持，须与备选比较后再定。
             if allocated[i] and not workflows[i] and text_selections[i] and text_selections[i][0][1]['key']!=allocated[i][0]:group['channels_disagree']=True
@@ -1120,6 +1157,7 @@ class Search:
                 if record.get('annotation'):
                     value['capabilities'] = record['annotation'].get('facts', {})
                     value['developer_notes'] = {k: record['annotation'][k] for k in ('authority', 'usage', 'cautions', 'related') if k in record['annotation']}
+                    if record['annotation'].get('stale'): value['stale_note'] = '官方合同在标注之后有变化，开发说明与能力事实待复核，以合同原文为准'
                     value['developer_notes']['related'] = [self.by_id[i]['key'] for i in record['annotation'].get('related', [])]
             if side_note: value['side_note'] = side_note
             if also: value['also_documented'] = also
@@ -1186,7 +1224,7 @@ def compact_result(result, command):
         for entry in result['results']:
             if entry.get('error'):
                 entries.append({**entry,'candidates':[{**candidate(x),**({'component':x['component']} if x.get('component') else {})} for x in entry.get('candidates',[])]});continue
-            keep=('id','name','side','class_path','description','parameters','returns','remarks','enum_refs','enums','side_note','also_documented','examples','more_examples','developer_notes','part','text','offset','total_chars','next_offset')
+            keep=('id','name','side','class_path','description','parameters','returns','remarks','enum_refs','enums','side_note','also_documented','stale_note','examples','more_examples','developer_notes','part','text','offset','total_chars','next_offset')
             item={k:entry[k] for k in keep if entry.get(k) not in (None,'',[],{},0)}
             item['id']=digest(entry['id'])[:12]
             item['source']=entry['doc_path']+':'+str(entry['line'])
@@ -1205,7 +1243,7 @@ def main():
     parser.add_argument('--verbose', action='store_true', help='显式返回协议、匹配和来源诊断元数据')
     parser.add_argument('--root', type=Path, default=ROOT)
     parser.add_argument('--max-chars', type=int, default=18000, help='输出预算；超限明确报错，不静默截断合同或备注')
-    parser.add_argument('--sdk-version', default=VERSION, help='当前仅支持 3.9 快照，其他版本必须另行核验')
+    parser.add_argument('--sdk-version', default=VERSION, help='当前仅支持 '+VERSION+' 快照，其他版本必须另行核验')
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('build')
     for command in ['search', 'resolve']:
@@ -1243,7 +1281,7 @@ def main():
     args = parser.parse_args()
     if isinstance(getattr(args,'query',None),list): args.query = ' '.join(args.query) or None
     if args.sdk_version != VERSION:
-        raise ValueError('当前快照仅支持 3.9；不能用它确认目标版本 ' + args.sdk_version)
+        raise ValueError('当前快照仅支持 ' + VERSION + '；不能用它确认目标版本 ' + args.sdk_version)
     if args.command == 'build':
         result = build(args.root)
     elif args.command == 'schema':
