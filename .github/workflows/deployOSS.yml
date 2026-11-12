@@ -54,6 +54,16 @@ jobs:
           path: .retrieval-skill
           persist-credentials: false
 
+      - name: Reuse pinned guide sources
+        # 教程来源检查要从 GitHub 下载按仓库、提交和哈希固定的外部原文。Skill 每次全新检出，
+        # 缓存随之清空，任何一次连接中断都会让部署失败；把缓存目录指向 runner 上的持久目录，
+        # 下载齐一次之后不再依赖外网。文件读取后仍会按登记的哈希校验。
+        run: |
+          set -euo pipefail
+          cache="$HOME/.cache/netease-modsdk-skill/guide-sources"
+          mkdir -p "$cache" .retrieval-skill/.data
+          ln -sfn "$cache" .retrieval-skill/.data/guide-sources
+
       - name: Check retrieval regressions
         env:
           MODSDK_WIKI_ROOT: ${{ github.workspace }}
