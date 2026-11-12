@@ -357,6 +357,9 @@ class Knowledge:
         self.operation_terms=index['operation_terms']
         self.alias_patterns={cid:[(alias.lower(),re.compile(re.escape(alias.lower()))) for alias in c['aliases']] for cid,c in self.concepts.items()}
         self._query_cache={}; self._record_cache={}
+        self.by_word={}
+        for cid,c in self.concepts.items():
+            for word in [c['label']]+c['aliases']:self.by_word.setdefault(word.lower(),cid)
 
     def identify(self,text,explicit=(),kind=None):
         if set(explicit)-self.concepts.keys(): raise ValueError('未知概念 ID：'+','.join(set(explicit)-self.concepts.keys()))
@@ -448,6 +451,12 @@ class Knowledge:
 def build(root=ROOT):
     start_signature = input_signature(root)
     records, docs = read_records(root)
+    # 枚举引用按已知枚举名识别；“详见…文档的 PlayerActionType”等写法不再漏掉或误记。
+    enum_names = {r['name'] for r in records if r['kind'] == 'enum'}
+    for r in records:
+        if r['kind'] in ('api', 'event'):
+            text = ' '.join([r['description'], json.dumps(r['parameters'], ensure_ascii=False), json.dumps(r['returns'], ensure_ascii=False), r['remarks']])
+            r['enum_refs'] = sorted((set(r.get('enum_refs', [])) | set(re.findall(r'[A-Za-z_][A-Za-z0-9_]*', text))) & enum_names)
     sidecar = root / 'knowledge/annotations.json'
     annotations = json.loads(sidecar.read_text()) if sidecar.exists() else {'entries': []}
     if annotations.get('schema_version') != SCHEMA_VERSION:
@@ -542,6 +551,17 @@ TARGETS = {
     'timer': '定时调度', 'communication': '跨端与本地事件通信',
     'model': '骨骼模型', 'virtual_world': '虚拟世界', 'sound': '声音播放实例',
 }
+# 粗粒度对象的包含关系：请求更具体的对象（玩家）可以落到更通用的接口（实体），反向和兄弟类别不相容。
+TARGET_PARENTS = {'player':'entity','player_inventory':'player','player_equipment':'player','block_container':'block','entity_name':'entity','attribute':'entity'}
+def target_lineage(target):
+    result=[target]
+    while result[-1] in TARGET_PARENTS:result.append(TARGET_PARENTS[result[-1]])
+    return result
+def target_compatible(requested,declared):
+    return any(t in target_lineage(requested) for t in declared)
+# 调用方常误用范围/批量字段（把“全部槽位”写成 extent、给单项读取加 batch）；这类不一致降权并在结果中标明，不直接删除候选。
+# 对象类别与操作类型仍是硬条件；一个接口确有多种操作语义时在事实的 operations 中声明。
+FIELD_MISMATCH = {'作用范围不匹配或尚未核实':('extent',.3),'批量能力不匹配或尚未核实':('batch',.3)}
 OPERATIONS = ('any','read','write','create','set','delete','play','pause','resume','stop','observe')
 MUTATIONS = set(OPERATIONS) - {'any','read','observe'}
 FACT_CHOICES = {'operation':set(OPERATIONS)-{'any'},'extent':{'single','many','global','dimension'},'phase':{'before','after','change'},'batch':{'single','bulk'}}
@@ -549,7 +569,15 @@ INTENT_CHOICES = {**FACT_CHOICES,'target':set(TARGETS),'target_scope':{'local_pl
 READ_PREFIX = re.compile(r'^(?:get|is|has|can|check|lookup|exist|query|raycast)', re.I)
 WRITE_PREFIX = re.compile(r'^(?:set|add|remove|delete|destroy|create|enable|disable|start|stop|play|pause|resume|replay|reset|register|unregister|unlisten|listen|notify|broadcast|change|open|close|hide|show|lock|unlock|bind|unbind|clear|clean|spawn|use|kill|promote|trigger|emit|render|rotate|zoom|push|pop|insert|copy|replace|serialize|deserialize|update|upgrade|mirror|place|cancel|forbid|immune|depart|undepart|collect|swing|begin|end)', re.I)
 LIMIT_MARKER = re.compile(r'不支持|仅支持|只支持|仅适用于|仅适用|只适用于|仅能|不能(?:用于|用来|当作|直接|代替|修改|设置|获取|查询)|不(?:用于|提供|包含|包括|保证|等于|代表|代替|影响|改变|修改)|不是|需先|须先|必须先|需要先|才(?:会|能|生效)')
-NEGATIVE_CLAUSE = re.compile(r'(?:不是|而非|不要(?:通过|给|使用|调用|发送)?|不(?:使用|调用|发送|切换|修改|改变|设置|写入|生成|创建)|不能用|绝不能|不得)[^，,；;。\n]*')
+# “是不是/能不能”是正反问句，不是否定条件；只按否定词本身识别排除子句。
+NEGATIVE_CLAUSE = re.compile(r'(?:(?<!是)不是|而非|不要(?:通过|给|使用|调用|发送)?|不(?:使用|调用|发送|切换|修改|改变|设置|写入|生成|创建)|(?<!能)不能用|绝不能|不得)[^，,；;。\n]*')
+ENUM_INLINE_LIMIT = 40
+CATALOG_FULL_LIMIT = 40
+CATALOG_PAGE_TOP = 3
+CATALOG_DESCRIBED = 12
+CATALOG_DESCRIPTION_CHARS = 30
+ALTERNATIVE_DEPTH = 2
+ALTERNATIVE_LIMIT = 3
 QUERY_STOP = re.compile(r'获取|读取|查询|设置|修改|当前|指定|是否|请|需要|可以|相关|进行|的')
 
 def evidence_parts(text):
@@ -653,9 +681,23 @@ class Search:
         self._field_vectors = {}
         self._vectors = {}; self.profiles = {r['id']:retrieval_profile(r) for r in self.records}
         self.limitations = {}; self.positive_text = {}
+        # 小型枚举的成员随引用它的接口展示和检索；大型枚举只提示成员数。
+        self.enum_members = {r['name']: re.findall(r'^[ \t]*([A-Za-z_]\w*)[ \t]*=[ \t]*([^#\n]+?)[ \t]*(?:#[ \t]*(.*?))?[ \t]*$', r.get('raw') or '', re.M)
+                             for r in self.records if r['kind'] == 'enum' and r['scope'] == 'modsdk'}
+
+    def enum_text(self, r):
+        return ' '.join(comment for name in r.get('enum_refs') or [] for _, _, comment in self.enum_members.get(name, []) if len(self.enum_members[name]) <= ENUM_INLINE_LIMIT)
 
     def normalize_intent(self,intent):
         # 显式角色与粗粒度对象约束共用同一条件核对，不按某个接口补规则。
+        # 调用方常直接写中文词而不是概念 ID：按标签或别名映射；仍无法识别的词转为待核验条件，不让整批计划失败。
+        for field in ('concepts','action','subject','object','property','qualifiers','hints'):
+            resolved=[]
+            for value in intent.get(field,[]):
+                cid=value if value in self.knowledge.concepts else self.knowledge.by_word.get(value.lower())
+                if cid:resolved.append(cid)
+                elif field!='hints' and value not in intent['requirements']:intent['requirements'].append(value)
+            intent[field]=resolved
         explicit=sum((intent.get(k,[]) for k in ('concepts','action','subject','object','property','qualifiers')),[])
         self.knowledge.identify('',explicit+intent.get('hints',[]))
         # 操作词汇由 Wiki 维护；显式操作优先，多操作不偷偷选择其中一个。
@@ -678,7 +720,8 @@ class Search:
             fields = [('name',r['name'],7,'official'),('description',r['description'],3,'official'),
                       ('class',r['class_path'],.5,'official'),('remarks',r['remarks'],.5,'official'),
                       ('parameters',json.dumps(r['parameters'],ensure_ascii=False),.4,'official'),
-                      ('returns',json.dumps(r['returns'],ensure_ascii=False),3,'official')]
+                      ('returns',json.dumps(r['returns'],ensure_ascii=False),3,'official'),
+                      ('enum_members',self.enum_text(r),.3,'official')]
             if key == 'annotated':
                 a = r.get('annotation', {})
                 fields += [('tags',' '.join(a.get('tags',[])),5,'annotation'),('usage',a.get('usage',''),2,'annotation')]
@@ -716,7 +759,7 @@ class Search:
 
     def constraint_reason(self,r,intent,key):
         p=self.profiles[r['id']]
-        if intent['target'] and 'targets' in p['verified'] and p['targets'] and intent['target'] not in p['targets']:return '对象类别不匹配'
+        if intent['target'] and 'targets' in p['verified'] and p['targets'] and not target_compatible(intent['target'],p['targets']):return '对象类别不匹配'
         if 'targets' in p['verified'] and set(intent['exclude_targets']) & set(p['targets']):return '属于明确排除的对象类别'
         if intent['operation']!='any' and 'operation' in p['verified'] and not supports_operation(p,intent['operation']):return '操作类型不匹配或尚未核实'
         if intent['extent']!='any' and 'extent' in p['verified'] and p['extent']!=intent['extent']:return '作用范围不匹配或尚未核实'
@@ -745,32 +788,40 @@ class Search:
         if any(term.lower() not in text.lower() for term in intent['must_support']):return '尚未从能力说明核实所要求的特性'
         return None
 
-    def ranked(self,intent,strategy='annotated'):
+    def ranked(self,intent,strategy='annotated',channel='concept'):
+        """concept 通道按已核验概念与结构化字段排序；text 通道只按原文与标注文本的词面排序，覆盖全部接口。
+        两个通道各自给出候选、互不加权，补充一侧的知识不会挤掉另一侧的候选。"""
+        text_only=channel=='text'
         key='raw' if strategy=='raw' else 'annotated';vectors,df,average=self.vectors(strategy)
         cleaned=QUERY_STOP.sub(' ',intent['positive_query']); qt=set(tokens(cleaned))
         if not qt:return [],[]
         scored=[];limited=[];query=intent['positive_query'].strip()
-        exact_known=any(query.lower() in (r['name'].lower(),r['id'].lower(),r['key']) for r in self.records)
+        # 只在本次可见的范围与端侧内判断是否有精确同名条目；别的范围里的同名条目不能把候选清空。
+        exact_known=any(query.lower() in (r['name'].lower(),r['id'].lower(),r['key']) for r in self.records if self.allowed(r,intent['side'],intent['kind'],intent['scope']))
         requested = self.knowledge.identify(intent['positive_query'], intent.get('concepts', []) + sum((intent.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[]),kind=intent['kind'])
         qt.update(tokens(' '.join(self.knowledge.concepts[c]['label'] for c in self.knowledge.leaves(requested))))
         for position,(r,v) in enumerate(zip(self.records,vectors)):
             if not self.allowed(r,intent['side'],intent['kind'],intent['scope']):continue
             reason=self.constraint_reason(r,intent,key)
-            if reason in ('对象类别不匹配','操作类型不匹配或尚未核实','作用范围不匹配或尚未核实','属于明确排除的对象类别','批量能力不匹配或尚未核实'):continue
+            if reason=='属于明确排除的对象类别' or (not text_only and reason in ('对象类别不匹配','操作类型不匹配或尚未核实')):continue
+            if text_only and reason in ('对象类别不匹配','操作类型不匹配或尚未核实','已核验能力与请求概念冲突') or (text_only and reason and reason.startswith('待核验能力条件：')):reason=None
+            mismatch=FIELD_MISMATCH.get(reason)
+            if mismatch:reason=None
             exact=query.lower() in (r['name'].lower(),r['id'].lower(),r['key'])
             if exact_known and not exact:continue
             hits=qt & v.keys();score=1000 if exact else 0
             if not exact:
                 score = self.lexical_score(position, qt, key, df)
                 semantic = self.knowledge.score(r, requested,intent)
-                if requested: score += semantic
+                if text_only: semantic=0
+                elif requested: score += semantic
                 if intent.get('hints'):score += .02*self.knowledge.score(r,self.knowledge.ancestors(intent['hints']))
                 profile = self.profiles[r['id']]
                 # 未核实的分类不能删除答案，但与请求相反的推断只作为低优先级线索。
                 if intent['operation'] != 'any' and profile['operation'] != 'unknown':
                     compatible = supports_operation(profile,intent['operation'])
                     if not compatible: score *= .2 if (intent['operation']=='read' or profile['operation']=='read') else .5
-                if intent['target'] and profile['targets'] and intent['target'] not in profile['targets']: score *= .1
+                if intent['target'] and profile['targets'] and not target_compatible(intent['target'],profile['targets']) and not mismatch: score *= .1
                 if intent['extent'] != 'any' and profile['extent'] not in ('unknown',intent['extent']): score *= .25
                 verified,inferred=self.knowledge.record_concepts(r)
                 if intent['phase'] != 'any' and 'phase' in profile['verified'] and self.knowledge.primary_concepts(requested)&(verified|inferred):
@@ -784,9 +835,10 @@ class Search:
                 if len(overlap)>=3 or any(term in phrase for term in intent['must_support']):evidence.append((len(overlap),authority,phrase))
             # 未知特性和限制命中单独展示，不伪装成支持该能力。
             if reason:
-                if (score or evidence) and reason not in ('对象类别不匹配','操作类型不匹配或尚未核实','作用范围不匹配或尚未核实','属于明确排除的对象类别','批量能力不匹配或尚未核实'):
+                if (score or evidence) and reason not in ('对象类别不匹配','操作类型不匹配或尚未核实','属于明确排除的对象类别'):
                     best=max(evidence,default=(0,'metadata',reason));limited.append((score or float(best[0]),r,reason,best[1],best[2]))
                 continue
+            if mismatch: score *= mismatch[1]
             if score > 0:
                 scored.append((score,r))
             elif evidence:
@@ -811,6 +863,45 @@ class Search:
     def search(self,query,strategy='annotated',limit=5,side='any',kind='all',scope='modsdk',offset=0,**constraints):
         intent=self.normalize_intent(prepare_intent({'query':query,'side':side,'kind':kind,'scope':scope,**constraints}))
         ranked,_=self.ranked(intent,strategy);return ranked[offset:offset+limit]
+
+    def catalog(self,query=None,side='any',kind='all',scope='modsdk',pages=2,page=None):
+        """按官方文档页给出完整接口清单：检索只负责定位到页，取舍交给调用方；清单是闭合的，未列出即该页没有。"""
+        groups=collections.defaultdict(list)
+        for r in self.records:
+            if r['kind'] in ('api','event') and self.allowed(r,side,kind if kind in ('api','event') else 'all',scope):
+                groups[self.page_id(r)].append(r)
+        if page:
+            # 接受页名，也接受 detail 输出里的 source 路径（mcdocs/…/背包.md:493）；未写端侧时返回该文档的各端页面。
+            base,_,wanted=re.sub(r'\.md(:\d+)?$','',re.sub(r'^(mcdocs/)?\d+-[A-Za-z]+/','',page.strip())).partition('@')
+            chosen=[name for name in sorted(groups) if name.partition('@')[0]==base and (not wanted or name.endswith('@'+wanted))]
+            if not chosen:
+                return {'error':'page_not_found','candidates':[name for name in sorted(groups) if base.split('/')[-1] in name][:8]}
+            scores={}
+        elif not query:
+            return {'pages':[{'page':name,'count':len(groups[name])} for name in sorted(groups)],'note':'文档页目录；用 catalog --page <page> 读某页的完整接口清单'}
+        else:
+            intent=self.normalize_intent(prepare_intent({'query':query,'side':side,'kind':kind if kind in ('api','event') else 'all','scope':scope}))
+            scores={};hits=collections.defaultdict(list)
+            for score,r in self.ranked(intent,'annotated','text')[0]:
+                if r['kind'] not in ('api','event'):continue
+                hits[self.page_id(r)].append(score);scores[r['id']]=score
+            # 页面得分取页内最相关的几项之和：单个词面相似的条目不足以把整页顶到前面。
+            best={name:math.fsum(sorted(values,reverse=True)[:CATALOG_PAGE_TOP]) for name,values in hits.items()}
+            chosen=[name for name,_ in sorted(best.items(),key=lambda x:(-x[1],x[0]))[:pages]]
+            if not chosen:
+                return {'pages':[],'note':'没有文档页与这些关键词相关，这不能证明平台没有该能力。换成能力所属领域的中文词（如 玩家 属性、记分板），或不带参数运行 catalog 查看全部文档页后用 --page 读取'}
+        result=[]
+        for name in chosen:
+            records=sorted(groups[name],key=lambda r:r['line'])
+            # 大页只给全部名称，并为与查询最相关的几项附一句描述；清单本身始终完整。
+            described={r['id'] for r in sorted(records,key=lambda r:-scores.get(r['id'],0))[:CATALOG_DESCRIBED]} if len(records)>CATALOG_FULL_LIMIT else {r['id'] for r in records}
+            entries=[r['name']+('：'+re.split(r'[。！？；\n]',r['description'],maxsplit=1)[0][:CATALOG_DESCRIPTION_CHARS] if r['id'] in described and r['description'] else '') for r in records]
+            result.append({'page':name,'count':len(records),'entries':entries})
+        return {'pages':result,'note':'每页列出该文档页的全部接口/事件；未列出的能力在该页不存在。选定后用 detail <名称> 读合同'}
+
+    @staticmethod
+    def page_id(r):
+        return re.sub(r'^mcdocs/\d+-[A-Za-z]+/','',r['doc_path']).removesuffix('.md')+'@'+r['side']
 
     def phase_relations(self, records, side, scope):
         selected={r['id'] for r in records}; result=[]; seen=set()
@@ -844,12 +935,12 @@ class Search:
         if plan is None:plan={'intents':[{'id':'1','query':query,'side':side,'kind':kind,'scope':scope,**constraints}]}
         if not isinstance(plan,dict) or set(plan)-{'intents','side','scope','read_only'}:raise ValueError('计划仅接受 intents、side、scope、read_only')
         raw=plan.get('intents');defaults={'side':plan.get('side',side),'scope':plan.get('scope',scope),'read_only':plan.get('read_only',False)}
-        if not isinstance(raw,list) or not 1<=len(raw)<=12:raise ValueError('计划需要 1–12 个子目标')
+        if not isinstance(raw,list) or not 1<=len(raw)<=12:raise ValueError('计划需要 1–12 个子目标；超过 12 项请分批提交')
         intents=[self.normalize_intent(prepare_intent(x,defaults)) for x in raw]
         labels=[str(x.get('id',i+1)) for i,x in enumerate(intents)]
         if len(set(labels))!=len(labels):raise ValueError('子目标 id 不能重复')
-        if limit<len(intents):raise ValueError('limit 至少等于子目标数，不能静默遗漏子目标')
-        selections=[self.supported_selection(x,self.ranked(x,strategy)) for x in intents];selected=[];allocated=[[] for _ in intents];prerequisites={};budget_limited=set();dependency_conflicts=set()
+        if limit<len(intents):raise ValueError('limit 至少等于子目标数，不能静默遗漏子目标；本计划请用 --limit %d 或更大'%len(intents))
+        selections=[self.supported_selection(x,self.ranked(x,strategy)) for x in intents];text_selections=[self.ranked(x,strategy,'text')[0] for x in intents];selected=[];allocated=[[] for _ in intents];prerequisites={};budget_limited=set();dependency_conflicts=set()
         def include(record, i):
             if record['id'] not in selected:
                 if len(selected)>=limit:return False
@@ -859,15 +950,17 @@ class Search:
         requested = [self.knowledge.identify(i['positive_query'], i.get('concepts', []) + sum((i.get(k,[]) for k in ('action','subject','object','property','qualifiers')),[]),kind=i['kind']) for i in intents]
         workflows = [self.knowledge.matching_recipes(c, i['side'],i['operation'],i['mode'],i) if i['kind'] in ('api','all') else [] for c,i in zip(requested,intents)]
         for i,recipes in enumerate(workflows):
-            workflows[i]=[recipe for recipe in recipes if all(self.permitted_dependency(self.by_id[rid],intents[i],strategy) for step in recipe['steps'] for rid in step['ids'])]
+            # 标为通用端的流程本身跨越两端（如客户端发请求、服务端处理并回发），步骤不按请求端侧过滤。
+            workflows[i]=[recipe for recipe in recipes if all(self.permitted_dependency(self.by_id[rid],intents[i] if recipe['side']!='common' else {**intents[i],'side':'any'},strategy) for step in recipe['steps'] for rid in step['ids'])]
             if recipes and not workflows[i]:dependency_conflicts.add(i)
-        # 先分配已知能力链，其余子目标再分配主要候选。
+        # 先保证每个子目标的主要候选有名额，再分配已知能力链；名额不足时如实标记，不把它报成没有匹配。
+        for i,(ranked,_) in enumerate(selections):
+            if not workflows[i] and ranked and not include(ranked[0][1],i):budget_limited.add(i)
         for i,(ranked,_) in enumerate(selections):
             if workflows[i]:
                 for step in workflows[i][0]['steps']:
                     for rid in step['ids']:
                         if not include(self.by_id[rid],i): budget_limited.add(i)
-            elif ranked:include(ranked[0][1],i)
         for i,(ranked,_) in enumerate(selections):
             if not ranked:continue
             r=ranked[0][1]
@@ -938,9 +1031,24 @@ class Search:
             if missing: group['missing_concepts']=missing
             if missing_roles: group['missing_roles']=sorted(set(missing_roles))
             if intent['requirements']:group['missing_requirements']=intent['requirements']
+            if selections[i][0] and not workflows[i]:
+                field=FIELD_MISMATCH.get(self.constraint_reason(selections[i][0][0][1],intent,'raw' if strategy=='raw' else 'annotated'))
+                if field:group['field_mismatch']=[field[0]]
             if selections[i][0]:
                 verified,inferred=self.knowledge.record_concepts(selections[i][0][0][1])
                 group['evidence']={'verified':sorted(core&verified),'textual':sorted((core-verified)&inferred)}
+            # 备选来自两个通道的并集：词面通道首选、概念通道次选交替补入，由调用方读合同取舍；不计入已分配候选。
+            if not (workflows[i] and coverage=='matched'):
+                taken=set(allocated[i])|{self.by_id[rid]['key'] for w in workflows[i][:1] for step in w['steps'] for rid in step['ids']}
+                lanes=[[r for _,r in text_selections[i][:ALTERNATIVE_DEPTH]],[r for _,r in selections[i][0][1:1+ALTERNATIVE_DEPTH]]]
+                alternatives=[]
+                for depth in range(ALTERNATIVE_DEPTH):
+                    for lane in lanes:
+                        if depth<len(lane) and lane[depth]['key'] not in taken and len(alternatives)<ALTERNATIVE_LIMIT:
+                            taken.add(lane[depth]['key']);alternatives.append(lane[depth])
+                if alternatives:group['alternatives']=[{'id':r['key'],'name':r['name'],'description':r['description']} for r in alternatives]
+            # 检索可信度与核验状态是两回事：两个通道各自的首选不同，说明首选只得到一路证据支持，须与备选比较后再定。
+            if allocated[i] and not workflows[i] and text_selections[i] and text_selections[i][0][1]['key']!=allocated[i][0]:group['channels_disagree']=True
             if limits and coverage != 'matched':
                 group['limitations']=[entry[1]['key'] for entry in limits]
                 for entry in limits:limited_records[entry[1]['key']]=self.limitation_summary(entry)
@@ -975,9 +1083,22 @@ class Search:
         results = []
         for entry_id in entry_ids:
             matches = [r for r in self.records if (entry_id in (r['id'], r['key']) or r['name'].lower() == entry_id.lower()) and self.allowed(r, side, 'all', scope)]
+            side_note = None
+            if not matches and side != 'any':
+                # 端侧填错不应表现为“不存在”；唯一的另一端条目直接返回并注明。
+                matches = [r for r in self.records if (entry_id in (r['id'], r['key']) or r['name'].lower() == entry_id.lower()) and self.allowed(r, 'any', 'all', scope)]
+                if len(matches) == 1: side_note = '请求的 %s 端没有此条目，已返回 %s 端条目' % (side, matches[0]['side'])
+            also = []
+            if len(matches) > 1 and len({(r['name'], r['side'], r['class_path']) for r in matches}) == 1:
+                # 同一接口被官方文档收录在多个页面（如实体与世界的自定义数据）：不是歧义，返回一份并注明其余出处。
+                also = [r['doc_path'] + ':' + str(r['line']) for r in matches[1:]]; matches = matches[:1]
             if len(matches) != 1:
-                results.append({'query': entry_id, 'error': 'ambiguous' if matches else 'not_found',
-                                'candidates': [self.summary(r) for r in matches]})
+                failure = {'query': entry_id, 'error': 'ambiguous' if matches else 'not_found',
+                           'candidates': [self.summary(r) for r in matches]}
+                # 预设/零件体系已被官方废弃，默认不查询；只在那里有同名条目时明说，避免调用方误以为是可用接口。
+                if not matches and scope == 'modsdk' and any(r['scope'] == 'preset' and (entry_id in (r['id'], r['key']) or r['name'].lower() == entry_id.lower()) for r in self.records):
+                    failure['note'] = '仅在已废弃的 Preset（预设/零件）文档中有同名条目，ModSDK 中没有；请按能力重新检索'
+                results.append(failure)
                 continue
             record = matches[0]
             value = {k: record.get(k) for k in ('id', 'name', 'kind', 'side', 'version', 'documentation_status', 'class_path', 'source_url', 'doc_path', 'line', 'source_sha256')}
@@ -990,11 +1111,18 @@ class Search:
             else:
                 value.update({k: record[k] for k in ('description', 'parameters', 'returns', 'remarks', 'enum_refs')})
                 value['examples'] = record['examples'][:examples]
+                enums = {}
+                for name in record.get('enum_refs') or []:
+                    members = self.enum_members.get(name, [])
+                    if members: enums[name] = [' '.join(x for x in (n + '=' + v, c) if x) for n, v, c in members] if len(members) <= ENUM_INLINE_LIMIT else '共 %d 个成员，用 detail %s --part raw 查看' % (len(members), name)
+                if enums: value['enums'] = enums
                 value['more_examples'] = max(0, len(record['examples']) - examples)
                 if record.get('annotation'):
                     value['capabilities'] = record['annotation'].get('facts', {})
                     value['developer_notes'] = {k: record['annotation'][k] for k in ('authority', 'usage', 'cautions', 'related') if k in record['annotation']}
                     value['developer_notes']['related'] = [self.by_id[i]['key'] for i in record['annotation'].get('related', [])]
+            if side_note: value['side_note'] = side_note
+            if also: value['also_documented'] = also
             results.append(value)
         return {'results': results}
 
@@ -1040,6 +1168,9 @@ def compact_result(result, command):
                 roles=group.get('missing_roles',[])
                 if roles and not (roles==['operation'] and group['coverage'] in ('query_incomplete','evidence_missing')):item['missing_roles']=roles
                 if group.get('missing_requirements'):item['unverified']=group['missing_requirements']
+                if group.get('field_mismatch'):item['mismatch']=group['field_mismatch']
+                if group.get('channels_disagree'):item['compare']=True
+                if group.get('alternatives'):item['alternatives']=[a['name']+'：'+re.split(r'[。！？；，,\n]',a['description'],maxsplit=1)[0][:24] for a in group['alternatives']]
                 groups.append(item)
             output['intents']=groups
         if result.get('related'):output['related']=[candidate(x) for x in result['related']]
@@ -1054,8 +1185,8 @@ def compact_result(result, command):
         entries=[]
         for entry in result['results']:
             if entry.get('error'):
-                entries.append({**entry,'candidates':[candidate(x) for x in entry.get('candidates',[])]});continue
-            keep=('id','name','side','class_path','description','parameters','returns','remarks','enum_refs','examples','more_examples','developer_notes','part','text','offset','total_chars','next_offset')
+                entries.append({**entry,'candidates':[{**candidate(x),**({'component':x['component']} if x.get('component') else {})} for x in entry.get('candidates',[])]});continue
+            keep=('id','name','side','class_path','description','parameters','returns','remarks','enum_refs','enums','side_note','also_documented','examples','more_examples','developer_notes','part','text','offset','total_chars','next_offset')
             item={k:entry[k] for k in keep if entry.get(k) not in (None,'',[],{},0)}
             item['id']=digest(entry['id'])[:12]
             item['source']=entry['doc_path']+':'+str(entry['line'])
@@ -1078,7 +1209,7 @@ def main():
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('build')
     for command in ['search', 'resolve']:
-        p = sub.add_parser(command); p.add_argument('query', nargs='?')
+        p = sub.add_parser(command); p.add_argument('query', nargs='*')
         p.add_argument('--strategy', choices=['raw', 'annotated'], default='annotated')
         p.add_argument('--offset', type=int, default=0)
         p.add_argument('--limit', type=int, default=8 if command == 'resolve' else 5)
@@ -1098,6 +1229,8 @@ def main():
         if command == 'resolve':
             p.add_argument('--plan-file', help='结构化子目标 JSON；- 从 stdin 读取')
             p.add_argument('--per-intent', type=int, choices=[1,2,3], default=1, help='每个子目标最多返回的候选数，默认一项')
+    p = sub.add_parser('catalog'); p.add_argument('query', nargs='*', help='能力关键词；省略则列出文档页目录'); p.add_argument('--page', help='直接读取指定文档页，例如 接口/玩家/背包@server')
+    p.add_argument('--pages', type=int, choices=[1,2,3], default=2); p.add_argument('--side', choices=['any','server','client','common'], default='any'); p.add_argument('--kind', choices=['all','api','event'], default='all'); p.add_argument('--scope', choices=['modsdk','preset','all'], default='modsdk')
     p = sub.add_parser('schema'); p.add_argument('query',nargs='?',help='按中文词或概念 ID 查阅词表'); p.add_argument('--all-concepts',action='store_true',help='显式展开完整词表')
     p = sub.add_parser('detail'); p.add_argument('ids', nargs='+')
     p.add_argument('--side', choices=['any', 'server', 'client', 'common'], default='any')
@@ -1108,6 +1241,7 @@ def main():
     p.add_argument('--page-chars', type=int, default=8000)
     p = sub.add_parser('section'); p.add_argument('file'); p.add_argument('selector')
     args = parser.parse_args()
+    if isinstance(getattr(args,'query',None),list): args.query = ' '.join(args.query) or None
     if args.sdk_version != VERSION:
         raise ValueError('当前快照仅支持 3.9；不能用它确认目标版本 ' + args.sdk_version)
     if args.command == 'build':
@@ -1130,7 +1264,9 @@ def main():
         result = section_content(file.read_text(), args.selector)
     else:
         search = Search(load(args.root))
-        if args.command == 'detail':
+        if args.command == 'catalog':
+            result = search.catalog(args.query, args.side, args.kind, args.scope, args.pages, args.page)
+        elif args.command == 'detail':
             result = search.detail(args.ids, args.side, args.scope, args.part, max(0, args.examples))
             if args.part in ('raw', 'examples', 'remarks'):
                 for item in result['results']:
